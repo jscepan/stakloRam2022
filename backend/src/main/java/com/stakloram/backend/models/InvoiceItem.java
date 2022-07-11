@@ -10,18 +10,19 @@ public class InvoiceItem extends BaseModel {
     private double vatRate;
     private double vatAmount;
     private double grossPrice;
-    private List<Service> tasks = new ArrayList<>();
-
-    public InvoiceItem(String oid) {
-        super(oid);
-    }
-
-    public InvoiceItem(Long id) {
-        super(id);
-    }
+    private List<WorkOrderItem> workOrderItems = new ArrayList<>();
 
     public InvoiceItem(String description, double netPrice, double vatRate, double vatAmount, double grossPrice, String oid) {
         super(oid);
+        this.description = description;
+        this.netPrice = netPrice;
+        this.vatRate = vatRate;
+        this.vatAmount = vatAmount;
+        this.grossPrice = grossPrice;
+    }
+
+    public InvoiceItem(String description, double netPrice, double vatRate, double vatAmount, double grossPrice, Long id) {
+        super(id);
         this.description = description;
         this.netPrice = netPrice;
         this.vatRate = vatRate;
@@ -69,16 +70,16 @@ public class InvoiceItem extends BaseModel {
         this.grossPrice = grossPrice;
     }
 
-    public List<Service> getTasks() {
-        return tasks;
+    public List<WorkOrderItem> getWorkOrderItems() {
+        return workOrderItems;
     }
 
-    public void setTasks(List<Service> tasks) {
-        this.tasks = tasks;
+    public void setWorkOrderItems(List<WorkOrderItem> workOrderItems) {
+        this.workOrderItems = workOrderItems;
     }
 
     @Override
     public String toString() {
-        return "InvoiceItem{" + "description=" + description + ", netPrice=" + netPrice + ", vatRate=" + vatRate + ", vatAmount=" + vatAmount + ", grossPrice=" + grossPrice + '}';
+        return "InvoiceItem{" + "description=" + description + ", netPrice=" + netPrice + ", vatRate=" + vatRate + ", vatAmount=" + vatAmount + ", grossPrice=" + grossPrice + ", workOrderItems=" + workOrderItems + '}';
     }
 }

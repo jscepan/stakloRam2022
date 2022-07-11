@@ -8,7 +8,6 @@ public class Buyer extends BaseModel {
     private BuyerType type;
     private String name;
     private String address;
-    private String addressContact;
     private String maticalNumber;
     private String pib;
     private String contactPerson;
@@ -17,6 +16,7 @@ public class Buyer extends BaseModel {
     private String email;
     private GenderType gender;
     private City city;
+    private String jbkjs;
 
     public Buyer(String oid) {
         super(oid);
@@ -26,12 +26,11 @@ public class Buyer extends BaseModel {
         super(id);
     }
 
-    public Buyer(BuyerType type, String name, String address, String addressContact, String maticalNumber, String pib, String contactPerson, String phoneNumberFix, String phoneNumberMobile, String email, GenderType gender, City city, String oid) {
+    public Buyer(BuyerType type, String name, String address, String maticalNumber, String pib, String contactPerson, String phoneNumberFix, String phoneNumberMobile, String email, GenderType gender, City city, String jbkjs, String oid) {
         super(oid);
         this.type = type;
         this.name = name;
         this.address = address;
-        this.addressContact = addressContact;
         this.maticalNumber = maticalNumber;
         this.pib = pib;
         this.contactPerson = contactPerson;
@@ -40,6 +39,23 @@ public class Buyer extends BaseModel {
         this.email = email;
         this.gender = gender;
         this.city = city;
+        this.jbkjs = jbkjs;
+    }
+
+    public Buyer(BuyerType type, String name, String address, String maticalNumber, String pib, String contactPerson, String phoneNumberFix, String phoneNumberMobile, String email, GenderType gender, City city, String jbkjs, Long id) {
+        super(id);
+        this.type = type;
+        this.name = name;
+        this.address = address;
+        this.maticalNumber = maticalNumber;
+        this.pib = pib;
+        this.contactPerson = contactPerson;
+        this.phoneNumberFix = phoneNumberFix;
+        this.phoneNumberMobile = phoneNumberMobile;
+        this.email = email;
+        this.gender = gender;
+        this.city = city;
+        this.jbkjs = jbkjs;
     }
 
     public BuyerType getType() {
@@ -64,14 +80,6 @@ public class Buyer extends BaseModel {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getAddressContact() {
-        return addressContact;
-    }
-
-    public void setAddressContact(String addressContact) {
-        this.addressContact = addressContact;
     }
 
     public String getMaticalNumber() {
@@ -138,9 +146,17 @@ public class Buyer extends BaseModel {
         this.city = city;
     }
 
+    public String getJbkjs() {
+        return jbkjs;
+    }
+
+    public void setJbkjs(String jbkjs) {
+        this.jbkjs = jbkjs;
+    }
+
     @Override
     public String toString() {
-        return "Buyer{" + "type=" + type + ", name=" + name + ", address=" + address + ", addressContact=" + addressContact + ", maticalNumber=" + maticalNumber + ", pib=" + pib + ", contactPerson=" + contactPerson + ", phoneNumberFix=" + phoneNumberFix + ", phoneNumberMobile=" + phoneNumberMobile + ", email=" + email + ", gender=" + gender + ", city=" + city + '}';
+        return "Buyer{" + "type=" + type + ", name=" + name + ", address=" + address + ", maticalNumber=" + maticalNumber + ", pib=" + pib + ", contactPerson=" + contactPerson + ", phoneNumberFix=" + phoneNumberFix + ", phoneNumberMobile=" + phoneNumberMobile + ", email=" + email + ", gender=" + gender + ", city=" + city + ", jbkjs=" + jbkjs + '}';
     }
 
     public enum BuyerType {

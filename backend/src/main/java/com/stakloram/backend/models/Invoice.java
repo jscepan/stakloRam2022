@@ -8,22 +8,26 @@ public class Invoice extends BaseModel {
 
     private InvoiceType type;
     private String number;
+    private String numberSign;
     private LocalDate dateOfCreate;
     private LocalDate dateOfTurnover;
     private LocalDate dateOfMaturity;
     private String placeOfIssue;
+    private String methodOfPayment;
+    private String comment;
     private double netAmount;
+    private double vatRate;
     private double vatAmount;
     private double grossAmount;
     private String numberOfCashBill;
     private String currency;
     private String country;
-    private String comment;
     private boolean disabled;
     private String advanceInvoiceOid;
     private String preInvoiceOid;
     private Buyer buyer;
     private List<InvoiceItem> invoiceItems = new ArrayList<>();
+    private List<Note> notes = new ArrayList<>();
 
     public Invoice(String oid) {
         super(oid);
@@ -33,21 +37,48 @@ public class Invoice extends BaseModel {
         super(id);
     }
 
-    public Invoice(InvoiceType type, String number, LocalDate dateOfCreate, LocalDate dateOfTurnover, LocalDate dateOfMaturity, String placeOfIssue, double netAmount, double vatAmount, double grossAmount, String numberOfCashBill, String currency, String country, String comment, boolean disabled, String advanceInvoiceOid, String preInvoiceOid, Buyer buyer, String oid) {
+    public Invoice(InvoiceType type, String number, String numberSign, LocalDate dateOfCreate, LocalDate dateOfTurnover, LocalDate dateOfMaturity, String placeOfIssue, String methodOfPayment, String comment, double netAmount, double vatRate, double vatAmount, double grossAmount, String numberOfCashBill, String currency, String country, boolean disabled, String advanceInvoiceOid, String preInvoiceOid, Buyer buyer, String oid) {
         super(oid);
         this.type = type;
         this.number = number;
+        this.numberSign = numberSign;
         this.dateOfCreate = dateOfCreate;
         this.dateOfTurnover = dateOfTurnover;
         this.dateOfMaturity = dateOfMaturity;
         this.placeOfIssue = placeOfIssue;
+        this.methodOfPayment = methodOfPayment;
+        this.comment = comment;
         this.netAmount = netAmount;
+        this.vatRate = vatRate;
         this.vatAmount = vatAmount;
         this.grossAmount = grossAmount;
         this.numberOfCashBill = numberOfCashBill;
         this.currency = currency;
         this.country = country;
+        this.disabled = disabled;
+        this.advanceInvoiceOid = advanceInvoiceOid;
+        this.preInvoiceOid = preInvoiceOid;
+        this.buyer = buyer;
+    }
+
+    public Invoice(InvoiceType type, String number, String numberSign, LocalDate dateOfCreate, LocalDate dateOfTurnover, LocalDate dateOfMaturity, String placeOfIssue, String methodOfPayment, String comment, double netAmount, double vatRate, double vatAmount, double grossAmount, String numberOfCashBill, String currency, String country, boolean disabled, String advanceInvoiceOid, String preInvoiceOid, Buyer buyer, Long id) {
+        super(id);
+        this.type = type;
+        this.number = number;
+        this.numberSign = numberSign;
+        this.dateOfCreate = dateOfCreate;
+        this.dateOfTurnover = dateOfTurnover;
+        this.dateOfMaturity = dateOfMaturity;
+        this.placeOfIssue = placeOfIssue;
+        this.methodOfPayment = methodOfPayment;
         this.comment = comment;
+        this.netAmount = netAmount;
+        this.vatRate = vatRate;
+        this.vatAmount = vatAmount;
+        this.grossAmount = grossAmount;
+        this.numberOfCashBill = numberOfCashBill;
+        this.currency = currency;
+        this.country = country;
         this.disabled = disabled;
         this.advanceInvoiceOid = advanceInvoiceOid;
         this.preInvoiceOid = preInvoiceOid;
@@ -68,6 +99,14 @@ public class Invoice extends BaseModel {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public String getNumberSign() {
+        return numberSign;
+    }
+
+    public void setNumberSign(String numberSign) {
+        this.numberSign = numberSign;
     }
 
     public LocalDate getDateOfCreate() {
@@ -102,12 +141,36 @@ public class Invoice extends BaseModel {
         this.placeOfIssue = placeOfIssue;
     }
 
+    public String getMethodOfPayment() {
+        return methodOfPayment;
+    }
+
+    public void setMethodOfPayment(String methodOfPayment) {
+        this.methodOfPayment = methodOfPayment;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     public double getNetAmount() {
         return netAmount;
     }
 
     public void setNetAmount(double netAmount) {
         this.netAmount = netAmount;
+    }
+
+    public double getVatRate() {
+        return vatRate;
+    }
+
+    public void setVatRate(double vatRate) {
+        this.vatRate = vatRate;
     }
 
     public double getVatAmount() {
@@ -150,14 +213,6 @@ public class Invoice extends BaseModel {
         this.country = country;
     }
 
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
     public boolean isDisabled() {
         return disabled;
     }
@@ -172,6 +227,14 @@ public class Invoice extends BaseModel {
 
     public void setAdvanceInvoiceOid(String advanceInvoiceOid) {
         this.advanceInvoiceOid = advanceInvoiceOid;
+    }
+
+    public String getPreInvoiceOid() {
+        return preInvoiceOid;
+    }
+
+    public void setPreInvoiceOid(String preInvoiceOid) {
+        this.preInvoiceOid = preInvoiceOid;
     }
 
     public Buyer getBuyer() {
@@ -190,12 +253,17 @@ public class Invoice extends BaseModel {
         this.invoiceItems = invoiceItems;
     }
 
-    public String getPreInvoiceOid() {
-        return preInvoiceOid;
+    public List<Note> getNotes() {
+        return notes;
     }
 
-    public void setPreInvoiceOid(String preInvoiceOid) {
-        this.preInvoiceOid = preInvoiceOid;
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
+    }
+
+    @Override
+    public String toString() {
+        return "Invoice{" + "type=" + type + ", number=" + number + ", numberSign=" + numberSign + ", dateOfCreate=" + dateOfCreate + ", dateOfTurnover=" + dateOfTurnover + ", dateOfMaturity=" + dateOfMaturity + ", placeOfIssue=" + placeOfIssue + ", methodOfPayment=" + methodOfPayment + ", comment=" + comment + ", netAmount=" + netAmount + ", vatRate=" + vatRate + ", vatAmount=" + vatAmount + ", grossAmount=" + grossAmount + ", numberOfCashBill=" + numberOfCashBill + ", currency=" + currency + ", country=" + country + ", disabled=" + disabled + ", advanceInvoiceOid=" + advanceInvoiceOid + ", preInvoiceOid=" + preInvoiceOid + ", buyer=" + buyer + ", invoiceItems=" + invoiceItems + ", notes=" + notes + '}';
     }
 
     public enum InvoiceType {

@@ -1,39 +1,58 @@
 package com.stakloram.backend.models;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public class User extends BaseModel {
 
+    private String displayName;
     private String username;
     private String password;
+    private boolean enabled;
     private String fullName;
     private String email;
-    private boolean enabled;
     private String language;
-    private String thumbnail;
     private List<Role> roles = new ArrayList<>();
 
-    public User(String oid) {
-        super(oid);
+    public User() {
     }
 
-    public User(Long id) {
-        super(id);
-    }
-
-    public User(String username, String password, String fullName, String email, boolean enabled, String language, String thumbnail, String oid) {
+    public User(String displayName, String username, String password, boolean enabled, String fullName, String email, String language, String oid) {
         super(oid);
+        this.displayName = displayName;
         this.username = username;
         this.password = password;
+        this.enabled = enabled;
         this.fullName = fullName;
         this.email = email;
-        this.enabled = enabled;
         this.language = language;
-        this.thumbnail = thumbnail;
+    }
+
+    public User(String displayName, String username, String password, boolean enabled, String fullName, String email, String language, Long id) {
+        super(id);
+        this.displayName = displayName;
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
+        this.fullName = fullName;
+        this.email = email;
+        this.language = language;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -42,6 +61,14 @@ public class User extends BaseModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public String getFullName() {
@@ -60,14 +87,6 @@ public class User extends BaseModel {
         this.email = email;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public String getLanguage() {
         return language;
     }
@@ -84,19 +103,8 @@ public class User extends BaseModel {
         this.roles = roles;
     }
 
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    @Override
+    public String toString() {
+        return "User{" + "displayName=" + displayName + ", username=" + username + ", password=" + password + ", enabled=" + enabled + ", fullName=" + fullName + ", email=" + email + ", language=" + language + ", roles=" + roles + '}';
     }
 }

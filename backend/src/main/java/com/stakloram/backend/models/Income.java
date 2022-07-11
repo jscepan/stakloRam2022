@@ -5,9 +5,9 @@ import java.time.LocalDate;
 public class Income extends BaseModel {
 
     private LocalDate date;
-    private String bankStatementNumber;
     private double amount;
     private String comment;
+    private String bankStatementNumber;
     private Buyer buyer;
 
     public Income(String oid) {
@@ -18,12 +18,21 @@ public class Income extends BaseModel {
         super(id);
     }
 
-    public Income(LocalDate date, String bankStatementNumber, double amount, String comment, Buyer buyer, String oid) {
+    public Income(LocalDate date, double amount, String comment, String bankStatementNumber, Buyer buyer, String oid) {
         super(oid);
         this.date = date;
-        this.bankStatementNumber = bankStatementNumber;
         this.amount = amount;
         this.comment = comment;
+        this.bankStatementNumber = bankStatementNumber;
+        this.buyer = buyer;
+    }
+
+    public Income(LocalDate date, double amount, String comment, String bankStatementNumber, Buyer buyer, Long id) {
+        super(id);
+        this.date = date;
+        this.amount = amount;
+        this.comment = comment;
+        this.bankStatementNumber = bankStatementNumber;
         this.buyer = buyer;
     }
 
