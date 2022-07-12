@@ -219,21 +219,6 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `stakloram2022`.`product`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `stakloram2022`.`product` ;
-
-CREATE TABLE IF NOT EXISTS `stakloram2022`.`product` (
-  `product_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `product_number` VARCHAR(145) NULL DEFAULT NULL,
-  `product_description` VARCHAR(5000) NULL DEFAULT NULL,
-  `product_unit_of_measure` VARCHAR(10) NULL DEFAULT NULL,
-  PRIMARY KEY (`product_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
 -- Table `stakloram2022`.`invoice_item`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `stakloram2022`.`invoice_item` ;
@@ -246,18 +231,11 @@ CREATE TABLE IF NOT EXISTS `stakloram2022`.`invoice_item` (
   `invoice_item_vat_amount` DECIMAL(20,2) NULL DEFAULT NULL,
   `invoice_item_gross_price` DECIMAL(20,2) NULL DEFAULT NULL,
   `invoice_item_invoice_invoice_id` INT(11) NOT NULL,
-  `invoice_item_product_product_id` INT(11) NOT NULL,
   PRIMARY KEY (`invoice_item_id`),
   INDEX `fk_invoice_item_invoice1_idx` (`invoice_item_invoice_invoice_id` ASC) VISIBLE,
-  INDEX `fk_invoice_item_product1_idx` (`invoice_item_product_product_id` ASC) VISIBLE,
   CONSTRAINT `fk_invoice_item_invoice1`
     FOREIGN KEY (`invoice_item_invoice_invoice_id`)
-    REFERENCES `stakloram2022`.`invoice` (`invoice_id`),
-  CONSTRAINT `fk_invoice_item_product1`
-    FOREIGN KEY (`invoice_item_product_product_id`)
-    REFERENCES `stakloram2022`.`product` (`product_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `stakloram2022`.`invoice` (`invoice_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -350,19 +328,14 @@ CREATE TABLE IF NOT EXISTS `stakloram2022`.`work_order_item` (
   `work_order_item_sum_quantity` DECIMAL(19,10) NULL DEFAULT NULL,
   `work_order_item_note` VARCHAR(5000) NULL DEFAULT NULL,
   `work_order_item_work_order_work_order_id` INT(11) NOT NULL,
-  `work_order_item_product_product_id` INT(11) NOT NULL,
   `work_order_item_invoice_item_invoice_item_id` INT(11) NULL DEFAULT NULL,
   `work_order_item_settled` TINYINT(4) NULL DEFAULT NULL,
   PRIMARY KEY (`work_order_item_id`),
   INDEX `fk_work_order_item_work_order1_idx` (`work_order_item_work_order_work_order_id` ASC) VISIBLE,
   INDEX `fk_work_order_item_invoice_item1_idx` (`work_order_item_invoice_item_invoice_item_id` ASC) VISIBLE,
-  INDEX `fk_work_order_item_product1_idx` (`work_order_item_product_product_id` ASC) VISIBLE,
   CONSTRAINT `fk_work_order_item_invoice_item1`
     FOREIGN KEY (`work_order_item_invoice_item_invoice_item_id`)
     REFERENCES `stakloram2022`.`invoice_item` (`invoice_item_id`),
-  CONSTRAINT `fk_work_order_item_product1`
-    FOREIGN KEY (`work_order_item_product_product_id`)
-    REFERENCES `stakloram2022`.`product` (`product_id`),
   CONSTRAINT `fk_work_order_item_work_order1`
     FOREIGN KEY (`work_order_item_work_order_work_order_id`)
     REFERENCES `stakloram2022`.`work_order` (`work_order_id`))
