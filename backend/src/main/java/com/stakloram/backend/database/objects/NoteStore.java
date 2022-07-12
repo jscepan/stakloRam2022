@@ -1,37 +1,32 @@
 package com.stakloram.backend.database.objects;
 
 import com.stakloram.backend.database.ObjectStore;
+import static com.stakloram.backend.database.ObjectStore.DATABASE_NAME;
 import com.stakloram.backend.models.BaseModel;
-import com.stakloram.backend.models.Image;
+import com.stakloram.backend.models.Note;
 import com.stakloram.backend.models.Locator;
-import com.stakloram.backend.models.WorkOrder;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ImageStore extends ObjectStore {
+public class NoteStore extends ObjectStore {
 
-    public ImageStore(Locator locator) {
+    public NoteStore(Locator locator) {
         super(locator);
     }
 
     @Override
     public void setTableName() {
-        super.tableName = "image";
+        super.tableName = "note";
     }
 
-    @Override
-    public Image createNewObjectToDatabase(BaseModel model) {
-        return null;
-    }
-
-    public Image createNewObjectToDatabase(BaseModel model, WorkOrder workOrder) throws SQLException {
-        Image object = (Image) model;
+    public Note createNewObjectToDatabase(BaseModel model, Long invoiceId) throws SQLException {
+        Note object = (Note) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,null)", PreparedStatement.RETURN_GENERATED_KEYS);
-        st.setString(++i, object.getUrl());
+        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        st.setString(++i, object.getName());
         st.setString(++i, object.getDescription());
-        st.setLong(++i, workOrder.getId());
+        st.setLong(++i, invoiceId);
 
         if (st.executeUpdate() > 0) {
             ResultSet rs = st.getGeneratedKeys();
@@ -39,18 +34,23 @@ public class ImageStore extends ObjectStore {
             object.setOid(BaseModel.getOidFromId(object, rs.getLong(1)));
             return object;
         }
+        return object;
+    }
+
+    @Override
+    public Note createNewObjectToDatabase(BaseModel model) throws SQLException {
         return null;
     }
 
     @Override
-    public Image modifyObject(String oid, BaseModel model) throws SQLException {
-        Image object = (Image) model;
+    public Note modifyObject(String oid, BaseModel model) throws SQLException {
+        Note object = (Note) model;
         int i = 0;
         PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
-                + this.getTableName() + "_url=?,"
+                + this.getTableName() + "_name=?,"
                 + this.getTableName() + "_description=?"
                 + " WHERE " + this.getPrimaryKey() + "=?");
-        st.setString(++i, object.getUrl());
+        st.setString(++i, object.getName());
         st.setString(++i, object.getDescription());
         st.setLong(++i, BaseModel.getIdFromOid(oid));
         if (st.executeUpdate() > 0) {
@@ -60,9 +60,9 @@ public class ImageStore extends ObjectStore {
     }
 
     @Override
-    public Image getObjectFromResultSet(ResultSet resultSet) throws SQLException {
-        Image object = new Image(resultSet.getLong(this.getPrimaryKey()));
-        object.setUrl(resultSet.getString(this.getTableName() + "_url"));
+    public Note getObjectFromResultSet(ResultSet resultSet) throws SQLException {
+        Note object = new Note(resultSet.getLong(this.getPrimaryKey()));
+        object.setName(resultSet.getString(this.getTableName() + "_name"));
         object.setDescription(resultSet.getString(this.getTableName() + "_description"));
         return object;
     }

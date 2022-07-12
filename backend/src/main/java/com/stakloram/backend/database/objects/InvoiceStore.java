@@ -28,7 +28,7 @@ public class InvoiceStore extends ObjectStore {
     public Invoice createNewObjectToDatabase(BaseModel model) throws SQLException {
         Invoice object = (Invoice) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getType().name());
         st.setInt(++i, this.getInvoiceNumberForInvoice(object));
         st.setString(++i, object.getNumber());
@@ -36,13 +36,15 @@ public class InvoiceStore extends ObjectStore {
         st.setDate(++i, Helper.convertLocalDateToSqlDate(object.getDateOfTurnover()));
         st.setDate(++i, Helper.convertLocalDateToSqlDate(object.getDateOfMaturity()));
         st.setString(++i, object.getPlaceOfIssue());
+        st.setString(++i, object.getMethodOfPayment());
+        st.setString(++i, object.getComment());
         st.setDouble(++i, object.getNetAmount());
+        st.setDouble(++i, object.getVatRate());
         st.setDouble(++i, object.getVatAmount());
         st.setDouble(++i, object.getGrossAmount());
         st.setString(++i, object.getNumberOfCashBill());
         st.setString(++i, object.getCurrency());
         st.setString(++i, object.getCountry());
-        st.setString(++i, object.getComment());
         st.setBoolean(++i, object.isDisabled());
         if (BaseModel.getIdFromOid(object.getAdvanceInvoiceOid()) == null) {
             st.setNull(++i, Types.INTEGER);
@@ -77,13 +79,15 @@ public class InvoiceStore extends ObjectStore {
                 + this.getTableName() + "_date_of_turnover=?,"
                 + this.getTableName() + "_date_of_maturity=?,"
                 + this.getTableName() + "_place_of_issue=?,"
+                + this.getTableName() + "_method_of_payment=?,"
+                + this.getTableName() + "_comment=?,"
                 + this.getTableName() + "_net_amount=?,"
+                + this.getTableName() + "_vat_rate=?,"
                 + this.getTableName() + "_vat_amount=?,"
                 + this.getTableName() + "_gross_amount=?,"
                 + this.getTableName() + "_number_of_cash_bill=?,"
                 + this.getTableName() + "_currency=?,"
                 + this.getTableName() + "_country=?,"
-                + this.getTableName() + "_comment=?,"
                 + this.getTableName() + "_disabled=?,"
                 + this.getTableName() + "_advance_invoice_id=?,"
                 + this.getTableName() + "_pre_invoice_id=?,"
@@ -96,13 +100,15 @@ public class InvoiceStore extends ObjectStore {
         st.setDate(++i, Helper.convertLocalDateToSqlDate(object.getDateOfTurnover()));
         st.setDate(++i, Helper.convertLocalDateToSqlDate(object.getDateOfMaturity()));
         st.setString(++i, object.getPlaceOfIssue());
+        st.setString(++i, object.getMethodOfPayment());
+        st.setString(++i, object.getComment());
         st.setDouble(++i, object.getNetAmount());
+        st.setDouble(++i, object.getVatRate());
         st.setDouble(++i, object.getVatAmount());
         st.setDouble(++i, object.getGrossAmount());
         st.setString(++i, object.getNumberOfCashBill());
         st.setString(++i, object.getCurrency());
         st.setString(++i, object.getCountry());
-        st.setString(++i, object.getComment());
         st.setBoolean(++i, object.isDisabled());
         if (Invoice.getIdFromOid(object.getAdvanceInvoiceOid()) == null) {
             st.setNull(++i, Types.INTEGER);
@@ -131,13 +137,15 @@ public class InvoiceStore extends ObjectStore {
         object.setDateOfTurnover(resultSet.getDate(this.getTableName() + "_date_of_turnover").toLocalDate());
         object.setDateOfMaturity(resultSet.getDate(this.getTableName() + "_date_of_maturity").toLocalDate());
         object.setPlaceOfIssue(resultSet.getString(this.getTableName() + "_place_of_issue"));
+        object.setMethodOfPayment(resultSet.getString(this.getTableName() + "_method_of_payment"));
+        object.setComment(resultSet.getString(this.getTableName() + "_comment"));
         object.setNetAmount(resultSet.getDouble(this.getTableName() + "_net_amount"));
+        object.setVatRate(resultSet.getDouble(this.getTableName() + "_vat_rate"));
         object.setVatAmount(resultSet.getDouble(this.getTableName() + "_vat_amount"));
         object.setGrossAmount(resultSet.getDouble(this.getTableName() + "_gross_amount"));
         object.setNumberOfCashBill(resultSet.getString(this.getTableName() + "_number_of_cash_bill"));
         object.setCurrency(resultSet.getString(this.getTableName() + "_currency"));
         object.setCountry(resultSet.getString(this.getTableName() + "_country"));
-        object.setComment(resultSet.getString(this.getTableName() + "_comment"));
         object.setDisabled(resultSet.getBoolean(this.getTableName() + "_disabled"));
         if (resultSet.getLong(this.getTableName() + "_advance_invoice_id") == 0) {
             object.setAdvanceInvoiceOid(null);

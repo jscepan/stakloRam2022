@@ -104,8 +104,8 @@ CREATE TABLE IF NOT EXISTS `stakloram2022`.`history` (
   `history_id` INT(11) NOT NULL AUTO_INCREMENT,
   `history_action` VARCHAR(245) NULL DEFAULT NULL,
   `history_object_type` VARCHAR(245) NULL DEFAULT NULL,
-  `history_previous_value` VARCHAR(4000) NULL DEFAULT NULL,
-  `history_new_value` VARCHAR(4000) NULL DEFAULT NULL,
+  `history_previous_value` VARCHAR(5000) NULL DEFAULT NULL,
+  `history_new_value` VARCHAR(5000) NULL DEFAULT NULL,
   `history_time` DATETIME NULL DEFAULT NULL,
   `history_user_user_id` INT(11) NOT NULL,
   PRIMARY KEY (`history_id`),
@@ -219,6 +219,21 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
+-- Table `stakloram2022`.`product`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `stakloram2022`.`product` ;
+
+CREATE TABLE IF NOT EXISTS `stakloram2022`.`product` (
+  `product_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `product_number` VARCHAR(145) NULL DEFAULT NULL,
+  `product_description` VARCHAR(5000) NULL DEFAULT NULL,
+  `product_unit_of_measure` VARCHAR(10) NULL DEFAULT NULL,
+  PRIMARY KEY (`product_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
 -- Table `stakloram2022`.`invoice_item`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `stakloram2022`.`invoice_item` ;
@@ -231,11 +246,18 @@ CREATE TABLE IF NOT EXISTS `stakloram2022`.`invoice_item` (
   `invoice_item_vat_amount` DECIMAL(20,2) NULL DEFAULT NULL,
   `invoice_item_gross_price` DECIMAL(20,2) NULL DEFAULT NULL,
   `invoice_item_invoice_invoice_id` INT(11) NOT NULL,
+  `invoice_item_product_product_id` INT(11) NOT NULL,
   PRIMARY KEY (`invoice_item_id`),
   INDEX `fk_invoice_item_invoice1_idx` (`invoice_item_invoice_invoice_id` ASC) VISIBLE,
+  INDEX `fk_invoice_item_product1_idx` (`invoice_item_product_product_id` ASC) VISIBLE,
   CONSTRAINT `fk_invoice_item_invoice1`
     FOREIGN KEY (`invoice_item_invoice_invoice_id`)
-    REFERENCES `stakloram2022`.`invoice` (`invoice_id`))
+    REFERENCES `stakloram2022`.`invoice` (`invoice_id`),
+  CONSTRAINT `fk_invoice_item_product1`
+    FOREIGN KEY (`invoice_item_product_product_id`)
+    REFERENCES `stakloram2022`.`product` (`product_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -275,21 +297,6 @@ CREATE TABLE IF NOT EXISTS `stakloram2022`.`outcome` (
   CONSTRAINT `fk_income_buyer10`
     FOREIGN KEY (`outcome_buyer_buyer_id`)
     REFERENCES `stakloram2022`.`buyer` (`buyer_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `stakloram2022`.`product`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `stakloram2022`.`product` ;
-
-CREATE TABLE IF NOT EXISTS `stakloram2022`.`product` (
-  `product_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `product_number` VARCHAR(145) NULL DEFAULT NULL,
-  `product_description` VARCHAR(5000) NULL DEFAULT NULL,
-  `product_unit_of_measure` VARCHAR(10) NULL DEFAULT NULL,
-  PRIMARY KEY (`product_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 

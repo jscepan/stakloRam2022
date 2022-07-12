@@ -9,13 +9,17 @@ public class WorkOrderItem extends BaseModel {
     private double quantity;
     private double sumQuantity;
     private String note;
-    private Product product;
     private boolean settled;
 
-    public WorkOrderItem() {
+    public WorkOrderItem(String oid) {
+        super(oid);
     }
 
-    public WorkOrderItem(String description, double dimension1, double dimension2, double dimension3, double quantity, double sumQuantity, String note, Product product, boolean settled, String oid) {
+    public WorkOrderItem(Long id) {
+        super(id);
+    }
+
+    public WorkOrderItem(String description, double dimension1, double dimension2, double dimension3, double quantity, double sumQuantity, String note, boolean settled, String oid) {
         super(oid);
         this.description = description;
         this.dimension1 = dimension1;
@@ -24,11 +28,10 @@ public class WorkOrderItem extends BaseModel {
         this.quantity = quantity;
         this.sumQuantity = sumQuantity;
         this.note = note;
-        this.product = product;
         this.settled = settled;
     }
 
-    public WorkOrderItem(String description, double dimension1, double dimension2, double dimension3, double quantity, double sumQuantity, String note, Product product, boolean settled, Long id) {
+    public WorkOrderItem(String description, double dimension1, double dimension2, double dimension3, double quantity, double sumQuantity, String note, boolean settled, Long id) {
         super(id);
         this.description = description;
         this.dimension1 = dimension1;
@@ -37,7 +40,6 @@ public class WorkOrderItem extends BaseModel {
         this.quantity = quantity;
         this.sumQuantity = sumQuantity;
         this.note = note;
-        this.product = product;
         this.settled = settled;
     }
 
@@ -97,14 +99,6 @@ public class WorkOrderItem extends BaseModel {
         this.note = note;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
     public boolean isSettled() {
         return settled;
     }
@@ -115,6 +109,6 @@ public class WorkOrderItem extends BaseModel {
 
     @Override
     public String toString() {
-        return "WorkOrderItem{" + "description=" + description + ", dimension1=" + dimension1 + ", dimension2=" + dimension2 + ", dimension3=" + dimension3 + ", quantity=" + quantity + ", sumQuantity=" + sumQuantity + ", note=" + note + ", product=" + product + ", settled=" + settled + '}';
+        return "WorkOrderItem{" + "description=" + description + ", dimension1=" + dimension1 + ", dimension2=" + dimension2 + ", dimension3=" + dimension3 + ", quantity=" + quantity + ", sumQuantity=" + sumQuantity + ", note=" + note + ", settled=" + settled + '}';
     }
 }

@@ -24,13 +24,13 @@ public class UserStore extends ObjectStore {
         User object = (User) model;
         int i = 0;
         PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        st.setString(++i, object.getDisplayName());
         st.setString(++i, object.getUsername());
         st.setString(++i, object.getPassword());
+        st.setBoolean(++i, object.isEnabled());
         st.setString(++i, object.getFullName());
         st.setString(++i, object.getEmail());
         st.setString(++i, object.getLanguage());
-        st.setString(++i, object.getThumbnail());
-        st.setBoolean(++i, object.isEnabled());
 
         if (st.executeUpdate() > 0) {
             ResultSet rs = st.getGeneratedKeys();
@@ -46,21 +46,19 @@ public class UserStore extends ObjectStore {
         User object = (User) model;
         int i = 0;
         PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+                + this.getTableName() + "_display_name=?,"
                 + this.getTableName() + "_username=?,"
-                //                + this.getTableName() + "_password=?,"
+                + this.getTableName() + "_enabled=?,"
                 + this.getTableName() + "_full_name=?,"
                 + this.getTableName() + "_email=?,"
-                + this.getTableName() + "_language=?,"
-                + this.getTableName() + "_thumbnail=?,"
-                + this.getTableName() + "_enabled=? "
+                + this.getTableName() + "_language=? "
                 + " WHERE " + this.getPrimaryKey() + "=?");
+        st.setString(++i, object.getDisplayName());
         st.setString(++i, object.getUsername());
-//        st.setString(++i, object.getPassword());
+        st.setBoolean(++i, object.isEnabled());
         st.setString(++i, object.getFullName());
         st.setString(++i, object.getEmail());
         st.setString(++i, object.getLanguage());
-        st.setString(++i, object.getThumbnail());
-        st.setBoolean(++i, object.isEnabled());
         st.setLong(++i, BaseModel.getIdFromOid(oid));
         if (st.executeUpdate() > 0) {
             return object;
@@ -71,25 +69,24 @@ public class UserStore extends ObjectStore {
     @Override
     public User getObjectFromResultSet(ResultSet resultSet) throws SQLException {
         User object = new User(resultSet.getLong(this.getPrimaryKey()));
+        object.setDisplayName(resultSet.getString(this.getTableName() + "_display_name"));
         object.setUsername(resultSet.getString(this.getTableName() + "_username"));
-//        object.setPassword(resultSet.getString(this.getTableName() + "_password"));
+        object.setEnabled(resultSet.getBoolean(this.getTableName() + "_enabled"));
         object.setFullName(resultSet.getString(this.getTableName() + "_full_name"));
         object.setEmail(resultSet.getString(this.getTableName() + "_email"));
         object.setLanguage(resultSet.getString(this.getTableName() + "_language"));
-        object.setThumbnail(resultSet.getString(this.getTableName() + "_thumbnail"));
-        object.setEnabled(resultSet.getBoolean(this.getTableName() + "_enabled"));
         return object;
     }
 
     public User getUserWithPasswordFromResultSet(ResultSet resultSet) throws SQLException {
         User object = new User(resultSet.getLong(this.getPrimaryKey()));
+        object.setDisplayName(resultSet.getString(this.getTableName() + "_display_name"));
         object.setUsername(resultSet.getString(this.getTableName() + "_username"));
         object.setPassword(resultSet.getString(this.getTableName() + "_password"));
+        object.setEnabled(resultSet.getBoolean(this.getTableName() + "_enabled"));
         object.setFullName(resultSet.getString(this.getTableName() + "_full_name"));
         object.setEmail(resultSet.getString(this.getTableName() + "_email"));
         object.setLanguage(resultSet.getString(this.getTableName() + "_language"));
-        object.setThumbnail(resultSet.getString(this.getTableName() + "_thumbnail"));
-        object.setEnabled(resultSet.getBoolean(this.getTableName() + "_enabled"));
         return object;
     }
 

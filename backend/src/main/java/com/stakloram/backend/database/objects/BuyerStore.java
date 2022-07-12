@@ -29,7 +29,6 @@ public class BuyerStore extends ObjectStore {
         st.setString(++i, object.getType().name());
         st.setString(++i, object.getName());
         st.setString(++i, object.getAddress());
-        st.setString(++i, object.getAddressContact());
         st.setString(++i, object.getMaticalNumber());
         st.setString(++i, object.getPib());
         st.setString(++i, object.getContactPerson());
@@ -38,6 +37,7 @@ public class BuyerStore extends ObjectStore {
         st.setString(++i, object.getEmail());
         st.setString(++i, object.getGender() == null ? null : object.getGender().name());
         st.setLong(++i, object.getCity().getId());
+        st.setString(++i, object.getJbkjs());
 
         if (st.executeUpdate() > 0) {
             ResultSet rs = st.getGeneratedKeys();
@@ -56,7 +56,6 @@ public class BuyerStore extends ObjectStore {
                 + this.getTableName() + "_type=?,"
                 + this.getTableName() + "_name=?,"
                 + this.getTableName() + "_address=?,"
-                + this.getTableName() + "_address_contact=?,"
                 + this.getTableName() + "_matical_number=?,"
                 + this.getTableName() + "_pib=?,"
                 + this.getTableName() + "_contact_person=?,"
@@ -64,12 +63,12 @@ public class BuyerStore extends ObjectStore {
                 + this.getTableName() + "_phone_number_mobile=?,"
                 + this.getTableName() + "_email=?,"
                 + this.getTableName() + "_gender=?,"
-                + this.getTableName() + "_city_city_id=?"
+                + this.getTableName() + "_city_city_id=?,"
+                + this.getTableName() + "_jbkjs=?"
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setString(++i, object.getType().name());
         st.setString(++i, object.getName());
         st.setString(++i, object.getAddress());
-        st.setString(++i, object.getAddressContact());
         st.setString(++i, object.getMaticalNumber());
         st.setString(++i, object.getPib());
         st.setString(++i, object.getContactPerson());
@@ -78,6 +77,7 @@ public class BuyerStore extends ObjectStore {
         st.setString(++i, object.getEmail());
         st.setString(++i, object.getGender() == null ? null : object.getGender().name());
         st.setLong(++i, object.getCity().getId());
+        st.setString(++i, object.getJbkjs());
         st.setLong(++i, BaseModel.getIdFromOid(oid));
         if (st.executeUpdate() > 0) {
             return object;
@@ -91,7 +91,6 @@ public class BuyerStore extends ObjectStore {
         object.setType(BuyerType.valueOf(resultSet.getString(this.getTableName() + "_type")));
         object.setName(resultSet.getString(this.getTableName() + "_name"));
         object.setAddress(resultSet.getString(this.getTableName() + "_address"));
-        object.setAddressContact(resultSet.getString(this.getTableName() + "_address_contact"));
         object.setMaticalNumber(resultSet.getString(this.getTableName() + "_matical_number"));
         object.setPib(resultSet.getString(this.getTableName() + "_pib"));
         object.setContactPerson(resultSet.getString(this.getTableName() + "_contact_person"));
@@ -100,6 +99,7 @@ public class BuyerStore extends ObjectStore {
         object.setEmail(resultSet.getString(this.getTableName() + "_email"));
         object.setGender(resultSet.getString(this.getTableName() + "_gender") == null ? null : Buyer.GenderType.valueOf(resultSet.getString(this.getTableName() + "_gender")));
         object.setCity(new City(resultSet.getLong(this.getTableName() + "_city_city_id")));
+        object.setJbkjs(resultSet.getString(this.getTableName() + "_jbkjs"));
         return object;
     }
 }

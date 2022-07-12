@@ -14,7 +14,12 @@ public class User extends BaseModel {
     private String language;
     private List<Role> roles = new ArrayList<>();
 
-    public User() {
+    public User(String oid) {
+        super(oid);
+    }
+
+    public User(Long id) {
+        super(id);
     }
 
     public User(String displayName, String username, String password, boolean enabled, String fullName, String email, String language, String oid) {

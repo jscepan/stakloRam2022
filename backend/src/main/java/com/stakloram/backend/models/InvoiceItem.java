@@ -12,6 +12,14 @@ public class InvoiceItem extends BaseModel {
     private double grossPrice;
     private List<WorkOrderItem> workOrderItems = new ArrayList<>();
 
+    public InvoiceItem(String oid) {
+        super(oid);
+    }
+
+    public InvoiceItem(Long id) {
+        super(id);
+    }
+
     public InvoiceItem(String description, double netPrice, double vatRate, double vatAmount, double grossPrice, String oid) {
         super(oid);
         this.description = description;

@@ -5,7 +5,7 @@ import com.stakloram.backend.database.objects.BuyerStore;
 import com.stakloram.backend.database.objects.CityStore;
 import com.stakloram.backend.database.objects.InvoiceItemStore;
 import com.stakloram.backend.database.objects.InvoiceStore;
-import com.stakloram.backend.database.objects.ServiceStore;
+import com.stakloram.backend.database.objects.WorkOrderItemStore;
 import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Buyer;
@@ -15,7 +15,7 @@ import com.stakloram.backend.models.InvoiceItem;
 import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.SearchRequest;
-import com.stakloram.backend.models.Service;
+import com.stakloram.backend.models.WorkOrderItem;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
 import com.stakloram.backend.util.Helper;
 import java.sql.ResultSet;
@@ -30,7 +30,7 @@ public class InvoiceBuilder extends BaseBuilder {
     private final BuyerStore BUYER_STORE = new BuyerStore(this.getLocator());
     private final InvoiceItemStore INVOICE_ITEM_STORE = new InvoiceItemStore(this.getLocator());
     private final CityStore CITY_STORE = new CityStore(this.getLocator());
-    private final ServiceStore SERVICE_STORE = new ServiceStore(this.getLocator());
+    private final WorkOrderItemStore WORK_ORDER_ITEM_STORE = new WorkOrderItemStore(this.getLocator());
 
     public InvoiceBuilder(Locator locator) {
         super(locator);
@@ -65,12 +65,12 @@ public class InvoiceBuilder extends BaseBuilder {
                 ResultSet rs = INVOICE_ITEM_STORE.getAllObjectsFromDatabase(INVOICE_ITEM_STORE.getTableName() + "_invoice_invoice_id=" + invoice.getId());
                 while (rs.next()) {
                     InvoiceItem invoiceItem = INVOICE_ITEM_STORE.getObjectFromResultSet(rs);
-                    List<Service> tasks = new ArrayList<>();
-                    ResultSet r = SERVICE_STORE.getAllObjectsFromDatabase(SERVICE_STORE.getTableName() + "_invoice_item_invoice_item_id=" + invoiceItem.getId());
+                    List<WorkOrderItem> workOrderItems = new ArrayList<>();
+                    ResultSet r = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_invoice_item_invoice_item_id=" + invoiceItem.getId());
                     while (r.next()) {
-                        tasks.add(SERVICE_STORE.getObjectFromResultSet(r));
+                        workOrderItems.add(WORK_ORDER_ITEM_STORE.getObjectFromResultSet(r));
                     }
-                    invoiceItem.setTasks(tasks);
+                    invoiceItem.setWorkOrderItems(workOrderItems);
                     invoiceItems.add(invoiceItem);
                 }
                 invoice.setInvoiceItems(invoiceItems);
@@ -90,8 +90,8 @@ public class InvoiceBuilder extends BaseBuilder {
         for (InvoiceItem invoiceItem : invoice.getInvoiceItems()) {
             try {
                 InvoiceItem ii = INVOICE_ITEM_STORE.createNewObjectToDatabase(invoiceItem, invoice.getId());
-                for (int i = 0; i < ii.getTasks().size(); i++) {
-                    SERVICE_STORE.setInvoiceItemForService(ii.getTasks().get(i).getOid(), ii.getOid());
+                for (int i = 0; i < ii.getWorkOrderItems().size(); i++) {
+                    WORK_ORDER_ITEM_STORE.setInvoiceItemForWorkOrderItem(ii.getWorkOrderItems().get(i).getOid(), ii.getOid());
                 }
             } catch (SQLException ex) {
                 throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
@@ -115,24 +115,24 @@ public class InvoiceBuilder extends BaseBuilder {
             }
             for (BaseModel inv : mapOfDifferences.get(Helper.Action.FOR_UPDATE)) {
                 INVOICE_ITEM_STORE.modifyObject(inv.getOid(), inv);
-                List<Service> tasks = new ArrayList<>();
-                ResultSet r = SERVICE_STORE.getAllObjectsFromDatabase(SERVICE_STORE.getTableName() + "_invoice_item_invoice_item_id=" + inv.getId());
+                List<WorkOrderItem> tasks = new ArrayList<>();
+                ResultSet r = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_invoice_item_invoice_item_id=" + inv.getId());
                 while (r.next()) {
-                    tasks.add(SERVICE_STORE.getObjectFromResultSet(r));
+                    tasks.add(WORK_ORDER_ITEM_STORE.getObjectFromResultSet(r));
                 }
-                Map<Helper.Action, List<? extends BaseModel>> mapOfDifferencesTasks = Helper.findDifferenceBetweenLists(tasks, ((InvoiceItem) inv).getTasks());
+                Map<Helper.Action, List<? extends BaseModel>> mapOfDifferencesTasks = Helper.findDifferenceBetweenLists(tasks, ((InvoiceItem) inv).getWorkOrderItems());
                 for (BaseModel task : mapOfDifferencesTasks.get(Helper.Action.FOR_CREATE)) {
-                    SERVICE_STORE.setInvoiceItemForService(task.getOid(), inv.getOid());
+                    WORK_ORDER_ITEM_STORE.setInvoiceItemForWorkOrderItem(task.getOid(), inv.getOid());
                 }
                 for (BaseModel task : mapOfDifferencesTasks.get(Helper.Action.FOR_UPDATE)) {
-                    SERVICE_STORE.setInvoiceItemForService(task.getOid(), inv.getOid());
+                    WORK_ORDER_ITEM_STORE.setInvoiceItemForWorkOrderItem(task.getOid(), inv.getOid());
                 }
                 for (BaseModel task : mapOfDifferencesTasks.get(Helper.Action.FOR_DELETE)) {
-                    SERVICE_STORE.removeInvoiceItemForService(inv.getOid());
+                    WORK_ORDER_ITEM_STORE.removeInvoiceItemForWorkOrderItem(inv.getOid());
                 }
             }
             for (BaseModel inv : mapOfDifferences.get(Helper.Action.FOR_DELETE)) {
-                SERVICE_STORE.removeInvoiceItemForService(inv.getOid());
+                WORK_ORDER_ITEM_STORE.removeInvoiceItemForWorkOrderItem(inv.getOid());
                 INVOICE_ITEM_STORE.deleteObjectByOid(inv.getOid());
             }
             return invoice;

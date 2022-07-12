@@ -5,7 +5,12 @@ public class Note extends BaseModel {
     private String name;
     private String description;
 
-    public Note() {
+    public Note(String oid) {
+        super(oid);
+    }
+
+    public Note(Long id) {
+        super(id);
     }
 
     public Note(String name, String description, String oid) {

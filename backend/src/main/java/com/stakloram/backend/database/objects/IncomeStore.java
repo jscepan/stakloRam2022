@@ -27,9 +27,9 @@ public class IncomeStore extends ObjectStore {
         int i = 0;
         PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setDate(++i, Helper.convertLocalDateToSqlDate(object.getDate()));
-        st.setString(++i, object.getBankStatementNumber());
         st.setDouble(++i, object.getAmount());
         st.setString(++i, object.getComment());
+        st.setString(++i, object.getBankStatementNumber());
         st.setLong(++i, object.getBuyer().getId());
 
         if (st.executeUpdate() > 0) {
@@ -47,15 +47,15 @@ public class IncomeStore extends ObjectStore {
         int i = 0;
         PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_date=?,"
-                + this.getTableName() + "_bank_statement_number=?,"
                 + this.getTableName() + "_amount=?,"
                 + this.getTableName() + "_comment=?,"
+                + this.getTableName() + "_bank_statement_number=?,"
                 + this.getTableName() + "_buyer_buyer_id=?"
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setDate(++i, java.sql.Date.valueOf(object.getDate()));
-        st.setString(++i, object.getBankStatementNumber());
         st.setDouble(++i, object.getAmount());
         st.setString(++i, object.getComment());
+        st.setString(++i, object.getBankStatementNumber());
         st.setLong(++i, object.getBuyer().getId());
         st.setLong(++i, BaseModel.getIdFromOid(oid));
         if (st.executeUpdate() > 0) {
@@ -68,9 +68,9 @@ public class IncomeStore extends ObjectStore {
     public Income getObjectFromResultSet(ResultSet resultSet) throws SQLException {
         Income object = new Income(resultSet.getLong(this.getPrimaryKey()));
         object.setDate(resultSet.getDate(this.getTableName() + "_date").toLocalDate());
-        object.setBankStatementNumber(resultSet.getString(this.getTableName() + "_bank_statement_number"));
         object.setAmount(resultSet.getDouble(this.getTableName() + "_amount"));
         object.setComment(resultSet.getString(this.getTableName() + "_comment"));
+        object.setBankStatementNumber(resultSet.getString(this.getTableName() + "_bank_statement_number"));
         object.setBuyer(new Buyer(resultSet.getLong(this.getTableName() + "_buyer_buyer_id")));
         return object;
     }
