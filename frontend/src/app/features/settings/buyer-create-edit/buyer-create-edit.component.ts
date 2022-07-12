@@ -101,6 +101,7 @@ export class BuyerCreateEditComponent implements OnInit, OnDestroy {
       phoneNumberMobile: new FormControl('', []),
       email: new FormControl('', [Validators.email]),
       city: new FormControl('', [Validators.required]),
+      jbkjs: new FormControl('', []),
     });
     this.typeChangeHandler(this.formGroup.get('type')?.value);
   }

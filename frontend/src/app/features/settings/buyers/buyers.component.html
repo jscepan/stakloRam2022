@@ -20,6 +20,7 @@
   >
     <div class="grid-item header">{{ "type" | translate }}</div>
     <div class="grid-item header">{{ "name" | translate }}</div>
+    <!-- <div class="grid-item header">{{ "city" | translate }}</div> -->
     <div class="grid-item header">{{ "address" | translate }}</div>
     <div class="grid-item header">{{ "maticalNumber" | translate }}</div>
     <div class="grid-item header">{{ "pib" | translate }}</div>
@@ -28,6 +29,7 @@
     <ng-container *ngFor="let item of entities | async">
       <div class="grid-item">{{ item.type || "" | lowercase | translate }}</div>
       <div class="grid-item">{{ item.name }}</div>
+      <!-- <div class="grid-item">{{ item.city?.name }}</div> -->
       <div class="grid-item">{{ item.address }}</div>
       <div class="grid-item">{{ item.maticalNumber }}</div>
       <div class="grid-item">{{ item.pib }}</div>
