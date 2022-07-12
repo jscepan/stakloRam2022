@@ -1,0 +1,399 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="title">
+      <h3>
+        {{ (isEdit ? "editInvoice" : "createInvoice") | translate }}
+      </h3>
+    </div>
+    <form [formGroup]="formGroup" *ngIf="formGroup" class="form">
+      <div class="row">
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "type" | translate }}
+          </mat-label>
+          <mat-select
+            formControlName="type"
+            (valueChange)="invoiceTypeChanged($event)"
+            [disabled]="isEdit"
+          >
+            <mat-option *ngFor="let item of typesOptions" [value]="item.value">
+              {{ item.displayName | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "number" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="number" />
+        </mat-form-field>
+        <mat-form-field *ngIf="numberOfCashBillControl">
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "numberOfCashBill" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="numberOfCashBill" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "currency" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="currency" />
+        </mat-form-field>
+        <div class="import-buttons">
+          <app-button
+            [text]="'importFromAdvanceInvoice' | translate"
+            [isTransparentMode]="true"
+            (clickEvent)="importInvoiceFrom('advanceInvoice')"
+          ></app-button>
+          <app-button
+            [text]="'importFromPreInvoice' | translate"
+            [isTransparentMode]="true"
+            (clickEvent)="importInvoiceFrom('preInvoice')"
+          ></app-button>
+        </div>
+        <!--
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "importFromAdvanceInvoice" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="currency" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "importFromPreInvoice" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="currency" />
+        </mat-form-field>
+       -->
+      </div>
+
+      <div class="row">
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "buyer" | translate }}
+          </mat-label>
+          <mat-select
+            formControlName="buyer"
+            [disabled]="isEdit"
+            (valueChange)="buyerChanged()"
+            [compareWith]="compareFn"
+            (infiniteScroll)="bottomReachedHandlerBuyers()"
+            msInfiniteScroll
+            (selectionChange)="selectBuyer($event)"
+          >
+            <mat-option>
+              <ngx-mat-select-search
+                [formControl]="searchControl"
+                placeholderLabel="{{ 'searchFor' | translate }}"
+                noEntriesFoundLabel="{{ 'noResults' | translate }}"
+                (ngModelChange)="searchHandler($event)"
+                [hideClearSearchButton]="true"
+                [clearSearchInput]="true"
+                [searching]="(isLoading | async) || false"
+                [disableScrollToActiveOnOptionsChanged]="true"
+              ></ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngIf="selectedBuyer" [value]="selectedBuyer">{{
+              selectedBuyer.name
+            }}</mat-option>
+            <ng-container *ngFor="let buyer of buyersEntities | async">
+              <mat-option
+                [value]="buyer"
+                *ngIf="!(selectedBuyer?.oid === buyer.oid)"
+              >
+                {{ buyer.name }}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+        <app-button
+          [iconName]="'plus'"
+          (clickEvent)="createBuyer()"
+          class="create-buyer-button"
+          *ngIf="!isEdit"
+        ></app-button>
+      </div>
+
+      <div class="row">
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "dateOfCreate" | translate }}
+          </mat-label>
+          <input type="date" matInput formControlName="dateOfCreate" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "dateOfTurnover" | translate }}
+          </mat-label>
+          <input type="date" matInput formControlName="dateOfTurnover" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "dateOfMaturity" | translate }}
+          </mat-label>
+          <input type="date" matInput formControlName="dateOfMaturity" />
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "country" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="country" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "placeOfIssue" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="placeOfIssue" />
+        </mat-form-field>
+      </div>
+      <!-- <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "isFromAdvanceInvoice" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="isFromAdvanceInvoice" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "advanceInvoiceOid" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="advanceInvoiceOid" />
+    </mat-form-field> -->
+
+      <div
+        formArrayName="invoiceItems"
+        class="invoice-items"
+        *ngIf="isBuyerSelected"
+      >
+        <div
+          *ngFor="let comp of invoiceItemsFormArr.controls; let i = index"
+          class="invoice-item"
+        >
+          <div [formGroupName]="i" class="form-group">
+            <mat-form-field class="full-width">
+              <mat-label
+                [class.mark-required]="true"
+                [class.mark-opt-required]="true"
+              >
+                {{ "description" | translate }}
+              </mat-label>
+              <input type="text" matInput formControlName="description" />
+            </mat-form-field>
+            <mat-form-field class="number-field">
+              <mat-label
+                [class.mark-required]="true"
+                [class.mark-opt-required]="true"
+              >
+                {{ "netPrice" | translate }}
+              </mat-label>
+              <input
+                type="number"
+                matInput
+                formControlName="netPrice"
+                (change)="calculateInvoiceItemAmount(i, 'netPrice')"
+                (focusout)="calculateInvoiceAmount(); setAllInvoiceAmounts()"
+              />
+            </mat-form-field>
+            <mat-form-field class="number-field">
+              <mat-label
+                [class.mark-required]="true"
+                [class.mark-opt-required]="true"
+              >
+                {{ "vatRate" | translate }}
+              </mat-label>
+              <input
+                type="number"
+                matInput
+                formControlName="vatRate"
+                (change)="calculateInvoiceItemAmount(i, 'vatRate')"
+                (focusout)="calculateInvoiceAmount(); setAllInvoiceAmounts()"
+              />
+            </mat-form-field>
+            <mat-form-field class="number-field">
+              <mat-label
+                [class.mark-required]="true"
+                [class.mark-opt-required]="true"
+              >
+                {{ "vatAmount" | translate }}
+              </mat-label>
+              <input
+                type="number"
+                matInput
+                formControlName="vatAmount"
+                (change)="calculateInvoiceItemAmount(i, 'vatAmount')"
+                (focusout)="calculateInvoiceAmount(); setAllInvoiceAmounts()"
+              />
+            </mat-form-field>
+            <mat-form-field class="number-field">
+              <mat-label
+                [class.mark-required]="true"
+                [class.mark-opt-required]="true"
+              >
+                {{ "grossPrice" | translate }}
+              </mat-label>
+              <input
+                type="number"
+                matInput
+                formControlName="grossPrice"
+                (change)="calculateInvoiceItemAmount(i, 'grossPrice')"
+                (focusout)="calculateInvoiceAmount(); setAllInvoiceAmounts()"
+              />
+            </mat-form-field>
+            <mat-chip-list
+              class="additional-button"
+              *ngFor="let task of getTasksFormArr(i).controls; let j = index"
+            >
+              <mat-chip>
+                {{ task.value.number }}
+                <i-feather
+                  matChipRemove
+                  [name]="'x'"
+                  (click)="removeTaskFromInvoiceItem(i, j)"
+                ></i-feather>
+              </mat-chip>
+            </mat-chip-list>
+            <app-button
+              [text]="'import' | translate"
+              (clickEvent)="importTasks(i)"
+              class="additional-button"
+            ></app-button>
+            <app-button
+              [iconName]="'minus'"
+              (clickEvent)="removeItem(i)"
+              [isTransparentMode]="true"
+              class="additional-button"
+            ></app-button>
+          </div>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <app-button
+          [iconName]="'plus'"
+          [text]="'addNewItem' | translate"
+          (clickEvent)="addNewItem()"
+          class="big-button"
+          [disabled]="!isBuyerSelected"
+        ></app-button>
+
+        <app-button
+          [iconName]="'plus'"
+          [text]="'autoImport' | translate"
+          (clickEvent)="autoImport()"
+          class="big-button"
+          [isTransparentMode]="true"
+          [disabled]="!isBuyerSelected"
+        ></app-button>
+      </div>
+
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "comment" | translate }}
+        </mat-label>
+        <input type="text" matInput formControlName="comment" />
+      </mat-form-field>
+
+      <div class="row">
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "netAmount" | translate }}
+          </mat-label>
+          <input
+            type="number"
+            matInput
+            formControlName="netAmount"
+            [readonly]="true"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "vatAmount" | translate }}
+          </mat-label>
+          <input
+            type="number"
+            matInput
+            formControlName="vatAmount"
+            [readonly]="true"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "grossAmount" | translate }}
+          </mat-label>
+          <input
+            type="number"
+            matInput
+            formControlName="grossAmount"
+            [readonly]="true"
+          />
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+  <div class="button-section" *ngIf="formGroup">
+    <app-button
+      [text]="'cancel' | translate"
+      color="secondary"
+      (clickEvent)="cancel()"
+      class="cancel"
+    ></app-button>
+    <app-button
+      [text]="'save' | translate"
+      [disabled]="!formGroup.dirty || formGroup.invalid"
+      class="update"
+      (clickEvent)="handleSubmitButton()"
+    ></app-button>
+  </div>
+</div>

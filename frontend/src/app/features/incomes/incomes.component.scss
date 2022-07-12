@@ -1,0 +1,30 @@
+:host {
+  display: flex;
+  height: calc(100%);
+}
+
+.container {
+  height: calc(100%);
+
+  .search-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .incomes {
+    height: calc(100% - 120px);
+    overflow-y: auto;
+    margin-top: 20px;
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: auto auto auto auto auto;
+
+      .grid-item {
+        &.header {
+        }
+      }
+    }
+  }
+}

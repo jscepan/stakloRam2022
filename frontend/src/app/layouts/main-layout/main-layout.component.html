@@ -1,0 +1,12 @@
+<div class="main-app-container">
+  <div class="sidebar-container" [ngClass]="{ expanded: sidebar.isExpanded }">
+    <app-sidebar
+      [dataModel]="sidebar"
+      (eventOccurs)="sidebarEvents($event)"
+      (toggleSideBar)="toggleSidebar()"
+    ></app-sidebar>
+  </div>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

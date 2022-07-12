@@ -1,0 +1,80 @@
+<div class="container">
+  <div class="search-bar">
+    <app-search-input
+      [placeholder]="'searchFor' | translate"
+      [keyword]="keyword"
+      (changeEvent)="inputSearchHandler($event)"
+    ></app-search-input>
+    <app-button
+      [text]="'createInvoice' | translate"
+      (clickEvent)="create()"
+    ></app-button>
+  </div>
+  <div
+    class="invoices"
+    [componentLoading]="(isLoading | async) || false"
+    scrollToBottom
+    (bottomReached)="bottomReachedHandler()"
+  >
+    <div class="grid-container standard-grid-table">
+      <div class="grid-item header">
+        {{ "buyerName" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "invoiceNumber" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "dateOfCreate" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "netAmount" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "vatAmount" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "grossAmount" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "view" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "edit" | translate }}
+      </div>
+      <ng-container *ngFor="let invoice of entities | async">
+        <div class="grid-item">
+          {{ invoice.buyer.name }}
+        </div>
+        <div class="grid-item">
+          {{ invoice.number }}
+        </div>
+        <div class="grid-item">
+          {{ invoice.dateOfCreate | date: "dd.MM.yyyy" }}
+        </div>
+        <div class="grid-item align-right">
+          {{ invoice.netAmount | number: "1.2-2" }}
+        </div>
+        <div class="grid-item align-right">
+          {{ invoice.vatAmount | number: "1.2-2" }}
+        </div>
+        <div class="grid-item align-right">
+          {{ invoice.grossAmount | number: "1.2-2" }}
+        </div>
+        <div class="grid-item">
+          <app-button
+            [iconName]="'eye'"
+            [isTransparentMode]="true"
+            (clickEvent)="viewInvoice(invoice.oid)"
+          ></app-button>
+        </div>
+        <div class="grid-item">
+          <app-button
+            [iconName]="'edit'"
+            [isTransparentMode]="true"
+            (clickEvent)="editInvoice(invoice.oid)"
+          ></app-button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

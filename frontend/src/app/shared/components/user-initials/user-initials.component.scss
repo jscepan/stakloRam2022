@@ -1,0 +1,87 @@
+.image {
+  .initials {
+    color: var(--color-white, #ffffff);
+  }
+}
+
+.primary {
+  background-color: var(--color-primary, #5849e0);
+}
+
+.success {
+  background-color: var(--color-success, #43ad48);
+}
+
+.danger {
+  background-color: var(--color-danger, #e70020);
+}
+
+.warning {
+  background-color: var(--color-warning, #ffb822);
+}
+
+.info {
+  background-color: var(--color-info, #2353f3);
+}
+
+// Set radius due to shape
+.rounded {
+  border-radius: calc(100% / 3);
+}
+
+.circled {
+  border-radius: calc(50%);
+}
+
+// Set size due to input size
+.large {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: 100px;
+
+  span {
+    font-weight: 600;
+    font-size: 48px;
+  }
+}
+
+.medium {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  width: 60px;
+
+  span {
+    font-weight: 600;
+    font-size: 24px;
+  }
+}
+
+.small {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 40px;
+
+  span {
+    font-weight: 600;
+    font-size: 18px;
+  }
+}
+
+.extra-small {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  width: 25px;
+
+  span {
+    font-weight: 600;
+    font-size: 12px;
+  }
+}

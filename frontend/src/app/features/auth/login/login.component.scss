@@ -1,0 +1,40 @@
+.login-section {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+
+  #login-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 14px;
+
+    .login-form-att {
+      width: 100%;
+    }
+
+    .password-form-field {
+      width: 100%;
+    }
+
+    .login-button {
+      width: 100%;
+    }
+
+    .invalid-creds {
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+  }
+
+  .forgot-password {
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 16px;
+    color: var(--color-danger);
+  }
+}

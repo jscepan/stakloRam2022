@@ -1,0 +1,40 @@
+.content-section {
+  display: flex;
+  width: 100%;
+  height: calc(100%);
+  background-color: var(--color-white);
+
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    width: 300px;
+
+    .company-logo {
+      img {
+        object-fit: cover;
+        width: 100%;
+      }
+    }
+
+    .content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .cite-logo {
+    width: 100%;
+    height: 100%;
+
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: calc(100%);
+    }
+  }
+}

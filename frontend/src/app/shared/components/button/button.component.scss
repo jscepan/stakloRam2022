@@ -1,0 +1,231 @@
+button {
+  min-width: unset;
+  padding: 0 22px;
+  font-size: 12px;
+  color: var(--color-white, #ffffff);
+  transition: 0.3s ease-in-out;
+
+  // Case if button has specified size outside
+  &.full-width {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &.full-height {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  // buttons in regular mode
+  &.primary {
+    background: var(--color-primary, #5849e0);
+
+    &:hover {
+      background: var(--color-primary-hover, #796de6);
+    }
+  }
+
+  &.secondary {
+    border: 1px solid var(--color-input-border, #e2e5ec);
+    background: transparent;
+    color: var(--color-main, #747474);
+
+    &:hover {
+      border: 1px solid var(--color-secondary-hover, #f7f6fe);
+      background: var(--color-secondary-hover, #f7f6fe);
+    }
+  }
+
+  &.info {
+    background: var(--color-info, #2353f3);
+
+    &:hover {
+      background: var(--color-info-hover, #4f75f5);
+    }
+  }
+
+  &.success {
+    background: var(--color-success, #43ad48);
+
+    &:hover {
+      background: var(--color-success-hover, #43ae49);
+    }
+  }
+
+  &.danger {
+    background: var(--color-danger, #e70020);
+
+    &:hover {
+      background: var(--color-danger-hover, #ec334d);
+    }
+  }
+
+  &.warning {
+    color: var(--color-main-darker, #282a3c);
+    background: var(--color-warning, #ffb822);
+
+    &:hover {
+      background: var(--color-warning-hover, #ffc64e);
+    }
+  }
+
+  &.link {
+    background: transparent;
+    color: var(--color-info-button, #2353f3);
+
+    &:hover {
+      color: var(--color-link-hover, #4f75f5);
+    }
+  }
+
+  &.link-red {
+    color: var(--color-danger, #e70020);
+
+    &:hover {
+      color: var(--color-danger-hover, #ec334d);
+    }
+
+    &[disabled="true"] {
+      color: var(--color-disabled, #cfcfcf) !important;
+      background: transparent !important;
+    }
+  }
+
+  &.link-white {
+    color: var(--color-main, #747474);
+    background: var(--color-white, #fff);
+
+    &:hover {
+      background: var(--color-primary-hover, #796de6);
+      color: var(--color-white, #fff);
+    }
+
+    &[disabled="true"] {
+      color: var(--color-disabled, #cfcfcf) !important;
+      background: transparent !important;
+    }
+  }
+
+  &.context-menu {
+    width: 100%;
+    padding: 0 16px;
+    background: transparent;
+    color: var(--color-context-menu, #000000de);
+
+    &:hover {
+      background: var(--black-box-shadows, rgba(0, 0, 0, 0.1));
+    }
+
+    &[disabled="true"] {
+      background: transparent !important;
+    }
+  }
+
+  &[disabled="true"] {
+    background: var(
+      --color-disabled,
+      #cfcfcf
+    ) !important; // important is used to override mat defaults
+    color: var(
+      --color-main,
+      #747474
+    ) !important; // important is used to override mat defaults
+
+    &:hover {
+      pointer-events: none !important; // important is used to override mat defaults
+    }
+  }
+
+  // buttons in transparent theme mode
+  &.transparent-theme {
+    &.primary {
+      background: var(--color-transparent-primary-background, #eeedfc);
+      color: var(--color-primary, #5849e0);
+
+      &:hover {
+        background: var(--color-transparent-primary-hover, #f7f6fe);
+      }
+    }
+
+    &.secondary {
+      border: 1px solid transparent;
+      background: transparent;
+
+      &:hover {
+        border: 1px solid transparent;
+        background: transparent;
+      }
+    }
+
+    &.info {
+      background: var(--color-transparent-info-background, #e9eefe);
+      color: var(--color-info, #2353f3);
+
+      &:hover {
+        background: var(--color-transparent-info-hover, #f4f7ff);
+      }
+    }
+
+    &.success {
+      color: var(--color-success, #43ad48);
+      background: var(--color-transparent-success-background, #ecf7ed);
+
+      &:hover {
+        background: var(--color-transparent-success-hover, #f6fbf6);
+      }
+    }
+
+    &.danger {
+      color: var(--color-danger, #e70020);
+      background: var(--color-transparent-danger-background, #fde6e9);
+
+      &:hover {
+        background: var(--color-transparent-danger-hover, #fef2f4);
+      }
+    }
+
+    &.warning {
+      background: var(--color-transparent-warning-background, #fff8e9);
+
+      &:hover {
+        background: var(--color-transparent-warning-hover, #fffcf4);
+      }
+    }
+
+    &.link {
+      background: transparent;
+      color: var(--color-main, #747474);
+
+      &:hover {
+        color: var(--color-link-hover, #4f75f5);
+      }
+    }
+  }
+
+  &.icon-only {
+    padding: 0 10px;
+  }
+
+  //  Case when we need icons smaller than default
+  .icon {
+    height: var(--icon-size, 24px);
+    width: var(--icon-size, 24px);
+  }
+
+  .text-with-icon:not(:empty) {
+    margin: 0 10px;
+  }
+}
+
+// Only in case of link type of button background color should be none
+.link[disabled="true"] {
+  background: none !important; // important is used to override mat defaults
+  color: var(
+    --color-main,
+    #747474
+  ) !important; // important is used to override mat defaults
+}

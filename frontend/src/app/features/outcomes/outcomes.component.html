@@ -1,0 +1,66 @@
+<div class="container">
+  <div class="search-bar">
+    <app-search-input
+      [placeholder]="'searchFor' | translate"
+      [keyword]="keyword"
+      (changeEvent)="inputSearchHandler($event)"
+    ></app-search-input>
+    <app-button
+      [text]="'createOutcome' | translate"
+      (clickEvent)="create()"
+    ></app-button>
+    <app-button
+      [text]="'incomes' | translate"
+      (clickEvent)="incomes()"
+    ></app-button>
+  </div>
+  <div
+    class="outcomes"
+    [componentLoading]="(isLoading | async) || false"
+    scrollToBottom
+    (bottomReached)="bottomReachedHandler()"
+  >
+    <div class="grid-container standard-grid-table">
+      <div class="grid-item header">
+        {{ "buyerName" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "date" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "amount" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "edit" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "delete" | translate }}
+      </div>
+      <ng-container *ngFor="let outcome of entities | async">
+        <div class="grid-item">
+          {{ outcome.buyer.name }}
+        </div>
+        <div class="grid-item">
+          {{ outcome.date }}
+        </div>
+        <div class="grid-item align-right">
+          {{ outcome.amount | number: "1.2-2" }}
+        </div>
+        <div class="grid-item">
+          <app-button
+            [iconName]="'edit'"
+            [isTransparentMode]="true"
+            (clickEvent)="editOutcome(outcome.oid)"
+          ></app-button>
+        </div>
+        <div class="grid-item">
+          <app-button
+            [iconName]="'trash-2'"
+            [isTransparentMode]="true"
+            (clickEvent)="deleteOutcome(outcome.oid)"
+          ></app-button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

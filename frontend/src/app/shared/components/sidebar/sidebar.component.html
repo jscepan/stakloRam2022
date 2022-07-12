@@ -1,0 +1,74 @@
+<div class="sidebar">
+  <div class="expandable-part" [class.colapsed]="!dataModel.isExpanded">
+    <div class="items">
+      <ng-container *ngFor="let item of dataModel.navItems; trackBy: itemOid">
+        <div class="item" *ngIf="!item.hidden">
+          <div
+            class="parent-item"
+            [attr.data-intercom-target]="item.id"
+            [class.disabled]="item.disabled"
+            (click)="item.disabled ? selectItem(null) : selectItem(item)"
+          >
+            <div class="icon" [class.activated]="item.activated">
+              <i-feather
+                class="sidebar-icon"
+                name="{{ item.icon }}"
+              ></i-feather>
+            </div>
+            <ng-container *ngIf="dataModel.isExpanded">
+              <div class="title" [class.activated]="item.activated">
+                {{ item.title | translate }}
+              </div>
+            </ng-container>
+          </div>
+          <ng-container
+            *ngIf="item.children && item.activated && dataModel.isExpanded"
+          >
+            <div class="item-children">
+              <div class="item-child" *ngFor="let childItem of item.children">
+                <ng-container *ngIf="!childItem.hidden">
+                  <div (click)="selectItem(childItem)">
+                    <div *ngIf="!childItem.hidden" class="title">
+                      {{ childItem.title | translate }}
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+    <div class="language-part" *ngIf="user">
+      <app-user-card
+        [dataModel]="user"
+        class="user"
+        [showUserData]="false"
+        #infoTrigger="matMenuTrigger"
+        [matMenuTriggerFor]="helperMenu.menu"
+      ></app-user-card>
+      <app-menu
+        #helperMenu
+        [menuItems]="userMenuItems"
+        [menuTrigger]="infoTrigger"
+        (menuItemClickEvent)="userEventHandler($event.key)"
+      ></app-menu>
+    </div>
+  </div>
+  <div class="expand-button m-fadeOut" *ngIf="dataModel.isCollapsible">
+    <div class="wrapper">
+      <ng-container *ngIf="dataModel.isExpanded">
+        <i-feather
+          name="chevron-left"
+          (click)="toggleExpandableSidebar()"
+        ></i-feather>
+      </ng-container>
+      <ng-container *ngIf="!dataModel.isExpanded">
+        <i-feather
+          name="chevron-right"
+          (click)="toggleExpandableSidebar()"
+        ></i-feather>
+      </ng-container>
+    </div>
+  </div>
+</div>

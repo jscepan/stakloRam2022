@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="search-bar">
+    <app-search-input
+      [placeholder]="'searchFor' | translate"
+      [keyword]="keyword"
+      (changeEvent)="inputSearchHandler($event)"
+    ></app-search-input>
+    <app-button
+      [text]="'createCountry' | translate"
+      (clickEvent)="createCountry()"
+      class="create-button"
+    ></app-button>
+  </div>
+
+  <div
+    class="grid-container standard-grid-table"
+    [componentLoading]="(isLoading | async) || false"
+    scrollToBottom
+    (bottomReached)="bottomReachedHandler()"
+  >
+    <div class="grid-item header">{{ "description" | translate }}</div>
+    <div class="grid-item header">{{ "edit" | translate }}</div>
+    <ng-container *ngFor="let item of entities | async">
+      <div class="grid-item">{{ item.description }}</div>
+      <div class="grid-item">
+        <app-button
+          [text]="'edit' | translate"
+          (clickEvent)="editCountry(item.oid)"
+        ></app-button>
+      </div>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="search-bar">
+      <app-search-input
+        [placeholder]="'searchFor' | translate"
+        [keyword]="keyword"
+        (changeEvent)="inputSearchHandler($event)"
+      ></app-search-input>
+      <app-button
+        [text]="'createUser' | translate"
+        (clickEvent)="createUser()"
+        class="create-button"
+        [iconName]="'user-plus'"
+      ></app-button>
+    </div>
+
+    <div
+      class="grid-container standard-grid-table"
+      [componentLoading]="(isLoading | async) || false"
+      scrollToBottom
+      (bottomReached)="bottomReachedHandler()"
+    >
+      <div class="grid-item header">{{ "username" | translate }}</div>
+      <div class="grid-item header">{{ "fullName" | translate }}</div>
+      <div class="grid-item header">{{ "email" | translate }}</div>
+      <div class="grid-item header">{{ "enabled" | translate }}</div>
+      <div class="grid-item header">{{ "edit" | translate }}</div>
+      <div class="grid-item header">{{ "resetPassword" | translate }}</div>
+      <ng-container *ngFor="let item of entities | async">
+        <div class="grid-item">{{ item.username }}</div>
+        <div class="grid-item">{{ item.fullName }}</div>
+        <div class="grid-item">{{ item.email }}</div>
+        <div
+          class="grid-item"
+          [class.active]="item.enabled"
+          [class.inactive]="!item.enabled"
+        >
+          {{ item.enabled ? ("active" | translate) : ("inactive" | translate) }}
+        </div>
+        <div class="grid-item">
+          <app-button
+            [text]="'edit' | translate"
+            (clickEvent)="editUser(item.oid)"
+          ></app-button>
+        </div>
+        <div class="grid-item">
+          <app-button
+            [text]="'resetPassword' | translate"
+            (clickEvent)="resetPassword(item.oid)"
+          ></app-button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

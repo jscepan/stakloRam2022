@@ -1,0 +1,57 @@
+<mat-menu
+  #menu="matMenu"
+  [xPosition]="xPosition"
+  [yPosition]="yPosition"
+  hasBackdrop="false"
+  class="user-menu custom-mat-menu"
+>
+  <div
+    class="click-placeholder ignore-click"
+    (click)="ignoreEvent($event)"
+  ></div>
+  <!-- Custom menu items-->
+  <ng-content></ng-content>
+  <!-- Default generic items-->
+  <ng-container *ngFor="let menuItem of menuItems; trackBy: itemKey">
+    <!-- Default items -->
+    <ng-container *ngIf="!menuItem.subMenuItems?.length">
+      <div
+        mat-menu-item
+        [class.border-top]="menuItem.hasTopSeparator"
+        (click)="menuItemClickHandler({ event: $event, key: menuItem.key })"
+      >
+        <i-feather
+          *ngIf="menuItem.icon"
+          class="menu-item-icon"
+          [name]="menuItem.icon"
+        ></i-feather>
+        {{ menuItem.displayName | translate }}
+      </div>
+    </ng-container>
+    <!-- Nested -->
+    <ng-container *ngIf="menuItem.subMenuItems?.length">
+      <!-- Items, trigger for submenu -->
+      <div
+        mat-menu-item
+        #nestedMenuTrigger="matMenuTrigger"
+        [matMenuTriggerFor]="nestedMenu.menu"
+        [class.border-top]="menuItem.hasTopSeparator"
+        (click)="ignoreEvent($event)"
+      >
+        <i-feather
+          *ngIf="menuItem.icon"
+          class="menu-item-icon"
+          [name]="menuItem.icon"
+        ></i-feather>
+        {{ menuItem.displayName | translate }}
+      </div>
+      <!-- Submenu -->
+      <app-menu
+        #nestedMenu
+        [menuTrigger]="nestedMenuTrigger"
+        [menuItems]="menuItem.subMenuItems || []"
+        (menuItemClickEvent)="menuItemClickHandler($event)"
+      ></app-menu>
+    </ng-container>
+  </ng-container>
+</mat-menu>

@@ -1,0 +1,8 @@
+<div class="image" [ngClass]="[type, size, shape]">
+  <ng-container *ngIf="type === 'avatar'; else placeholder">
+    <img [ngClass]="[shape]" src="{{ imageUrl }}" alt="{{ alt || '' }}" />
+  </ng-container>
+</div>
+<ng-template #placeholder>
+  <i-feather name="image" class="placeholder"></i-feather>
+</ng-template>

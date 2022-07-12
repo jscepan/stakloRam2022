@@ -1,0 +1,123 @@
+<div
+  class="sweet-alert"
+  [style.--icon-color]="'var(--color-' + data.mode + ')'"
+  [ngClass]="'dialog_' + data.type.name"
+>
+  <div class="sweet-alert-close">
+    <i-feather name="x" mat-dialog-close></i-feather>
+  </div>
+
+  <div class="icon" *ngIf="data.icon">
+    <i-feather [name]="data.icon"></i-feather>
+  </div>
+
+  <span class="title">{{ data.title !== "" ? data.title : data.mode }}</span>
+  <span class="message" [innerHTML]="data.message | safe: 'html'"></span>
+
+  <ng-container *ngIf="data.type.name === 'confirmCheckbox'">
+    <div class="checkbox">
+      <mat-checkbox color="primary" [(ngModel)]="enabledCheckbox">{{
+        data.type.checkbox
+      }}</mat-checkbox>
+    </div>
+  </ng-container>
+
+  <div class="action-container">
+    <!-- Input sweet alert -->
+    <ng-container *ngIf="data.type.name === 'input'">
+      <form id="sweet-alert-form" #sweetAlertForm="ngForm">
+        <mat-form-field hideRequiredMarker="true">
+          <mat-label>{{ data.inputLabel }}</mat-label>
+          <input
+            matInput
+            [(ngModel)]="data.userInput"
+            name="userInput"
+            [maxlength]="data.maxLength || 255"
+            required
+          />
+        </mat-form-field>
+
+        <app-button
+          [text]="data.type.buttons.submit"
+          [disabled]="submitButtonDisabled"
+          (clickEvent)="customEvent('submit', data)"
+        ></app-button>
+      </form>
+    </ng-container>
+
+    <!-- Prompt sweet alert -->
+    <ng-container *ngIf="data.type.name === 'prompt'">
+      <form id="sweet-alert-prompt-form" #sweetAlertPromptForm="ngForm">
+        <mat-form-field hideRequiredMarker="true">
+          <mat-label>{{ data.inputLabel }}</mat-label>
+          <input
+            matInput
+            [(ngModel)]="data.userInput"
+            name="userInput"
+            [maxlength]="data.maxLength || 255"
+            required
+          />
+        </mat-form-field>
+        <div
+          class="error"
+          *ngIf="
+            data.type?.error &&
+            toLowerCase(data.userInput) ===
+              toLowerCase(data.type.error?.compareString)
+          "
+        >
+          <span>{{ data.type.error?.msg || "" }}</span>
+        </div>
+      </form>
+
+      <div class="prompt-buttons">
+        <div class="buttons">
+          <app-button
+            [text]="data.type.buttons.cancel"
+            color="secondary"
+            (clickEvent)="customEvent('cancel', data)"
+          ></app-button>
+          <app-button
+            [text]="data.type.buttons.submit"
+            [disabled]="!(data.userInput && data.userInput.length)"
+            (clickEvent)="customEvent('submit', data)"
+          ></app-button>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="data.type.name === 'alert'">
+      <app-button
+        [text]="data.type.buttons.ok"
+        color="secondary"
+        (clickEvent)="customEvent('ok', data)"
+      ></app-button>
+    </ng-container>
+
+    <!-- Confirm sweet alert -->
+    <ng-container *ngIf="data.type.name === 'submit'">
+      <app-button
+        [text]="data.type.buttons.cancel"
+        color="secondary"
+        (clickEvent)="customEvent('cancel', data)"
+      ></app-button>
+      <app-button
+        [text]="data.type.buttons.submit"
+        (clickEvent)="customEvent('submit', data)"
+      ></app-button>
+    </ng-container>
+
+    <ng-container *ngIf="data.type.name === 'confirm'">
+      <app-button
+        *ngIf="data.type.buttons.cancel"
+        [text]="data.type.buttons.cancel"
+        color="secondary"
+        (clickEvent)="customEvent('cancel', data)"
+      ></app-button>
+      <app-button
+        [text]="data.type.buttons.confirm"
+        (clickEvent)="customEvent('confirm', data)"
+      ></app-button>
+    </ng-container>
+  </div>
+</div>

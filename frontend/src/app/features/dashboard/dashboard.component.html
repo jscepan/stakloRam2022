@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="content"></div>
+  <div class="content">
+    <div class="title">
+      {{ "cases" | translate }}
+    </div>
+    <div class="diagram">
+      <div class="resolved">
+        {{ "resolved" | translate }}
+        {{ statistics.cases.resolved.percentage }}% ({{
+          statistics.cases.resolved.count
+        }})
+      </div>
+      <div class="in-process">
+        {{ "inProcess" | translate }}
+        {{ statistics.cases.inProccess.percentage }}% ({{
+          statistics.cases.inProccess.count
+        }})
+      </div>
+      <div class="open">
+        {{ "open" | translate }}
+        {{ statistics.cases.open.percentage }}% ({{
+          statistics.cases.open.count
+        }})
+      </div>
+    </div>
+  </div>
+</div>

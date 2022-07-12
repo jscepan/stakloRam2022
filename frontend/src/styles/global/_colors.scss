@@ -1,0 +1,101 @@
+:root {
+  // Main Colors
+  --color-primary: #5849e0;
+  --color-success: #43ad48;
+  --color-danger: #e70020;
+  --color-warning: #ffb822;
+  --color-info: #2353f3;
+  --color-link: #2353f3;
+  --color-disabled: #cfcfcf;
+
+  --color-primary-hover: #796de6;
+  --color-success-hover: #0cc415;
+  --color-danger-hover: #ec334d;
+  --color-warning-hover: #ffc64e;
+  --color-info-hover: #4f75f5;
+  --color-link-hover: #4f75f5;
+  --color-secondary-hover: #f7f6fe;
+
+  // btns in ransparent mode
+  --color-transparent-primary-hover: var(--color-secondary-hover);
+  --color-transparent-success-hover: #f6fbf6;
+  --color-transparent-danger-hover: #fef2f4;
+  --color-transparent-warning-hover: #fffcf4;
+  --color-transparent-info-hover: #f4f7ff;
+
+  --color-brand: #673ceb;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  --color-main-darker: #282a3c;
+  --color-main-dark: #646464;
+  --color-main: #747474;
+  --color-main-light: #bbbbbb;
+  --color-main-lighter: #f1f2f7;
+
+  // Main Background Colors
+  --color-primary-background: #e4e0f1;
+  --color-success-background: #e1ebe1;
+  --color-danger-background: #f1dadd;
+  --color-warning-background: #f3ecdd;
+  --color-info-background: #f2f2f2;
+
+  // Layout Colors
+  --color-content-background: var(--color-white);
+  --color-body-background: var(--color-main-lighter);
+  --color-auth-background: var(--color-white);
+  --color-body-font: #434349;
+
+  // Header Colors
+  --color-header-background: var(--color-white);
+
+  // Sidebar Colors
+  --sidebar-menu-item-hover: #4f42ca;
+  --sidebar-mobile-overlay: rgba(120, 120, 120, 0.6);
+
+  // Icon Colors
+  --color-icon: var(--color-main-darker);
+
+  // Input Colors
+  --color-input-border: #e2e5ec;
+  --color-input-label: #646464;
+
+  // Table Colors:
+  --color-table-border: #efeff3;
+  --color-table-row-even: #f6f6fd;
+
+  // Scrollbar Colors:
+  --color-scrollbar: transparent;
+  --color-scrollbar-thumb: var(--color-main-light);
+
+  // Material card:
+  --color-divider: #f3f3f3;
+
+  --black-box-shadows: rgba(0, 0, 0, 0.1);
+  --darker-box-shadows: rgba(0, 0, 0, 0.3);
+
+  --single-material-table-colors: rgba(88, 73, 224, 0.06);
+
+  --material-view-attributes-border-color: #efeff3;
+
+  // Cards subtitle
+  --color-main-subtitle: #93949d;
+
+  // All Button Colors
+  --color-primary-button: #5849e0;
+  --color-success-button: #43ae49;
+  --color-danger-button: #e70020;
+  --color-warning-button: #ffb822;
+  --color-info-button: #2353f3;
+  --color-request-button: #ff8a35;
+
+  // All Transparent Button Background Colors
+  --color-transparent-primary-background: #eeedfc;
+  --color-transparent-success-background: #ecf7ed;
+  --color-transparent-danger-background: #fde6e9;
+  --color-transparent-warning-background: #fff8e9;
+  --color-transparent-info-background: #e9eefe;
+
+  // Context menu colors:
+  --color-context-menu: #000000de;
+}

@@ -1,0 +1,30 @@
+.container {
+  height: 100%;
+  width: 100%;
+
+  .title {
+    display: flex;
+    border-bottom: 2px dotted var(--color-main-light);
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+
+    .row {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .button-section {
+      display: flex;
+      width: 100%;
+      height: 100px;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 2px dotted var(--color-main-light);
+    }
+  }
+}

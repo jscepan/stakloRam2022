@@ -1,0 +1,51 @@
+.user-group-card-container {
+  display: flex;
+  flex-direction: row;
+  // height: 100%;
+  // width: 100%;
+  padding: 5px;
+  // background-color: var(--color-white, #ffffff);
+  // box-shadow: 0px 1px 3px var(--darker-box-shadows, rgba(0, 0, 0, 0.3));
+  // border-radius: 4px;
+
+  //   .image-container {
+  //     width: 100px;
+  //     height: 100px;
+  //     margin-right: 20px;
+  //   }
+
+  .user-values-container {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    //     // height: 100%;
+    //     min-width: 170px;
+    align-items: flex-start;
+    //     line-height: 1.4;
+
+    .name {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    //     .email {
+    //       text-overflow: ellipsis;
+    //       white-space: nowrap;
+    //       overflow: hidden;
+    //       width: 100%;
+    //       font-size: 12px;
+    //       font-weight: 400;
+    //       color: var(--color-main-darker, #282a3c);
+    //     }
+  }
+}
+
+// .selected {
+//   margin: 0px;
+//   border: 2px solid var(--color-primary, #5849e0);
+// }
+
+// .selected:hover {
+//   margin: 0px;
+//   border: 2px solid var(--color-primary, #5849e0);
+// }

@@ -1,0 +1,39 @@
+<div class="login-section">
+  <form id="login-form" (ngSubmit)="performLogin()">
+    <mat-form-field class="login-form-att" hideRequiredMarker="true">
+      <mat-label>{{ "username" | translate }}</mat-label>
+      <input
+        matInput
+        [(ngModel)]="username"
+        id="username"
+        name="username"
+        required
+        autocomplete="username"
+      />
+    </mat-form-field>
+    <mat-form-field
+      class="password-form-field inline-icon"
+      hideRequiredMarker="true"
+    >
+      <mat-label>{{ "password" | translate }}</mat-label>
+      <input
+        matInput
+        [(ngModel)]="password"
+        id="password"
+        name="password"
+        [type]="'password'"
+        required
+        autocomplete="current-password"
+      />
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      class="login-button"
+    >
+      {{ "login" | translate }}
+    </button>
+  </form>
+</div>

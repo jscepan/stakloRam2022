@@ -1,0 +1,73 @@
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { BaseWebService } from 'src/app/core/services/base.web-service';
+import { BASE_API_URL } from '../constants';
+
+export class AppSettings {
+  invoiceCountry?: string;
+  invoicePlaceOfIssue?: string;
+  invoiceCurrency?: string;
+  invoiceFooter?: string;
+  invoicePayingCompanyName?: string;
+  invoicePayingCompanyAddress?: string;
+  invoicePayingCompanyBankAccount?: string;
+  invoicePayingCompanyData?: string;
+  invoiceVatRate?: number;
+  qrCodeIdentCode?: string;
+  qrCodeVersion?: string;
+  qrCodeSignSet?: string;
+  qrCodeAccountNumber?: string;
+  qrCodeCompanyName?: string;
+  qrCodeCurrency?: string;
+  qrCodePayingCodePerson?: string;
+  qrCodePayingCodeCompany?: string;
+  qrCodePayingPurpose?: string;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class SettingsStoreService {
+  private settings$: BehaviorSubject<AppSettings | undefined> =
+    new BehaviorSubject<AppSettings | undefined>(undefined);
+  public settings: Observable<AppSettings | undefined> =
+    this.settings$.asObservable();
+
+  private readonly _dataLoaded = new BehaviorSubject<boolean>(false);
+  readonly dataLoaded$ = this._dataLoaded.asObservable();
+
+  constructor(public baseWebService: BaseWebService) {
+    this.baseWebService
+      .getRequest<AppSettings>(`${BASE_API_URL + '/settings'}`, AppSettings)
+      .subscribe((settings) => {
+        if (settings) {
+          this.settings$.next(settings);
+          this._dataLoaded.next(true);
+        }
+      });
+  }
+
+  getSettings(): AppSettings | undefined {
+    return this.settings$.getValue();
+  }
+
+  updateSettings(settings: AppSettings): Observable<boolean> {
+    this._dataLoaded.next(false);
+    return new Observable((subscriber) => {
+      this.baseWebService
+        .putRequest<AppSettings, AppSettings>(
+          `${BASE_API_URL + '/settings'}`,
+          settings,
+          AppSettings
+        )
+        .subscribe((settings) => {
+          if (settings) {
+            this.settings$.next(settings);
+            this._dataLoaded.next(true);
+            subscriber.next(true);
+            subscriber.complete();
+          }
+        });
+    });
+  }
+}

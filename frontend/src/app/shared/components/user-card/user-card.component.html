@@ -1,0 +1,31 @@
+<div class="user-group-card-container box-sizing-border-box cursor-pointer">
+  <div class="image-container">
+    <!-- <ng-container *ngIf="userImageType === 'avatar'">
+      <app-user-image
+        *ngIf="dataModel.thumbnail"
+        [type]="'avatar'"
+        [size]="'large'"
+        [shape]="'rounded'"
+        [imageUrl]="dataModel.thumbnail"
+      ></app-user-image>
+    </ng-container> -->
+    <ng-container *ngIf="userImageType === 'initials'">
+      <app-user-initials
+        [initials]="getUserInitials(dataModel.fullName)"
+        [size]="size"
+        [shape]="shape"
+      ></app-user-initials>
+    </ng-container>
+  </div>
+  <div class="user-values-container box-sizing-border-box" *ngIf="showUserData">
+    <span class="name">{{ dataModel.fullName }}</span>
+    <span *ngIf="dataModel.email" class="email">{{ dataModel.email }}</span>
+  </div>
+
+  <!-- <me-context-menu
+    [dataModel]="{
+      contextMenuItems: dataModel.contextMenuItems
+    }"
+    (itemClick)="onContextMenuEvent(contextMenuEventTypes.REMOVE, $event)"
+  ></me-context-menu> -->
+</div>

@@ -1,0 +1,21 @@
+.standard-grid-table {
+  .grid-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dotted rgb(140, 140, 140);
+    padding: 5px 10px;
+
+    &.align-right {
+      justify-content: flex-end;
+    }
+
+    &.header {
+      justify-content: center;
+      background-color: var(--color-primary-hover);
+      color: var(--color-white);
+      font-weight: 600;
+      font-size: 1.2em;
+    }
+  }
+}

@@ -1,0 +1,19 @@
+.container {
+  height: calc(100%);
+  width: 100%;
+  min-width: 900px;
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100% - 100px);
+    overflow-y: auto;
+  }
+
+  .button-section {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+}

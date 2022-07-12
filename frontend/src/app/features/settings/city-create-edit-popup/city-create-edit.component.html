@@ -1,0 +1,78 @@
+<div class="container">
+  <div class="title">
+    <h3>
+      {{ (isEdit ? "editCity" : "createCity") | translate }}
+    </h3>
+  </div>
+  <form [formGroup]="formGroup" *ngIf="formGroup" class="form">
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "zipCode" | translate }}
+      </mat-label>
+      <input matInput formControlName="zipCode" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "name" | translate }}
+      </mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+    <mat-form-field *ngIf="countryControl">
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "country" | translate }}
+      </mat-label>
+      <mat-select
+        formControlName="country"
+        (infiniteScroll)="bottomReachedHandler()"
+        msInfiniteScroll
+        [compareWith]="compareFn"
+        (selectionChange)="selectCountry($event)"
+      >
+        <mat-option>
+          <ngx-mat-select-search
+            [formControl]="searchControl"
+            placeholderLabel="{{ 'searchFor' | translate }}"
+            noEntriesFoundLabel="{{ 'noResults' | translate }}"
+            (ngModelChange)="searchHandler($event)"
+            [hideClearSearchButton]="true"
+            [clearSearchInput]="false"
+            [searching]="(isLoading | async) || false"
+            [disableScrollToActiveOnOptionsChanged]="true"
+          ></ngx-mat-select-search>
+        </mat-option>
+        <mat-option *ngIf="selectedCountry" [value]="selectedCountry">{{
+          selectedCountry.description
+        }}</mat-option>
+        <ng-container *ngFor="let country of countries | async">
+          <mat-option
+            [value]="country"
+            *ngIf="!(selectedCountry?.oid === country.oid)"
+          >
+            {{ country.description }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+    <app-button
+      [text]="'createCountry' | translate"
+      (clickEvent)="createCountry()"
+      class="create-button"
+      [color]="'secondary'"
+    ></app-button>
+
+    <div class="button-section">
+      <app-button
+        [text]="'cancel' | translate"
+        color="secondary"
+        (clickEvent)="cancel()"
+        class="cancel"
+      ></app-button>
+      <app-button
+        [text]="'save' | translate"
+        [disabled]="!formGroup.dirty || formGroup.invalid"
+        class="update"
+        (clickEvent)="handleSubmitButton()"
+      ></app-button>
+    </div>
+  </form>
+</div>

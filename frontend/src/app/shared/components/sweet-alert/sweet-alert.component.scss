@@ -1,0 +1,150 @@
+.sweet-alert {
+  --icon-color: var(--color-primary, #5849e0);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 516px;
+  position: relative;
+  padding: 30px;
+  box-sizing: border-box;
+
+  .sweet-alert-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: var(--color-main, #747474);
+  }
+
+  .icon {
+    border-radius: 50px;
+    // border: 2px solid var(--icon-color);
+
+    i-feather {
+      height: 66px;
+      width: 66px;
+      stroke-width: 1.5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--icon-color);
+    }
+  }
+
+  .title {
+    color: var(--color-main-darker, #282a3c);
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.4;
+    margin: 40px 0 10px;
+    max-width: 380px;
+  }
+
+  .message {
+    color: var(--color-main-darker, #282a3c);
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.9;
+    max-width: 380px;
+  }
+
+  .checkbox {
+    color: var(--color-main-darker, #282a3c);
+    line-height: 1.9;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .action-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+
+    app-button {
+      margin: 0 10px;
+    }
+
+    #sweet-alert-form {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  &.dialog_prompt {
+    width: 420px;
+    padding: 0;
+    align-items: normal;
+
+    .title {
+      font-size: 16px;
+      margin-top: 0;
+      text-align: left;
+      display: block;
+      width: 100%;
+      border-bottom: 1px solid var(--color-main-light, #bbb);
+      padding: 20px;
+    }
+
+    .message {
+      color: var(--color-main, #747474);
+      font-size: 14px;
+      text-align: left;
+      display: block;
+      width: 100%;
+      padding: 10px 20px;
+    }
+
+    .action-container {
+      flex-direction: column;
+      align-items: normal;
+      margin-top: 20px;
+      padding: 0;
+    }
+
+    form {
+      padding: 0 20px;
+      position: relative;
+
+      .error {
+        font-size: 10px;
+        background: var(--color-danger-background, #f1dadd);
+        padding: 0 5px;
+      }
+    }
+
+    .prompt-buttons {
+      margin-top: 10px;
+      border-top: 1px solid var(--color-main-light, #bbb);
+      padding: 20px;
+      display: flex;
+
+      .buttons {
+        margin-left: auto;
+      }
+    }
+  }
+}
+
+:host ::ng-deep {
+  .dialog_prompt {
+    .mat-form-field-appearance-outline .mat-form-field-infix {
+      line-height: 0;
+    }
+
+    .mat-form-field {
+      width: 100%;
+    }
+
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+    }
+  }
+}

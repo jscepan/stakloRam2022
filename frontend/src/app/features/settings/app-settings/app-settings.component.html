@@ -1,0 +1,137 @@
+<div class="container">
+  <form [formGroup]="formGroup" *ngIf="formGroup" class="form">
+    <h1>{{ "invoice" | translate }}</h1>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "country" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="invoiceCountry" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "placeOfIssue" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="invoicePlaceOfIssue" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "currency" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="invoiceCurrency" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "footer" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="invoiceFooter" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "invoicePayingCompanyName" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="invoicePayingCompanyName" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "invoicePayingCompanyAddress" | translate }}
+      </mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="invoicePayingCompanyAddress"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "invoicePayingCompanyBankAccount" | translate }}
+      </mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="invoicePayingCompanyBankAccount"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "invoicePayingCompanyData" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="invoicePayingCompanyData" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "invoiceVatRate" | translate }}
+      </mat-label>
+      <input type="number" matInput formControlName="invoiceVatRate" />
+    </mat-form-field>
+    <h1>{{ "qrCodeSettings" | translate }}</h1>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "identCode" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="qrCodeIdentCode" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "version" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="qrCodeVersion" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "signSet" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="qrCodeSignSet" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "accountNumber" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="qrCodeAccountNumber" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "companyName" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="qrCodeCompanyName" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "currency" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="qrCodeCurrency" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "payingCodePerson" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="qrCodePayingCodePerson" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "payingCodeCompany" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="qrCodePayingCodeCompany" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "payingPurpose" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="qrCodePayingPurpose" />
+    </mat-form-field>
+    <h1>{{ "task" | translate }}</h1>
+  </form>
+  <div class="button-section">
+    <app-button
+      [text]="'cancel' | translate"
+      color="secondary"
+      (clickEvent)="cancel()"
+      class="cancel"
+    ></app-button>
+    <app-button
+      [text]="'save' | translate"
+      [disabled]="!formGroup.dirty || formGroup.invalid"
+      class="update"
+      (clickEvent)="updateSettings()"
+    ></app-button>
+  </div>
+</div>

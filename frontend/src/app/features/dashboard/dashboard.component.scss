@@ -1,0 +1,23 @@
+.container {
+  .content {
+  }
+
+  .content {
+    .title {
+    }
+
+    .diagram {
+      display: flex;
+
+      .resolved {
+        background-color: var(--color-success);
+      }
+      .in-process {
+        background-color: var(--color-danger);
+      }
+      .open {
+        background-color: var(--color-warning);
+      }
+    }
+  }
+}

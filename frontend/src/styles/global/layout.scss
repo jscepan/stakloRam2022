@@ -1,0 +1,23 @@
+html,
+body {
+  margin: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 100%;
+  background-color: var(--color-body-background);
+  font-size: var(--font-body-size);
+  color: var(--color-body-font);
+  font-family: var(--font-family-primary);
+
+  a,
+  .link {
+    color: var(--color-primary);
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

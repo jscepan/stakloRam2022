@@ -1,0 +1,36 @@
+<div class="basic-alert box-sizing-border-box {{ data.mode }}">
+  <div class="icon-side">
+    <i-feather *ngIf="data.mode === 'regular'" name="activity"></i-feather>
+    <i-feather *ngIf="data.mode === 'success'" name="check-circle"></i-feather>
+    <i-feather *ngIf="data.mode === 'error'" name="alert-octagon"></i-feather>
+    <i-feather
+      *ngIf="data.mode === 'warning'"
+      name="alert-triangle"
+    ></i-feather>
+  </div>
+
+  <div class="text-side">
+    <div class="text-header">{{ data.title }}</div>
+    <div class="text-content">{{ data.content }}</div>
+  </div>
+
+  <div class="link-close-side">
+    <a
+      *ngIf="data.linkText && data.externalLink"
+      [href]="data.externalLink"
+      target="_blank"
+      rel="noopener noreferrer"
+      (click)="customEvent(EVENT_TYPES.EXIT)"
+      >{{ data.linkText }}</a
+    >
+
+    <a
+      *ngIf="data.linkText && data.internalLink"
+      [href]="data.internalLink"
+      (click)="customEvent(EVENT_TYPES.EXIT)"
+      >{{ data.linkText }}</a
+    >
+
+    <i-feather name="x" (click)="customEvent(EVENT_TYPES.EXIT)"></i-feather>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="search-bar">
+    <app-search-input
+      [placeholder]="'searchFor' | translate"
+      [keyword]="keyword"
+      (changeEvent)="inputSearchHandler($event)"
+    ></app-search-input>
+    <app-button
+      [text]="'createBuyer' | translate"
+      (clickEvent)="createBuyer()"
+      class="create-button"
+    ></app-button>
+  </div>
+
+  <div
+    class="grid-container standard-grid-table"
+    [componentLoading]="(isLoading | async) || false"
+    scrollToBottom
+    (bottomReached)="bottomReachedHandler()"
+  >
+    <div class="grid-item header">{{ "type" | translate }}</div>
+    <div class="grid-item header">{{ "name" | translate }}</div>
+    <div class="grid-item header">{{ "address" | translate }}</div>
+    <div class="grid-item header">{{ "maticalNumber" | translate }}</div>
+    <div class="grid-item header">{{ "pib" | translate }}</div>
+    <div class="grid-item header">{{ "email" | translate }}</div>
+    <div class="grid-item header">{{ "edit" | translate }}</div>
+    <ng-container *ngFor="let item of entities | async">
+      <div class="grid-item">{{ item.type || "" | lowercase | translate }}</div>
+      <div class="grid-item">{{ item.name }}</div>
+      <div class="grid-item">{{ item.address }}</div>
+      <div class="grid-item">{{ item.maticalNumber }}</div>
+      <div class="grid-item">{{ item.pib }}</div>
+      <div class="grid-item">{{ item.email }}</div>
+      <div class="grid-item">
+        <app-button
+          [text]="'edit' | translate"
+          (clickEvent)="editBuyer(item.oid)"
+        ></app-button>
+      </div>
+    </ng-container>
+  </div>
+</div>

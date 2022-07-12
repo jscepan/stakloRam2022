@@ -1,0 +1,12 @@
+:host {
+  width: 100%;
+
+  .ellipsis-container {
+    width: 100%;
+    height: 100%;
+
+    .ellipsis-content {
+      height: 100%;
+    }
+  }
+}

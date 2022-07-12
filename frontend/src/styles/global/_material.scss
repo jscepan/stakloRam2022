@@ -1,0 +1,29 @@
+// basic-alert component
+snack-bar-container.mat-snack-bar-container {
+  padding: 0px;
+  width: 80%;
+  margin: 8px auto;
+  overflow: hidden;
+
+  .feather {
+    height: 40px;
+    width: 40px;
+  }
+}
+
+// sweet-alert component
+#sweet-alert-form .mat-form-field-wrapper {
+  padding: 0 0 0 10px;
+  margin-right: 10px;
+}
+
+.sweet-alert-dialog .mat-dialog-container {
+  padding: 0;
+  overflow: hidden;
+  .action-container {
+    button.mat-flat-button {
+      letter-spacing: 0.063px;
+      padding: 0 20px;
+    }
+  }
+}

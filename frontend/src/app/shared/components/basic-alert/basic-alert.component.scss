@@ -1,0 +1,121 @@
+.basic-alert {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 4px;
+
+  .icon-side {
+    margin-right: 8px;
+
+    .feather {
+      height: 40px;
+      width: 40px;
+      cursor: default;
+    }
+
+    i-feather {
+      height: 40px;
+      width: 40px;
+      stroke-width: 1.5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .text-side {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 5px;
+
+    .text-header {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .text-content {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      color: var(--color-body-font, #434349);
+    }
+  }
+
+  .link-close-side {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    a {
+      font-size: 12px;
+      font-weight: 600;
+      margin-right: 8px;
+      width: 90px;
+      max-width: 100px;
+      word-break: break-all;
+    }
+
+    i-feather {
+      height: 20px;
+      width: 20px;
+      stroke-width: 1.5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 4px;
+    }
+  }
+
+  &.regular {
+    background-color: var(--color-primary-background, #e4e0f1);
+    color: var(--color-primary, #5849e0);
+    border: 1px solid var(--color-primary, #5849e0);
+  }
+
+  &.success {
+    background-color: var(--color-success-background, #e1ebe1);
+    color: var(--color-success, #43ad48);
+    border: 1px solid var(--color-success, #43ad48);
+  }
+
+  &.error {
+    background-color: var(--color-danger-background, #f1dadd);
+    color: var(--color-danger, #e70020);
+    border: 1px solid var(--color-danger, #e70020);
+  }
+
+  &.warning {
+    background-color: var(--color-warning-background, #f3ecdd);
+    color: var(--color-warning, #ffb822);
+    border: 1px solid var(--color-warning, #ffb822);
+  }
+
+  &.light {
+    background-color: var(--color-white, #ffffff);
+    color: var(--color-black, #000000);
+    border: none;
+  }
+
+  &.dark {
+    background-color: var(--color-main-darker, #282a3c);
+    color: var(--color-white, #ffffff);
+    border: none;
+
+    .text-side {
+      .text-content {
+        color: var(--color-white, #ffffff);
+      }
+    }
+  }
+
+  &.outlined {
+    background-color: var(--color-white, #ffffff);
+    color: var(--color-black, #000000);
+    border: 1px solid var(--color-main, #747474);
+  }
+}

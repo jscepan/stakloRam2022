@@ -1,0 +1,204 @@
+<div class="container">
+  <div class="title">
+    <h3>
+      {{ (isEdit ? "editBuyer" : "createBuyer") | translate }}
+    </h3>
+  </div>
+  <form [formGroup]="formGroup" *ngIf="formGroup" class="form">
+    <div class="row">
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "type" | translate }}
+        </mat-label>
+        <mat-select
+          formControlName="type"
+          [disabled]="isEdit"
+          (valueChange)="typeChangeHandler($event)"
+        >
+          <mat-option
+            *ngFor="let item of buyerTypesOptions"
+            [value]="item.value"
+          >
+            {{ item.displayName | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "name" | translate }}
+        </mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "address" | translate }}
+        </mat-label>
+        <input matInput formControlName="address" />
+      </mat-form-field>
+      <mat-form-field *ngIf="cityControl">
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "city" | translate }}
+        </mat-label>
+        <mat-select
+          formControlName="city"
+          (infiniteScroll)="bottomReachedHandler()"
+          msInfiniteScroll
+          [compareWith]="compareFn"
+          (selectionChange)="selectCity($event)"
+        >
+          <mat-option>
+            <ngx-mat-select-search
+              [formControl]="searchControlCity"
+              placeholderLabel="{{ 'searchFor' | translate }}"
+              noEntriesFoundLabel="{{ 'noResults' | translate }}"
+              (ngModelChange)="searchHandler($event)"
+              [hideClearSearchButton]="true"
+              [clearSearchInput]="false"
+              [searching]="(isLoading | async) || false"
+              [disableScrollToActiveOnOptionsChanged]="true"
+            ></ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngIf="selectedCity" [value]="selectedCity">{{
+            selectedCity.name
+          }}</mat-option>
+          <ng-container *ngFor="let option of cities | async">
+            <mat-option
+              [value]="option"
+              *ngIf="!(selectedCity?.oid === option.oid)"
+            >
+              {{ option.name }}
+            </mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+      <app-button
+        [text]="'createCity' | translate"
+        (clickEvent)="createCity()"
+        class="create-button"
+        [iconName]="'plus'"
+        [color]="'secondary'"
+      ></app-button>
+    </div>
+
+    <div class="row">
+      <mat-form-field *ngIf="maticalNumberControl">
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "maticalNumber" | translate }}
+        </mat-label>
+        <input matInput formControlName="maticalNumber" />
+      </mat-form-field>
+
+      <mat-form-field *ngIf="pibControl">
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "pib" | translate }}
+        </mat-label>
+        <input matInput formControlName="pib" />
+      </mat-form-field>
+    </div>
+
+    {{ "optionalData" | translate }}
+    <div class="row">
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "email" | translate }}
+        </mat-label>
+        <input matInput formControlName="email" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "addressContact" | translate }}
+        </mat-label>
+        <input matInput formControlName="addressContact" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "contactPerson" | translate }}
+        </mat-label>
+        <input matInput formControlName="contactPerson" />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "phoneNumberMobile" | translate }}
+        </mat-label>
+        <input matInput formControlName="phoneNumberMobile" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "phoneNumberFix" | translate }}
+        </mat-label>
+        <input matInput formControlName="phoneNumberFix" />
+      </mat-form-field>
+      <mat-form-field *ngIf="genderControl">
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "gender" | translate }}
+        </mat-label>
+        <mat-select formControlName="gender">
+          <mat-option
+            *ngFor="let item of genderTypesOptions"
+            [value]="item.value"
+          >
+            {{ item.displayName | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="button-section">
+      <app-button
+        [text]="'cancel' | translate"
+        color="secondary"
+        (clickEvent)="cancel()"
+        class="cancel"
+      ></app-button>
+      <app-button
+        [text]="'save' | translate"
+        [disabled]="!formGroup.dirty || formGroup.invalid"
+        class="update"
+        (clickEvent)="handleSubmitButton()"
+      ></app-button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,114 @@
+<div class="container">
+  <div class="title">
+    <h3>
+      {{ (isEdit ? "editUser" : "createUser") | translate }}
+    </h3>
+  </div>
+  <form [formGroup]="formGroup" *ngIf="formGroup" class="form">
+    <div class="row">
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "username" | translate }}
+        </mat-label>
+        <input matInput formControlName="username" />
+      </mat-form-field>
+
+      <mat-form-field *ngIf="!isEdit">
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "password" | translate }}
+        </mat-label>
+        <input matInput formControlName="password" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "fullName" | translate }}
+        </mat-label>
+        <input matInput formControlName="fullName" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "email" | translate }}
+        </mat-label>
+        <input matInput formControlName="email" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "enabled" | translate }}
+        </mat-label>
+        <mat-select formControlName="enabled">
+          <mat-option [value]="true">
+            {{ "active" | translate }}
+          </mat-option>
+          <mat-option [value]="false">
+            {{ "inactive" | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "roles" | translate }}
+        </mat-label>
+        <mat-select
+          formControlName="roles"
+          multiple
+          [(ngModel)]="selected"
+          [compareWith]="compareFn"
+        >
+          <mat-option *ngFor="let item of roles | async" [value]="item">
+            {{ item.name | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "language" | translate }}
+        </mat-label>
+        <mat-select formControlName="language">
+          <mat-option *ngFor="let item of languages" [value]="item">
+            {{ item | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="button-section">
+      <app-button
+        [text]="'cancel' | translate"
+        color="secondary"
+        (clickEvent)="cancel()"
+        class="cancel"
+      ></app-button>
+      <app-button
+        [text]="'save' | translate"
+        [disabled]="!formGroup.dirty || formGroup.invalid"
+        class="update"
+        (clickEvent)="handleSubmitButton()"
+      ></app-button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="title">{{ entity?.buyer?.name }}</div>
+  <div class="grid-container standard-grid-table">
+    <div class="grid-item header">{{ "date" | translate }}</div>
+    <div class="grid-item header">{{ "description" | translate }}</div>
+    <div class="grid-item header">{{ "owed" | translate }}</div>
+    <div class="grid-item header">{{ "debt" | translate }}</div>
+    <div class="grid-item header">{{ "state" | translate }}</div>
+    <ng-container *ngFor="let t of transactions">
+      <div class="grid-item">{{ t.date }}</div>
+      <div class="grid-item">{{ t.description }}</div>
+      <div class="grid-item align-right">{{ t.owed | number: "1.2-2" }}</div>
+      <div class="grid-item align-right">{{ t.debt | number: "1.2-2" }}</div>
+      <div class="grid-item align-right">{{ t.state | number: "1.2-2" }}</div>
+      <!-- <div class="grid-item">
+        <app-button
+          [text]="'view' | translate"
+          (clickEvent)="viewDebtor(item)"
+        ></app-button>
+      </div> -->
+    </ng-container>
+  </div>
+</div>

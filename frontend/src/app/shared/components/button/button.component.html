@@ -1,0 +1,22 @@
+<button
+  mat-flat-button
+  [ngClass]="color"
+  [class.transparent-theme]="isTransparentMode"
+  [class.me-icon-right]="iconPosition === 'right'"
+  [disabled]="disabled"
+  (click)="onClick($event)"
+  [class.icon-only]="!text"
+  [class.full-width]="fullWidth"
+  [class.full-height]="fullHeight"
+>
+  <i-feather *ngIf="isFeatherIcon && iconName" [name]="iconName"></i-feather>
+  <i-feather
+    *ngIf="!isFeatherIcon && iconName"
+    [name]="iconName"
+    class="icon"
+  ></i-feather>
+  <div [class.text-with-icon]="!!iconName">
+    <ng-container *ngIf="text">{{ text }}</ng-container>
+    <ng-content *ngIf="!text"></ng-content>
+  </div>
+</button>
