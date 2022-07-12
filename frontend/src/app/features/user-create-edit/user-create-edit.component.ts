@@ -71,10 +71,11 @@ export class UserCreateEditComponent implements OnInit, OnDestroy {
 
   initializeCreate(): void {
     this.formGroup = new FormGroup({
+      displayName: new FormControl('', [Validators.required]),
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
       fullName: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required]),
+      email: new FormControl('', []),
       enabled: new FormControl(true, [Validators.required]),
       roles: new FormControl('', [Validators.required]),
       language: new FormControl(this.languages[0], [Validators.required]),
@@ -86,9 +87,10 @@ export class UserCreateEditComponent implements OnInit, OnDestroy {
       if (user) {
         this.selected = user.roles;
         this.formGroup = new FormGroup({
+          displayName: new FormControl(user.displayName, [Validators.required]),
           username: new FormControl(user.username, [Validators.required]),
           fullName: new FormControl(user.fullName, [Validators.required]),
-          email: new FormControl(user.email, [Validators.required]),
+          email: new FormControl(user.email, []),
           enabled: new FormControl(user.enabled, [Validators.required]),
           roles: new FormControl(user.roles, [Validators.required]),
           language: new FormControl(user.language, [Validators.required]),

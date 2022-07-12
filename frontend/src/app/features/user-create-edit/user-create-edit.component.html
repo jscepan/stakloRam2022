@@ -11,6 +11,16 @@
           [class.mark-required]="true"
           [class.mark-opt-required]="true"
         >
+          {{ "displayName" | translate }}
+        </mat-label>
+        <input matInput formControlName="displayName" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
           {{ "username" | translate }}
         </mat-label>
         <input matInput formControlName="username" />

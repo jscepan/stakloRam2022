@@ -1,4 +1,5 @@
 {
+  "displayName": "Ime za prikaz",
   "accountNumber": "Broj tekućeg računa (18 karaktera bez drugih znakova - samo cifre)",
   "active": "Aktivan",
   "case": "Predmet",

@@ -1,4 +1,5 @@
 {
+  "displayName": "Display name",
   "accountNumber": "Account number (18 characters without any other signs - only numbers)",
   "active": "Active",
   "case": "Case",
