@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class JwtUtil {
 
-    private final String SECRET_KEY = "dule";
+    private final String SECRET_KEY = "micko";
     private final int HOURS_OF_JWT_EXPIRATION = 1;// 500;
 
     public String extractUsername(String token) {
