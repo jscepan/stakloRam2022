@@ -34,10 +34,10 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'services',
+    path: 'work-orders',
     loadChildren: () =>
-      import('@features/services/services.module').then(
-        (m) => m.ServicesModule
+      import('@features/work-orders/work-orders.module').then(
+        (m) => m.WorkOrdersModule
       ),
   },
   {

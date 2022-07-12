@@ -12,9 +12,9 @@ export const DOMAIN_IMAGES: string = 'images';
 export const DOMAIN_TASKS: string = 'tasks';
 export const DOMAIN_SUBTASKS: string = 'subtasks';
 export const DOMAIN_CASES: string = 'cases';
-export const DOMAIN_SERVICES: string = 'services';
 export const DOMAIN_INVOICES: string = 'invoices';
 export const DOMAIN_ROLES: string = 'roles';
+export const DOMAIN_WORK_ORDERS: string = 'workorders';
 
 // Login form content type
 export const LOGIN_FORM_CONTENT_TYPE: { 'Content-Type': string } = {

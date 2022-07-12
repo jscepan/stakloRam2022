@@ -6,7 +6,6 @@ export class BuyerModel extends BaseModel {
   type?: string;
   name: string = '';
   address: string = '';
-  addressContact: string = '';
   maticalNumber: string = '';
   pib: string = '';
   contactPerson: string = '';
@@ -16,4 +15,5 @@ export class BuyerModel extends BaseModel {
   gender?: string;
   @Type(() => CityModel)
   city?: CityModel;
+  jbkjs?: string;
 }

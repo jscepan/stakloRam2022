@@ -29,6 +29,9 @@ public class Invoice extends BaseModel {
     private List<InvoiceItem> invoiceItems = new ArrayList<>();
     private List<Note> notes = new ArrayList<>();
 
+    public Invoice() {
+    }
+
     public Invoice(String oid) {
         super(oid);
     }

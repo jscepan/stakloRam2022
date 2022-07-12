@@ -1,0 +1,90 @@
+<div class="container">
+  <div class="search-bar">
+    <app-search-input
+      [placeholder]="'searchFor' | translate"
+      [keyword]="keyword"
+      (changeEvent)="inputSearchHandler($event)"
+    ></app-search-input>
+    <app-button
+      [text]="'createWorkOrder' | translate"
+      (clickEvent)="createWorkOrder()"
+    ></app-button>
+  </div>
+  <div
+    class="workOrders"
+    [componentLoading]="(isLoading | async) || false"
+    scrollToBottom
+    (bottomReached)="bottomReachedHandler()"
+  >
+    <div class="grid-container standard-grid-table">
+      <div class="grid-item header">
+        {{ "buyerName" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "number" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "date" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "forPerson" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "description" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "note" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "view" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "edit" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "delete" | translate }}
+      </div>
+      <ng-container *ngFor="let workOrder of entities | async">
+        <div class="grid-item">
+          {{ workOrder.buyer.name }}
+        </div>
+        <div class="grid-item">
+          {{ workOrder.number }}
+        </div>
+        <div class="grid-item">
+          {{ workOrder.dateOfCreate }}
+        </div>
+        <div class="grid-item align-right">
+          {{ workOrder.forPerson }}
+        </div>
+        <div class="grid-item align-right">
+          {{ workOrder.description }}
+        </div>
+        <div class="grid-item align-right">
+          {{ workOrder.note }}
+        </div>
+        <div class="grid-item">
+          <app-button
+            [iconName]="'view'"
+            [isTransparentMode]="true"
+            (clickEvent)="viewWorkOrder(workOrder.oid)"
+          ></app-button>
+        </div>
+        <div class="grid-item">
+          <app-button
+            [iconName]="'edit'"
+            [isTransparentMode]="true"
+            (clickEvent)="editWorkOrder(workOrder.oid)"
+          ></app-button>
+        </div>
+        <div class="grid-item">
+          <app-button
+            [iconName]="'trash-2'"
+            [isTransparentMode]="true"
+            (clickEvent)="deleteWorkOrder(workOrder.oid)"
+          ></app-button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

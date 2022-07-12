@@ -23,10 +23,7 @@ import {
   AppSettings,
   SettingsStoreService,
 } from 'src/app/shared/services/settings-store.service';
-import { TaskWebService } from 'src/app/web-services/task.service';
 import { compareByValue, roundOnDigits } from 'src/app/shared/utils';
-import { TasksSelectionComponentService } from '@features/tasks-selection-popup/tasks-selection-component.service';
-import { TaskModel } from 'src/app/shared/models/task.model';
 import { BuyerModel } from 'src/app/shared/models/buyer.model';
 import { ListEntities } from 'src/app/shared/services/list-entities';
 import { Observable } from 'rxjs';
@@ -44,8 +41,6 @@ import { MatSelectChange } from '@angular/material/select';
     BuyerCreateEditPopupService,
     BuyerWebService,
     UserWebService,
-    TaskWebService,
-    TasksSelectionComponentService,
     InvoiceSelectionComponentService,
     ListEntities,
   ],
@@ -81,8 +76,6 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     private buyerCreateEditPopupService: BuyerCreateEditPopupService,
     private settingsStoreService: SettingsStoreService,
     private translateService: TranslateService,
-    private taskWebService: TaskWebService,
-    private tasksSelectionComponentService: TasksSelectionComponentService,
     private invoiceSelectionComponentService: InvoiceSelectionComponentService,
     private listEntities: ListEntities<BuyerModel>
   ) {}
@@ -240,59 +233,61 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
         tasks: new FormArray([]),
       })
     );
-    invoiceItem?.tasks.forEach((task) => {
-      this.addNewTaskToInvoiceItem(index, task);
-    });
+    // invoiceItem?.tasks.forEach((task) => {
+    //   this.addNewTaskToInvoiceItem(index, task);
+    // });
     this.calculateInvoiceAmount();
   }
 
-  addNewTaskToInvoiceItem(invoiceItemIndex: number, task: TaskModel): void {
-    this.getTasksFormArr(invoiceItemIndex).push(
-      new FormGroup({
-        oid: new FormControl(task.oid),
-        number: new FormControl(task.number),
-        date: new FormControl(task.dateOfCreate),
-        status: new FormControl(task.status),
-        title: new FormControl(task.title),
-        description: new FormControl(task.description),
-        buyer: new FormControl(task.buyer),
-        currentUser: new FormControl(task.currentUser),
-      })
-    );
-  }
+  // addNewTaskToInvoiceItem(invoiceItemIndex: number, task: TaskModel): void {
+  //   this.getTasksFormArr(invoiceItemIndex).push(
+  //     new FormGroup({
+  //       oid: new FormControl(task.oid),
+  //       number: new FormControl(task.number),
+  //       date: new FormControl(task.dateOfCreate),
+  //       status: new FormControl(task.status),
+  //       title: new FormControl(task.title),
+  //       description: new FormControl(task.description),
+  //       buyer: new FormControl(task.buyer),
+  //       currentUser: new FormControl(task.currentUser),
+  //     })
+  //   );
+  // }
 
   importTasks(index: number): void {
-    const alreadyImportedTasks: string[] = [];
-    this.invoiceItemsFormArr.controls.forEach((item, index) => {
-      let taskControls = this.getTasksFormArr(index);
-      taskControls.controls.forEach((task) => {
-        alreadyImportedTasks.push(task.value.oid);
-      });
-    });
+    // TODO
+    console.log(index);
+    //   const alreadyImportedTasks: string[] = [];
+    //   this.invoiceItemsFormArr.controls.forEach((item, index) => {
+    //     let taskControls = this.getTasksFormArr(index);
+    //     taskControls.controls.forEach((task) => {
+    //       alreadyImportedTasks.push(task.value.oid);
+    //     });
+    //   });
 
-    this.tasksSelectionComponentService
-      .openDialog(alreadyImportedTasks, this.formGroup.get('buyer')?.value.oid)
-      .subscribe((tasks: TaskModel[]) => {
-        if (tasks?.length) {
-          tasks.forEach((task) => this.addNewTaskToInvoiceItem(index, task));
-          let description = '';
-          tasks.forEach((t, i) =>
-            i > 0 ? (description += ', ' + t.title) : (description += t.title)
-          );
-          this.invoiceItemsFormArr.controls[index]
-            .get('description')
-            ?.setValue(
-              this.invoiceItemsFormArr.controls[index].get('description')
-                ?.value === ''
-                ? this.invoiceItemsFormArr.controls[index].get('description')
-                    ?.value + description
-                : this.invoiceItemsFormArr.controls[index].get('description')
-                    ?.value +
-                    ', ' +
-                    description
-            );
-        }
-      });
+    //   this.tasksSelectionComponentService
+    //     .openDialog(alreadyImportedTasks, this.formGroup.get('buyer')?.value.oid)
+    //     .subscribe((tasks: TaskModel[]) => {
+    //       if (tasks?.length) {
+    //         tasks.forEach((task) => this.addNewTaskToInvoiceItem(index, task));
+    //         let description = '';
+    //         tasks.forEach((t, i) =>
+    //           i > 0 ? (description += ', ' + t.title) : (description += t.title)
+    //         );
+    //         this.invoiceItemsFormArr.controls[index]
+    //           .get('description')
+    //           ?.setValue(
+    //             this.invoiceItemsFormArr.controls[index].get('description')
+    //               ?.value === ''
+    //               ? this.invoiceItemsFormArr.controls[index].get('description')
+    //                   ?.value + description
+    //               : this.invoiceItemsFormArr.controls[index].get('description')
+    //                   ?.value +
+    //                   ', ' +
+    //                   description
+    //           );
+    //       }
+    //     });
   }
 
   removeTaskFromInvoiceItem(invoiceItemIndex: number, taskIndex: number): void {
@@ -496,17 +491,17 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
 
   autoImport(): void {
     // TODO
-    this.subs.sink = this.taskWebService
-      .searchEntities(new SearchModel(), 0, 9999)
-      .subscribe((response) => {
-        if (response && response.totalCount > 0) {
-          response.entities.forEach((task, index) => {
-            let invoiceItem = new InvoiceItemModel();
-            invoiceItem.description = task.title;
-            this.addNewItem(index, invoiceItem);
-          });
-        }
-      });
+    //   this.subs.sink = this.taskWebService
+    //     .searchEntities(new SearchModel(), 0, 9999)
+    //     .subscribe((response) => {
+    //       if (response && response.totalCount > 0) {
+    //         response.entities.forEach((task, index) => {
+    //           let invoiceItem = new InvoiceItemModel();
+    //           invoiceItem.description = task.title;
+    //           this.addNewItem(index, invoiceItem);
+    //         });
+    //       }
+    //     });
   }
 
   searchHandler(text: any): void {

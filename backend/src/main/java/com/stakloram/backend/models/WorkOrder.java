@@ -15,6 +15,9 @@ public class WorkOrder extends BaseModel {
     private Buyer buyer;
     private List<WorkOrderItem> workOrderItems = new ArrayList<>();
 
+    public WorkOrder() {
+    }
+
     public WorkOrder(String oid) {
         super(oid);
     }

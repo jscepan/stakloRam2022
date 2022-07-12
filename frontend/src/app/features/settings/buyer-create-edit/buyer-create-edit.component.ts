@@ -114,12 +114,12 @@ export class BuyerCreateEditComponent implements OnInit, OnDestroy {
             type: new FormControl(buyer.type, [Validators.required]),
             name: new FormControl(buyer.name, [Validators.required]),
             address: new FormControl(buyer.address, [Validators.required]),
-            addressContact: new FormControl(buyer.addressContact, []),
             contactPerson: new FormControl(buyer.contactPerson, []),
             phoneNumberFix: new FormControl(buyer.phoneNumberFix, []),
             phoneNumberMobile: new FormControl(buyer.phoneNumberMobile, []),
             email: new FormControl(buyer.email, [Validators.email]),
             city: new FormControl(buyer.city, [Validators.required]),
+            jbkjs: new FormControl(buyer.jbkjs, []),
           });
           this.selectedCity = buyer.city;
           this.typeChangeHandler(

@@ -18,6 +18,9 @@ public class Buyer extends BaseModel {
     private City city;
     private String jbkjs;
 
+    public Buyer() {
+    }
+
     public Buyer(String oid) {
         super(oid);
     }

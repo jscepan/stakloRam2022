@@ -4,6 +4,9 @@ public class Country extends BaseModel {
 
     private String description;
 
+    public Country() {
+    }
+
     public Country(String oid) {
         super(oid);
     }

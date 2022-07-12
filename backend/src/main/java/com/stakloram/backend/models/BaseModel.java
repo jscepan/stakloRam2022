@@ -4,6 +4,9 @@ public abstract class BaseModel {
 
     private String oid;
 
+    public BaseModel() {
+    }
+
     public BaseModel(String oid) {
         this.oid = oid;
     }

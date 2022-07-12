@@ -9,6 +9,9 @@ public class Outcome extends BaseModel {
     private String comment;
     private Buyer buyer;
 
+    public Outcome() {
+    }
+
     public Outcome(String oid) {
         super(oid);
     }

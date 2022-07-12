@@ -10,6 +10,9 @@ public class Income extends BaseModel {
     private String bankStatementNumber;
     private Buyer buyer;
 
+    public Income() {
+    }
+
     public Income(String oid) {
         super(oid);
     }

@@ -11,6 +11,9 @@ public class WorkOrderItem extends BaseModel {
     private String note;
     private boolean settled;
 
+    public WorkOrderItem() {
+    }
+
     public WorkOrderItem(String oid) {
         super(oid);
     }

@@ -2,7 +2,7 @@ import { formatDate } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Observer } from 'rxjs';
 import { BaseModel } from './models/base-model';
-import { ServiceModel } from './models/service.model';
+import { WorkOrderModel } from './models/work-order';
 
 // tslint:disable-next-line:ban-types
 declare const gtag: Function;
@@ -33,11 +33,11 @@ export function constructUrl(
   return endpoint + queryParamsStr;
 }
 
-export function getServiceNumber(service: ServiceModel): string {
+export function getServiceNumber(workOrder: WorkOrderModel): string {
   return (
-    service.number +
+    workOrder.number +
     '/' +
-    new Date(service.dateOfCreate).getFullYear().toString()
+    new Date(workOrder.dateOfCreate).getFullYear().toString()
   );
 }
 

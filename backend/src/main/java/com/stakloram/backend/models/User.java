@@ -14,6 +14,9 @@ public class User extends BaseModel {
     private String language;
     private List<Role> roles = new ArrayList<>();
 
+    public User() {
+    }
+
     public User(String oid) {
         super(oid);
     }

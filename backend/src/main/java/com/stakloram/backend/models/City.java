@@ -6,6 +6,9 @@ public class City extends BaseModel {
     private String name;
     private Country country;
 
+    public City() {
+    }
+
     public City(String oid) {
         super(oid);
     }
