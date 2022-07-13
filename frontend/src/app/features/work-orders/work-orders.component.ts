@@ -49,11 +49,17 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
     this.listEntities.setFilter(searchFilter);
   }
 
-  createWorkOrder(): void {}
+  createWorkOrder(): void {
+    this.router.navigate(['work-orders', 'create']);
+  }
 
-  viewWorkOrder(workOrderOID: string): void {}
+  viewWorkOrder(workOrderOID: string): void {
+    window.open('print/work-order-view/' + workOrderOID);
+  }
 
-  editWorkOrder(workOrderOID: string): void {}
+  editWorkOrder(workOrderOID: string): void {
+    this.router.navigate(['work-orders', 'edit', workOrderOID]);
+  }
 
   deleteWorkOrder(workOrderOID: string): void {
     this.subs.sink.$deleteWorkOrder = this.sweetAlertService

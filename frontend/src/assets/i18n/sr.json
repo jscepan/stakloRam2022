@@ -1,4 +1,8 @@
 {
+  "number": "Broj",
+  "forPerson": "Za osobu",
+  "note": "Napomena",
+  "createWorkOrder": "Kreiraj radni nalog",
   "editCity": "Izmeni mesto",
   "displayName": "Ime za prikaz",
   "accountNumber": "Broj tekućeg računa (18 karaktera bez drugih znakova - samo cifre)",

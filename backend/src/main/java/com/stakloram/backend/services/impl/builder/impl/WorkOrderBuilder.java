@@ -22,7 +22,7 @@ public class WorkOrderBuilder extends BaseBuilder {
 //        this.databaseColumnsForQuickSearch = Arrays.asList("buyer_name");
 //        this.databaseColumnsForAttributes.put("type", "type");
 //        this.databaseColumnsForAdvanceFilter.put("buyer", "invoice_buyer_buyer_id");
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     public long getNextWorkOrderNumber(int year) throws SException {

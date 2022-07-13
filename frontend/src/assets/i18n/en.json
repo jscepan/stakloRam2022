@@ -1,4 +1,8 @@
 {
+  "number": "Number",
+  "forPerson": "For person",
+  "note": "Note",
+  "createWorkOrder": "Create work order",
   "editCity": "Edity city",
   "displayName": "Display name",
   "accountNumber": "Account number (18 characters without any other signs - only numbers)",

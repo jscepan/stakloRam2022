@@ -1,0 +1,71 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="title">
+      <h3>
+        {{ (isEdit ? "editWorkOrder" : "createWorkOrder") | translate }}
+      </h3>
+    </div>
+    <form [formGroup]="formGroup" *ngIf="formGroup" class="form">
+      <div class="row">
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "number" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="number" />
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "buyer" | translate }}
+          </mat-label>
+          <mat-select
+            formControlName="buyer"
+            [disabled]="isEdit"
+            (valueChange)="buyerChanged()"
+            [compareWith]="compareFn"
+            (infiniteScroll)="bottomReachedHandlerBuyers()"
+            msInfiniteScroll
+            (selectionChange)="selectBuyer($event)"
+          >
+            <mat-option>
+              <ngx-mat-select-search
+                [formControl]="searchControl"
+                placeholderLabel="{{ 'searchFor' | translate }}"
+                noEntriesFoundLabel="{{ 'noResults' | translate }}"
+                (ngModelChange)="searchHandler($event)"
+                [hideClearSearchButton]="true"
+                [clearSearchInput]="true"
+                [searching]="(isLoading | async) || false"
+                [disableScrollToActiveOnOptionsChanged]="true"
+              ></ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngIf="selectedBuyer" [value]="selectedBuyer">{{
+              selectedBuyer.name
+            }}</mat-option>
+            <ng-container *ngFor="let buyer of buyersEntities | async">
+              <mat-option
+                [value]="buyer"
+                *ngIf="!(selectedBuyer?.oid === buyer.oid)"
+              >
+                {{ buyer.name }}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+        <app-button
+          [iconName]="'plus'"
+          (clickEvent)="createBuyer()"
+          class="create-buyer-button"
+          *ngIf="!isEdit"
+        ></app-button>
+      </div>
+    </form>
+  </div>
+</div>
