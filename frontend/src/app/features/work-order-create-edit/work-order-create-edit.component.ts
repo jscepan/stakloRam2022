@@ -123,7 +123,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
       buyer: new FormControl('', [Validators.required]),
       invoiceItems: new FormArray([]),
     });
-    // this.setInvoiceNumber();
+    this.setWorkOrderNumber();
   }
 
   initializeEdit(): void {
@@ -162,6 +162,18 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     // this.invoice.invoiceItems.forEach((item, index) =>
     //   this.addNewItem(index, item)
     // );
+  }
+
+  setWorkOrderNumber(): void {
+    this.webService
+      .getNextWorkOrderNumber(this.formGroup.get('dateOfCreate')?.value)
+      .subscribe((number) => {
+        this.formGroup
+          .get('number')
+          ?.setValue(
+            number + '/' + new Date().getFullYear().toString().substring(2, 4)
+          );
+      });
   }
 
   buyerChanged(): void {
