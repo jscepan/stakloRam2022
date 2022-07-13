@@ -38,8 +38,6 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/users")
     public User createNew(@RequestBody User object) throws SException {
-        System.out.println("object");
-        System.out.println(object);
         return (User) this.userService.createNewObject(object);
     }
 

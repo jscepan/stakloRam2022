@@ -9,6 +9,13 @@ const routes: Routes = [
         (m) => m.InvoiceViewModule
       ),
   },
+  {
+    path: 'work-order-view/:workOrderOID',
+    loadChildren: () =>
+      import('@features/work-order-view/work-order-view.module').then(
+        (m) => m.WorkOrderViewModule
+      ),
+  },
 ];
 
 @NgModule({
