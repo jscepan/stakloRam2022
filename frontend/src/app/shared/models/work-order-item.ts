@@ -2,6 +2,7 @@ import { BaseModel } from './base-model';
 
 export class WorkOrderItemModel extends BaseModel {
   description: string = '';
+  uom: string = '';
   dimension1: number = 0;
   dimension2: number = 0;
   dimension3: number = 0;

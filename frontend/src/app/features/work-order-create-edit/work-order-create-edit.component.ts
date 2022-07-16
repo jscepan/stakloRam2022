@@ -3,11 +3,14 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BuyerCreateEditPopupService } from '@features/settings/buyer-create-edit/buyer-create-edit-popup.service';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
+import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
 import { BaseModel } from 'src/app/shared/models/base-model';
 import { BuyerModel } from 'src/app/shared/models/buyer.model';
 import { SearchModel } from 'src/app/shared/models/search.model';
 import { WorkOrderModel } from 'src/app/shared/models/work-order';
+import { WorkOrderItemModel } from 'src/app/shared/models/work-order-item';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { ListEntities } from 'src/app/shared/services/list-entities';
 import {
@@ -53,6 +56,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     private listEntities: ListEntities<BuyerModel>,
     private buyerCreateEditPopupService: BuyerCreateEditPopupService,
     private buyerWebService: BuyerWebService,
+    private translateService: TranslateService,
     private settingsStoreService: SettingsStoreService,
     private webService: WorkOrderWebService
   ) {}
@@ -87,41 +91,18 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   initializeCreate(): void {
     this.formGroup = new FormGroup({
       number: new FormControl(0, [Validators.required]),
+      buyer: new FormControl('', [Validators.required]),
       dateOfCreate: new FormControl(new Date().toISOString().substring(0, 10), [
         Validators.required,
       ]),
-      dateOfTurnover: new FormControl(
-        new Date().toISOString().substring(0, 10),
+      placeOfIssue: new FormControl(
+        this.settings?.workOrderPlaceOfIssue || '',
         [Validators.required]
       ),
-      dateOfMaturity: new FormControl(
-        new Date().toISOString().substring(0, 10),
-        [Validators.required]
-      ),
-      placeOfIssue: new FormControl(this.settings?.invoicePlaceOfIssue || '', [
-        Validators.required,
-      ]),
-      netAmount: new FormControl(0, [
-        Validators.required,
-        Validators.min(0.01),
-      ]),
-      vatAmount: new FormControl(0, [
-        Validators.required,
-        Validators.min(0.01),
-      ]),
-      grossAmount: new FormControl(0, [
-        Validators.required,
-        Validators.min(0.01),
-      ]),
-      currency: new FormControl(this.settings?.invoiceCurrency || '', [
-        Validators.required,
-      ]),
-      country: new FormControl(this.settings?.invoiceCountry || '', [
-        Validators.required,
-      ]),
-      comment: new FormControl('', []),
-      buyer: new FormControl('', [Validators.required]),
-      invoiceItems: new FormArray([]),
+      forPerson: new FormControl(''),
+      description: new FormControl(''),
+      note: new FormControl(''),
+      workOrderItems: new FormArray([]),
     });
     this.setWorkOrderNumber();
   }
@@ -130,38 +111,41 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     this.selectedBuyer = this.workOrder.buyer;
     this.formGroup = new FormGroup({
       number: new FormControl(this.workOrder.number, [Validators.required]),
+      buyer: new FormControl(this.selectedBuyer, [Validators.required]),
       dateOfCreate: new FormControl(this.workOrder.dateOfCreate, [
         Validators.required,
       ]),
-      // dateOfTurnover: new FormControl(this.workOrder.dateOfTurnover, [
-      //   Validators.required,
-      // ]),
-      // dateOfMaturity: new FormControl(this.workOrder.dateOfMaturity, [
-      //   Validators.required,
-      // ]),
       placeOfIssue: new FormControl(this.workOrder.placeOfIssue, [
         Validators.required,
       ]),
-      // netAmount: new FormControl(this.workOrder.netAmount, [Validators.required]),
-      // vatAmount: new FormControl(this.workOrder.vatAmount, [Validators.required]),
-      // grossAmount: new FormControl(this.workOrder.grossAmount, [
-      //   Validators.required,
-      // ]),
-      // currency: new FormControl(this.workOrder.currency, [Validators.required]),
-      // country: new FormControl(this.workOrder.country, [Validators.required]),
-      // comment: new FormControl(this.workOrder.comment, []),
-      buyer: new FormControl(this.selectedBuyer, [Validators.required]),
-      invoiceItems: new FormArray([]),
+      forPerson: new FormControl(this.workOrder.forPerson, []),
+      description: new FormControl(this.workOrder.description, []),
+      note: new FormControl(this.workOrder.note, []),
+      workOrderItems: new FormArray([]),
     });
-    // if (this.formGroup.get('type')?.value === 'CASH') {
-    //   this.formGroup.addControl(
-    //     'numberOfCashBill',
-    //     new FormControl(this.workOrder.numberOfCashBill, [Validators.required])
-    //   );
-    // }
-    // this.invoice.invoiceItems.forEach((item, index) =>
-    //   this.addNewItem(index, item)
-    // );
+    this.workOrder.workOrderItems.forEach((item, index) =>
+      this.addNewItem(index, item)
+    );
+  }
+
+  get workOrderItemsFormArr(): FormArray {
+    return this.formGroup.get('workOrderItems') as FormArray;
+  }
+
+  addNewItem(index: number = 0, workOrderItem?: WorkOrderItemModel): void {
+    // TODO
+    this.workOrderItemsFormArr.push(
+      new FormGroup({
+        oid: new FormControl(workOrderItem?.oid || ''),
+        description: new FormControl(workOrderItem?.description || ''),
+        uom: new FormControl(workOrderItem?.uom),
+        dimension1: new FormControl(workOrderItem?.dimension1 || 0),
+        dimension2: new FormControl(workOrderItem?.dimension2 || 0),
+        quantity: new FormControl(workOrderItem?.quantity || 0),
+        sumQuantity: new FormControl(workOrderItem?.sumQuantity || 0),
+        note: new FormControl(workOrderItem?.note || ''),
+      })
+    );
   }
 
   setWorkOrderNumber(): void {
@@ -178,6 +162,13 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
 
   buyerChanged(): void {
     // TODO
+    setTimeout(() => {
+      this.isBuyerSelected = this.formGroup.get('buyer')?.value;
+
+      if (this.workOrderItemsFormArr.controls.length === 0) {
+        this.addNewItem();
+      }
+    });
   }
 
   bottomReachedHandlerBuyers(): void {
@@ -202,6 +193,41 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
         this.listEntities.requestFirstPage();
       }
     });
+  }
+
+  cancel(): void {
+    this.router.navigate(['/']);
+  }
+
+  handleSubmitButton(): void {
+    // this.setAllInvoiceAmounts();
+    if (this.isEdit && this.workOrderOID) {
+      this.webService
+        .updateEntity(this.workOrderOID, this.formGroup.value)
+        .subscribe((invoice) => {
+          if (invoice) {
+            this.globalService.showBasicAlert(
+              MODE.success,
+              this.translateService.instant('successfully'),
+              this.translateService.instant('workOrderIsSuccessfullyUpdated')
+            );
+          }
+        });
+    } else {
+      this.webService
+        .createEntity(this.formGroup.value)
+        .subscribe((workOrder) => {
+          if (workOrder) {
+            this.globalService.showBasicAlert(
+              MODE.success,
+              this.translateService.instant('successfully'),
+              this.translateService.instant('newWorkOrderIsSuccessfullyCreated')
+            );
+            window.open('print/work-order-view/' + workOrder.oid);
+            this.router.navigate(['workOrders', 'edit', workOrder.oid]);
+          }
+        });
+    }
   }
 
   ngOnDestroy(): void {

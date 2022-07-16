@@ -6,6 +6,7 @@ import { BASE_API_URL } from '../constants';
 export class AppSettings {
   invoiceCountry?: string;
   invoicePlaceOfIssue?: string;
+  workOrderPlaceOfIssue?: string;
   invoiceCurrency?: string;
   invoiceFooter?: string;
   invoicePayingCompanyName?: string;

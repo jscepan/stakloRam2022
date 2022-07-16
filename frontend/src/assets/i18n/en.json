@@ -1,4 +1,10 @@
 {
+  "typeOfGlassService": "Type of glass service",
+  "widthMM": "widthMM",
+  "heightMM": "heightMM",
+  "sum": "Sum",
+  "workOrder": "Work order",
+  "numberOfWorkOrder": "Number of work order",
   "number": "Number",
   "forPerson": "For person",
   "note": "Note",

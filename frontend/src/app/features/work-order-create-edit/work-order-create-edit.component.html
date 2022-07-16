@@ -12,7 +12,7 @@
             [class.mark-required]="true"
             [class.mark-opt-required]="true"
           >
-            {{ "number" | translate }}
+            {{ "numberOfWorkOrder" | translate }}
           </mat-label>
           <input type="text" matInput formControlName="number" />
         </mat-form-field>
@@ -66,6 +66,153 @@
           *ngIf="!isEdit"
         ></app-button>
       </div>
+      <div class="row">
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "forPerson" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="forPerson" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "description" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="description" />
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "dateOfCreate" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="dateOfCreate" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "placeOfIssue" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="placeOfIssue" />
+        </mat-form-field>
+      </div>
+      <div formArrayName="workOrderItems" class="work-order-items">
+        <div
+          *ngFor="let comp of workOrderItemsFormArr.controls; let i = index"
+          class="work-order-item"
+        >
+          <div [formGroupName]="i" class="form-group">
+            <mat-form-field class="full-width">
+              <mat-label
+                [class.mark-required]="true"
+                [class.mark-opt-required]="true"
+              >
+                {{ "description" | translate }}
+              </mat-label>
+              <input type="text" matInput formControlName="description" />
+            </mat-form-field>
+            <mat-form-field class="number-field">
+              <mat-label
+                [class.mark-required]="true"
+                [class.mark-opt-required]="true"
+              >
+                {{ "uom" | translate }}
+              </mat-label>
+              <input type="text" matInput formControlName="uom" />
+            </mat-form-field>
+            <mat-form-field class="number-field">
+              <mat-label
+                [class.mark-required]="true"
+                [class.mark-opt-required]="true"
+              >
+                {{ "widthMM" | translate }}
+              </mat-label>
+              <input type="number" matInput formControlName="dimension1" />
+            </mat-form-field>
+            <mat-form-field class="number-field">
+              <mat-label
+                [class.mark-required]="true"
+                [class.mark-opt-required]="true"
+              >
+                {{ "heightMM" | translate }}
+              </mat-label>
+              <input type="number" matInput formControlName="dimension2" />
+            </mat-form-field>
+            <mat-form-field class="number-field">
+              <mat-label
+                [class.mark-required]="true"
+                [class.mark-opt-required]="true"
+              >
+                {{ "quantity" | translate }}
+              </mat-label>
+              <input type="number" matInput formControlName="quantity" />
+            </mat-form-field>
+            <mat-form-field class="number-field">
+              <mat-label
+                [class.mark-required]="true"
+                [class.mark-opt-required]="true"
+              >
+                {{ "sum" | translate }}
+              </mat-label>
+              <input type="number" matInput formControlName="sumQuantity" />
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <mat-label
+                [class.mark-required]="true"
+                [class.mark-opt-required]="true"
+              >
+                {{ "note" | translate }}
+              </mat-label>
+              <input type="text" matInput formControlName="note" />
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <app-button
+          [iconName]="'plus'"
+          [text]="'addNewItem' | translate"
+          (clickEvent)="addNewItem()"
+          class="big-button"
+          [disabled]="!isBuyerSelected"
+        ></app-button>
+      </div>
+
+      <div class="row">
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "note" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="note" />
+        </mat-form-field>
+      </div>
     </form>
+    <div class="button-section" *ngIf="formGroup">
+      <app-button
+        [text]="'cancel' | translate"
+        color="secondary"
+        (clickEvent)="cancel()"
+        class="cancel"
+      ></app-button>
+      <app-button
+        [text]="'save' | translate"
+        [disabled]="!formGroup.dirty || formGroup.invalid"
+        class="update"
+        (clickEvent)="handleSubmitButton()"
+      ></app-button>
+    </div>
   </div>
 </div>

@@ -1,4 +1,10 @@
 {
+  "typeOfGlassService": "Vrsta stakla-usluge",
+  "widthMM": "Širina (mm)",
+  "heightMM": "Visina (mm)",
+  "sum": "Ukupno",
+  "workOrder": "Radni nalog",
+  "numberOfWorkOrder": "Broj radnog naloga",
   "number": "Broj",
   "forPerson": "Za osobu",
   "note": "Napomena",

@@ -321,6 +321,7 @@ DROP TABLE IF EXISTS `stakloram2022`.`work_order_item` ;
 CREATE TABLE IF NOT EXISTS `stakloram2022`.`work_order_item` (
   `work_order_item_id` INT(11) NOT NULL AUTO_INCREMENT,
   `work_order_item_description` VARCHAR(5000) NULL DEFAULT NULL,
+  `work_order_item_uom` VARCHAR(50) NULL DEFAULT NULL,
   `work_order_item_dimension1` DECIMAL(19,2) NULL DEFAULT NULL,
   `work_order_item_dimension2` DECIMAL(19,2) NULL DEFAULT NULL,
   `work_order_item_dimension3` DECIMAL(19,2) NULL DEFAULT NULL,

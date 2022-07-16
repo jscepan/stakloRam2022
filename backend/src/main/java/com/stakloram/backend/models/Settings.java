@@ -5,6 +5,7 @@ public class Settings {
 
     private String invoiceCountry;
     private String invoicePlaceOfIssue;
+    private String workOrderPlaceOfIssue;
     private String invoiceCurrency;
     private String invoiceFooter;
     private String invoicePayingCompanyName;
@@ -39,6 +40,14 @@ public class Settings {
 
     public void setInvoicePlaceOfIssue(String invoicePlaceOfIssue) {
         this.invoicePlaceOfIssue = invoicePlaceOfIssue;
+    }
+
+    public String getWorkOrderPlaceOfIssue() {
+        return workOrderPlaceOfIssue;
+    }
+
+    public void setWorkOrderPlaceOfIssue(String workOrderPlaceOfIssue) {
+        this.workOrderPlaceOfIssue = workOrderPlaceOfIssue;
     }
 
     public String getInvoiceCurrency() {

@@ -40,6 +40,11 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
             this.settingsStoreService.getSettings()?.invoicePlaceOfIssue || '',
             [Validators.required]
           ),
+          workOrderPlaceOfIssue: new FormControl(
+            this.settingsStoreService.getSettings()?.workOrderPlaceOfIssue ||
+              '',
+            [Validators.required]
+          ),
           invoiceCurrency: new FormControl(
             this.settingsStoreService.getSettings()?.invoiceCurrency || '',
             [Validators.required]

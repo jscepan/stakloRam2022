@@ -23,8 +23,9 @@ public class WorkOrderItemStore extends ObjectStore {
     public WorkOrderItem createNewObjectToDatabase(BaseModel model, Long workOrderId) throws SQLException {
         WorkOrderItem object = (WorkOrderItem) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getDescription());
+        st.setString(++i, object.getUom());
         st.setDouble(++i, object.getDimension1());
         st.setDouble(++i, object.getDimension2());
         st.setDouble(++i, object.getDimension3());
@@ -55,6 +56,7 @@ public class WorkOrderItemStore extends ObjectStore {
         int i = 0;
         PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_description=?,"
+                + this.getTableName() + "_uom=?,"
                 + this.getTableName() + "_dimension1=?,"
                 + this.getTableName() + "_dimension2=?,"
                 + this.getTableName() + "_dimension3=?,"
@@ -64,6 +66,7 @@ public class WorkOrderItemStore extends ObjectStore {
                 + this.getTableName() + "_settled=?"
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setString(++i, object.getDescription());
+        st.setString(++i, object.getUom());
         st.setDouble(++i, object.getDimension1());
         st.setDouble(++i, object.getDimension2());
         st.setDouble(++i, object.getDimension3());
@@ -100,6 +103,7 @@ public class WorkOrderItemStore extends ObjectStore {
     public WorkOrderItem getObjectFromResultSet(ResultSet resultSet) throws SQLException {
         WorkOrderItem object = new WorkOrderItem(resultSet.getLong(this.getPrimaryKey()));
         object.setDescription(resultSet.getString(this.getTableName() + "_description"));
+        object.setUom(resultSet.getString(this.getTableName() + "_uom"));
         object.setDimension1(resultSet.getLong(this.getTableName() + "_dimension1"));
         object.setDimension2(resultSet.getLong(this.getTableName() + "_dimension2"));
         object.setDimension3(resultSet.getLong(this.getTableName() + "_dimension3"));
