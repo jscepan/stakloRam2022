@@ -128,7 +128,17 @@
               >
                 {{ "uom" | translate }}
               </mat-label>
-              <input type="text" matInput formControlName="uom" />
+              <mat-select
+                formControlName="uom"
+                (valueChange)="uomChanged($event, i)"
+              >
+                <mat-option
+                  *ngFor="let item of uomOptions"
+                  [value]="item.value"
+                >
+                  {{ item.displayName | translate }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
             <mat-form-field class="number-field">
               <mat-label
@@ -137,7 +147,12 @@
               >
                 {{ "widthMM" | translate }}
               </mat-label>
-              <input type="number" matInput formControlName="dimension1" />
+              <input
+                type="number"
+                matInput
+                formControlName="dimension1"
+                (change)="calculateWorkOrderSum(i)"
+              />
             </mat-form-field>
             <mat-form-field class="number-field">
               <mat-label
@@ -146,7 +161,12 @@
               >
                 {{ "heightMM" | translate }}
               </mat-label>
-              <input type="number" matInput formControlName="dimension2" />
+              <input
+                type="number"
+                matInput
+                formControlName="dimension2"
+                (change)="calculateWorkOrderSum(i)"
+              />
             </mat-form-field>
             <mat-form-field class="number-field">
               <mat-label
@@ -155,7 +175,12 @@
               >
                 {{ "quantity" | translate }}
               </mat-label>
-              <input type="number" matInput formControlName="quantity" />
+              <input
+                type="number"
+                matInput
+                formControlName="quantity"
+                (change)="calculateWorkOrderSum(i)"
+              />
             </mat-form-field>
             <mat-form-field class="number-field">
               <mat-label
@@ -164,7 +189,12 @@
               >
                 {{ "sum" | translate }}
               </mat-label>
-              <input type="number" matInput formControlName="sumQuantity" />
+              <input
+                type="number"
+                matInput
+                formControlName="sumQuantity"
+                (change)="calculateSum()"
+              />
             </mat-form-field>
             <mat-form-field class="full-width">
               <mat-label
@@ -175,6 +205,12 @@
               </mat-label>
               <input type="text" matInput formControlName="note" />
             </mat-form-field>
+            <app-button
+              [iconName]="'minus'"
+              (clickEvent)="removeItem(i)"
+              [isTransparentMode]="true"
+              class="additional-button"
+            ></app-button>
           </div>
         </div>
       </div>
@@ -187,7 +223,10 @@
           [disabled]="!isBuyerSelected"
         ></app-button>
       </div>
-
+      {{ "sumMeter2:" + sumMeter2 }}
+      {{ "sumMeter:" + sumMeter }}
+      {{ "sumPieces:" + sumPieces }}
+      {{ "sumHours:" + sumHours }}
       <div class="row">
         <mat-form-field>
           <mat-label
@@ -196,7 +235,7 @@
           >
             {{ "note" | translate }}
           </mat-label>
-          <input type="text" matInput formControlName="note" />
+          <textarea matInput formControlName="note"></textarea>
         </mat-form-field>
       </div>
     </form>

@@ -3,7 +3,7 @@ package com.stakloram.backend.models;
 public class WorkOrderItem extends BaseModel {
 
     private String description;
-    private String uom;
+    private UOM uom;
     private double dimension1;
     private double dimension2;
     private double dimension3;
@@ -23,7 +23,7 @@ public class WorkOrderItem extends BaseModel {
         super(id);
     }
 
-    public WorkOrderItem(String description, String uom, double dimension1, double dimension2, double dimension3, double quantity, double sumQuantity, String note, boolean settled, String oid) {
+    public WorkOrderItem(String description, UOM uom, double dimension1, double dimension2, double dimension3, double quantity, double sumQuantity, String note, boolean settled, String oid) {
         super(oid);
         this.description = description;
         this.uom = uom;
@@ -36,7 +36,7 @@ public class WorkOrderItem extends BaseModel {
         this.settled = settled;
     }
 
-    public WorkOrderItem(String description, String uom, double dimension1, double dimension2, double dimension3, double quantity, double sumQuantity, String note, boolean settled, Long id) {
+    public WorkOrderItem(String description, UOM uom, double dimension1, double dimension2, double dimension3, double quantity, double sumQuantity, String note, boolean settled, Long id) {
         super(id);
         this.description = description;
         this.uom = uom;
@@ -57,11 +57,11 @@ public class WorkOrderItem extends BaseModel {
         this.description = description;
     }
 
-    public String getUom() {
+    public UOM getUom() {
         return uom;
     }
 
-    public void setUom(String uom) {
+    public void setUom(UOM uom) {
         this.uom = uom;
     }
 
@@ -124,5 +124,9 @@ public class WorkOrderItem extends BaseModel {
     @Override
     public String toString() {
         return "WorkOrderItem{" + "description=" + description + ", uom=" + uom + ", dimension1=" + dimension1 + ", dimension2=" + dimension2 + ", dimension3=" + dimension3 + ", quantity=" + quantity + ", sumQuantity=" + sumQuantity + ", note=" + note + ", settled=" + settled + '}';
+    }
+
+    public enum UOM {
+        M2, M, PCS, HOUR;
     }
 }

@@ -1,11 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BuyerCreateEditPopupService } from '@features/settings/buyer-create-edit/buyer-create-edit-popup.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
+import { WORK_ORDER_UOM } from 'src/app/shared/constants';
+import { EnumValueModel } from 'src/app/shared/enums/enum.model';
 import { BaseModel } from 'src/app/shared/models/base-model';
 import { BuyerModel } from 'src/app/shared/models/buyer.model';
 import { SearchModel } from 'src/app/shared/models/search.model';
@@ -42,12 +50,34 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   isEdit: boolean = false;
   settings?: AppSettings;
   isBuyerSelected?: boolean;
+  uomOptions: EnumValueModel[] = WORK_ORDER_UOM;
 
   buyersEntities: Observable<BuyerModel[]> = this.listEntities.entities;
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
   searchControl: FormControl = new FormControl();
   selectedBuyer?: BuyerModel;
   compareFn: (f1: BaseModel, f2: BaseModel) => boolean = compareByValue;
+
+  getUOM(index: number): AbstractControl | null {
+    return this.workOrderItemsFormArr.controls[index].get('uom');
+  }
+  getDimension1(index: number): AbstractControl | null {
+    return this.workOrderItemsFormArr.controls[index].get('dimension1');
+  }
+  getDimension2(index: number): AbstractControl | null {
+    return this.workOrderItemsFormArr.controls[index].get('dimension2');
+  }
+  getQuantity(index: number): AbstractControl | null {
+    return this.workOrderItemsFormArr.controls[index].get('quantity');
+  }
+  getSumQuantity(index: number): AbstractControl | null {
+    return this.workOrderItemsFormArr.controls[index].get('sumQuantity');
+  }
+
+  sumMeter2: number = 0;
+  sumMeter: number = 0;
+  sumPieces: number = 0;
+  sumHours: number = 0;
 
   constructor(
     private router: Router,
@@ -137,15 +167,71 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     this.workOrderItemsFormArr.push(
       new FormGroup({
         oid: new FormControl(workOrderItem?.oid || ''),
-        description: new FormControl(workOrderItem?.description || ''),
-        uom: new FormControl(workOrderItem?.uom),
+        description: new FormControl(workOrderItem?.description || '', [
+          Validators.required,
+        ]),
+        uom: new FormControl(workOrderItem?.uom || this.uomOptions[0].value, [
+          Validators.required,
+        ]),
         dimension1: new FormControl(workOrderItem?.dimension1 || 0),
         dimension2: new FormControl(workOrderItem?.dimension2 || 0),
         quantity: new FormControl(workOrderItem?.quantity || 0),
-        sumQuantity: new FormControl(workOrderItem?.sumQuantity || 0),
+        sumQuantity: new FormControl(workOrderItem?.sumQuantity || 0, [
+          Validators.required,
+        ]),
         note: new FormControl(workOrderItem?.note || ''),
       })
     );
+  }
+
+  removeItem(index: number): void {
+    this.workOrderItemsFormArr.removeAt(index);
+    this.calculateSum();
+  }
+
+  calculateWorkOrderSum(index: number): void {
+    // TODO
+    this.getSumQuantity(index)?.setValue(
+      (this.getDimension1(index)?.value *
+        this.getDimension2(index)?.value *
+        this.getQuantity(index)?.value) /
+        10000
+    );
+  }
+
+  calculateSum(): void {
+    this.sumMeter2 = 0;
+    this.sumMeter = 0;
+    this.sumPieces = 0;
+    this.sumHours = 0;
+    this.workOrderItemsFormArr.controls.forEach((item, index) => {
+      switch (this.getUOM(index)?.value) {
+        case 'M2':
+          this.sumMeter2 += this.getSumQuantity(index)?.value;
+          break;
+        case 'M':
+          this.sumMeter += this.getSumQuantity(index)?.value;
+          break;
+        case 'PCS':
+          this.sumPieces += this.getSumQuantity(index)?.value;
+          break;
+        case 'HOUR':
+          this.sumHours += this.getSumQuantity(index)?.value;
+          break;
+      }
+    });
+  }
+
+  uomChanged(uom: any, index: number): void {
+    if (uom === ('PCS' || 'HOUR')) {
+      this.getDimension1(index)?.disable();
+      this.getDimension2(index)?.disable();
+      this.getQuantity(index)?.disable();
+    } else {
+      this.getDimension1(index)?.enable();
+      this.getDimension2(index)?.enable();
+      this.getQuantity(index)?.enable();
+    }
   }
 
   setWorkOrderNumber(): void {

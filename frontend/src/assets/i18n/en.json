@@ -1,4 +1,6 @@
 {
+  "pieces": "Pieces",
+  "hour": "Hour",
   "typeOfGlassService": "Type of glass service",
   "widthMM": "widthMM",
   "heightMM": "heightMM",

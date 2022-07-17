@@ -5,6 +5,7 @@ import static com.stakloram.backend.database.ObjectStore.DATABASE_NAME;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.WorkOrderItem;
+import com.stakloram.backend.models.WorkOrderItem.UOM;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +26,7 @@ public class WorkOrderItemStore extends ObjectStore {
         int i = 0;
         PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getDescription());
-        st.setString(++i, object.getUom());
+        st.setString(++i, object.getUom().name());
         st.setDouble(++i, object.getDimension1());
         st.setDouble(++i, object.getDimension2());
         st.setDouble(++i, object.getDimension3());
@@ -66,7 +67,7 @@ public class WorkOrderItemStore extends ObjectStore {
                 + this.getTableName() + "_settled=?"
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setString(++i, object.getDescription());
-        st.setString(++i, object.getUom());
+        st.setString(++i, object.getUom().name());
         st.setDouble(++i, object.getDimension1());
         st.setDouble(++i, object.getDimension2());
         st.setDouble(++i, object.getDimension3());
@@ -103,7 +104,7 @@ public class WorkOrderItemStore extends ObjectStore {
     public WorkOrderItem getObjectFromResultSet(ResultSet resultSet) throws SQLException {
         WorkOrderItem object = new WorkOrderItem(resultSet.getLong(this.getPrimaryKey()));
         object.setDescription(resultSet.getString(this.getTableName() + "_description"));
-        object.setUom(resultSet.getString(this.getTableName() + "_uom"));
+        object.setUom(UOM.valueOf(resultSet.getString(this.getTableName() + "_uom")));
         object.setDimension1(resultSet.getLong(this.getTableName() + "_dimension1"));
         object.setDimension2(resultSet.getLong(this.getTableName() + "_dimension2"));
         object.setDimension3(resultSet.getLong(this.getTableName() + "_dimension3"));
