@@ -25,6 +25,7 @@
           [isTransparentMode]="true"
           [text]="'createNumber' | translate"
           (clickEvent)="setWorkOrderNumber()"
+          class="bottom-padding"
         ></app-button>
       </div>
       <div class="row">
@@ -74,6 +75,7 @@
           (clickEvent)="createBuyer()"
           class="create-buyer-button"
           *ngIf="!isEdit"
+          class="bottom-padding"
         ></app-button>
       </div>
       <div class="row">

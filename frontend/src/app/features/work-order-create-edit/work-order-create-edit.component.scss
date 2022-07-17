@@ -3,7 +3,7 @@
 
   .container {
     width: 100%;
-    height: calc(100%);
+    height: calc(100% - 50px);
     overflow-y: auto;
 
     .title {
@@ -20,6 +20,13 @@
 
       .row {
         display: flex;
+
+        .bottom-padding {
+          display: flex;
+          align-items: center;
+          padding-bottom: 1.34375em;
+          margin-left: 20px;
+        }
 
         &.full-width {
           justify-content: space-between;
