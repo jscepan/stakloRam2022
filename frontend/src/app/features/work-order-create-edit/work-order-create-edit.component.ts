@@ -26,7 +26,11 @@ import {
   SettingsStoreService,
 } from 'src/app/shared/services/settings-store.service';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
-import { compareByValue } from 'src/app/shared/utils';
+import {
+  compareByValue,
+  getConstructionMeasure,
+  roundOnDigits,
+} from 'src/app/shared/utils';
 import { BuyerWebService } from 'src/app/web-services/buyer.web-service';
 import { WorkOrderWebService } from 'src/app/web-services/work-order.web-service';
 
@@ -75,7 +79,9 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   }
 
   sumMeter2: number = 0;
+  sumMeter2Quantity: number = 0;
   sumMeter: number = 0;
+  sumMeterQuantity: number = 0;
   sumPieces: number = 0;
   sumHours: number = 0;
 
@@ -182,6 +188,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
         note: new FormControl(workOrderItem?.note || ''),
       })
     );
+    this.calculateSum();
   }
 
   removeItem(index: number): void {
@@ -191,27 +198,50 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
 
   calculateWorkOrderSum(index: number): void {
     // TODO
-    this.getSumQuantity(index)?.setValue(
-      (this.getDimension1(index)?.value *
-        this.getDimension2(index)?.value *
-        this.getQuantity(index)?.value) /
-        10000
-    );
+    switch (this.getUOM(index)?.value) {
+      case 'M2':
+        // calculate area
+        const area =
+          (getConstructionMeasure(this.getDimension1(index)?.value / 10) *
+            getConstructionMeasure(this.getDimension2(index)?.value / 10) *
+            this.getQuantity(index)?.value) /
+          10000;
+        this.getSumQuantity(index)?.setValue(roundOnDigits(area, 3));
+        break;
+      case 'M':
+        // calculate meters
+        const length =
+          (((this.getDimension1(index)?.value / 10) * 2) / 100 +
+            ((this.getDimension2(index)?.value / 10) * 2) / 100) *
+          this.getQuantity(index)?.value;
+        this.getSumQuantity(index)?.setValue(roundOnDigits(length, 3));
+        break;
+      case 'PCS':
+        // don't calculate
+        break;
+      case 'HOUR':
+        // don't calculate
+        break;
+    }
     this.calculateSum();
   }
 
   calculateSum(): void {
     this.sumMeter2 = 0;
+    this.sumMeter2Quantity = 0;
     this.sumMeter = 0;
+    this.sumMeterQuantity = 0;
     this.sumPieces = 0;
     this.sumHours = 0;
     this.workOrderItemsFormArr.controls.forEach((item, index) => {
       switch (this.getUOM(index)?.value) {
         case 'M2':
           this.sumMeter2 += this.getSumQuantity(index)?.value;
+          this.sumMeter2Quantity += this.getQuantity(index)?.value;
           break;
         case 'M':
           this.sumMeter += this.getSumQuantity(index)?.value;
+          this.sumMeterQuantity += this.getQuantity(index)?.value;
           break;
         case 'PCS':
           this.sumPieces += this.getSumQuantity(index)?.value;
@@ -223,23 +253,26 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  uomChanged(uom: any, index: number): void {
+  uomChanged(uom: string, index: number): void {
     if (uom === 'PCS' || uom === 'HOUR') {
+      this.getDimension1(index)?.setValue(0);
       this.getDimension1(index)?.disable();
+      this.getDimension2(index)?.setValue(0);
       this.getDimension2(index)?.disable();
+      this.getQuantity(index)?.setValue(0);
       this.getQuantity(index)?.disable();
-      this.getSumQuantity(index);
       setTimeout(() => {
-        this.setFocusOn('sumQuantity', index);
+        this.setFocusOn('sumQuantity', index, true);
       });
     } else {
       this.getDimension1(index)?.enable();
       this.getDimension2(index)?.enable();
       this.getQuantity(index)?.enable();
       setTimeout(() => {
-        this.setFocusOn('dimension1', index);
+        this.setFocusOn('dimension1', index, true);
       });
     }
+    this.getSumQuantity(index);
     this.calculateSum();
   }
 
@@ -250,7 +283,15 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
         this.formGroup
           .get('number')
           ?.setValue(
-            number + '/' + new Date().getFullYear().toString().substring(2, 4)
+            number +
+              '/' +
+              (
+                new Date(this.formGroup.get('dateOfCreate')?.value) ||
+                new Date()
+              )
+                .getFullYear()
+                .toString()
+                .substring(2, 4)
           );
       });
   }
@@ -263,6 +304,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
       if (this.workOrderItemsFormArr.controls.length === 0) {
         this.addNewItem();
       }
+      this.setFocusOn('forPerson');
     });
   }
 
@@ -325,6 +367,12 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     }
   }
 
+  openedToggleOnUomSelect(isOppened: boolean, index: number): void {
+    if (!isOppened && this.getUOM(index)?.value) {
+      this.uomChanged(this.getUOM(index)?.value, index);
+    }
+  }
+
   onKeypress(event: KeyboardEvent, input: string, index: number = -1) {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -337,48 +385,54 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
           break;
         case 'description':
           if (index < 0) {
-            this.setFocusOn('dateOfCreate');
+            this.setFocusOn('dateOfCreate', 0, true);
           } else {
             this.setFocusOn('uom', index);
           }
           break;
         case 'dateOfCreate':
-          this.setFocusOn('placeOfIssue');
+          this.setFocusOn('placeOfIssue', 0, true);
           break;
         case 'placeOfIssue':
-          this.setFocusOn('description', index + 2);
-          break;
-        case 'uom':
-          // TODO
+          this.setFocusOn('description', index + 2, true);
           break;
         case 'dimension1':
-          this.setFocusOn('dimension2', index);
+          this.setFocusOn('dimension2', index, true);
           break;
         case 'dimension2':
-          this.setFocusOn('quantity', index);
+          this.setFocusOn('quantity', index, true);
           break;
         case 'quantity':
-          this.setFocusOn('sumQuantity', index);
+          this.setFocusOn('sumQuantity', index, true);
           break;
         case 'sumQuantity':
-          this.setFocusOn('note', index);
+          this.setFocusOn('note', index, true);
           break;
         case 'note':
-          if (index >= 0) {
-            this.addNewItem();
-            setTimeout(() => {
-              this.setFocusOn('description', index + 2);
-            });
+          if (
+            index >= 0 &&
+            !this.workOrderItemsFormArr.controls[index + 1]?.value
+          ) {
+            this.addNewItem(this.workOrderItemsFormArr.controls[index].value);
           }
+          setTimeout(() => {
+            this.setFocusOn('description', index + 2, true);
+          });
           break;
       }
     }
   }
 
-  setFocusOn(formControlName: string, index: number = 0): void {
-    this.el.nativeElement
-      .querySelectorAll('[formcontrolname="' + formControlName + '"]')
-      [index < 0 ? 0 : index]?.focus();
+  setFocusOn(
+    formControlName: string,
+    index: number = 0,
+    markAll: boolean = false
+  ): void {
+    const element = this.el.nativeElement.querySelectorAll(
+      '[formcontrolname="' + formControlName + '"]'
+    )[index < 0 ? 0 : index];
+    element?.focus();
+    if (markAll) element.select();
   }
 
   ngOnDestroy(): void {

@@ -31,21 +31,27 @@
 
           .key {
             display: flex;
+            flex-direction: column;
             min-width: 130px;
             align-items: center;
-            justify-content: center;
+            justify-content: space-evenly;
             border-right: 1px dotted var(--color-main-dark);
             font-weight: 600;
           }
 
           .value {
             display: flex;
+            flex-direction: column;
             min-width: 100px;
             padding-right: 10px;
-            align-items: center;
-            justify-content: flex-end;
+            align-items: flex-end;
+            justify-content: space-evenly;
             border-right: 2px solid var(--color-main-dark);
           }
+        }
+
+        .text-area {
+          min-width: 400px;
         }
       }
 

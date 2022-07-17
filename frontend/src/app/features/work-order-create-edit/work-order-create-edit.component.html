@@ -21,6 +21,11 @@
             (keypress)="onKeypress($event, 'number')"
           />
         </mat-form-field>
+        <app-button
+          [isTransparentMode]="true"
+          [text]="'createNumber' | translate"
+          (clickEvent)="setWorkOrderNumber()"
+        ></app-button>
       </div>
       <div class="row">
         <mat-form-field>
@@ -110,7 +115,7 @@
             {{ "dateOfCreate" | translate }}
           </mat-label>
           <input
-            type="text"
+            type="date"
             matInput
             formControlName="dateOfCreate"
             (keypress)="onKeypress($event, 'dateOfCreate')"
@@ -160,12 +165,12 @@
               </mat-label>
               <mat-select
                 formControlName="uom"
-                (valueChange)="uomChanged($event, i)"
+                (focusout)="calculateWorkOrderSum(i)"
+                (openedChange)="openedToggleOnUomSelect($event, i)"
               >
                 <mat-option
                   *ngFor="let item of uomOptions"
                   [value]="item.value"
-                  (keypress)="onKeypress($event, 'uom')"
                 >
                   {{ item.displayName | translate }}
                 </mat-option>
@@ -184,6 +189,7 @@
                 formControlName="dimension1"
                 (keypress)="onKeypress($event, 'dimension1', i)"
                 (change)="calculateWorkOrderSum(i)"
+                (focusout)="calculateWorkOrderSum(i)"
               />
             </mat-form-field>
             <mat-form-field class="number-field">
@@ -199,6 +205,7 @@
                 formControlName="dimension2"
                 (keypress)="onKeypress($event, 'dimension2', i)"
                 (change)="calculateWorkOrderSum(i)"
+                (focusout)="calculateWorkOrderSum(i)"
               />
             </mat-form-field>
             <mat-form-field class="number-field">
@@ -214,6 +221,7 @@
                 formControlName="quantity"
                 (keypress)="onKeypress($event, 'quantity', i)"
                 (change)="calculateWorkOrderSum(i)"
+                (focusout)="calculateWorkOrderSum(i)"
               />
             </mat-form-field>
             <mat-form-field class="number-field">
@@ -229,6 +237,7 @@
                 formControlName="sumQuantity"
                 (keypress)="onKeypress($event, 'sumQuantity', i)"
                 (change)="calculateSum()"
+                (focusout)="calculateWorkOrderSum(i)"
               />
             </mat-form-field>
             <mat-form-field class="full-width">
@@ -264,13 +273,21 @@
         ></app-button>
         <div class="sum-info">
           <div class="key" *ngIf="sumMeter2 > 0">
-            {{ "sumMeter2" | translate }}
+            <div class="value1">{{ "sumMeter2" | translate }}</div>
+            <div class="value2">{{ "quantity" | translate }}</div>
           </div>
-          <div class="value" *ngIf="sumMeter2 > 0">{{ sumMeter2 }}</div>
+          <div class="value" *ngIf="sumMeter2 > 0">
+            <div class="value1">{{ sumMeter2 }}</div>
+            <div class="value2">{{ sumMeter2Quantity }}</div>
+          </div>
           <div class="key" *ngIf="sumMeter > 0">
-            {{ "sumMeter" | translate }}
+            <div class="value1">{{ "sumMeter" | translate }}</div>
+            <div class="value2">{{ "quantity" | translate }}</div>
           </div>
-          <div class="value" *ngIf="sumMeter > 0">{{ sumMeter }}</div>
+          <div class="value" *ngIf="sumMeter > 0">
+            <div class="value1">{{ sumMeter }}</div>
+            <div class="value2">{{ sumMeterQuantity }}</div>
+          </div>
           <div class="key" *ngIf="sumPieces > 0">
             {{ "sumPieces" | translate }}
           </div>
@@ -282,7 +299,7 @@
         </div>
       </div>
       <div class="row">
-        <mat-form-field>
+        <mat-form-field class="text-area">
           <mat-label
             [class.mark-required]="true"
             [class.mark-opt-required]="true"
@@ -293,6 +310,7 @@
             matInput
             formControlName="note"
             (keypress)="onKeypress($event, 'note')"
+            rows="3"
           ></textarea>
         </mat-form-field>
       </div>

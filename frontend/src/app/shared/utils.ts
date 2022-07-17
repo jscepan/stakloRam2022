@@ -33,7 +33,7 @@ export function constructUrl(
   return endpoint + queryParamsStr;
 }
 
-export function getServiceNumber(workOrder: WorkOrderModel): string {
+export function getWorkOrderNumber(workOrder: WorkOrderModel): string {
   return (
     workOrder.number +
     '/' +
@@ -134,6 +134,17 @@ export function roundOnDigits(
     Math.round(value * Math.pow(10, numberOfDigits)) /
     Math.pow(10, numberOfDigits)
   );
+}
+
+export function getConstructionMeasure(input: number): number {
+  let value = Math.round(input);
+  if (value < input) {
+    value++;
+  }
+  while (value % 3 !== 0) {
+    value++;
+  }
+  return value;
 }
 
 export function getDaysBetweenTwoDates(first: Date, second: Date): number {
