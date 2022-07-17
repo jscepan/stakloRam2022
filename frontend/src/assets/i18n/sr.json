@@ -1,4 +1,8 @@
 {
+  "sumMeter2": "Ukupno metara2",
+  "sumMeter": "Ukupno metara",
+  "sumPieces": "Ukupno komada",
+  "sumHours": "Ukupno sati",
   "pieces": "Kom",
   "hour": "Sat",
   "typeOfGlassService": "Vrsta stakla-usluge",

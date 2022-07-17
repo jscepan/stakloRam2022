@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -88,7 +88,8 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     private buyerWebService: BuyerWebService,
     private translateService: TranslateService,
     private settingsStoreService: SettingsStoreService,
-    private webService: WorkOrderWebService
+    private webService: WorkOrderWebService,
+    private el: ElementRef
   ) {}
 
   ngOnInit(): void {
@@ -154,7 +155,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
       workOrderItems: new FormArray([]),
     });
     this.workOrder.workOrderItems.forEach((item, index) =>
-      this.addNewItem(index, item)
+      this.addNewItem(item)
     );
   }
 
@@ -162,8 +163,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     return this.formGroup.get('workOrderItems') as FormArray;
   }
 
-  addNewItem(index: number = 0, workOrderItem?: WorkOrderItemModel): void {
-    // TODO
+  addNewItem(workOrderItem?: WorkOrderItemModel): void {
     this.workOrderItemsFormArr.push(
       new FormGroup({
         oid: new FormControl(workOrderItem?.oid || ''),
@@ -197,6 +197,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
         this.getQuantity(index)?.value) /
         10000
     );
+    this.calculateSum();
   }
 
   calculateSum(): void {
@@ -223,15 +224,23 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   }
 
   uomChanged(uom: any, index: number): void {
-    if (uom === ('PCS' || 'HOUR')) {
+    if (uom === 'PCS' || uom === 'HOUR') {
       this.getDimension1(index)?.disable();
       this.getDimension2(index)?.disable();
       this.getQuantity(index)?.disable();
+      this.getSumQuantity(index);
+      setTimeout(() => {
+        this.setFocusOn('sumQuantity', index);
+      });
     } else {
       this.getDimension1(index)?.enable();
       this.getDimension2(index)?.enable();
       this.getQuantity(index)?.enable();
+      setTimeout(() => {
+        this.setFocusOn('dimension1', index);
+      });
     }
+    this.calculateSum();
   }
 
   setWorkOrderNumber(): void {
@@ -314,6 +323,62 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
           }
         });
     }
+  }
+
+  onKeypress(event: KeyboardEvent, input: string, index: number = -1) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      switch (input) {
+        case 'number':
+          this.setFocusOn('buyer');
+          break;
+        case 'forPerson':
+          this.setFocusOn('description');
+          break;
+        case 'description':
+          if (index < 0) {
+            this.setFocusOn('dateOfCreate');
+          } else {
+            this.setFocusOn('uom', index);
+          }
+          break;
+        case 'dateOfCreate':
+          this.setFocusOn('placeOfIssue');
+          break;
+        case 'placeOfIssue':
+          this.setFocusOn('description', index + 2);
+          break;
+        case 'uom':
+          // TODO
+          break;
+        case 'dimension1':
+          this.setFocusOn('dimension2', index);
+          break;
+        case 'dimension2':
+          this.setFocusOn('quantity', index);
+          break;
+        case 'quantity':
+          this.setFocusOn('sumQuantity', index);
+          break;
+        case 'sumQuantity':
+          this.setFocusOn('note', index);
+          break;
+        case 'note':
+          if (index >= 0) {
+            this.addNewItem();
+            setTimeout(() => {
+              this.setFocusOn('description', index + 2);
+            });
+          }
+          break;
+      }
+    }
+  }
+
+  setFocusOn(formControlName: string, index: number = 0): void {
+    this.el.nativeElement
+      .querySelectorAll('[formcontrolname="' + formControlName + '"]')
+      [index < 0 ? 0 : index]?.focus();
   }
 
   ngOnDestroy(): void {

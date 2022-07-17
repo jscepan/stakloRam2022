@@ -14,7 +14,12 @@
           >
             {{ "numberOfWorkOrder" | translate }}
           </mat-label>
-          <input type="text" matInput formControlName="number" />
+          <input
+            type="text"
+            matInput
+            formControlName="number"
+            (keypress)="onKeypress($event, 'number')"
+          />
         </mat-form-field>
       </div>
       <div class="row">
@@ -74,7 +79,12 @@
           >
             {{ "forPerson" | translate }}
           </mat-label>
-          <input type="text" matInput formControlName="forPerson" />
+          <input
+            type="text"
+            matInput
+            formControlName="forPerson"
+            (keypress)="onKeypress($event, 'forPerson')"
+          />
         </mat-form-field>
         <mat-form-field>
           <mat-label
@@ -83,7 +93,12 @@
           >
             {{ "description" | translate }}
           </mat-label>
-          <input type="text" matInput formControlName="description" />
+          <input
+            type="text"
+            matInput
+            formControlName="description"
+            (keypress)="onKeypress($event, 'description')"
+          />
         </mat-form-field>
       </div>
       <div class="row">
@@ -94,7 +109,12 @@
           >
             {{ "dateOfCreate" | translate }}
           </mat-label>
-          <input type="text" matInput formControlName="dateOfCreate" />
+          <input
+            type="text"
+            matInput
+            formControlName="dateOfCreate"
+            (keypress)="onKeypress($event, 'dateOfCreate')"
+          />
         </mat-form-field>
         <mat-form-field>
           <mat-label
@@ -103,7 +123,12 @@
           >
             {{ "placeOfIssue" | translate }}
           </mat-label>
-          <input type="text" matInput formControlName="placeOfIssue" />
+          <input
+            type="text"
+            matInput
+            formControlName="placeOfIssue"
+            (keypress)="onKeypress($event, 'placeOfIssue')"
+          />
         </mat-form-field>
       </div>
       <div formArrayName="workOrderItems" class="work-order-items">
@@ -119,7 +144,12 @@
               >
                 {{ "description" | translate }}
               </mat-label>
-              <input type="text" matInput formControlName="description" />
+              <input
+                type="text"
+                matInput
+                formControlName="description"
+                (keypress)="onKeypress($event, 'description', i)"
+              />
             </mat-form-field>
             <mat-form-field class="number-field">
               <mat-label
@@ -135,6 +165,7 @@
                 <mat-option
                   *ngFor="let item of uomOptions"
                   [value]="item.value"
+                  (keypress)="onKeypress($event, 'uom')"
                 >
                   {{ item.displayName | translate }}
                 </mat-option>
@@ -151,6 +182,7 @@
                 type="number"
                 matInput
                 formControlName="dimension1"
+                (keypress)="onKeypress($event, 'dimension1', i)"
                 (change)="calculateWorkOrderSum(i)"
               />
             </mat-form-field>
@@ -165,6 +197,7 @@
                 type="number"
                 matInput
                 formControlName="dimension2"
+                (keypress)="onKeypress($event, 'dimension2', i)"
                 (change)="calculateWorkOrderSum(i)"
               />
             </mat-form-field>
@@ -179,6 +212,7 @@
                 type="number"
                 matInput
                 formControlName="quantity"
+                (keypress)="onKeypress($event, 'quantity', i)"
                 (change)="calculateWorkOrderSum(i)"
               />
             </mat-form-field>
@@ -193,6 +227,7 @@
                 type="number"
                 matInput
                 formControlName="sumQuantity"
+                (keypress)="onKeypress($event, 'sumQuantity', i)"
                 (change)="calculateSum()"
               />
             </mat-form-field>
@@ -203,7 +238,12 @@
               >
                 {{ "note" | translate }}
               </mat-label>
-              <input type="text" matInput formControlName="note" />
+              <input
+                type="text"
+                matInput
+                formControlName="note"
+                (keypress)="onKeypress($event, 'note', i)"
+              />
             </mat-form-field>
             <app-button
               [iconName]="'minus'"
@@ -214,7 +254,7 @@
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="row full-width">
         <app-button
           [iconName]="'plus'"
           [text]="'addNewItem' | translate"
@@ -222,11 +262,25 @@
           class="big-button"
           [disabled]="!isBuyerSelected"
         ></app-button>
+        <div class="sum-info">
+          <div class="key" *ngIf="sumMeter2 > 0">
+            {{ "sumMeter2" | translate }}
+          </div>
+          <div class="value" *ngIf="sumMeter2 > 0">{{ sumMeter2 }}</div>
+          <div class="key" *ngIf="sumMeter > 0">
+            {{ "sumMeter" | translate }}
+          </div>
+          <div class="value" *ngIf="sumMeter > 0">{{ sumMeter }}</div>
+          <div class="key" *ngIf="sumPieces > 0">
+            {{ "sumPieces" | translate }}
+          </div>
+          <div class="value" *ngIf="sumPieces > 0">{{ sumPieces }}</div>
+          <div class="key" *ngIf="sumHours > 0">
+            {{ "sumHours" | translate }}
+          </div>
+          <div class="value" *ngIf="sumHours > 0">{{ sumHours }}</div>
+        </div>
       </div>
-      {{ "sumMeter2:" + sumMeter2 }}
-      {{ "sumMeter:" + sumMeter }}
-      {{ "sumPieces:" + sumPieces }}
-      {{ "sumHours:" + sumHours }}
       <div class="row">
         <mat-form-field>
           <mat-label
@@ -235,7 +289,11 @@
           >
             {{ "note" | translate }}
           </mat-label>
-          <textarea matInput formControlName="note"></textarea>
+          <textarea
+            matInput
+            formControlName="note"
+            (keypress)="onKeypress($event, 'note')"
+          ></textarea>
         </mat-form-field>
       </div>
     </form>

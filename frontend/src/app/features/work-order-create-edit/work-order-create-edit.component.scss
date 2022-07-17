@@ -3,7 +3,7 @@
 
   .container {
     width: 100%;
-    height: calc(100% - 100px);
+    height: calc(100%);
     overflow-y: auto;
 
     .title {
@@ -20,6 +20,33 @@
 
       .row {
         display: flex;
+
+        &.full-width {
+          justify-content: space-between;
+        }
+
+        .sum-info {
+          display: flex;
+          border: 2px solid var(--color-main-dark);
+
+          .key {
+            display: flex;
+            min-width: 130px;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px dotted var(--color-main-dark);
+            font-weight: 600;
+          }
+
+          .value {
+            display: flex;
+            min-width: 100px;
+            padding-right: 10px;
+            align-items: center;
+            justify-content: flex-end;
+            border-right: 2px solid var(--color-main-dark);
+          }
+        }
       }
 
       .work-order-items {

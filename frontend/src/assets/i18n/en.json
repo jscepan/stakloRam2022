@@ -1,4 +1,8 @@
 {
+  "sumMeter2": "Sum meter2",
+  "sumMeter": "Sum meter",
+  "sumPieces": "Sum pieces",
+  "sumHours": "Sum hours",
   "pieces": "Pieces",
   "hour": "Hour",
   "typeOfGlassService": "Type of glass service",
