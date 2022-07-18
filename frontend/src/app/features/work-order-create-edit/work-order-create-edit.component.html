@@ -261,6 +261,13 @@
               [isTransparentMode]="true"
               class="additional-button"
             ></app-button>
+            <mat-checkbox
+              class="cons-measure-checkbox"
+              [color]="'primary'"
+              [checked]="true"
+              (change)="calculateWorkOrderSum(i, $event.checked)"
+              >{{ "consMeas" | translate }}</mat-checkbox
+            >
           </div>
         </div>
       </div>

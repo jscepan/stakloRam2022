@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { InvoiceSelectionPopupModule } from '@features/invoice-selection-popup/invoice-selection-popup.module';
 import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [WorkOrderCreateEditComponent],
@@ -34,6 +35,7 @@ import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
     MatIconModule,
     NgxMatSelectSearchModule,
     MatSelectInfiniteScrollModule,
+    MatCheckboxModule,
   ],
 })
 export class WorkOrderCreateEditModule {}

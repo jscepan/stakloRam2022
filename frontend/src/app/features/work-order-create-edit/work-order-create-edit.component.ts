@@ -199,20 +199,26 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     this.calculateSum();
   }
 
-  calculateWorkOrderSum(index: number): void {
-    // TODO
+  calculateWorkOrderSum(
+    index: number,
+    useOfConstructionMeasure: boolean = true
+  ): void {
     switch (this.getUOM(index)?.value) {
       case 'M2':
         // calculate area
         const area =
-          (getConstructionMeasure(
-            this.getDimension1(index)?.value / 10,
-            this.settings?.constructionMeasureCM
-          ) *
-            getConstructionMeasure(
-              this.getDimension2(index)?.value / 10,
-              this.settings?.constructionMeasureCM
-            ) *
+          ((useOfConstructionMeasure
+            ? getConstructionMeasure(
+                this.getDimension1(index)?.value / 10,
+                this.settings?.constructionMeasureCM
+              )
+            : this.getDimension1(index)?.value / 10) *
+            (useOfConstructionMeasure
+              ? getConstructionMeasure(
+                  this.getDimension2(index)?.value / 10,
+                  this.settings?.constructionMeasureCM
+                )
+              : this.getDimension2(index)?.value / 10) *
             this.getQuantity(index)?.value) /
           10000;
         this.getSumQuantity(index)?.setValue(
