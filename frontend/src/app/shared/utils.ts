@@ -136,12 +136,15 @@ export function roundOnDigits(
   );
 }
 
-export function getConstructionMeasure(input: number): number {
+export function getConstructionMeasure(
+  input: number,
+  minConstructionMeasure: number = 3
+): number {
   let value = Math.round(input);
   if (value < input) {
     value++;
   }
-  while (value % 3 !== 0) {
+  while (value % minConstructionMeasure !== 0) {
     value++;
   }
   return value;

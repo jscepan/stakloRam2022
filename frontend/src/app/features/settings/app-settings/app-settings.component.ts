@@ -115,6 +115,15 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
             this.settingsStoreService.getSettings()?.qrCodePayingPurpose || '',
             [Validators.required]
           ),
+          termoizolacGlassMinArea: new FormControl(
+            this.settingsStoreService.getSettings()?.termoizolacGlassMinArea ||
+              0.2,
+            [Validators.required]
+          ),
+          constructionMeasureCM: new FormControl(
+            this.settingsStoreService.getSettings()?.constructionMeasureCM || 3,
+            [Validators.required]
+          ),
         });
       }
     });

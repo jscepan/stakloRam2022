@@ -23,6 +23,8 @@ export class AppSettings {
   qrCodePayingCodePerson?: string;
   qrCodePayingCodeCompany?: string;
   qrCodePayingPurpose?: string;
+  termoizolacGlassMinArea?: number;
+  constructionMeasureCM?: number;
 }
 
 @Injectable({

@@ -15,12 +15,6 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ ("workOrder" | translate) + " - " + ("placeOfIssue" | translate) }}
-      </mat-label>
-      <input type="text" matInput formControlName="workOrderPlaceOfIssue" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
         {{ "currency" | translate }}
       </mat-label>
       <input type="text" matInput formControlName="invoiceCurrency" />
@@ -124,7 +118,25 @@
       </mat-label>
       <input type="text" matInput formControlName="qrCodePayingPurpose" />
     </mat-form-field>
-    <h1>{{ "task" | translate }}</h1>
+    <h1>{{ "workOrder" | translate }}</h1>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ ("workOrder" | translate) + " - " + ("placeOfIssue" | translate) }}
+      </mat-label>
+      <input type="text" matInput formControlName="workOrderPlaceOfIssue" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "termoizolacGlassMinArea" | translate }}
+      </mat-label>
+      <input type="number" matInput formControlName="termoizolacGlassMinArea" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "constructionMeasureCM" | translate }}
+      </mat-label>
+      <input type="number" matInput formControlName="constructionMeasureCM" />
+    </mat-form-field>
   </form>
   <div class="button-section">
     <app-button

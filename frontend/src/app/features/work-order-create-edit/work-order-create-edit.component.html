@@ -239,7 +239,6 @@
                 formControlName="sumQuantity"
                 (keypress)="onKeypress($event, 'sumQuantity', i)"
                 (change)="calculateSum()"
-                (focusout)="calculateWorkOrderSum(i)"
               />
             </mat-form-field>
             <mat-form-field class="full-width">
@@ -273,7 +272,10 @@
           class="big-button"
           [disabled]="!isBuyerSelected"
         ></app-button>
-        <div class="sum-info">
+        <div
+          class="sum-info"
+          *ngIf="sumMeter2 > 0 || sumMeter > 0 || sumPieces > 0 || sumHours > 0"
+        >
           <div class="key" *ngIf="sumMeter2 > 0">
             <div class="value1">{{ "sumMeter2" | translate }}</div>
             <div class="value2">{{ "quantity" | translate }}</div>

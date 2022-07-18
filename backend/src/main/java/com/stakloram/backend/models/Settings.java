@@ -22,6 +22,8 @@ public class Settings {
     private String qrCodePayingCodePerson;
     private String qrCodePayingCodeCompany;
     private String qrCodePayingPurpose;
+    private double termoizolacGlassMinArea;
+    private int constructionMeasureCM;
 
     public Settings() {
     }
@@ -176,5 +178,21 @@ public class Settings {
 
     public void setQrCodePayingPurpose(String qrCodePayingPurpose) {
         this.qrCodePayingPurpose = qrCodePayingPurpose;
+    }
+
+    public double getTermoizolacGlassMinArea() {
+        return termoizolacGlassMinArea;
+    }
+
+    public void setTermoizolacGlassMinArea(double termoizolacGlassMinArea) {
+        this.termoizolacGlassMinArea = termoizolacGlassMinArea;
+    }
+
+    public int getConstructionMeasureCM() {
+        return constructionMeasureCM;
+    }
+
+    public void setConstructionMeasureCM(int constructionMeasureCM) {
+        this.constructionMeasureCM = constructionMeasureCM;
     }
 }

@@ -62,6 +62,9 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   selectedBuyer?: BuyerModel;
   compareFn: (f1: BaseModel, f2: BaseModel) => boolean = compareByValue;
 
+  getDescription(index: number): AbstractControl | null {
+    return this.workOrderItemsFormArr.controls[index].get('description');
+  }
   getUOM(index: number): AbstractControl | null {
     return this.workOrderItemsFormArr.controls[index].get('uom');
   }
@@ -202,11 +205,24 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
       case 'M2':
         // calculate area
         const area =
-          (getConstructionMeasure(this.getDimension1(index)?.value / 10) *
-            getConstructionMeasure(this.getDimension2(index)?.value / 10) *
+          (getConstructionMeasure(
+            this.getDimension1(index)?.value / 10,
+            this.settings?.constructionMeasureCM
+          ) *
+            getConstructionMeasure(
+              this.getDimension2(index)?.value / 10,
+              this.settings?.constructionMeasureCM
+            ) *
             this.getQuantity(index)?.value) /
           10000;
-        this.getSumQuantity(index)?.setValue(roundOnDigits(area, 3));
+        this.getSumQuantity(index)?.setValue(
+          this.getDescription(index)
+            ?.value.toLowerCase()
+            .includes('termoizolaciono') &&
+            area < (this.settings?.termoizolacGlassMinArea || 0.2)
+            ? this.settings?.termoizolacGlassMinArea || 0.2
+            : roundOnDigits(area, 3)
+        );
         break;
       case 'M':
         // calculate meters
@@ -217,8 +233,6 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
         this.getSumQuantity(index)?.setValue(roundOnDigits(length, 3));
         break;
       case 'PCS':
-        // don't calculate
-        break;
       case 'HOUR':
         // don't calculate
         break;
