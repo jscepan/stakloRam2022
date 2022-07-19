@@ -140,37 +140,43 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     } else if (event.eventName === 'userProfile') {
       this.router.navigate(['settings', 'user-profile']);
     } else {
-      let navItem: SidebarNavItemI | undefined;
+      let selectedNavItem: SidebarNavItemI | undefined;
       this.sidebar.navItems.forEach((item) => {
         if (item.id === event.payload.navItemId) {
-          navItem = item;
+          selectedNavItem = item;
           return;
         }
         if (item.children?.length) {
           item.children.forEach((child) => {
             if (child.id === event.payload.navItemId) {
-              navItem = child;
+              selectedNavItem = child;
               return;
             }
           });
         }
       });
-
-      if (navItem) {
-        if (navItem?.children?.length) {
+      if (selectedNavItem) {
+        if (selectedNavItem?.children?.length) {
           this.sidebar = {
             ...this.sidebar,
             isExpanded: true,
             navItems: this.sidebar.navItems.map((item) => {
-              return item.id === event.payload.navItemId
-                ? { ...item, activated: true }
-                : item;
+              return {
+                ...item,
+                activated: item.id === event.payload.navItemId,
+              };
             }),
           };
         } else {
           this.sidebar = {
             ...this.sidebar,
             isExpanded: false,
+            navItems: this.sidebar.navItems.map((item) => {
+              return {
+                ...item,
+                activated: item.id === event.payload.navItemId,
+              };
+            }),
           };
           this.router.navigateByUrl(event.payload.navItemId);
         }
