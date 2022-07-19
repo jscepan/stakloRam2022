@@ -1,14 +1,17 @@
 package com.stakloram.backend.services.impl.builder.impl;
 
+import com.stakloram.backend.database.ResponseWithCount;
 import com.stakloram.backend.database.objects.BuyerStore;
 import com.stakloram.backend.database.objects.CityStore;
 import com.stakloram.backend.database.objects.WorkOrderItemStore;
 import com.stakloram.backend.database.objects.WorkOrderStore;
 import com.stakloram.backend.exception.SException;
+import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Buyer;
 import com.stakloram.backend.models.City;
 import com.stakloram.backend.models.Locator;
+import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.models.WorkOrderItem;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
@@ -79,6 +82,23 @@ public class WorkOrderBuilder extends BaseBuilder {
 //        this.databaseColumnsForAttributes.put("type", "type");
 //        this.databaseColumnsForAdvanceFilter.put("buyer", "invoice_buyer_buyer_id");
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    @Override
+    public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
+        try {
+            List<BaseModel> objects = new ArrayList<>();
+            ResponseWithCount rwc = super.searchObjects(this.getJoinObjectStoresForSqlFrom(Arrays.asList(BUYER_STORE)), searchObject, skip, top);
+            ResultSet rs = rwc.getResultSet();
+            while (rs.next()) {
+                WorkOrder workOrder = (WorkOrder) this.getObjectStore().getObjectFromResultSet(rs);
+                workOrder.setBuyer(BUYER_STORE.getObjectFromResultSet(rs));
+                objects.add(workOrder);
+            }
+            return new ArrayResponse(objects, rwc.getCount());
+        } catch (SQLException ex) {
+            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+        }
     }
 
     public long getNextWorkOrderNumber(int year) throws SException {

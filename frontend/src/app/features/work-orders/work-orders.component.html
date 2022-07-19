@@ -54,18 +54,18 @@
         <div class="grid-item">
           {{ workOrder.dateOfCreate }}
         </div>
-        <div class="grid-item align-right">
+        <div class="grid-item align-left">
           {{ workOrder.forPerson }}
         </div>
-        <div class="grid-item align-right">
+        <div class="grid-item align-left">
           {{ workOrder.description }}
         </div>
-        <div class="grid-item align-right">
+        <div class="grid-item align-left">
           {{ workOrder.note }}
         </div>
         <div class="grid-item">
           <app-button
-            [iconName]="'view'"
+            [iconName]="'eye'"
             [isTransparentMode]="true"
             (clickEvent)="viewWorkOrder(workOrder.oid)"
           ></app-button>

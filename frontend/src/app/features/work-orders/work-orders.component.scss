@@ -24,6 +24,9 @@
       .grid-item {
         &.header {
         }
+        &.align-left {
+          justify-content: flex-start;
+        }
       }
     }
   }
