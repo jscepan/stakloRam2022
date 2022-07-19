@@ -1,175 +1,117 @@
-<div class="container" *ngIf="invoice">
-  <div class="heading">
-    <div class="main">{{ placeholders.headerLine1 }}</div>
-    <div class="sub-heading">{{ placeholders.headerLine2 }}</div>
+<div class="container" *ngIf="workOrder">
+  <div class="header">
+    <div class="logo">
+      <img src="{{ 'assets/images/company_logo.PNG' }}" />
+    </div>
+    <div class="heading">
+      <div class="title">
+        {{
+          settings?.workOrderHeadingLine1 ||
+            "Proizvodnja termoizolacionog stakla"
+        }}
+      </div>
+      <div class="title">
+        {{
+          settings?.workOrderHeadingLine2 ||
+            "Oblikovanje i obrada ravnog stakla"
+        }}
+      </div>
+      <div class="title">
+        {{
+          settings?.workOrderHeadingLine3 ||
+            "Proizvodnja lajsni za ramove i uramljivanje slika"
+        }}
+      </div>
+      <div class="email">
+        {{ "email" | translate }}:
+        {{ settings?.companyEmail || "stakloramplus@hallsys.net" }}
+      </div>
+    </div>
   </div>
-  <div class="content">
-    <div class="title">
-      <div class="date-place">
-        <div class="date">
-          {{ placeholders.dateOfInvoice
-          }}{{ invoice.dateOfCreate | date: "dd.MM.yyyy" }}
+  <div class="company-description">
+    {{
+      settings?.workOrderCompanyDescription ||
+        "21400 Bačka Palanka. Žarka Zrenjanina 70; Tel.: 021/60 44 182; PIB: 105509737; T.R.: 310-16916-02 NLB Banka"
+    }}
+  </div>
+  <div class="body-content">
+    <div class="heading">
+      <div class="column-container">
+        <div class="column">
+          <div class="line">{{ "orderer" | translate }}:</div>
+          <div class="line">{{ "forNeedsOf" | translate }}:</div>
+          <div class="line">{{ "workOrderNr" | translate }}.:</div>
         </div>
-        <div class="place">
-          {{ placeholders.placeOfInvoice }}{{ invoice.placeOfIssue }}
-        </div>
-      </div>
-      <div class="buyer">
-        <div class="name">{{ invoice.buyer.name }}</div>
-        <div class="address">{{ invoice.buyer.address }}</div>
-        <div class="city">
-          {{ invoice.buyer.city?.zipCode }}&nbsp;{{ invoice.buyer.city?.name }}
-        </div>
-        <div class="numbers" *ngIf="invoice.buyer.type !== 'PERSON'">
-          {{ placeholders.pib }}{{ invoice.buyer.pib }},&nbsp;{{
-            placeholders.mb
-          }}{{ invoice.buyer.maticalNumber }}
+        <div class="column">
+          <div class="line">{{ workOrder.buyer.name }}</div>
+          <div class="line">{{ workOrder.forPerson }}</div>
+          <div class="line">{{ getWorkOrderNumber(workOrder) }}</div>
         </div>
       </div>
-    </div>
-    <div class="middle-part">
-      <div class="left">
-        <div class="invoice-number">
-          <ng-container [ngSwitch]="invoice.type">
-            <span *ngSwitchCase="'ADVANCE_INVOICE'">{{
-              placeholders.invoiceAdvanceNumber
-            }}</span>
-            <span *ngSwitchCase="'CASH'">{{
-              placeholders.invoiceCashNumber
-            }}</span>
-            <span *ngSwitchCase="'PRE_INVOICE'">{{
-              placeholders.invoicePreNumber
-            }}</span>
-            <span *ngSwitchDefault>{{ placeholders.invoiceNumber }}</span>
-          </ng-container>
-          {{ invoice.number }}
+      <div class="column-container">
+        <div class="column">
+          <div class="line">{{ "place" | translate }}:</div>
+          <div class="line">{{ "descriptionOfWork" | translate }}:</div>
+          <div class="line">{{ "date" | translate }}:</div>
         </div>
-        <div class="place-of-issue">
-          {{ placeholders.placeOfTurnover }} {{ invoice.placeOfIssue }}
+        <div class="column">
+          <div class="line">{{ workOrder.placeOfIssue }}</div>
+          <div class="line">{{ workOrder.description }}</div>
+          <div class="line">{{ workOrder.dateOfCreate }}</div>
         </div>
-        <div class="date-of-issue">
-          {{ placeholders.dateOfTurnover }}
-          {{ invoice.dateOfTurnover | date: "dd.MM.yyyy" }}
-        </div>
-      </div>
-      <div class="right">
-        <qrcode
-          [qrdata]="getQrCodeDataForInvoice(invoice)"
-          [width]="150"
-          [errorCorrectionLevel]="'M'"
-        ></qrcode>
       </div>
     </div>
-    <div class="items-title">{{ placeholders.legalServices }}</div>
-    <div class="items-content">
-      <div class="grid-container">
-        <div
-          class="grid-item header align-center additional-padding background-color"
-        >
-          {{ placeholders.counter }}
-        </div>
-        <div
-          class="grid-item header align-center additional-padding background-color span-second-third-column"
-        >
-          {{ placeholders.serviceDescription }}
-        </div>
-        <div
-          class="grid-item header align-center additional-padding background-color"
-        >
-          {{ placeholders.amountRSD }}
-        </div>
-        <ng-container *ngFor="let item of invoice.invoiceItems; index as index">
-          <div class="grid-item align-center additional-padding">
-            {{ index + 1 }}
-          </div>
-          <div class="grid-item span-second-third-column">
+    <!--
+                  *ngIf="cellRowspan[i].displayCell"
+            style="rowspan='{{ cellRowspan[i].rowspan }}' "
+     -->
+    <div class="table">
+      <table [style]="{ 'border-collapse': 'collapse' }">
+        <tr>
+          <th>{{ "num" | translate }}</th>
+          <th class="right">
+            {{ "typeOfGlassOrService" | translate }}
+          </th>
+          <th class="right">{{ "width" | translate }}</th>
+          <th class="right">{{ "height" | translate }}</th>
+          <th class="right">{{ "pcs" | translate }}</th>
+          <th class="right">{{ "mm2" | translate }}</th>
+          <th class="right">{{ "note" | translate }}</th>
+        </tr>
+        <tr *ngFor="let item of workOrder.workOrderItems; let i = index">
+          <td class="right">{{ i + 1 }}</td>
+          <td
+            class="right"
+            *ngIf="cellRowspan[i].displayCell"
+            [attr.rowspan]="cellRowspan[i].rowspan"
+          >
             {{ item.description }}
-          </div>
-          <div class="grid-item align-right additional-padding">
-            {{ item.netPrice | number: "1.2-2" }}
-          </div>
-        </ng-container>
-        <div
-          class="grid-item span-first-two-column no-left-border no-bottom-border"
-        ></div>
-        <ng-container
-          *ngFor="let invoiceItem of invoiceItemsVatRates; let ind = index"
-        >
-          <div class="grid-item additional-padding">
-            {{ placeholders.amount }}
-          </div>
-          <div class="grid-item align-right additional-padding">
-            {{ invoiceItem.netAmount | number: "1.2-2" }}
-          </div>
-          <ng-container *ngIf="ind === 0">
-            <div
-              class="grid-item maturity span-first-two-column no-left-border no-bottom-border no-top-border"
-            >
-              {{
-                placeholders.deadline +
-                  (getInvoiceDateOfMaturity(invoice) > 0
-                    ? getInvoiceDateOfMaturity(invoice) +
-                      (getInvoiceDateOfMaturity(invoice) === 1
-                        ? placeholders.dayFromInvoice
-                        : placeholders.daysFromInvoice)
-                    : placeholders.byInvoiceCome)
-              }}
-            </div>
-          </ng-container>
-          <ng-container *ngIf="ind > 0">
-            <div
-              class="grid-item maturity span-first-two-column no-left-border no-bottom-border no-top-border"
-            ></div>
-          </ng-container>
-          <div class="grid-item additional-padding">
-            {{ placeholders.vat }} {{ invoiceItem.vatRate }}{{ "%" }}
-          </div>
-          <div class="grid-item align-right additional-padding">
-            {{ invoiceItem.vatAmount | number: "1.2-2" }}
-          </div>
-          <div
-            class="grid-item span-first-two-column no-left-border no-bottom-border no-top-border"
-          ></div>
-        </ng-container>
-        <div
-          class="grid-item span-first-two-column no-left-border no-bottom-border no-top-border"
-        ></div>
-        <div class="grid-item bold additional-padding">
-          {{ placeholders.forPay }}
-        </div>
-        <div
-          class="grid-item align-right background-color additional-padding bold"
-        >
-          {{ invoice.grossAmount | number: "1.2-2" }}
-        </div>
+          </td>
+          <td class="right">{{ item.dimension1 | number: "1.2-2":"fr" }}</td>
+          <td class="right">{{ item.dimension2 | number: "1.2-2":"fr" }}</td>
+          <td class="right">{{ item.quantity | number: "1.2-2":"fr" }}</td>
+          <td class="right">
+            {{ item.sumQuantity | number: "1.3-3":"fr" }}
+          </td>
+          <td class="right">{{ item.note }}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="note">
+      <div class="title">{{ "notes" | translate }}:</div>
+      <div class="description">
+        {{ workOrder.note }}
       </div>
     </div>
-    <div class="addition">
-      {{ placeholders.noteAboutTax }}
-    </div>
-    <div class="paying-description">
-      <div class="paying-title">{{ placeholders.incomeDoneOnName }}</div>
-      <div class="paying-data">
-        {{ settings?.invoicePayingCompanyName || "" }}
+    <div class="signature">
+      <div class="signature-container">
+        <div class="title">{{ "goodsGiveBy" | translate }}:</div>
+        <div class="description"></div>
       </div>
-      <div class="paying-data">
-        {{ settings?.invoicePayingCompanyAddress || "" }}
+      <div class="signature-container">
+        <div class="title">{{ "goodsTakenBy" | translate }}:</div>
+        <div class="description"></div>
       </div>
-      <div class="paying-data">
-        {{ settings?.invoicePayingCompanyBankAccount || "" }}
-      </div>
-      <div class="paying-data-company-data">
-        {{ settings?.invoicePayingCompanyData || "" }}
-      </div>
-    </div>
-
-    <div class="signing-part">
-      <div class="greetings">{{ placeholders.greetings }}</div>
-      <div class="company-name">
-        {{ settings?.invoicePayingCompanyName || "" }}
-      </div>
-      <div class="line">____________________________</div>
     </div>
   </div>
-  <div class="footer">{{ settings?.invoiceFooter || "" }}</div>
 </div>

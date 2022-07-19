@@ -105,11 +105,11 @@ public class WorkOrderItemStore extends ObjectStore {
         WorkOrderItem object = new WorkOrderItem(resultSet.getLong(this.getPrimaryKey()));
         object.setDescription(resultSet.getString(this.getTableName() + "_description"));
         object.setUom(UOM.valueOf(resultSet.getString(this.getTableName() + "_uom")));
-        object.setDimension1(resultSet.getLong(this.getTableName() + "_dimension1"));
-        object.setDimension2(resultSet.getLong(this.getTableName() + "_dimension2"));
-        object.setDimension3(resultSet.getLong(this.getTableName() + "_dimension3"));
-        object.setQuantity(resultSet.getLong(this.getTableName() + "_quantity"));
-        object.setSumQuantity(resultSet.getLong(this.getTableName() + "_sum_quantity"));
+        object.setDimension1(resultSet.getDouble(this.getTableName() + "_dimension1"));
+        object.setDimension2(resultSet.getDouble(this.getTableName() + "_dimension2"));
+        object.setDimension3(resultSet.getDouble(this.getTableName() + "_dimension3"));
+        object.setQuantity(resultSet.getDouble(this.getTableName() + "_quantity"));
+        object.setSumQuantity(resultSet.getDouble(this.getTableName() + "_sum_quantity"));
         object.setNote(resultSet.getString(this.getTableName() + "_note"));
         object.setSettled(resultSet.getBoolean(this.getTableName() + "_settled"));
         return object;

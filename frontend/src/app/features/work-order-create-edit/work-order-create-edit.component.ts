@@ -300,19 +300,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     this.webService
       .getNextWorkOrderNumber(this.formGroup.get('dateOfCreate')?.value)
       .subscribe((number) => {
-        this.formGroup
-          .get('number')
-          ?.setValue(
-            number +
-              '/' +
-              (
-                new Date(this.formGroup.get('dateOfCreate')?.value) ||
-                new Date()
-              )
-                .getFullYear()
-                .toString()
-                .substring(2, 4)
-          );
+        this.formGroup.get('number')?.setValue(number);
       });
   }
 

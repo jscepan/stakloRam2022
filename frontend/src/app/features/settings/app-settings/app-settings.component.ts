@@ -32,17 +32,16 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
     this.settingsStoreService.dataLoaded$.subscribe((isLoaded) => {
       if (isLoaded) {
         this.formGroup = new FormGroup({
+          companyEmail: new FormControl(
+            this.settingsStoreService.getSettings()?.companyEmail || '',
+            [Validators.required]
+          ),
           invoiceCountry: new FormControl(
             this.settingsStoreService.getSettings()?.invoiceCountry || '',
             [Validators.required]
           ),
           invoicePlaceOfIssue: new FormControl(
             this.settingsStoreService.getSettings()?.invoicePlaceOfIssue || '',
-            [Validators.required]
-          ),
-          workOrderPlaceOfIssue: new FormControl(
-            this.settingsStoreService.getSettings()?.workOrderPlaceOfIssue ||
-              '',
             [Validators.required]
           ),
           invoiceCurrency: new FormControl(
@@ -117,11 +116,36 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
           ),
           termoizolacGlassMinArea: new FormControl(
             this.settingsStoreService.getSettings()?.termoizolacGlassMinArea ||
-              0.2,
+              0,
             [Validators.required]
           ),
           constructionMeasureCM: new FormControl(
-            this.settingsStoreService.getSettings()?.constructionMeasureCM || 3,
+            this.settingsStoreService.getSettings()?.constructionMeasureCM || 0,
+            [Validators.required]
+          ),
+          workOrderPlaceOfIssue: new FormControl(
+            this.settingsStoreService.getSettings()?.workOrderPlaceOfIssue ||
+              '',
+            [Validators.required]
+          ),
+          workOrderCompanyDescription: new FormControl(
+            this.settingsStoreService.getSettings()
+              ?.workOrderCompanyDescription || '',
+            [Validators.required]
+          ),
+          workOrderHeadingLine1: new FormControl(
+            this.settingsStoreService.getSettings()?.workOrderHeadingLine1 ||
+              '',
+            [Validators.required]
+          ),
+          workOrderHeadingLine2: new FormControl(
+            this.settingsStoreService.getSettings()?.workOrderHeadingLine2 ||
+              '',
+            [Validators.required]
+          ),
+          workOrderHeadingLine3: new FormControl(
+            this.settingsStoreService.getSettings()?.workOrderHeadingLine3 ||
+              '',
             [Validators.required]
           ),
         });

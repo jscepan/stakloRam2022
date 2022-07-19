@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { LanguageService } from 'src/app/language.service';
 
 @Component({
   selector: 'app-print-layout',
@@ -7,7 +8,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
   providers: [],
 })
 export class PrintLayoutComponent implements OnInit, OnDestroy {
-  constructor() {}
+  constructor(private languageService: LanguageService) {}
 
   ngOnInit(): void {}
 

@@ -30,7 +30,7 @@ public class BuyerBuilder extends BaseBuilder {
     }
 
     @Override
-    public BaseModel getObjectByOid(String oid) throws SException {
+    public Buyer getObjectByOid(String oid) throws SException {
         try {
             Buyer buyer = (Buyer) super.getObjectByOid(oid);
             buyer.setCity((City) CITY_STORE.getObjectByOid(buyer.getCity().getOid()));
@@ -38,5 +38,10 @@ public class BuyerBuilder extends BaseBuilder {
         } catch (SQLException ex) {
             throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx");
         }
+    }
+
+    public Buyer getObjectByOidWithCityAndCountry(String oid) throws SException {
+        // TODO
+        return this.getObjectByOid(oid);
     }
 }

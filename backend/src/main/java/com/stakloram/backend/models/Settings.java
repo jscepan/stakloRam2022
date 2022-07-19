@@ -3,9 +3,10 @@ package com.stakloram.backend.models;
 // These are settings for FRONTEND application
 public class Settings {
 
+    private String companyEmail;
+
     private String invoiceCountry;
     private String invoicePlaceOfIssue;
-    private String workOrderPlaceOfIssue;
     private String invoiceCurrency;
     private String invoiceFooter;
     private String invoicePayingCompanyName;
@@ -13,6 +14,7 @@ public class Settings {
     private String invoicePayingCompanyBankAccount;
     private String invoicePayingCompanyData;
     private double invoiceVatRate;
+
     private String qrCodeIdentCode;
     private String qrCodeVersion;
     private String qrCodeSignSet;
@@ -22,8 +24,14 @@ public class Settings {
     private String qrCodePayingCodePerson;
     private String qrCodePayingCodeCompany;
     private String qrCodePayingPurpose;
+
     private double termoizolacGlassMinArea;
     private int constructionMeasureCM;
+    private String workOrderPlaceOfIssue;
+    private String workOrderCompanyDescription;
+    private String workOrderHeadingLine1;
+    private String workOrderHeadingLine2;
+    private String workOrderHeadingLine3;
 
     public Settings() {
     }
@@ -195,4 +203,45 @@ public class Settings {
     public void setConstructionMeasureCM(int constructionMeasureCM) {
         this.constructionMeasureCM = constructionMeasureCM;
     }
+
+    public String getCompanyEmail() {
+        return companyEmail;
+    }
+
+    public void setCompanyEmail(String companyEmail) {
+        this.companyEmail = companyEmail;
+    }
+
+    public String getWorkOrderCompanyDescription() {
+        return workOrderCompanyDescription;
+    }
+
+    public void setWorkOrderCompanyDescription(String workOrderCompanyDescription) {
+        this.workOrderCompanyDescription = workOrderCompanyDescription;
+    }
+
+    public String getWorkOrderHeadingLine1() {
+        return workOrderHeadingLine1;
+    }
+
+    public void setWorkOrderHeadingLine1(String workOrderHeadingLine1) {
+        this.workOrderHeadingLine1 = workOrderHeadingLine1;
+    }
+
+    public String getWorkOrderHeadingLine2() {
+        return workOrderHeadingLine2;
+    }
+
+    public void setWorkOrderHeadingLine2(String workOrderHeadingLine2) {
+        this.workOrderHeadingLine2 = workOrderHeadingLine2;
+    }
+
+    public String getWorkOrderHeadingLine3() {
+        return workOrderHeadingLine3;
+    }
+
+    public void setWorkOrderHeadingLine3(String workOrderHeadingLine3) {
+        this.workOrderHeadingLine3 = workOrderHeadingLine3;
+    }
+
 }

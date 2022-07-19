@@ -1,5 +1,12 @@
 <div class="container">
   <form [formGroup]="formGroup" *ngIf="formGroup" class="form">
+    <h1>{{ "companyData" | translate }}</h1>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "companyEmail" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="companyEmail" />
+    </mat-form-field>
     <h1>{{ "invoice" | translate }}</h1>
     <mat-form-field>
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
@@ -121,12 +128,6 @@
     <h1>{{ "workOrder" | translate }}</h1>
     <mat-form-field>
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ ("workOrder" | translate) + " - " + ("placeOfIssue" | translate) }}
-      </mat-label>
-      <input type="text" matInput formControlName="workOrderPlaceOfIssue" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
         {{ "termoizolacGlassMinArea" | translate }}
       </mat-label>
       <input type="number" matInput formControlName="termoizolacGlassMinArea" />
@@ -136,6 +137,48 @@
         {{ "constructionMeasureCM" | translate }}
       </mat-label>
       <input type="number" matInput formControlName="constructionMeasureCM" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ ("workOrder" | translate) + " - " + ("placeOfIssue" | translate) }}
+      </mat-label>
+      <input type="text" matInput formControlName="workOrderPlaceOfIssue" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{
+          ("workOrder" | translate) + " - " + ("companyDescription" | translate)
+        }}
+      </mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="workOrderCompanyDescription"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{
+          ("workOrder" | translate) + " - " + ("headingLine" | translate) + "1"
+        }}
+      </mat-label>
+      <input type="text" matInput formControlName="workOrderHeadingLine1" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{
+          ("workOrder" | translate) + " - " + ("headingLine" | translate) + "2"
+        }}
+      </mat-label>
+      <input type="text" matInput formControlName="workOrderHeadingLine2" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{
+          ("workOrder" | translate) + " - " + ("headingLine" | translate) + "3"
+        }}
+      </mat-label>
+      <input type="text" matInput formControlName="workOrderHeadingLine3" />
     </mat-form-field>
   </form>
   <div class="button-section">
@@ -147,7 +190,7 @@
     ></app-button>
     <app-button
       [text]="'save' | translate"
-      [disabled]="!formGroup.dirty || formGroup.invalid"
+      [disabled]="!formGroup?.dirty || formGroup?.invalid || false"
       class="update"
       (clickEvent)="updateSettings()"
     ></app-button>

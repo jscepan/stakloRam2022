@@ -4,9 +4,10 @@ import { BaseWebService } from 'src/app/core/services/base.web-service';
 import { BASE_API_URL } from '../constants';
 
 export class AppSettings {
+  companyEmail?: string;
+
   invoiceCountry?: string;
   invoicePlaceOfIssue?: string;
-  workOrderPlaceOfIssue?: string;
   invoiceCurrency?: string;
   invoiceFooter?: string;
   invoicePayingCompanyName?: string;
@@ -14,6 +15,7 @@ export class AppSettings {
   invoicePayingCompanyBankAccount?: string;
   invoicePayingCompanyData?: string;
   invoiceVatRate?: number;
+
   qrCodeIdentCode?: string;
   qrCodeVersion?: string;
   qrCodeSignSet?: string;
@@ -23,8 +25,14 @@ export class AppSettings {
   qrCodePayingCodePerson?: string;
   qrCodePayingCodeCompany?: string;
   qrCodePayingPurpose?: string;
+
   termoizolacGlassMinArea?: number;
   constructionMeasureCM?: number;
+  workOrderPlaceOfIssue?: string;
+  workOrderCompanyDescription?: string;
+  workOrderHeadingLine1?: string;
+  workOrderHeadingLine2?: string;
+  workOrderHeadingLine3?: string;
 }
 
 @Injectable({

@@ -37,7 +37,7 @@ export function getWorkOrderNumber(workOrder: WorkOrderModel): string {
   return (
     workOrder.number +
     '/' +
-    new Date(workOrder.dateOfCreate).getFullYear().toString()
+    new Date(workOrder.dateOfCreate).getFullYear().toString() //.substr(-2)
   );
 }
 

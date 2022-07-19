@@ -1,15 +1,71 @@
 package com.stakloram.backend.services.impl.builder.impl;
 
+import com.stakloram.backend.database.objects.BuyerStore;
+import com.stakloram.backend.database.objects.CityStore;
+import com.stakloram.backend.database.objects.WorkOrderItemStore;
 import com.stakloram.backend.database.objects.WorkOrderStore;
 import com.stakloram.backend.exception.SException;
+import com.stakloram.backend.models.BaseModel;
+import com.stakloram.backend.models.Buyer;
+import com.stakloram.backend.models.City;
 import com.stakloram.backend.models.Locator;
+import com.stakloram.backend.models.WorkOrder;
+import com.stakloram.backend.models.WorkOrderItem;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class WorkOrderBuilder extends BaseBuilder {
 
+    private final WorkOrderItemStore WORK_ORDER_ITEM_STORE = new WorkOrderItemStore(this.getLocator());
+    private final BuyerStore BUYER_STORE = new BuyerStore(this.getLocator());
+    private final CityStore CITY_STORE = new CityStore(this.getLocator());
+
     public WorkOrderBuilder(Locator locator) {
         super(locator);
+    }
+
+    @Override
+    public BaseModel createNewObject(BaseModel object) throws SException {
+        WorkOrder workOrder = (WorkOrder) object;
+        super.createNewObject(object);
+        for (WorkOrderItem woi : workOrder.getWorkOrderItems()) {
+            try {
+                WORK_ORDER_ITEM_STORE.createNewObjectToDatabase(woi, workOrder.getId());
+            } catch (SQLException ex) {
+                return null;
+            }
+        }
+        return workOrder;
+    }
+
+    @Override
+    public BaseModel getObjectByOid(String oid) throws SException {
+        WorkOrder workOrder = (WorkOrder) super.getObjectByOid(oid);
+        Buyer buyer;
+        try {
+            buyer = (Buyer) BUYER_STORE.getObjectByOid(workOrder.getBuyer().getOid());
+            buyer.setCity((City) CITY_STORE.getObjectByOid(buyer.getCity().getOid()));
+            workOrder.setBuyer(buyer);
+        } catch (SQLException ex) {
+            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx");
+        }
+        List<WorkOrderItem> workOrderItems = new ArrayList<>();
+        try {
+            ResultSet rs = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_work_order_work_order_id=" + workOrder.getId());
+            while (rs.next()) {
+                workOrderItems.add(WORK_ORDER_ITEM_STORE.getObjectFromResultSet(rs));
+            }
+        } catch (SQLException ex) {
+            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx");
+        }
+        workOrder.setWorkOrderItems(workOrderItems);
+        return workOrder;
     }
 
     @Override

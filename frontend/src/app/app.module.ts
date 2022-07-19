@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -9,6 +9,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CoreModule } from './core/core.module';
 import { MatMenuModule } from '@angular/material/menu';
 import { SettingsStoreService } from './shared/services/settings-store.service';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+registerLocaleData(localeFr);
 
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -33,7 +36,11 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     }),
     MatMenuModule,
   ],
-  providers: [LanguageService, SettingsStoreService],
+  providers: [
+    LanguageService,
+    SettingsStoreService,
+    { provide: LOCALE_ID, useValue: 'fr-FR' },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
