@@ -68,7 +68,7 @@
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
         {{ "invoiceVatRate" | translate }}
       </mat-label>
-      <input type="number" matInput formControlName="invoiceVatRate" />
+      <input type="text" appDecimal matInput formControlName="invoiceVatRate" />
     </mat-form-field>
     <h1>{{ "qrCodeSettings" | translate }}</h1>
     <mat-form-field>
@@ -130,13 +130,23 @@
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
         {{ "termoizolacGlassMinArea" | translate }}
       </mat-label>
-      <input type="number" matInput formControlName="termoizolacGlassMinArea" />
+      <input
+        type="text"
+        appDecimal
+        matInput
+        formControlName="termoizolacGlassMinArea"
+      />
     </mat-form-field>
     <mat-form-field>
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
         {{ "constructionMeasureCM" | translate }}
       </mat-label>
-      <input type="number" matInput formControlName="constructionMeasureCM" />
+      <input
+        type="text"
+        appDecimal
+        matInput
+        formControlName="constructionMeasureCM"
+      />
     </mat-form-field>
     <mat-form-field>
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">

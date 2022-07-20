@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { NumberDecimalModule } from 'src/app/shared/directives/number-decimal/number-decimal.module';
 
 @NgModule({
   declarations: [IncomeCreateEditComponent],
@@ -24,6 +25,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     MatSelectModule,
     MatSelectInfiniteScrollModule,
     NgxMatSelectSearchModule,
+    NumberDecimalModule,
   ],
 })
 export class IncomeCreateEditModule {}

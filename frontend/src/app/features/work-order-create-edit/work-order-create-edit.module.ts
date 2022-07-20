@@ -16,6 +16,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { InvoiceSelectionPopupModule } from '@features/invoice-selection-popup/invoice-selection-popup.module';
 import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { NumberDecimalModule } from 'src/app/shared/directives/number-decimal/number-decimal.module';
 
 @NgModule({
   declarations: [WorkOrderCreateEditComponent],
@@ -36,6 +37,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     NgxMatSelectSearchModule,
     MatSelectInfiniteScrollModule,
     MatCheckboxModule,
+    NumberDecimalModule,
   ],
 })
 export class WorkOrderCreateEditModule {}

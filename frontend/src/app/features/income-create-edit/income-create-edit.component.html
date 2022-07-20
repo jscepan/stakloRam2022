@@ -46,7 +46,7 @@
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
         {{ "amount" | translate }}
       </mat-label>
-      <input type="number" matInput formControlName="amount" />
+      <input type="text" appDecimal matInput formControlName="amount" />
     </mat-form-field>
 
     <mat-form-field>

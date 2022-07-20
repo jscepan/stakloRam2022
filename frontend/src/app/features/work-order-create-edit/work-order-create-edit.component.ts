@@ -382,7 +382,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  onKeypress(event: KeyboardEvent, input: string, index: number = -1) {
+  onKeypress(event: KeyboardEvent, input: string, index: number = -1): void {
     if (event.key === 'Enter') {
       event.preventDefault();
       switch (input) {

@@ -15,7 +15,8 @@
             {{ "numberOfWorkOrder" | translate }}
           </mat-label>
           <input
-            type="number"
+            type="text"
+            appDecimal
             matInput
             formControlName="number"
             (keypress)="onKeypress($event, 'number')"
@@ -186,7 +187,8 @@
                 {{ "widthMM" | translate }}
               </mat-label>
               <input
-                type="number"
+                type="text"
+                appDecimal
                 matInput
                 formControlName="dimension1"
                 (keypress)="onKeypress($event, 'dimension1', i)"
@@ -202,7 +204,8 @@
                 {{ "heightMM" | translate }}
               </mat-label>
               <input
-                type="number"
+                type="text"
+                appDecimal
                 matInput
                 formControlName="dimension2"
                 (keypress)="onKeypress($event, 'dimension2', i)"
@@ -218,7 +221,8 @@
                 {{ "quantity" | translate }}
               </mat-label>
               <input
-                type="number"
+                type="text"
+                appDecimal
                 matInput
                 formControlName="quantity"
                 (keypress)="onKeypress($event, 'quantity', i)"
@@ -234,7 +238,8 @@
                 {{ "sum" | translate }}
               </mat-label>
               <input
-                type="number"
+                type="text"
+                appDecimal
                 matInput
                 formControlName="sumQuantity"
                 (keypress)="onKeypress($event, 'sumQuantity', i)"

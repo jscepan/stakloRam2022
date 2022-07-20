@@ -8,6 +8,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { NumberDecimalModule } from 'src/app/shared/directives/number-decimal/number-decimal.module';
 
 @NgModule({
   declarations: [AppSettingsComponent],
@@ -20,6 +21,7 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
+    NumberDecimalModule,
   ],
 })
 export class AppSettingsModule {}

@@ -227,7 +227,8 @@
                 {{ "netPrice" | translate }}
               </mat-label>
               <input
-                type="number"
+                type="text"
+                appDecimal
                 matInput
                 formControlName="netPrice"
                 (change)="calculateInvoiceItemAmount(i, 'netPrice')"
@@ -242,7 +243,8 @@
                 {{ "vatRate" | translate }}
               </mat-label>
               <input
-                type="number"
+                type="text"
+                appDecimal
                 matInput
                 formControlName="vatRate"
                 (change)="calculateInvoiceItemAmount(i, 'vatRate')"
@@ -257,7 +259,8 @@
                 {{ "vatAmount" | translate }}
               </mat-label>
               <input
-                type="number"
+                type="text"
+                appDecimal
                 matInput
                 formControlName="vatAmount"
                 (change)="calculateInvoiceItemAmount(i, 'vatAmount')"
@@ -272,7 +275,8 @@
                 {{ "grossPrice" | translate }}
               </mat-label>
               <input
-                type="number"
+                type="text"
+                appDecimal
                 matInput
                 formControlName="grossPrice"
                 (change)="calculateInvoiceItemAmount(i, 'grossPrice')"
@@ -345,7 +349,8 @@
             {{ "netAmount" | translate }}
           </mat-label>
           <input
-            type="number"
+            type="text"
+            appDecimal
             matInput
             formControlName="netAmount"
             [readonly]="true"
@@ -359,7 +364,8 @@
             {{ "vatAmount" | translate }}
           </mat-label>
           <input
-            type="number"
+            type="text"
+            appDecimal
             matInput
             formControlName="vatAmount"
             [readonly]="true"
@@ -373,7 +379,8 @@
             {{ "grossAmount" | translate }}
           </mat-label>
           <input
-            type="number"
+            type="text"
+            appDecimal
             matInput
             formControlName="grossAmount"
             [readonly]="true"
