@@ -25,7 +25,9 @@ export class NumberDecimalDirective {
       text = '0.' + text;
     } else if (indexOfComma > 0) {
       text =
-        text.substring(0, indexOfComma) + '.' + text.substring(indexOfComma);
+        text.substring(0, indexOfComma) +
+        '.' +
+        (text.length > indexOfComma ? text.substring(indexOfComma) : '');
     }
     this.el.nativeElement.value = text;
   }
