@@ -197,6 +197,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   removeItem(index: number): void {
     this.workOrderItemsFormArr.removeAt(index);
     this.calculateSum();
+    this.formGroup.markAsDirty();
   }
 
   calculateWorkOrderSum(

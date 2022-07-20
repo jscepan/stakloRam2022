@@ -85,7 +85,6 @@ public abstract class ObjectStore implements IObjectStore {
         }
         long count = 0;
         Statement st = this.conn.createStatement();
-        System.out.println("SELECT * from " + this.getDefaultFromClausule() + whereClausule + " limit " + skip + ", " + top);
         ResultSet resultSet = st.executeQuery("SELECT * from " + this.getDefaultFromClausule() + whereClausule + " limit " + skip + ", " + top);
         Statement stCount = this.conn.createStatement();
         ResultSet resultSetCount = stCount.executeQuery("SELECT COUNT(*) AS rowcount from " + this.getDefaultFromClausule() + " " + whereClausule);
@@ -104,7 +103,6 @@ public abstract class ObjectStore implements IObjectStore {
         }
         long count = 0;
         Statement st = this.conn.createStatement();
-        System.out.println("SELECT * from " + fromClausule + whereClausule);
         ResultSet resultSet = st.executeQuery("SELECT * from " + fromClausule + whereClausule);
         Statement stCount = this.conn.createStatement();
         ResultSet resultSetCount = stCount.executeQuery("SELECT COUNT(*) AS rowcount from " + fromClausule + " " + whereClausule);
@@ -123,7 +121,6 @@ public abstract class ObjectStore implements IObjectStore {
         }
         long count = 0;
         Statement st = this.conn.createStatement();
-        System.out.println("SELECT * from " + fromClausule + whereClausule + " limit " + skip + ", " + top);
         ResultSet resultSet = st.executeQuery("SELECT * from " + fromClausule + whereClausule + " limit " + skip + ", " + top);
         Statement stCount = this.conn.createStatement();
         ResultSet resultSetCount = stCount.executeQuery("SELECT COUNT(*) AS rowcount from " + fromClausule + " " + whereClausule);

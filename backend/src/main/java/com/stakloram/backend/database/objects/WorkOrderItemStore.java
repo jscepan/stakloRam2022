@@ -75,6 +75,7 @@ public class WorkOrderItemStore extends ObjectStore {
         st.setDouble(++i, object.getSumQuantity());
         st.setString(++i, object.getNote());
         st.setBoolean(++i, object.isSettled());
+        st.setLong(++i, BaseModel.getIdFromOid(oid));
         if (st.executeUpdate() > 0) {
             return object;
         }

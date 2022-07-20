@@ -58,7 +58,6 @@ public class WorkOrderBuilder extends BaseBuilder {
             }
             Map<Helper.Action, List<? extends BaseModel>> mapOfDifferences = Helper.findDifferenceBetweenLists(workOrder.getWorkOrderItems(), oldWorkOrderItems);
             for (BaseModel workOrderItem : mapOfDifferences.get(Helper.Action.FOR_CREATE)) {
-                System.out.println("KREIRAJ");
                 WORK_ORDER_ITEM_STORE.createNewObjectToDatabase(workOrderItem, workOrder.getId());
             }
             for (BaseModel workOrderItem : mapOfDifferences.get(Helper.Action.FOR_UPDATE)) {
