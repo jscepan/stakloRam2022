@@ -15,13 +15,13 @@ import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.models.WorkOrderItem;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
+import com.stakloram.backend.util.Helper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
 
 public class WorkOrderBuilder extends BaseBuilder {
 
@@ -41,10 +41,36 @@ public class WorkOrderBuilder extends BaseBuilder {
             try {
                 WORK_ORDER_ITEM_STORE.createNewObjectToDatabase(woi, workOrder.getId());
             } catch (SQLException ex) {
-                return null;
+                throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx");
             }
         }
         return workOrder;
+    }
+
+    @Override
+    public BaseModel modifyObject(String oid, BaseModel object) throws SException {
+        try {
+            WorkOrder workOrder = (WorkOrder) super.modifyObject(oid, object);
+            List<WorkOrderItem> oldWorkOrderItems = new ArrayList<>();
+            ResultSet resultSet = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_work_order_work_order_id=" + workOrder.getId());
+            while (resultSet.next()) {
+                oldWorkOrderItems.add(WORK_ORDER_ITEM_STORE.getObjectFromResultSet(resultSet));
+            }
+            Map<Helper.Action, List<? extends BaseModel>> mapOfDifferences = Helper.findDifferenceBetweenLists(workOrder.getWorkOrderItems(), oldWorkOrderItems);
+            for (BaseModel workOrderItem : mapOfDifferences.get(Helper.Action.FOR_CREATE)) {
+                System.out.println("KREIRAJ");
+                WORK_ORDER_ITEM_STORE.createNewObjectToDatabase(workOrderItem, workOrder.getId());
+            }
+            for (BaseModel workOrderItem : mapOfDifferences.get(Helper.Action.FOR_UPDATE)) {
+                WORK_ORDER_ITEM_STORE.modifyObject(workOrderItem.getOid(), workOrderItem);
+            }
+            for (BaseModel workOrderItem : mapOfDifferences.get(Helper.Action.FOR_DELETE)) {
+                WORK_ORDER_ITEM_STORE.deleteObjectByOid(workOrderItem.getOid());
+            }
+            return workOrder;
+        } catch (SQLException ex) {
+            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+        }
     }
 
     @Override
@@ -83,7 +109,7 @@ public class WorkOrderBuilder extends BaseBuilder {
 //        this.databaseColumnsForAdvanceFilter.put("buyer", "invoice_buyer_buyer_id");
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
         try {

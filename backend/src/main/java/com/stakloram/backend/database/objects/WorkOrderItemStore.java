@@ -84,9 +84,21 @@ public class WorkOrderItemStore extends ObjectStore {
     public void setInvoiceItemForWorkOrderItem(String workOrderItemOid, String invoiceItemOid) throws SQLException {
         int i = 0;
         PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
-                + this.getTableName() + "_invoice_item_invoice_item_id=?"
+                + this.getTableName() + "_invoice_item_invoice_item_id=?, "
+                + this.getTableName() + "_settled=?"
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setLong(++i, BaseModel.getIdFromOid(invoiceItemOid));
+        st.setBoolean(++i, true);
+        st.setLong(++i, BaseModel.getIdFromOid(workOrderItemOid));
+        st.executeUpdate();
+    }
+
+    public void setSettledForWorkOrderItem(String workOrderItemOid, boolean settled) throws SQLException {
+        int i = 0;
+        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+                + this.getTableName() + "_settled=?"
+                + " WHERE " + this.getPrimaryKey() + "=?");
+        st.setBoolean(++i, settled);
         st.setLong(++i, BaseModel.getIdFromOid(workOrderItemOid));
         st.executeUpdate();
     }
@@ -94,7 +106,8 @@ public class WorkOrderItemStore extends ObjectStore {
     public boolean removeInvoiceItemForWorkOrderItem(String workOrderItemOid) throws SQLException {
         int i = 0;
         PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
-                + this.getTableName() + "_invoice_item_invoice_item_id=null"
+                + this.getTableName() + "_invoice_item_invoice_item_id=null, "
+                + this.getTableName() + "_settled=false"
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setLong(++i, BaseModel.getIdFromOid(workOrderItemOid));
         return st.executeUpdate() > 0;
