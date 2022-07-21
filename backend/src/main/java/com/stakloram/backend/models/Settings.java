@@ -5,14 +5,10 @@ public class Settings {
 
     private String companyEmail;
 
-    private String invoiceCountry;
+    private String invoiceMethodOfPayment;
     private String invoicePlaceOfIssue;
     private String invoiceCurrency;
-    private String invoiceFooter;
-    private String invoicePayingCompanyName;
-    private String invoicePayingCompanyAddress;
-    private String invoicePayingCompanyBankAccount;
-    private String invoicePayingCompanyData;
+    private String invoiceCountry;
     private double invoiceVatRate;
 
     private String qrCodeIdentCode;
@@ -66,46 +62,6 @@ public class Settings {
 
     public void setInvoiceCurrency(String invoiceCurrency) {
         this.invoiceCurrency = invoiceCurrency;
-    }
-
-    public String getInvoiceFooter() {
-        return invoiceFooter;
-    }
-
-    public void setInvoiceFooter(String invoiceFooter) {
-        this.invoiceFooter = invoiceFooter;
-    }
-
-    public String getInvoicePayingCompanyName() {
-        return invoicePayingCompanyName;
-    }
-
-    public void setInvoicePayingCompanyName(String invoicePayingCompanyName) {
-        this.invoicePayingCompanyName = invoicePayingCompanyName;
-    }
-
-    public String getInvoicePayingCompanyAddress() {
-        return invoicePayingCompanyAddress;
-    }
-
-    public void setInvoicePayingCompanyAddress(String invoicePayingCompanyAddress) {
-        this.invoicePayingCompanyAddress = invoicePayingCompanyAddress;
-    }
-
-    public String getInvoicePayingCompanyBankAccount() {
-        return invoicePayingCompanyBankAccount;
-    }
-
-    public void setInvoicePayingCompanyBankAccount(String invoicePayingCompanyBankAccount) {
-        this.invoicePayingCompanyBankAccount = invoicePayingCompanyBankAccount;
-    }
-
-    public String getInvoicePayingCompanyData() {
-        return invoicePayingCompanyData;
-    }
-
-    public void setInvoicePayingCompanyData(String invoicePayingCompanyData) {
-        this.invoicePayingCompanyData = invoicePayingCompanyData;
     }
 
     public double getInvoiceVatRate() {
@@ -244,4 +200,11 @@ public class Settings {
         this.workOrderHeadingLine3 = workOrderHeadingLine3;
     }
 
+    public String getInvoiceMethodOfPayment() {
+        return invoiceMethodOfPayment;
+    }
+
+    public void setInvoiceMethodOfPayment(String invoiceMethodOfPayment) {
+        this.invoiceMethodOfPayment = invoiceMethodOfPayment;
+    }
 }

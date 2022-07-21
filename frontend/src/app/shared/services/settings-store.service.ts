@@ -6,15 +6,17 @@ import { BASE_API_URL } from '../constants';
 export class AppSettings {
   companyEmail?: string;
 
-  invoiceCountry?: string;
+  invoiceMethodOfPayment?: string;
   invoicePlaceOfIssue?: string;
   invoiceCurrency?: string;
-  invoiceFooter?: string;
-  invoicePayingCompanyName?: string;
-  invoicePayingCompanyAddress?: string;
-  invoicePayingCompanyBankAccount?: string;
-  invoicePayingCompanyData?: string;
+  invoiceCountry?: string;
   invoiceVatRate?: number;
+
+  // invoiceFooter?: string;
+  // invoicePayingCompanyName?: string;
+  // invoicePayingCompanyAddress?: string;
+  // invoicePayingCompanyBankAccount?: string;
+  // invoicePayingCompanyData?: string;
 
   qrCodeIdentCode?: string;
   qrCodeVersion?: string;

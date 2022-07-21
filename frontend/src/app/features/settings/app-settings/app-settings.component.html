@@ -10,9 +10,9 @@
     <h1>{{ "invoice" | translate }}</h1>
     <mat-form-field>
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "country" | translate }}
+        {{ "methodOfPayment" | translate }}
       </mat-label>
-      <input type="text" matInput formControlName="invoiceCountry" />
+      <input type="text" matInput formControlName="invoiceMethodOfPayment" />
     </mat-form-field>
     <mat-form-field>
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
@@ -28,41 +28,9 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "footer" | translate }}
+        {{ "country" | translate }}
       </mat-label>
-      <input type="text" matInput formControlName="invoiceFooter" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "invoicePayingCompanyName" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="invoicePayingCompanyName" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "invoicePayingCompanyAddress" | translate }}
-      </mat-label>
-      <input
-        type="text"
-        matInput
-        formControlName="invoicePayingCompanyAddress"
-      />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "invoicePayingCompanyBankAccount" | translate }}
-      </mat-label>
-      <input
-        type="text"
-        matInput
-        formControlName="invoicePayingCompanyBankAccount"
-      />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "invoicePayingCompanyData" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="invoicePayingCompanyData" />
+      <input type="text" matInput formControlName="invoiceCountry" />
     </mat-form-field>
     <mat-form-field>
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">

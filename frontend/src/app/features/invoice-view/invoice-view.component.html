@@ -149,27 +149,15 @@
     </div>
     <div class="paying-description">
       <div class="paying-title">{{ placeholders.incomeDoneOnName }}</div>
-      <div class="paying-data">
-        {{ settings?.invoicePayingCompanyName || "" }}
-      </div>
-      <div class="paying-data">
-        {{ settings?.invoicePayingCompanyAddress || "" }}
-      </div>
-      <div class="paying-data">
-        {{ settings?.invoicePayingCompanyBankAccount || "" }}
-      </div>
-      <div class="paying-data-company-data">
-        {{ settings?.invoicePayingCompanyData || "" }}
-      </div>
     </div>
 
     <div class="signing-part">
       <div class="greetings">{{ placeholders.greetings }}</div>
       <div class="company-name">
-        {{ settings?.invoicePayingCompanyName || "" }}
+        {{ "" }}
       </div>
       <div class="line">____________________________</div>
     </div>
   </div>
-  <div class="footer">{{ settings?.invoiceFooter || "" }}</div>
+  <div class="footer">{{ "" }}</div>
 </div>

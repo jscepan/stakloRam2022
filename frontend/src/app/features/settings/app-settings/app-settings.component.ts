@@ -36,8 +36,9 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
             this.settingsStoreService.getSettings()?.companyEmail || '',
             [Validators.required]
           ),
-          invoiceCountry: new FormControl(
-            this.settingsStoreService.getSettings()?.invoiceCountry || '',
+          invoiceMethodOfPayment: new FormControl(
+            this.settingsStoreService.getSettings()?.invoiceMethodOfPayment ||
+              '',
             [Validators.required]
           ),
           invoicePlaceOfIssue: new FormControl(
@@ -48,28 +49,8 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
             this.settingsStoreService.getSettings()?.invoiceCurrency || '',
             [Validators.required]
           ),
-          invoiceFooter: new FormControl(
-            this.settingsStoreService.getSettings()?.invoiceFooter || '',
-            [Validators.required]
-          ),
-          invoicePayingCompanyName: new FormControl(
-            this.settingsStoreService.getSettings()?.invoicePayingCompanyName ||
-              '',
-            [Validators.required]
-          ),
-          invoicePayingCompanyAddress: new FormControl(
-            this.settingsStoreService.getSettings()
-              ?.invoicePayingCompanyAddress || '',
-            [Validators.required]
-          ),
-          invoicePayingCompanyBankAccount: new FormControl(
-            this.settingsStoreService.getSettings()
-              ?.invoicePayingCompanyBankAccount || '',
-            [Validators.required]
-          ),
-          invoicePayingCompanyData: new FormControl(
-            this.settingsStoreService.getSettings()?.invoicePayingCompanyData ||
-              '',
+          invoiceCountry: new FormControl(
+            this.settingsStoreService.getSettings()?.invoiceCountry || '',
             [Validators.required]
           ),
           invoiceVatRate: new FormControl(
