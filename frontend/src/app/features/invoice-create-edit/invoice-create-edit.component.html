@@ -32,7 +32,12 @@
           >
             {{ "numberOfCashBill" | translate }}
           </mat-label>
-          <input type="text" matInput formControlName="numberOfCashBill" />
+          <input
+            type="text"
+            matInput
+            formControlName="numberOfCashBill"
+            (keypress)="onKeypress($event, 'numberOfCashBill')"
+          />
         </mat-form-field>
         <mat-form-field>
           <mat-label
@@ -41,7 +46,12 @@
           >
             {{ "currency" | translate }}
           </mat-label>
-          <input type="text" matInput formControlName="currency" />
+          <input
+            type="text"
+            matInput
+            formControlName="currency"
+            (keypress)="onKeypress($event, 'currency')"
+          />
         </mat-form-field>
 
         <mat-form-field>
@@ -51,7 +61,12 @@
           >
             {{ "number" | translate }}
           </mat-label>
-          <input type="text" matInput formControlName="number" />
+          <input
+            type="text"
+            matInput
+            formControlName="number"
+            (keypress)="onKeypress($event, 'number')"
+          />
         </mat-form-field>
         <app-button
           [isTransparentMode]="true"
@@ -158,6 +173,7 @@
             matInput
             formControlName="dateOfCreate"
             (change)="consolidateAllDates()"
+            (keypress)="onKeypress($event, 'dateOfCreate')"
           />
         </mat-form-field>
         <mat-form-field>
@@ -167,7 +183,12 @@
           >
             {{ "dateOfTurnover" | translate }}
           </mat-label>
-          <input type="date" matInput formControlName="dateOfTurnover" />
+          <input
+            type="date"
+            matInput
+            formControlName="dateOfTurnover"
+            (keypress)="onKeypress($event, 'dateOfTurnover')"
+          />
         </mat-form-field>
         <mat-form-field>
           <mat-label
@@ -176,7 +197,12 @@
           >
             {{ "dateOfMaturity" | translate }}
           </mat-label>
-          <input type="date" matInput formControlName="dateOfMaturity" />
+          <input
+            type="date"
+            matInput
+            formControlName="dateOfMaturity"
+            (keypress)="onKeypress($event, 'dateOfMaturity')"
+          />
         </mat-form-field>
       </div>
 
@@ -188,7 +214,12 @@
           >
             {{ "country" | translate }}
           </mat-label>
-          <input type="text" matInput formControlName="country" />
+          <input
+            type="text"
+            matInput
+            formControlName="country"
+            (keypress)="onKeypress($event, 'country')"
+          />
         </mat-form-field>
         <mat-form-field>
           <mat-label
@@ -197,7 +228,12 @@
           >
             {{ "placeOfIssue" | translate }}
           </mat-label>
-          <input type="text" matInput formControlName="placeOfIssue" />
+          <input
+            type="text"
+            matInput
+            formControlName="placeOfIssue"
+            (keypress)="onKeypress($event, 'placeOfIssue')"
+          />
         </mat-form-field>
         <mat-form-field>
           <mat-label
@@ -206,7 +242,12 @@
           >
             {{ "methodOfPayment" | translate }}
           </mat-label>
-          <input type="text" matInput formControlName="methodOfPayment" />
+          <input
+            type="text"
+            matInput
+            formControlName="methodOfPayment"
+            (keypress)="onKeypress($event, 'methodOfPayment')"
+          />
         </mat-form-field>
       </div>
       <!-- <mat-form-field>
@@ -239,7 +280,12 @@
               >
                 {{ "description" | translate }}
               </mat-label>
-              <input type="text" matInput formControlName="description" />
+              <input
+                type="text"
+                matInput
+                formControlName="description"
+                (keypress)="onKeypress($event, 'description', i)"
+              />
             </mat-form-field>
             <mat-form-field>
               <mat-label
@@ -248,7 +294,10 @@
               >
                 {{ "uom" | translate }}
               </mat-label>
-              <mat-select formControlName="uom">
+              <mat-select
+                formControlName="uom"
+                (openedChange)="openedToggleOnUomSelect($event, i)"
+              >
                 <mat-option
                   *ngFor="let item of uomOptions"
                   [value]="item.value"
@@ -268,6 +317,7 @@
                 type="text"
                 appDecimal
                 matInput
+                (keypress)="onKeypress($event, 'quantity', i)"
                 formControlName="quantity"
                 (change)="calculateInvoiceItemAmount(i, 'quantity')"
                 (focusout)="calculateInvoiceAmount(); setAllInvoiceAmounts()"
@@ -284,6 +334,7 @@
                 type="text"
                 appDecimal
                 matInput
+                (keypress)="onKeypress($event, 'pricePerUnit', i)"
                 formControlName="pricePerUnit"
                 (change)="calculateInvoiceItemAmount(i, 'pricePerUnit')"
                 (focusout)="calculateInvoiceAmount(); setAllInvoiceAmounts()"
@@ -300,6 +351,7 @@
                 type="text"
                 appDecimal
                 matInput
+                (keypress)="onKeypress($event, 'netPrice', i)"
                 formControlName="netPrice"
                 (change)="calculateInvoiceItemAmount(i, 'netPrice')"
                 (focusout)="calculateInvoiceAmount(); setAllInvoiceAmounts()"
@@ -316,6 +368,7 @@
                 type="text"
                 appDecimal
                 matInput
+                (keypress)="onKeypress($event, 'vatRate', i)"
                 formControlName="vatRate"
                 (change)="calculateInvoiceItemAmount(i, 'vatRate')"
                 (focusout)="calculateInvoiceAmount(); setAllInvoiceAmounts()"
@@ -332,6 +385,7 @@
                 type="text"
                 appDecimal
                 matInput
+                (keypress)="onKeypress($event, 'vatAmount', i)"
                 formControlName="vatAmount"
                 (change)="calculateInvoiceItemAmount(i, 'vatAmount')"
                 (focusout)="calculateInvoiceAmount(); setAllInvoiceAmounts()"
@@ -348,6 +402,7 @@
                 type="text"
                 appDecimal
                 matInput
+                (keypress)="onKeypress($event, 'grossPrice', i)"
                 formControlName="grossPrice"
                 (change)="calculateInvoiceItemAmount(i, 'grossPrice')"
                 (focusout)="calculateInvoiceAmount(); setAllInvoiceAmounts()"
@@ -410,7 +465,12 @@
         >
           {{ "comment" | translate }}
         </mat-label>
-        <input type="text" matInput formControlName="comment" />
+        <input
+          type="text"
+          matInput
+          formControlName="comment"
+          (keypress)="onKeypress($event, 'comment')"
+        />
       </mat-form-field>
 
       <div class="row">

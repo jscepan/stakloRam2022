@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -66,6 +66,31 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     return this.formGroup.get('numberOfCashBill');
   }
 
+  getDescription(index: number): AbstractControl | null {
+    return this.invoiceItemsFormArr.controls[index].get('description');
+  }
+  getUOM(index: number): AbstractControl | null {
+    return this.invoiceItemsFormArr.controls[index].get('uom');
+  }
+  getQuantity(index: number): AbstractControl | null {
+    return this.invoiceItemsFormArr.controls[index].get('quantity');
+  }
+  getPricePerUnit(index: number): AbstractControl | null {
+    return this.invoiceItemsFormArr.controls[index].get('pricePerUnit');
+  }
+  getNetPrice(index: number): AbstractControl | null {
+    return this.invoiceItemsFormArr.controls[index].get('netPrice');
+  }
+  getVatRate(index: number): AbstractControl | null {
+    return this.invoiceItemsFormArr.controls[index].get('vatRate');
+  }
+  getVatAmount(index: number): AbstractControl | null {
+    return this.invoiceItemsFormArr.controls[index].get('vatAmount');
+  }
+  getGrossPrice(index: number): AbstractControl | null {
+    return this.invoiceItemsFormArr.controls[index].get('grossPrice');
+  }
+
   isBuyerSelected?: boolean;
 
   constructor(
@@ -78,7 +103,8 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     private settingsStoreService: SettingsStoreService,
     private translateService: TranslateService,
     private invoiceSelectionComponentService: InvoiceSelectionComponentService,
-    private listEntities: ListEntities<BuyerModel>
+    private listEntities: ListEntities<BuyerModel>,
+    private el: ElementRef
   ) {}
 
   ngOnInit(): void {
@@ -314,6 +340,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
       if (this.invoiceItemsFormArr.controls.length === 0) {
         this.addNewItem();
       }
+      this.setFocusOn('dateOfCreate');
     });
   }
 
@@ -367,6 +394,9 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
           this.formGroup
             .get('currency')
             ?.setValue(this.settings?.invoiceCurrency);
+          setTimeout(() => {
+            this.setFocusOn('numberOfCashBill');
+          });
           break;
         case 'FOREIGN':
           this.formGroup.get('currency')?.setValue('EUR');
@@ -376,6 +406,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
           this.formGroup
             .get('currency')
             ?.setValue(this.settings?.invoiceCurrency);
+          this.setFocusOn('currency');
       }
       if (!this.isEdit) {
         this.setInvoiceNumber();
@@ -543,6 +574,134 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     this.formGroup
       .get('dateOfMaturity')
       ?.setValue(this.formGroup.get('dateOfCreate')?.value);
+  }
+
+  onKeypress(event: KeyboardEvent, input: string, index: number = -1): void {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      switch (input) {
+        case 'numberOfCashBill':
+          this.setFocusOn('currency');
+          break;
+        case 'currency':
+          this.setFocusOn('number');
+          break;
+        case 'number':
+          this.setFocusOn('buyer');
+          break;
+        case 'dateOfCreate':
+          this.setFocusOn('dateOfTurnover');
+          break;
+        case 'dateOfTurnover':
+          this.setFocusOn('dateOfMaturity');
+          break;
+        case 'dateOfMaturity':
+          this.setFocusOn('country');
+          break;
+        case 'country':
+          this.setFocusOn('placeOfIssue');
+          break;
+        case 'placeOfIssue':
+          this.setFocusOn('methodOfPayment');
+          break;
+        case 'methodOfPayment':
+          this.setFocusOn('description', 0, true);
+          break;
+        case 'description':
+          this.setFocusOn('uom', index);
+          break;
+        case 'uom':
+          this.setFocusOn('quantity', index, true);
+          break;
+        case 'quantity':
+          this.setFocusOn('pricePerUnit', index, true);
+          break;
+        case 'pricePerUnit':
+          this.setFocusOn('netPrice', index, true);
+          break;
+        case 'netPrice':
+          this.setFocusOn('vatRate', index, true);
+          break;
+        case 'vatRate':
+          this.setFocusOn('vatAmount', index, true);
+          break;
+        case 'vatAmount':
+          this.setFocusOn('grossPrice', index, true);
+          break;
+        case 'grossPrice':
+          this.setFocusOn('comment', index, true);
+          break;
+
+        // case 'number':
+        //   this.setFocusOn('buyer');
+        //   break;
+        // case 'forPerson':
+        //   this.setFocusOn('description');
+        //   break;
+        // case 'description':
+        //   if (index < 0) {
+        //     this.setFocusOn('dateOfCreate', 0, true);
+        //   } else {
+        //     this.setFocusOn('uom', index);
+        //   }
+        //   break;
+        // case 'dateOfCreate':
+        //   this.setFocusOn('placeOfIssue', 0, true);
+        //   break;
+        // case 'placeOfIssue':
+        //   this.setFocusOn('description', index + 2, true);
+        //   break;
+        // case 'dimension1':
+        //   this.setFocusOn('dimension2', index, true);
+        //   break;
+        // case 'dimension2':
+        //   this.setFocusOn('quantity', index, true);
+        //   break;
+        // case 'quantity':
+        //   this.setFocusOn('sumQuantity', index, true);
+        //   break;
+        // case 'sumQuantity':
+        //   this.setFocusOn('note', index, true);
+        //   break;
+        // case 'note':
+        //   if (
+        //     index >= 0 &&
+        //     !this.invoiceItemsFormArr.controls[index + 1]?.value
+        //   ) {
+        //     this.addNewItem(this.invoiceItemsFormArr.controls[index].value);
+        //   }
+        //   setTimeout(() => {
+        //     this.setFocusOn('description', index + 2, true);
+        //   });
+        //   break;
+      }
+    }
+  }
+
+  setFocusOn(
+    formControlName: string,
+    index: number = 0,
+    markAll: boolean = false
+  ): void {
+    const element = this.el.nativeElement.querySelectorAll(
+      '[formcontrolname="' + formControlName + '"]'
+    )[index < 0 ? 0 : index];
+    element?.focus();
+    if (markAll) element.select();
+  }
+
+  openedToggleOnUomSelect(isOppened: boolean, index: number): void {
+    if (!isOppened && this.getUOM(index)?.value) {
+      this.uomChanged(this.getUOM(index)?.value, index);
+    }
+  }
+
+  uomChanged(uom: string, index: number): void {
+    setTimeout(() => {
+      this.setFocusOn('quantity', index, true);
+    });
+    // this.getSumQuantity(index);
+    // this.calculateSum();
   }
 
   ngOnDestroy(): void {
