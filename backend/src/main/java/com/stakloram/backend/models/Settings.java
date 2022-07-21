@@ -4,12 +4,20 @@ package com.stakloram.backend.models;
 public class Settings {
 
     private String companyEmail;
+    private String companyWebsite;
 
     private String invoiceMethodOfPayment;
     private String invoicePlaceOfIssue;
     private String invoiceCurrency;
     private String invoiceCountry;
     private double invoiceVatRate;
+    private String invoiceCompanyName;
+    private String invoiceCompanyStreet;
+    private String invoiceZipCodeCity;
+    private String invoiceContactsPhoneFax;
+    private String invoiceCompanyDescription;
+    private String invoiceBankAccounts;
+    private String invoiceComplaints;
 
     private String qrCodeIdentCode;
     private String qrCodeVersion;
@@ -206,5 +214,69 @@ public class Settings {
 
     public void setInvoiceMethodOfPayment(String invoiceMethodOfPayment) {
         this.invoiceMethodOfPayment = invoiceMethodOfPayment;
+    }
+
+    public String getCompanyWebsite() {
+        return companyWebsite;
+    }
+
+    public void setCompanyWebsite(String companyWebsite) {
+        this.companyWebsite = companyWebsite;
+    }
+
+    public String getInvoiceCompanyName() {
+        return invoiceCompanyName;
+    }
+
+    public void setInvoiceCompanyName(String invoiceCompanyName) {
+        this.invoiceCompanyName = invoiceCompanyName;
+    }
+
+    public String getInvoiceCompanyStreet() {
+        return invoiceCompanyStreet;
+    }
+
+    public void setInvoiceCompanyStreet(String invoiceCompanyStreet) {
+        this.invoiceCompanyStreet = invoiceCompanyStreet;
+    }
+
+    public String getInvoiceZipCodeCity() {
+        return invoiceZipCodeCity;
+    }
+
+    public void setInvoiceZipCodeCity(String invoiceZipCodeCity) {
+        this.invoiceZipCodeCity = invoiceZipCodeCity;
+    }
+
+    public String getInvoiceContactsPhoneFax() {
+        return invoiceContactsPhoneFax;
+    }
+
+    public void setInvoiceContactsPhoneFax(String invoiceContactsPhoneFax) {
+        this.invoiceContactsPhoneFax = invoiceContactsPhoneFax;
+    }
+
+    public String getInvoiceCompanyDescription() {
+        return invoiceCompanyDescription;
+    }
+
+    public void setInvoiceCompanyDescription(String invoiceCompanyDescription) {
+        this.invoiceCompanyDescription = invoiceCompanyDescription;
+    }
+
+    public String getInvoiceBankAccounts() {
+        return invoiceBankAccounts;
+    }
+
+    public void setInvoiceBankAccounts(String invoiceBankAccounts) {
+        this.invoiceBankAccounts = invoiceBankAccounts;
+    }
+
+    public String getInvoiceComplaints() {
+        return invoiceComplaints;
+    }
+
+    public void setInvoiceComplaints(String invoiceComplaints) {
+        this.invoiceComplaints = invoiceComplaints;
     }
 }

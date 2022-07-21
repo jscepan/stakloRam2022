@@ -36,6 +36,10 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
             this.settingsStoreService.getSettings()?.companyEmail || '',
             [Validators.required]
           ),
+          companyWebsite: new FormControl(
+            this.settingsStoreService.getSettings()?.companyWebsite || '',
+            [Validators.required]
+          ),
           invoiceMethodOfPayment: new FormControl(
             this.settingsStoreService.getSettings()?.invoiceMethodOfPayment ||
               '',
@@ -55,6 +59,36 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
           ),
           invoiceVatRate: new FormControl(
             this.settingsStoreService.getSettings()?.invoiceVatRate || 0,
+            [Validators.required]
+          ),
+          invoiceCompanyName: new FormControl(
+            this.settingsStoreService.getSettings()?.invoiceCompanyName || '',
+            [Validators.required]
+          ),
+          invoiceCompanyStreet: new FormControl(
+            this.settingsStoreService.getSettings()?.invoiceCompanyStreet || '',
+            [Validators.required]
+          ),
+          invoiceZipCodeCity: new FormControl(
+            this.settingsStoreService.getSettings()?.invoiceZipCodeCity || '',
+            [Validators.required]
+          ),
+          invoiceContactsPhoneFax: new FormControl(
+            this.settingsStoreService.getSettings()?.invoiceContactsPhoneFax ||
+              '',
+            [Validators.required]
+          ),
+          invoiceCompanyDescription: new FormControl(
+            this.settingsStoreService.getSettings()
+              ?.invoiceCompanyDescription || '',
+            [Validators.required]
+          ),
+          invoiceBankAccounts: new FormControl(
+            this.settingsStoreService.getSettings()?.invoiceBankAccounts || '',
+            [Validators.required]
+          ),
+          invoiceComplaints: new FormControl(
+            this.settingsStoreService.getSettings()?.invoiceComplaints || '',
             [Validators.required]
           ),
           qrCodeIdentCode: new FormControl(

@@ -1,4 +1,131 @@
-<div class="container" *ngIf="invoice">
+<div class="container">
+  <div class="header">
+    <div class="logo">
+      <img src="{{ 'assets/images/company_logo.PNG' }}" />
+    </div>
+    <div class="heading">
+      <div class="title bold">
+        {{ settings?.invoiceCompanyName || "STAKLO RAM PLUS s.z.t.r." }}
+      </div>
+      <div class="title">
+        {{ settings?.invoiceCompanyStreet || "Žarka Zrenjanina 70" }}
+      </div>
+      <div class="title">
+        {{ settings?.invoiceZipCodeCity || "21400 Bačka Palanka" }}
+      </div>
+      <div class="title">
+        {{ settings?.invoiceContactsPhoneFax || "tel-fax: +381 21 60 44 182" }}
+      </div>
+      <div class="title">
+        {{ "mail: " + settings?.companyEmail || "stakloramplus@hallsys.net" }}
+      </div>
+      <div class="title bold">
+        {{ settings?.companyWebsite || "www.stakloram.com" }}
+      </div>
+    </div>
+  </div>
+  <div class="company-description">
+    <span>{{
+      settings?.invoiceCompanyDescription ||
+        "Šifra del.: 2312; MB: 62199130; PIB: 105509737;"
+    }}</span>
+    <span class="bold">{{
+      settings?.invoiceBankAccounts ||
+        "Tekući račun: 310-16916-02 NLB, 330-11001154-04 Credit Agricole"
+    }}</span>
+  </div>
+  <div class="body-content">
+    <div class="heading">
+      <div class="column-container">
+        <div class="column">
+          <div class="key">{{ "placeOfInvoice" | translate }}:</div>
+          <div class="key">{{ "dateOfInvoice" | translate }}:</div>
+          <div class="key">{{ "methodOfPayment" | translate }}:</div>
+          <div class="key">{{ "maturityDate" | translate }}:</div>
+          <div class="key">{{ "dateOfTurnoverGoods" | translate }}:</div>
+        </div>
+        <div class="column">
+          <div class="value">{{ invoice.placeOfIssue }}</div>
+          <div class="value">{{ invoice.dateOfCreate }}</div>
+          <div class="value">{{ invoice.methodOfPayment }}</div>
+          <div class="value">{{ invoice.dateOfMaturity }}</div>
+          <div class="value">{{ invoice.dateOfTurnover }}</div>
+        </div>
+      </div>
+      <div class="column-container-buyer">
+        <div class="line">{{ invoice.buyer.name }}</div>
+        <div class="line">{{ invoice.buyer.address }}</div>
+        <div class="line">
+          {{ invoice.buyer.city?.zipCode + " " + invoice.buyer.city?.name }}
+        </div>
+        <div class="line">
+          PIB: {{ invoice.buyer.pib }}, Matični broj:
+          {{ invoice.buyer.maticalNumber }}
+        </div>
+      </div>
+    </div>
+    <!--
+                  *ngIf="cellRowspan[i].displayCell"
+            style="rowspan='{{ cellRowspan[i].rowspan }}' "
+     -->
+    <div class="table">
+      <table [style]="{ 'border-collapse': 'collapse' }">
+        <tr>
+          <th>{{ "ordinalNumber" | translate }}</th>
+          <th class="right">
+            {{ "description" | translate }}
+          </th>
+          <th class="right">{{ "uomShort" | translate }}</th>
+          <th class="right">{{ "quantity" | translate }}</th>
+          <th class="right">{{ "price" | translate }}</th>
+          <th class="right">{{ "invoiceNetPrice" | translate }}</th>
+          <th class="right">{{ "rateOfVAT" | translate }}</th>
+          <th class="right">{{ "invoiceVatAmount" | translate }}</th>
+          <th class="right">{{ "invoiceGrossPrice" | translate }}</th>
+        </tr>
+        <tr *ngFor="let item of invoice.notes"></tr>
+        <tr>
+          <td>{{ "invoiceNetPriceAllCaps" | translate }}</td>
+        </tr>
+        <tr>
+          <td>{{ "invoiceVatRateAllCaps" | translate }}</td>
+        </tr>
+        <tr>
+          <td>{{ "invoiceVatAmountAllCaps" | translate }}</td>
+        </tr>
+        <tr>
+          <td>{{ "invoiceGrossPrice" | translate }}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="complaints">
+      {{
+        settings?.invoiceComplaints ||
+          "Reklamacije se uvažavaju u roku od 8 dana od dana prijema robe. Za eventualne sporove nadležan je privredni Sud u Novom Sadu."
+      }}
+    </div>
+    <div class="note">
+      <div class="title">{{ "note" | translate }}:{{ invoice.comment }}</div>
+      <div class="description"></div>
+    </div>
+    <div class="signature">
+      <div class="signature-container">
+        <div class="title">{{ "goodsInvoiceGiveBy" | translate }}:</div>
+        <div class="description"></div>
+      </div>
+      <div class="signature-container">
+        <div class="title">{{ "placeForSign" | translate }}:</div>
+        <div class="description"></div>
+      </div>
+      <div class="signature-container">
+        <div class="title">{{ "goodsTakenBy" | translate }}:</div>
+        <div class="description"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="container" *ngIf="invoice">
   <div class="heading">
     <div class="main">{{ placeholders.headerLine1 }}</div>
     <div class="sub-heading">{{ placeholders.headerLine2 }}</div>
@@ -160,4 +287,4 @@
     </div>
   </div>
   <div class="footer">{{ "" }}</div>
-</div>
+</div> -->
