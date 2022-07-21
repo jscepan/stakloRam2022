@@ -1,4 +1,6 @@
 {
+  "price": "Price",
+  "invoiceNumberTitle": "Invoice number",
   "companyWebsite": "Company website",
   "companyStreet": "Company street",
   "zipCodeCity": "Zip code and city",

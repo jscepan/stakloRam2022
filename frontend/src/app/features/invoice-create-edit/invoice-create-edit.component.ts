@@ -386,7 +386,6 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
               new Date(this.formGroup.get('dateOfCreate')?.value)
                 .getFullYear()
                 .toString()
-                .substring(2, 4)
           );
       });
   }

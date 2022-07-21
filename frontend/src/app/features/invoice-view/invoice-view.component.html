@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="invoice">
   <div class="header">
     <div class="logo">
       <img src="{{ 'assets/images/company_logo.PNG' }}" />
@@ -30,74 +30,150 @@
         "Šifra del.: 2312; MB: 62199130; PIB: 105509737;"
     }}</span>
     <span class="bold">{{
-      settings?.invoiceBankAccounts ||
+      " " + settings?.invoiceBankAccounts ||
         "Tekući račun: 310-16916-02 NLB, 330-11001154-04 Credit Agricole"
     }}</span>
   </div>
   <div class="body-content">
     <div class="heading">
       <div class="column-container">
-        <div class="column">
-          <div class="key">{{ "placeOfInvoice" | translate }}:</div>
-          <div class="key">{{ "dateOfInvoice" | translate }}:</div>
-          <div class="key">{{ "methodOfPayment" | translate }}:</div>
-          <div class="key">{{ "maturityDate" | translate }}:</div>
-          <div class="key">{{ "dateOfTurnoverGoods" | translate }}:</div>
+        <div class="column-wrapper">
+          <div class="row">
+            <div class="column-key">{{ "placeOfInvoice" | translate }}:</div>
+            <div class="column-value">{{ invoice.placeOfIssue }}</div>
+          </div>
+          <div class="row">
+            <div class="column-key">{{ "dateOfInvoice" | translate }}:</div>
+            <div class="column-value">
+              {{ invoice.dateOfCreate | date: "dd-MM-yyyy" }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="column-key">{{ "methodOfPayment" | translate }}:</div>
+            <div class="column-value">{{ invoice.methodOfPayment }}</div>
+          </div>
+          <div class="row">
+            <div class="column-key">{{ "maturityDate" | translate }}:</div>
+            <div class="column-value">
+              {{ invoice.dateOfMaturity | date: "dd-MM-yyyy" }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="column-key">
+              {{ "dateOfTurnoverGoods" | translate }}:
+            </div>
+            <div class="column-value">
+              {{ invoice.dateOfTurnover | date: "dd-MM-yyyy" }}
+            </div>
+          </div>
         </div>
-        <div class="column">
-          <div class="value">{{ invoice.placeOfIssue }}</div>
-          <div class="value">{{ invoice.dateOfCreate }}</div>
-          <div class="value">{{ invoice.methodOfPayment }}</div>
-          <div class="value">{{ invoice.dateOfMaturity }}</div>
-          <div class="value">{{ invoice.dateOfTurnover }}</div>
+        <div class="invoice-title">
+          <div class="title">{{ "invoiceNumberTitle" | translate }}:</div>
+          <div class="number">
+            {{ invoice.number }}
+          </div>
         </div>
       </div>
       <div class="column-container-buyer">
-        <div class="line">{{ invoice.buyer.name }}</div>
-        <div class="line">{{ invoice.buyer.address }}</div>
-        <div class="line">
-          {{ invoice.buyer.city?.zipCode + " " + invoice.buyer.city?.name }}
+        <div class="row">
+          <div class="wrapper">
+            <div class="line">{{ invoice.buyer.name }}</div>
+            <div class="line">{{ invoice.buyer.address }}</div>
+            <div class="line">
+              {{ invoice.buyer.city?.zipCode + " " + invoice.buyer.city?.name }}
+            </div>
+          </div>
         </div>
-        <div class="line">
+        <div class="pib">
           PIB: {{ invoice.buyer.pib }}, Matični broj:
           {{ invoice.buyer.maticalNumber }}
         </div>
       </div>
     </div>
-    <!--
-                  *ngIf="cellRowspan[i].displayCell"
-            style="rowspan='{{ cellRowspan[i].rowspan }}' "
-     -->
-    <div class="table">
-      <table [style]="{ 'border-collapse': 'collapse' }">
-        <tr>
-          <th>{{ "ordinalNumber" | translate }}</th>
-          <th class="right">
-            {{ "description" | translate }}
-          </th>
-          <th class="right">{{ "uomShort" | translate }}</th>
-          <th class="right">{{ "quantity" | translate }}</th>
-          <th class="right">{{ "price" | translate }}</th>
-          <th class="right">{{ "invoiceNetPrice" | translate }}</th>
-          <th class="right">{{ "rateOfVAT" | translate }}</th>
-          <th class="right">{{ "invoiceVatAmount" | translate }}</th>
-          <th class="right">{{ "invoiceGrossPrice" | translate }}</th>
-        </tr>
-        <tr *ngFor="let item of invoice.notes"></tr>
-        <tr>
-          <td>{{ "invoiceNetPriceAllCaps" | translate }}</td>
-        </tr>
-        <tr>
-          <td>{{ "invoiceVatRateAllCaps" | translate }}</td>
-        </tr>
-        <tr>
-          <td>{{ "invoiceVatAmountAllCaps" | translate }}</td>
-        </tr>
-        <tr>
-          <td>{{ "invoiceGrossPrice" | translate }}</td>
-        </tr>
-      </table>
-    </div>
+    <table [style]="{ 'border-collapse': 'collapse' }" class="table">
+      <tr>
+        <th>{{ "ordinalNumber" | translate }}:</th>
+        <th class="right">
+          {{ "description" | translate }}
+        </th>
+        <th class="right">{{ "uomShort" | translate }}</th>
+        <th class="right">{{ "quantity" | translate }}</th>
+        <th class="right">{{ "price" | translate }}</th>
+        <th class="right">{{ "invoiceNetPrice" | translate }}:</th>
+        <th class="right">{{ "rateOfVAT" | translate }}:</th>
+        <th class="right">{{ "invoiceVatAmount" | translate }}:</th>
+        <th class="right">{{ "invoiceGrossPrice" | translate }}:</th>
+      </tr>
+      <tr *ngFor="let item of invoice.invoiceItems; let i = index">
+        <td class="countNumber center">{{ i + 1 }}</td>
+        <td class="description justify">{{ item.description }}</td>
+        <td class="uom center">{{ item.uom }}</td>
+        <td class="quantity right">
+          {{ item.quantity | number: "1.2-2":"fr" }}
+        </td>
+        <td class="unitPrice right">{{ "unitPrice" }}</td>
+        <td class="netPrice right">
+          {{ item.netPrice | number: "1.2-2":"fr" }}
+        </td>
+        <td class="vatRate center">{{ item.vatRate }}%</td>
+        <td class="vatAmount right">
+          {{ item.vatAmount | number: "1.2-2":"fr" }}
+        </td>
+        <td class="grossPrice right">
+          {{ item.grossPrice | number: "1.2-2":"fr" }}
+        </td>
+      </tr>
+      <tr>
+        <td colspan="7" class="right" style="border: none">
+          {{ "invoiceNetPriceAllCaps" | translate }}
+        </td>
+        <td colspan="2" class="right" style="border-left: none">
+          {{ invoice.netAmount | number: "1.2-2":"fr" }}
+        </td>
+      </tr>
+      <tr>
+        <td colspan="7" class="right" style="border: none">
+          {{ "invoiceVatRateAllCaps" | translate }}
+        </td>
+        <td colspan="2" class="right" style="border-left: none">
+          {{ invoice.vatRate }}%
+        </td>
+      </tr>
+      <tr>
+        <td colspan="7" class="right" style="border: none">
+          {{ "invoiceVatAmountAllCaps" | translate }}
+        </td>
+        <td colspan="2" class="right" style="border: none">
+          {{ invoice.vatAmount | number: "1.2-2":"fr" }}
+        </td>
+      </tr>
+      <tr>
+        <td colspan="4" style="border: none"></td>
+        <td
+          colspan="3"
+          style="
+            border-left: none;
+            border-right: none;
+            border-top: 3px double;
+            border-top-style: double;
+          "
+          class="bold right"
+        >
+          {{ "invoiceGrossPrice" | translate }}:
+        </td>
+        <td
+          colspan="2"
+          class="right bold"
+          style="
+            border-left: none;
+            border-top: 3px double;
+            border-top-style: double;
+          "
+        >
+          {{ invoice.grossAmount | number: "1.2-2":"fr" }}
+        </td>
+      </tr>
+    </table>
     <div class="complaints">
       {{
         settings?.invoiceComplaints ||

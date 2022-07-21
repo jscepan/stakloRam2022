@@ -1,6 +1,6 @@
 import { EnumValueModel } from './enums/enum.model';
 
-export const BASE_API_URL: string = 'http://localhost:8080';
+export const BASE_API_URL: string = 'http://localhost:8081';
 
 export const DOMAIN_BUYERS: string = 'buyers';
 export const DOMAIN_COUNTRIES: string = 'countries';

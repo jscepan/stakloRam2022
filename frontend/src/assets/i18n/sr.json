@@ -1,4 +1,6 @@
 {
+  "price": "Cena",
+  "invoiceNumberTitle": "Račun - otpremnica br.",
   "companyWebsite": "Websajt preduzeća",
   "companyStreet": "Adresa preduzeća",
   "zipCodeCity": "PTT i mesto",
