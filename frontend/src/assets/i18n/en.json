@@ -1,6 +1,9 @@
 {
   "price": "Price",
   "invoiceNumberTitle": "Invoice number",
+  "invoiceAdvanceNumberTitle": "Advance invoice number",
+  "invoiceCashNumberTitle": "Cash invoice number",
+  "invoicePreNumberTitle": "Pre-invoice number",
   "companyWebsite": "Company website",
   "companyStreet": "Company street",
   "zipCodeCity": "Zip code and city",

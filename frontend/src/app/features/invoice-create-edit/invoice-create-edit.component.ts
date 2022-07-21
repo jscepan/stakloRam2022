@@ -17,7 +17,7 @@ import { BuyerWebService } from 'src/app/web-services/buyer.web-service';
 import { UserWebService } from 'src/app/web-services/user.web-service';
 import { InvoiceWebService } from 'src/app/web-services/invoice.web-service';
 import { InvoiceModel } from 'src/app/shared/models/invoice.model';
-import { INVOICE_TYPES } from 'src/app/shared/constants';
+import { INVOICE_TYPES, WORK_ORDER_UOM } from 'src/app/shared/constants';
 import { InvoiceItemModel } from 'src/app/shared/models/invoice-item.model';
 import {
   AppSettings,
@@ -53,6 +53,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   formGroup!: FormGroup;
   isEdit: boolean = false;
   typesOptions: EnumValueModel[] = INVOICE_TYPES;
+  uomOptions: EnumValueModel[] = WORK_ORDER_UOM;
   settings?: AppSettings;
 
   buyersEntities: Observable<BuyerModel[]> = this.listEntities.entities;
@@ -203,6 +204,17 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
         oid: new FormControl(invoiceItem?.oid || ''),
         description: new FormControl(invoiceItem?.description || '', [
           Validators.required,
+        ]),
+        uom: new FormControl(invoiceItem?.uom || this.uomOptions[0].value, [
+          Validators.required,
+        ]),
+        quantity: new FormControl(invoiceItem?.quantity || 0, [
+          Validators.required,
+          Validators.min(0),
+        ]),
+        pricePerUnit: new FormControl(invoiceItem?.pricePerUnit || 0, [
+          Validators.required,
+          Validators.min(0),
         ]),
         netPrice: new FormControl(invoiceItem?.netPrice || 0, [
           Validators.required,

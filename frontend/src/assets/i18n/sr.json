@@ -1,6 +1,9 @@
 {
   "price": "Cena",
   "invoiceNumberTitle": "Račun - otpremnica br.",
+  "invoiceAdvanceNumberTitle": "Avansni račun br.",
+  "invoiceCashNumberTitle": "Gotovinski račun br.",
+  "invoicePreNumberTitle": "Predračun br.",
   "companyWebsite": "Websajt preduzeća",
   "companyStreet": "Adresa preduzeća",
   "zipCodeCity": "PTT i mesto",

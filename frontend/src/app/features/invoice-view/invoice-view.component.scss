@@ -44,14 +44,12 @@
     .heading {
       margin-top: 10px;
       display: flex;
-      justify-content: space-between;
-      width: 720px;
 
       .column-container {
         .column-wrapper {
           display: flex;
           flex-direction: column;
-          padding: 10px;
+          font-size: 0.9em;
 
           .row {
             display: flex;
@@ -59,10 +57,10 @@
 
             .column-key {
               text-align: end;
-              width: 170px;
+              width: 150px;
             }
             .column-value {
-              width: 110px;
+              width: 90px;
               font-weight: 600;
               border-bottom: 1px solid var(--color-black);
             }
@@ -87,16 +85,16 @@
       .column-container-buyer {
         display: flex;
         flex-direction: column;
-        margin-left: 25px;
-        font-size: 1.14em;
+        margin: 0 10px;
+        font-size: 1em;
         text-align: center;
         font-weight: 600;
-        width: 395px;
+        width: 300px;
         border: 3px solid var(--color-black);
 
         .row {
           display: flex;
-          height: 106px;
+          height: 86px;
           align-items: center;
           justify-content: center;
           .wrapper {
@@ -207,185 +205,3 @@
 .justify {
   text-align: justify;
 }
-// .container {
-//   display: flex;
-//   flex-direction: column;
-
-//   .heading {
-//     display: flex;
-//     flex-direction: column;
-//     align-items: center;
-//     padding-bottom: 50px;
-
-//     .main {
-//       font-size: 30px;
-//       font-weight: 600;
-//       margin-bottom: 10px;
-//     }
-
-//     .sub-heading {
-//       font-size: 20px;
-//       font-weight: 400;
-//     }
-//   }
-
-//   .content {
-//     display: flex;
-//     flex-direction: column;
-//     font-size: 16px;
-
-//     .title {
-//       display: flex;
-//       justify-content: space-between;
-
-//       .date-place {}
-
-//       .buyer {
-//         display: flex;
-//         align-items: center;
-//         max-width: 300px;
-//         flex-direction: column;
-//         border: 1px solid black;
-//         background-color: var(--color-main-light);
-//         font-weight: 600;
-//         font-size: 18px;
-//       }
-//     }
-
-//     .middle-part {
-//       display: flex;
-//       flex-grow: 1;
-//       justify-content: space-between;
-
-//       .left {
-//         display: flex;
-//         flex-direction: column;
-//         justify-content: center;
-
-//         .invoice-number {
-//           margin-bottom: 20px;
-//           font-weight: 600;
-//         }
-//       }
-
-//       .right {
-//         padding: 10px 0;
-//       }
-//     }
-
-//     .items-title {
-//       font-weight: 600;
-//     }
-
-//     .items-content {
-//       width: 100%;
-
-//       .grid-container {
-//         display: grid;
-//         grid-template-columns: min-content auto auto min-content;
-
-//         .grid-item {
-//           display: flex;
-//           align-items: center;
-//           border: 1px solid black;
-
-//           &.span-first-two-column {
-//             grid-column: 1 / span 2;
-//           }
-
-//           &.span-second-third-column {
-//             grid-column: 2 / span 2;
-//           }
-
-//           &.no-left-border {
-//             border-left: none;
-//           }
-
-//           &.no-bottom-border {
-//             border-bottom: none;
-//           }
-
-//           &.no-top-border {
-//             border-top: none;
-//           }
-
-//           &.header {
-//             font-weight: 600;
-//             text-align: center;
-//           }
-
-//           &.align-center {
-//             display: flex;
-//             align-items: center;
-//             justify-content: center;
-//           }
-
-//           &.align-right {
-//             display: flex;
-//             align-items: center;
-//             justify-content: flex-end;
-//           }
-
-//           &.additional-padding {
-//             padding: 10px;
-//           }
-
-//           &.background-color {
-//             background-color: var(--color-main-light);
-//           }
-
-//           &.maturity {
-//             font-style: italic;
-//           }
-
-//           &.bold {
-//             font-weight: 600;
-//           }
-//         }
-//       }
-//     }
-
-//     .addition {
-//       padding: 20px 0;
-//     }
-
-//     .paying-description {
-//       .paying-title {
-//         padding-bottom: 20px;
-//       }
-
-//       .paying-data {
-//         font-weight: 600;
-//         padding-left: 50px;
-//       }
-
-//       .paying-data-company-data {
-//         padding-left: 50px;
-//         padding-top: 20px;
-//       }
-//     }
-
-//     .signing-part {
-//       .greetings {
-//         padding: 20px 0;
-//       }
-
-//       .company-name {
-//         //
-//       }
-
-//       .line {
-//         padding-top: 20px;
-//       }
-//     }
-//   }
-
-//   .footer {
-//     display: flex;
-//     width: 100%;
-//     justify-content: center;
-//     align-items: center;
-//     text-align: center;
-//     padding-top: 30px;
-//   }
-// }

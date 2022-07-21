@@ -68,7 +68,22 @@
           </div>
         </div>
         <div class="invoice-title">
-          <div class="title">{{ "invoiceNumberTitle" | translate }}:</div>
+          <div class="title">
+            <ng-container [ngSwitch]="invoice.type">
+              <span *ngSwitchCase="'ADVANCE_INVOICE'"
+                >{{ "invoiceAdvanceNumberTitle" | translate }}:</span
+              >
+              <span *ngSwitchCase="'CASH'"
+                >{{ "invoiceCashNumberTitle" | translate }}:</span
+              >
+              <span *ngSwitchCase="'PRE_INVOICE'"
+                >{{ "invoicePreNumberTitle" | translate }}:</span
+              >
+              <span *ngSwitchDefault
+                >{{ "invoiceNumberTitle" | translate }}:</span
+              >
+            </ng-container>
+          </div>
           <div class="number">
             {{ invoice.number }}
           </div>
@@ -89,6 +104,11 @@
           {{ invoice.buyer.maticalNumber }}
         </div>
       </div>
+      <qrcode
+        [qrdata]="getQrCodeDataForInvoice(invoice)"
+        [width]="130"
+        [errorCorrectionLevel]="'M'"
+      ></qrcode>
     </div>
     <table [style]="{ 'border-collapse': 'collapse' }" class="table">
       <tr>
@@ -111,7 +131,9 @@
         <td class="quantity right">
           {{ item.quantity | number: "1.2-2":"fr" }}
         </td>
-        <td class="unitPrice right">{{ "unitPrice" }}</td>
+        <td class="unitPrice right">
+          {{ item.pricePerUnit | number: "1.2-2":"fr" }}
+        </td>
         <td class="netPrice right">
           {{ item.netPrice | number: "1.2-2":"fr" }}
         </td>
@@ -200,167 +222,3 @@
     </div>
   </div>
 </div>
-
-<!-- <div class="container" *ngIf="invoice">
-  <div class="heading">
-    <div class="main">{{ placeholders.headerLine1 }}</div>
-    <div class="sub-heading">{{ placeholders.headerLine2 }}</div>
-  </div>
-  <div class="content">
-    <div class="title">
-      <div class="date-place">
-        <div class="date">
-          {{ placeholders.dateOfInvoice
-          }}{{ invoice.dateOfCreate | date: "dd.MM.yyyy" }}
-        </div>
-        <div class="place">
-          {{ placeholders.placeOfInvoice }}{{ invoice.placeOfIssue }}
-        </div>
-      </div>
-      <div class="buyer">
-        <div class="name">{{ invoice.buyer.name }}</div>
-        <div class="address">{{ invoice.buyer.address }}</div>
-        <div class="city">
-          {{ invoice.buyer.city?.zipCode }}&nbsp;{{ invoice.buyer.city?.name }}
-        </div>
-        <div class="numbers" *ngIf="invoice.buyer.type !== 'PERSON'">
-          {{ placeholders.pib }}{{ invoice.buyer.pib }},&nbsp;{{
-            placeholders.mb
-          }}{{ invoice.buyer.maticalNumber }}
-        </div>
-      </div>
-    </div>
-    <div class="middle-part">
-      <div class="left">
-        <div class="invoice-number">
-          <ng-container [ngSwitch]="invoice.type">
-            <span *ngSwitchCase="'ADVANCE_INVOICE'">{{
-              placeholders.invoiceAdvanceNumber
-            }}</span>
-            <span *ngSwitchCase="'CASH'">{{
-              placeholders.invoiceCashNumber
-            }}</span>
-            <span *ngSwitchCase="'PRE_INVOICE'">{{
-              placeholders.invoicePreNumber
-            }}</span>
-            <span *ngSwitchDefault>{{ placeholders.invoiceNumber }}</span>
-          </ng-container>
-          {{ invoice.number }}
-        </div>
-        <div class="place-of-issue">
-          {{ placeholders.placeOfTurnover }} {{ invoice.placeOfIssue }}
-        </div>
-        <div class="date-of-issue">
-          {{ placeholders.dateOfTurnover }}
-          {{ invoice.dateOfTurnover | date: "dd.MM.yyyy" }}
-        </div>
-      </div>
-      <div class="right">
-        <qrcode
-          [qrdata]="getQrCodeDataForInvoice(invoice)"
-          [width]="150"
-          [errorCorrectionLevel]="'M'"
-        ></qrcode>
-      </div>
-    </div>
-    <div class="items-title">{{ placeholders.legalServices }}</div>
-    <div class="items-content">
-      <div class="grid-container">
-        <div
-          class="grid-item header align-center additional-padding background-color"
-        >
-          {{ placeholders.counter }}
-        </div>
-        <div
-          class="grid-item header align-center additional-padding background-color span-second-third-column"
-        >
-          {{ placeholders.serviceDescription }}
-        </div>
-        <div
-          class="grid-item header align-center additional-padding background-color"
-        >
-          {{ placeholders.amountRSD }}
-        </div>
-        <ng-container *ngFor="let item of invoice.invoiceItems; index as index">
-          <div class="grid-item align-center additional-padding">
-            {{ index + 1 }}
-          </div>
-          <div class="grid-item span-second-third-column">
-            {{ item.description }}
-          </div>
-          <div class="grid-item align-right additional-padding">
-            {{ item.netPrice | number: "1.2-2" }}
-          </div>
-        </ng-container>
-        <div
-          class="grid-item span-first-two-column no-left-border no-bottom-border"
-        ></div>
-        <ng-container
-          *ngFor="let invoiceItem of invoiceItemsVatRates; let ind = index"
-        >
-          <div class="grid-item additional-padding">
-            {{ placeholders.amount }}
-          </div>
-          <div class="grid-item align-right additional-padding">
-            {{ invoiceItem.netAmount | number: "1.2-2" }}
-          </div>
-          <ng-container *ngIf="ind === 0">
-            <div
-              class="grid-item maturity span-first-two-column no-left-border no-bottom-border no-top-border"
-            >
-              {{
-                placeholders.deadline +
-                  (getInvoiceDateOfMaturity(invoice) > 0
-                    ? getInvoiceDateOfMaturity(invoice) +
-                      (getInvoiceDateOfMaturity(invoice) === 1
-                        ? placeholders.dayFromInvoice
-                        : placeholders.daysFromInvoice)
-                    : placeholders.byInvoiceCome)
-              }}
-            </div>
-          </ng-container>
-          <ng-container *ngIf="ind > 0">
-            <div
-              class="grid-item maturity span-first-two-column no-left-border no-bottom-border no-top-border"
-            ></div>
-          </ng-container>
-          <div class="grid-item additional-padding">
-            {{ placeholders.vat }} {{ invoiceItem.vatRate }}{{ "%" }}
-          </div>
-          <div class="grid-item align-right additional-padding">
-            {{ invoiceItem.vatAmount | number: "1.2-2" }}
-          </div>
-          <div
-            class="grid-item span-first-two-column no-left-border no-bottom-border no-top-border"
-          ></div>
-        </ng-container>
-        <div
-          class="grid-item span-first-two-column no-left-border no-bottom-border no-top-border"
-        ></div>
-        <div class="grid-item bold additional-padding">
-          {{ placeholders.forPay }}
-        </div>
-        <div
-          class="grid-item align-right background-color additional-padding bold"
-        >
-          {{ invoice.grossAmount | number: "1.2-2" }}
-        </div>
-      </div>
-    </div>
-    <div class="addition">
-      {{ placeholders.noteAboutTax }}
-    </div>
-    <div class="paying-description">
-      <div class="paying-title">{{ placeholders.incomeDoneOnName }}</div>
-    </div>
-
-    <div class="signing-part">
-      <div class="greetings">{{ placeholders.greetings }}</div>
-      <div class="company-name">
-        {{ "" }}
-      </div>
-      <div class="line">____________________________</div>
-    </div>
-  </div>
-  <div class="footer">{{ "" }}</div>
-</div> -->

@@ -22,8 +22,11 @@ public class InvoiceItemStore extends ObjectStore {
     public InvoiceItem createNewObjectToDatabase(BaseModel model, Long invoiceId) throws SQLException {
         InvoiceItem object = (InvoiceItem) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getDescription());
+        st.setString(++i, object.getUom());
+        st.setDouble(++i, object.getQuantity());
+        st.setDouble(++i, object.getPricePerUnit());
         st.setDouble(++i, object.getNetPrice());
         st.setDouble(++i, object.getVatRate());
         st.setDouble(++i, object.getVatAmount());
@@ -50,12 +53,18 @@ public class InvoiceItemStore extends ObjectStore {
         int i = 0;
         PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_description=?,"
+                + this.getTableName() + "_unit_of_measure=?,"
+                + this.getTableName() + "_quantity=?,"
+                + this.getTableName() + "_price_per_unit=?,"
                 + this.getTableName() + "_net_price=?,"
                 + this.getTableName() + "_vat_rate=?,"
                 + this.getTableName() + "_vat_amount=?,"
                 + this.getTableName() + "_gross_price=?"
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setString(++i, object.getDescription());
+        st.setString(++i, object.getUom());
+        st.setDouble(++i, object.getQuantity());
+        st.setDouble(++i, object.getPricePerUnit());
         st.setDouble(++i, object.getNetPrice());
         st.setDouble(++i, object.getVatRate());
         st.setDouble(++i, object.getVatAmount());
@@ -71,6 +80,9 @@ public class InvoiceItemStore extends ObjectStore {
     public InvoiceItem getObjectFromResultSet(ResultSet resultSet) throws SQLException {
         InvoiceItem object = new InvoiceItem(resultSet.getLong(this.getPrimaryKey()));
         object.setDescription(resultSet.getString(this.getTableName() + "_description"));
+        object.setUom(resultSet.getString(this.getTableName() + "_uom"));
+        object.setQuantity(resultSet.getDouble(this.getTableName() + "_quantity"));
+        object.setPricePerUnit(resultSet.getDouble(this.getTableName() + "_price_per_unit"));
         object.setNetPrice(resultSet.getDouble(this.getTableName() + "_net_price"));
         object.setVatRate(resultSet.getDouble(this.getTableName() + "_vat_rate"));
         object.setVatAmount(resultSet.getDouble(this.getTableName() + "_vat_amount"));

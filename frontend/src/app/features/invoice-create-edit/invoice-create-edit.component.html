@@ -241,6 +241,54 @@
               </mat-label>
               <input type="text" matInput formControlName="description" />
             </mat-form-field>
+            <mat-form-field>
+              <mat-label
+                [class.mark-required]="true"
+                [class.mark-opt-required]="true"
+              >
+                {{ "uom" | translate }}
+              </mat-label>
+              <mat-select formControlName="uom">
+                <mat-option
+                  *ngFor="let item of uomOptions"
+                  [value]="item.value"
+                >
+                  {{ item.displayName | translate }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="number-field">
+              <mat-label
+                [class.mark-required]="true"
+                [class.mark-opt-required]="true"
+              >
+                {{ "quantity" | translate }}
+              </mat-label>
+              <input
+                type="text"
+                appDecimal
+                matInput
+                formControlName="quantity"
+                (change)="calculateInvoiceItemAmount(i, 'quantity')"
+                (focusout)="calculateInvoiceAmount(); setAllInvoiceAmounts()"
+              />
+            </mat-form-field>
+            <mat-form-field class="number-field">
+              <mat-label
+                [class.mark-required]="true"
+                [class.mark-opt-required]="true"
+              >
+                {{ "pricePerUnit" | translate }}
+              </mat-label>
+              <input
+                type="text"
+                appDecimal
+                matInput
+                formControlName="pricePerUnit"
+                (change)="calculateInvoiceItemAmount(i, 'pricePerUnit')"
+                (focusout)="calculateInvoiceAmount(); setAllInvoiceAmounts()"
+              />
+            </mat-form-field>
             <mat-form-field class="number-field">
               <mat-label
                 [class.mark-required]="true"
