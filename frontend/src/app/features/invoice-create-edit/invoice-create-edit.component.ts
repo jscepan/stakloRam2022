@@ -671,7 +671,12 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
           this.setFocusOn('grossPrice', index, true);
           break;
         case 'grossPrice':
-          this.setFocusOn('comment', index, true);
+          if (this.invoiceItemsFormArr.length === index + 1) {
+            this.addNewItem();
+          }
+          setTimeout(() => {
+            this.setFocusOn('description', index + 1);
+          });
           break;
       }
     }

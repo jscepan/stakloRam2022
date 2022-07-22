@@ -190,4 +190,14 @@ public class InvoiceStore extends ObjectStore {
         }
         return response;
     }
+
+    public boolean toggleEnableDisableInvoice(String oid, boolean disabled) throws SQLException {
+        int i = 0;
+        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+                + this.getTableName() + "_disabled=?"
+                + " WHERE " + this.getPrimaryKey() + "=?");
+        st.setBoolean(++i, disabled);
+        st.setLong(++i, Invoice.getIdFromOid(oid));
+        return st.executeUpdate() > 0;
+    }
 }

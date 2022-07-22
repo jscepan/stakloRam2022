@@ -27,6 +27,9 @@
         {{ "dateOfCreate" | translate }}
       </div>
       <div class="grid-item header">
+        {{ "dateOfMaturity" | translate }}
+      </div>
+      <div class="grid-item header">
         {{ "netAmount" | translate }}
       </div>
       <div class="grid-item header">
@@ -44,6 +47,7 @@
       <div class="grid-item header">
         {{ "edit" | translate }}
       </div>
+      <div class="grid-item header">{{ "delete" | translate }}</div>
       <ng-container *ngFor="let invoice of entities | async">
         <div class="grid-item">
           {{ invoice.buyer.name }}
@@ -54,14 +58,17 @@
         <div class="grid-item">
           {{ invoice.dateOfCreate | date: "dd.MM.yyyy" }}
         </div>
-        <div class="grid-item align-right">
-          {{ invoice.netAmount | number: "1.2-2" }}
+        <div class="grid-item">
+          {{ invoice.dateOfMaturity | date: "dd.MM.yyyy" }}
         </div>
         <div class="grid-item align-right">
-          {{ invoice.vatAmount | number: "1.2-2" }}
+          {{ invoice.netAmount | number: "1.2-2":"fr" }}
         </div>
         <div class="grid-item align-right">
-          {{ invoice.grossAmount | number: "1.2-2" }}
+          {{ invoice.vatAmount | number: "1.2-2":"fr" }}
+        </div>
+        <div class="grid-item align-right">
+          {{ invoice.grossAmount | number: "1.2-2":"fr" }}
         </div>
         <div class="grid-item">
           <app-button
@@ -82,6 +89,13 @@
             [iconName]="'edit'"
             [isTransparentMode]="true"
             (clickEvent)="editInvoice(invoice.oid)"
+          ></app-button>
+        </div>
+        <div class="grid-item">
+          <app-button
+            [iconName]="'trash-2'"
+            [isTransparentMode]="true"
+            (clickEvent)="deleteInvoice(invoice.oid)"
           ></app-button>
         </div>
       </ng-container>

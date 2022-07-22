@@ -18,10 +18,14 @@
 
     .grid-container {
       display: grid;
-      grid-template-columns: auto auto auto auto auto auto auto auto auto;
+      grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto;
 
       .grid-item {
         &.header {
+        }
+
+        &.storno {
+          background-color: var(--color-danger-hover);
         }
       }
     }

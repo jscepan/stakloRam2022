@@ -6,6 +6,7 @@ import com.stakloram.backend.models.Invoice.InvoiceType;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.services.impl.InvoiceService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,5 +44,10 @@ public class InvoiceController {
     @RequestMapping(method = RequestMethod.PUT, value = "/invoices/{invoiceOid}")
     public Invoice modify(@PathVariable String invoiceOid, @RequestBody Invoice object) throws SException {
         return (Invoice) this.invoiceService.modifyObject(invoiceOid, object);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/invoices")
+    public boolean delete(@RequestBody List<String> objectOids) throws SException {
+        return invoiceService.deleteObjects(objectOids);
     }
 }

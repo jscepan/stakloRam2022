@@ -18,7 +18,7 @@ public class InvoiceService extends ServiceModel {
     public int getNextInvoiceNumber(Invoice.InvoiceType invoiceType, int year) throws SException {
         return ((InvoiceBuilder) this.baseBuilder).getNextInvoiceNumber(invoiceType, year);
     }
-
+    
     @Override
     public void checkRequestDataForCreate(BaseModel object) throws SException {
     }

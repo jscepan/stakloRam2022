@@ -3,6 +3,12 @@ import { Router } from '@angular/router';
 import { IncomeCreateEditPopupService } from '@features/income-create-edit/income-create-edit-popup.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
+import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
+import {
+  SweetAlertI,
+  SweetAlertTypeEnum,
+} from 'src/app/shared/components/sweet-alert/sweet-alert.interface';
+import { SweetAlertService } from 'src/app/shared/components/sweet-alert/sweet-alert.service';
 import { InvoiceModel } from 'src/app/shared/models/invoice.model';
 import { SearchModel } from 'src/app/shared/models/search.model';
 import { GlobalService } from 'src/app/shared/services/global.service';
@@ -14,7 +20,12 @@ import { InvoiceWebService } from 'src/app/web-services/invoice.web-service';
   selector: 'app-invoices',
   templateUrl: './invoices.component.html',
   styleUrls: ['./invoices.component.scss'],
-  providers: [InvoiceWebService, ListEntities, IncomeCreateEditPopupService],
+  providers: [
+    InvoiceWebService,
+    ListEntities,
+    IncomeCreateEditPopupService,
+    SweetAlertService,
+  ],
 })
 export class InvoicesComponent implements OnInit, OnDestroy {
   public subs: SubscriptionManager = new SubscriptionManager();
@@ -30,6 +41,7 @@ export class InvoicesComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private webService: InvoiceWebService,
     private incomeCreateEditPopupService: IncomeCreateEditPopupService,
+    private sweetAlertService: SweetAlertService,
     private listEntities: ListEntities<InvoiceModel>
   ) {}
 
@@ -51,6 +63,43 @@ export class InvoicesComponent implements OnInit, OnDestroy {
 
   editInvoice(invoiceOID: string): void {
     this.router.navigate(['invoices', 'edit', invoiceOID]);
+  }
+
+  deleteInvoice(invoiceOID: string): void {
+    this.subs.sink.$deleteInvoice = this.sweetAlertService
+      .getDataBackFromSweetAlert()
+      .subscribe((data) => {
+        if (data && data.confirmed) {
+          this.subs.sink = this.webService
+            .deleteEntity([invoiceOID])
+            .subscribe(() => {
+              this.globalService.showBasicAlert(
+                MODE.success,
+                this.translateService.instant('invoiceDeleted'),
+                this.translateService.instant(
+                  'invoiceHaveBeenSuccessfullyDeleted'
+                )
+              );
+              this.listEntities.requestFirstPage();
+            });
+        }
+      });
+    const sweetAlertModel: SweetAlertI = {
+      mode: 'warning',
+      icon: 'alert-triangle',
+      type: {
+        name: SweetAlertTypeEnum.submit,
+        buttons: {
+          submit: this.translateService.instant('delete'),
+          cancel: this.translateService.instant('cancel'),
+        },
+      },
+      title: this.translateService.instant('deleteInvoice'),
+      message: this.translateService.instant(
+        'areYouSureYouWantToDeleteTheInvoice'
+      ),
+    };
+    this.sweetAlertService.openMeSweetAlert(sweetAlertModel);
   }
 
   createIncome(invoice: InvoiceModel): void {

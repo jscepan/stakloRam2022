@@ -158,6 +158,23 @@ public class InvoiceBuilder extends BaseBuilder {
         }
     }
 
+    @Override
+    public boolean deleteObjectByOid(String oid) throws SException {
+        Invoice invoice = this.getObjectByOid(oid);
+        for (InvoiceItem item : invoice.getInvoiceItems()) {
+            try {
+                for (WorkOrderItem woi : item.getWorkOrderItems()) {
+                    WORK_ORDER_ITEM_STORE.removeInvoiceItemForWorkOrderItem(woi.getOid());
+                }
+                INVOICE_ITEM_STORE.deleteObjectByOid(item.getOid());
+            } catch (SQLException ex) {
+            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            }
+        }
+
+        return super.deleteObjectByOid(oid);
+    }
+
     public int getNextInvoiceNumber(Invoice.InvoiceType invoiceType, int year) throws SException {
         try {
             return ((InvoiceStore) this.getObjectStore()).getLastInvoiceNumber(invoiceType, year) + 1;
