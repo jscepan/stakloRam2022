@@ -6,7 +6,6 @@ import { GlobalService } from 'src/app/shared/services/global.service';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 import { BuyerWebService } from 'src/app/web-services/buyer.web-service';
 import { IncomeWebService } from 'src/app/web-services/income.web-service';
-import { IncomeModel } from 'src/app/shared/models/income.model';
 import { compareByValue } from 'src/app/shared/utils';
 import { Observable, Subject } from 'rxjs';
 import { ListEntities } from 'src/app/shared/services/list-entities';
@@ -14,11 +13,12 @@ import { BuyerModel } from 'src/app/shared/models/buyer.model';
 import { SearchModel } from 'src/app/shared/models/search.model';
 import { BaseModel } from 'src/app/shared/models/base-model';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { takeUntil } from 'rxjs/operators';
 import { MatSelectChange } from '@angular/material/select';
 
 export interface DialogData {
   oid: string;
+  buyer: BuyerModel;
+  amount: number;
 }
 
 @Component({
@@ -58,18 +58,29 @@ export class IncomeCreateEditComponent implements OnInit, OnDestroy {
       .setWebService(this.buyerWebService)
       .requestFirstPage();
 
-    this.isEdit ? this.initializeEdit() : this.initializeCreate();
+    this.isEdit
+      ? this.initializeEdit()
+      : this.initializeCreate(this.data.buyer, this.data.amount);
   }
 
-  initializeCreate(): void {
+  initializeCreate(buyer: BuyerModel, amount: number): void {
+    if (buyer) {
+      this.selectedBuyer = buyer;
+      setTimeout(() => {
+        this.formGroup.get('buyer')?.disable();
+      });
+    }
     this.formGroup = new FormGroup({
       date: new FormControl(new Date().toISOString().substring(0, 10), [
         Validators.required,
       ]),
       bankStatementNumber: new FormControl(''),
-      amount: new FormControl(0, [Validators.required, Validators.min(0)]),
+      amount: new FormControl(amount || 0, [
+        Validators.required,
+        Validators.min(0),
+      ]),
       comment: new FormControl('', []),
-      buyer: new FormControl('', Validators.required),
+      buyer: new FormControl(this.selectedBuyer, Validators.required),
     });
   }
 

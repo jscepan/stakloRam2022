@@ -36,6 +36,9 @@
         {{ "grossAmount" | translate }}
       </div>
       <div class="grid-item header">
+        {{ "createIncome" | translate }}
+      </div>
+      <div class="grid-item header">
         {{ "view" | translate }}
       </div>
       <div class="grid-item header">
@@ -59,6 +62,13 @@
         </div>
         <div class="grid-item align-right">
           {{ invoice.grossAmount | number: "1.2-2" }}
+        </div>
+        <div class="grid-item">
+          <app-button
+            [iconName]="'dollar-sign'"
+            [isTransparentMode]="true"
+            (clickEvent)="createIncome(invoice)"
+          ></app-button>
         </div>
         <div class="grid-item">
           <app-button

@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { IncomeCreateEditPopupService } from '@features/income-create-edit/income-create-edit-popup.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { InvoiceModel } from 'src/app/shared/models/invoice.model';
@@ -13,7 +14,7 @@ import { InvoiceWebService } from 'src/app/web-services/invoice.web-service';
   selector: 'app-invoices',
   templateUrl: './invoices.component.html',
   styleUrls: ['./invoices.component.scss'],
-  providers: [InvoiceWebService, ListEntities],
+  providers: [InvoiceWebService, ListEntities, IncomeCreateEditPopupService],
 })
 export class InvoicesComponent implements OnInit, OnDestroy {
   public subs: SubscriptionManager = new SubscriptionManager();
@@ -28,6 +29,7 @@ export class InvoicesComponent implements OnInit, OnDestroy {
     private globalService: GlobalService,
     private translateService: TranslateService,
     private webService: InvoiceWebService,
+    private incomeCreateEditPopupService: IncomeCreateEditPopupService,
     private listEntities: ListEntities<InvoiceModel>
   ) {}
 
@@ -49,6 +51,18 @@ export class InvoicesComponent implements OnInit, OnDestroy {
 
   editInvoice(invoiceOID: string): void {
     this.router.navigate(['invoices', 'edit', invoiceOID]);
+  }
+
+  createIncome(invoice: InvoiceModel): void {
+    this.incomeCreateEditPopupService
+      .openDialog(undefined, invoice.buyer, invoice.grossAmount)
+      .subscribe((income) => {
+        console.log('income');
+        console.log(income);
+        // if (income) {
+        //   this.listEntities.requestFirstPage();
+        // }
+      });
   }
 
   viewInvoice(invoiceOID: string): void {
