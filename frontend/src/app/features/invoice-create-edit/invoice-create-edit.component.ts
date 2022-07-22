@@ -442,6 +442,12 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   }
 
   calculateInvoiceItemAmount(index: number, formControlName: string): void {
+    let quantityControl =
+      this.invoiceItemsFormArr.controls[index].get('quantity');
+    let quantity: number = quantityControl?.value * 1;
+    let pricePerUnitControl =
+      this.invoiceItemsFormArr.controls[index].get('pricePerUnit');
+    let pricePerUnit: number = pricePerUnitControl?.value * 1;
     let netPriceControl =
       this.invoiceItemsFormArr.controls[index].get('netPrice');
     let netPrice: number = netPriceControl?.value * 1;
@@ -455,22 +461,58 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
       this.invoiceItemsFormArr.controls[index].get('grossPrice');
     let grossPrice: number = grossPriceControl?.value * 1;
     switch (formControlName) {
+      case 'quantity':
+        netPrice = quantity * pricePerUnit;
+        netPriceControl?.setValue(netPrice);
+        vatAmount = (netPrice * vatRate) / 100;
+        vatAmountControl?.setValue(vatAmount);
+        grossPriceControl?.setValue(netPrice + vatAmount);
+        break;
+      case 'pricePerUnit':
+        netPrice = quantity * pricePerUnit;
+        netPriceControl?.setValue(netPrice);
+        vatAmount = (netPrice * vatRate) / 100;
+        vatAmountControl?.setValue(vatAmount);
+        grossPriceControl?.setValue(netPrice + vatAmount);
+        break;
       case 'netPrice':
+        if (quantity <= 0) {
+          quantity = 1;
+          quantityControl?.setValue(quantity);
+        }
+        pricePerUnit = netPrice / quantity;
+        pricePerUnitControl?.setValue(pricePerUnit);
         vatAmount = (netPrice * vatRate) / 100;
         vatAmountControl?.setValue(vatAmount);
         grossPriceControl?.setValue(netPrice + vatAmount);
         break;
       case 'vatRate':
-        vatAmountControl?.setValue((netPrice * vatRate) / 100);
+        vatAmount = (netPrice * vatRate) / 100;
+        vatAmountControl?.setValue(vatAmount);
         grossPriceControl?.setValue(netPrice + vatAmount);
         break;
       case 'vatAmount':
-        netPriceControl?.setValue((vatAmount * 100) / vatRate);
+        netPrice = (vatAmount * 100) / vatRate;
+        netPriceControl?.setValue(netPrice);
+        if (quantity <= 0) {
+          quantity = 1;
+          quantityControl?.setValue(quantity);
+        }
+        pricePerUnit = netPrice / quantity;
+        pricePerUnitControl?.setValue(pricePerUnit);
         grossPriceControl?.setValue(netPrice + vatAmount);
         break;
       case 'grossPrice':
-        vatAmountControl?.setValue((grossPrice * vatRate) / (100 + vatRate));
-        netPriceControl?.setValue(grossPrice - vatAmount);
+        vatAmount = (grossPrice * vatRate) / (100 + vatRate);
+        vatAmountControl?.setValue(vatAmount);
+        netPrice = grossPrice - vatAmount;
+        netPriceControl?.setValue(netPrice);
+        if (quantity <= 0) {
+          quantity = 1;
+          quantityControl?.setValue(quantity);
+        }
+        pricePerUnit = netPrice / quantity;
+        pricePerUnitControl?.setValue(pricePerUnit);
         break;
     }
     this.calculateInvoiceAmount();
@@ -631,49 +673,6 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
         case 'grossPrice':
           this.setFocusOn('comment', index, true);
           break;
-
-        // case 'number':
-        //   this.setFocusOn('buyer');
-        //   break;
-        // case 'forPerson':
-        //   this.setFocusOn('description');
-        //   break;
-        // case 'description':
-        //   if (index < 0) {
-        //     this.setFocusOn('dateOfCreate', 0, true);
-        //   } else {
-        //     this.setFocusOn('uom', index);
-        //   }
-        //   break;
-        // case 'dateOfCreate':
-        //   this.setFocusOn('placeOfIssue', 0, true);
-        //   break;
-        // case 'placeOfIssue':
-        //   this.setFocusOn('description', index + 2, true);
-        //   break;
-        // case 'dimension1':
-        //   this.setFocusOn('dimension2', index, true);
-        //   break;
-        // case 'dimension2':
-        //   this.setFocusOn('quantity', index, true);
-        //   break;
-        // case 'quantity':
-        //   this.setFocusOn('sumQuantity', index, true);
-        //   break;
-        // case 'sumQuantity':
-        //   this.setFocusOn('note', index, true);
-        //   break;
-        // case 'note':
-        //   if (
-        //     index >= 0 &&
-        //     !this.invoiceItemsFormArr.controls[index + 1]?.value
-        //   ) {
-        //     this.addNewItem(this.invoiceItemsFormArr.controls[index].value);
-        //   }
-        //   setTimeout(() => {
-        //     this.setFocusOn('description', index + 2, true);
-        //   });
-        //   break;
       }
     }
   }
