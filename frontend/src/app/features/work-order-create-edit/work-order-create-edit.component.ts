@@ -33,6 +33,7 @@ import {
 } from 'src/app/shared/utils';
 import { BuyerWebService } from 'src/app/web-services/buyer.web-service';
 import { WorkOrderWebService } from 'src/app/web-services/work-order.web-service';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-work-order-create-edit',
@@ -55,6 +56,8 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   settings?: AppSettings;
   isBuyerSelected?: boolean;
   uomOptions: EnumValueModel[] = WORK_ORDER_UOM;
+  workOrderItemsOptions: string[] = [];
+  filteredOptions: Observable<string[]> | undefined;
 
   buyersEntities: Observable<BuyerModel[]> = this.listEntities.entities;
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
@@ -103,6 +106,12 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.workOrderOID = this.route.snapshot.paramMap.get('workOrderOID');
+
+    this.subs.sink = this.webService
+      .getAllWorkOrderItemDescriptions()
+      .subscribe((options) => {
+        this.workOrderItemsOptions = options;
+      });
 
     this.subs.sink = this.listEntities
       .setWebService(this.buyerWebService)
@@ -191,6 +200,14 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
         note: new FormControl(workOrderItem?.note || ''),
       })
     );
+    setTimeout(() => {
+      this.filteredOptions = this.getDescription(
+        this.workOrderItemsFormArr.length - 1
+      )?.valueChanges.pipe(
+        startWith(''),
+        map((value) => this._filter(value || ''))
+      );
+    });
     this.calculateSum();
   }
 
@@ -442,6 +459,14 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     )[index < 0 ? 0 : index];
     element?.focus();
     if (markAll) element.select();
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.workOrderItemsOptions.filter((option) =>
+      option.toLowerCase().includes(filterValue)
+    );
   }
 
   ngOnDestroy(): void {

@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ArrayResponseI } from '../core/interfaces/array-response.interface';
 import { BaseWebService } from '../core/services/base.web-service';
 import { EntityBaseWebService } from '../core/services/entity-base.web-service';
 import { BASE_API_URL, DOMAIN_INVOICES } from '../shared/constants';
@@ -16,6 +18,12 @@ export class InvoiceWebService extends EntityBaseWebService<InvoiceModel> {
       `${
         BASE_API_URL + '/' + this.domainName
       }/number?invoiceType=${invoiceType}&year=${date.getFullYear()}`
+    );
+  }
+
+  public getAllInvoiceItemDescriptions(): Observable<string[]> {
+    return this.baseWebService.getRequest(
+      `${BASE_API_URL + '/' + this.domainName}/invoiceItemDescriptions`
     );
   }
 }

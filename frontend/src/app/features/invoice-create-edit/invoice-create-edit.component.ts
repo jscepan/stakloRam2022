@@ -31,6 +31,7 @@ import { SearchModel } from 'src/app/shared/models/search.model';
 import { BaseModel } from 'src/app/shared/models/base-model';
 import { InvoiceSelectionComponentService } from '@features/invoice-selection-popup/invoice-selection-component.service';
 import { MatSelectChange } from '@angular/material/select';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-invoice-create-edit',
@@ -55,6 +56,8 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   typesOptions: EnumValueModel[] = INVOICE_TYPES;
   uomOptions: EnumValueModel[] = WORK_ORDER_UOM;
   settings?: AppSettings;
+  invoiceItemsOptions: string[] = [];
+  filteredOptions: Observable<string[]> | undefined;
 
   buyersEntities: Observable<BuyerModel[]> = this.listEntities.entities;
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
@@ -109,6 +112,12 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.invoiceOID = this.route.snapshot.paramMap.get('invoiceOID');
+
+    this.subs.sink = this.webService
+      .getAllInvoiceItemDescriptions()
+      .subscribe((options) => {
+        this.invoiceItemsOptions = options;
+      });
 
     this.subs.sink = this.listEntities
       .setWebService(this.buyerWebService)
@@ -263,10 +272,26 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
         // tasks: new FormArray([]),
       })
     );
+    setTimeout(() => {
+      this.filteredOptions = this.getDescription(
+        this.invoiceItemsFormArr.length - 1
+      )?.valueChanges.pipe(
+        startWith(''),
+        map((value) => this._filter(value || ''))
+      );
+    });
     // invoiceItem?.tasks.forEach((task) => {
     //   this.addNewTaskToInvoiceItem(index, task);
     // });
     this.calculateInvoiceAmount();
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.invoiceItemsOptions.filter((option) =>
+      option.toLowerCase().includes(filterValue)
+    );
   }
 
   // addNewTaskToInvoiceItem(invoiceItemIndex: number, task: TaskModel): void {

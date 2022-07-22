@@ -9,6 +9,7 @@ import com.stakloram.backend.models.WorkOrderItem.UOM;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class WorkOrderItemStore extends ObjectStore {
 
@@ -127,5 +128,9 @@ public class WorkOrderItemStore extends ObjectStore {
         object.setNote(resultSet.getString(this.getTableName() + "_note"));
         object.setSettled(resultSet.getBoolean(this.getTableName() + "_settled"));
         return object;
+    }
+
+    public ResultSet getAllObjectsForSpecificColumn(String columnName) throws SQLException {
+        return this.getConn().createStatement().executeQuery("SELECT " + columnName + " from " + this.getDefaultFromClausule());
     }
 }

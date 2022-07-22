@@ -7,6 +7,7 @@ import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.services.impl.InvoiceService;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,11 @@ public class InvoiceController {
     @RequestMapping("/invoices/{invoiceOid}")
     public Invoice getById(@PathVariable String invoiceOid) throws SException {
         return (Invoice) invoiceService.getObjectByOID(invoiceOid);
+    }
+
+    @RequestMapping("/invoices/invoiceItemDescriptions")
+    public Set<String> getAllInvoiceItemDescriptions() throws SException {
+        return invoiceService.getAllInvoiceItemDescriptions();
     }
 
     @RequestMapping("/invoices/number")

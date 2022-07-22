@@ -20,8 +20,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class WorkOrderBuilder extends BaseBuilder {
 
@@ -133,4 +135,18 @@ public class WorkOrderBuilder extends BaseBuilder {
             throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
         }
     }
+
+    public Set<String> getAllWorkOrderItemDescriptions() throws SException {
+        Set<String> items = new HashSet<>();
+        try {
+            ResultSet rs = WORK_ORDER_ITEM_STORE.getAllObjectsForSpecificColumn("work_order_item_description");
+            while (rs.next()) {
+                items.add(rs.getString("work_order_item_description"));
+            }
+        } catch (SQLException ex) {
+            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+        }
+        return items;
+    }
+
 }

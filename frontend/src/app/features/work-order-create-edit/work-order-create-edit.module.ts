@@ -17,6 +17,7 @@ import { InvoiceSelectionPopupModule } from '@features/invoice-selection-popup/i
 import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NumberDecimalModule } from 'src/app/shared/directives/number-decimal/number-decimal.module';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [WorkOrderCreateEditComponent],
@@ -38,6 +39,7 @@ import { NumberDecimalModule } from 'src/app/shared/directives/number-decimal/nu
     MatSelectInfiniteScrollModule,
     MatCheckboxModule,
     NumberDecimalModule,
+    MatAutocompleteModule,
   ],
 })
 export class WorkOrderCreateEditModule {}

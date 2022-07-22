@@ -16,6 +16,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { InvoiceSelectionPopupModule } from '@features/invoice-selection-popup/invoice-selection-popup.module';
 import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
 import { NumberDecimalModule } from 'src/app/shared/directives/number-decimal/number-decimal.module';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [InvoiceCreateEditComponent],
@@ -36,6 +37,7 @@ import { NumberDecimalModule } from 'src/app/shared/directives/number-decimal/nu
     NgxMatSelectSearchModule,
     MatSelectInfiniteScrollModule,
     NumberDecimalModule,
+    MatAutocompleteModule,
   ],
 })
 export class InvoiceCreateEditModule {}

@@ -1,4 +1,10 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
@@ -47,6 +53,7 @@ export class IncomeCreateEditComponent implements OnInit, OnDestroy {
     private webService: IncomeWebService,
     private buyerWebService: BuyerWebService,
     private translateService: TranslateService,
+    private el: ElementRef,
     private listEntities: ListEntities<BuyerModel>
   ) {}
 
@@ -152,6 +159,18 @@ export class IncomeCreateEditComponent implements OnInit, OnDestroy {
     let searchFilter: SearchModel = new SearchModel();
     searchFilter.criteriaQuick = text;
     this.listEntities.setFilter(searchFilter);
+  }
+
+  setFocusOn(
+    formControlName: string,
+    index: number = 0,
+    markAll: boolean = false
+  ): void {
+    const element = this.el.nativeElement.querySelectorAll(
+      '[formcontrolname="' + formControlName + '"]'
+    )[index < 0 ? 0 : index];
+    element?.focus();
+    if (markAll) element.select();
   }
 
   ngOnDestroy(): void {

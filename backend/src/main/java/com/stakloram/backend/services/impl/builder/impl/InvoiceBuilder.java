@@ -22,8 +22,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class InvoiceBuilder extends BaseBuilder {
 
@@ -168,7 +170,7 @@ public class InvoiceBuilder extends BaseBuilder {
                 }
                 INVOICE_ITEM_STORE.deleteObjectByOid(item.getOid());
             } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+                throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
             }
         }
 
@@ -181,5 +183,18 @@ public class InvoiceBuilder extends BaseBuilder {
         } catch (SQLException ex) {
             throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
         }
+    }
+
+    public Set<String> getAllInvoiceItemDescriptions() throws SException {
+        Set<String> items = new HashSet<>();
+        try {
+            ResultSet rs = INVOICE_ITEM_STORE.getAllObjectsForSpecificColumn("invoice_item_description");
+            while (rs.next()) {
+                items.add(rs.getString("invoice_item_description"));
+            }
+        } catch (SQLException ex) {
+            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+        }
+        return items;
     }
 }

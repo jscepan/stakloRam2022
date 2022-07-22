@@ -89,4 +89,8 @@ public class InvoiceItemStore extends ObjectStore {
         object.setGrossPrice(resultSet.getDouble(this.getTableName() + "_gross_price"));
         return object;
     }
+
+    public ResultSet getAllObjectsForSpecificColumn(String columnName) throws SQLException {
+        return this.getConn().createStatement().executeQuery("SELECT " + columnName + " from " + this.getDefaultFromClausule());
+    }
 }
