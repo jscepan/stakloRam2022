@@ -227,33 +227,36 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
         const area =
           ((useOfConstructionMeasure
             ? getConstructionMeasure(
-                this.getDimension1(index)?.value / 10,
+                (this.getDimension1(index)?.value * 1) / 10,
                 this.settings?.constructionMeasureCM
               )
-            : this.getDimension1(index)?.value / 10) *
+            : (this.getDimension1(index)?.value * 1) / 10) *
             (useOfConstructionMeasure
               ? getConstructionMeasure(
-                  this.getDimension2(index)?.value / 10,
+                  (this.getDimension2(index)?.value * 1) / 10,
                   this.settings?.constructionMeasureCM
                 )
-              : this.getDimension2(index)?.value / 10) *
-            this.getQuantity(index)?.value) /
+              : (this.getDimension2(index)?.value * 1) / 10)) /
           10000;
         this.getSumQuantity(index)?.setValue(
           this.getDescription(index)
             ?.value.toLowerCase()
             .includes('termoizolaciono') &&
             area < (this.settings?.termoizolacGlassMinArea || 0.2)
-            ? this.settings?.termoizolacGlassMinArea || 0.2
-            : roundOnDigits(area, 3)
+            ? roundOnDigits(
+                (this.settings?.termoizolacGlassMinArea || 0.2) *
+                  (this.getQuantity(index)?.value * 1),
+                3
+              )
+            : roundOnDigits(area * this.getQuantity(index)?.value * 1, 3)
         );
         break;
       case 'M':
         // calculate meters
         const length =
-          (((this.getDimension1(index)?.value / 10) * 2) / 100 +
-            ((this.getDimension2(index)?.value / 10) * 2) / 100) *
-          this.getQuantity(index)?.value;
+          ((((this.getDimension1(index)?.value * 1) / 10) * 2) / 100 +
+            (((this.getDimension2(index)?.value * 1) / 10) * 2) / 100) *
+          (this.getQuantity(index)?.value * 1);
         this.getSumQuantity(index)?.setValue(roundOnDigits(length, 3));
         break;
       case 'PCS':
@@ -274,18 +277,18 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     this.workOrderItemsFormArr.controls.forEach((item, index) => {
       switch (this.getUOM(index)?.value) {
         case 'M2':
-          this.sumMeter2 += this.getSumQuantity(index)?.value;
-          this.sumMeter2Quantity += this.getQuantity(index)?.value;
+          this.sumMeter2 += this.getSumQuantity(index)?.value * 1;
+          this.sumMeter2Quantity += this.getQuantity(index)?.value * 1;
           break;
         case 'M':
-          this.sumMeter += this.getSumQuantity(index)?.value;
-          this.sumMeterQuantity += this.getQuantity(index)?.value;
+          this.sumMeter += this.getSumQuantity(index)?.value * 1;
+          this.sumMeterQuantity += this.getQuantity(index)?.value * 1;
           break;
         case 'PCS':
-          this.sumPieces += this.getSumQuantity(index)?.value;
+          this.sumPieces += this.getSumQuantity(index)?.value * 1;
           break;
         case 'HOUR':
-          this.sumHours += this.getSumQuantity(index)?.value;
+          this.sumHours += this.getSumQuantity(index)?.value * 1;
           break;
       }
     });
