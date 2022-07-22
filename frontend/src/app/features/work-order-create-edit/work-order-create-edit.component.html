@@ -156,6 +156,8 @@
                 type="text"
                 matInput
                 formControlName="description"
+                #input
+                [value]="input.value.toUpperCase()"
                 (keypress)="onKeypress($event, 'description', i)"
                 [matAutocomplete]="auto"
               />
