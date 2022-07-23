@@ -15,13 +15,6 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'debtor/:buyerOID',
-        loadChildren: () =>
-          import('@features/views/debt-view/debt-view.module').then(
-            (m) => m.DebtViewModule
-          ),
-      },
-      {
         path: 'buyers',
         loadChildren: () =>
           import('../views/buyers/buyers.module').then((m) => m.BuyersModule),

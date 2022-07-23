@@ -7,11 +7,17 @@
     <div class="grid-item header">{{ "debt" | translate }}</div>
     <div class="grid-item header">{{ "state" | translate }}</div>
     <ng-container *ngFor="let t of transactions">
-      <div class="grid-item">{{ t.date }}</div>
+      <div class="grid-item">{{ t.date | date: "dd.MM.yyyy" }}</div>
       <div class="grid-item">{{ t.description }}</div>
-      <div class="grid-item align-right">{{ t.owed | number: "1.2-2" }}</div>
-      <div class="grid-item align-right">{{ t.debt | number: "1.2-2" }}</div>
-      <div class="grid-item align-right">{{ t.state | number: "1.2-2" }}</div>
+      <div class="grid-item align-right">
+        {{ t.owed | number: "1.2-2":"fr" }}
+      </div>
+      <div class="grid-item align-right">
+        {{ t.debt | number: "1.2-2":"fr" }}
+      </div>
+      <div class="grid-item align-right">
+        {{ t.state | number: "1.2-2":"fr" }}
+      </div>
       <!-- <div class="grid-item">
         <app-button
           [text]="'view' | translate"

@@ -41,10 +41,10 @@
           {{ outcome.buyer.name }}
         </div>
         <div class="grid-item">
-          {{ outcome.date }}
+          {{ outcome.date | date: "dd-MM-yyyy" }}
         </div>
         <div class="grid-item align-right">
-          {{ outcome.amount | number: "1.2-2" }}
+          {{ outcome.amount | number: "1.2-2":"fr" }}
         </div>
         <div class="grid-item">
           <app-button

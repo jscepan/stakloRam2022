@@ -57,7 +57,9 @@
         <div class="column">
           <div class="line">{{ workOrder.placeOfIssue }}</div>
           <div class="line">{{ workOrder.description }}</div>
-          <div class="line">{{ workOrder.dateOfCreate }}</div>
+          <div class="line">
+            {{ workOrder.dateOfCreate | date: "dd-MM-yyyy" }}
+          </div>
         </div>
       </div>
     </div>

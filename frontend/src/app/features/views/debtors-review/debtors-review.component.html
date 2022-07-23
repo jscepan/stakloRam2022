@@ -14,9 +14,9 @@
     <div class="grid-item header">{{ "view" | translate }}</div>
     <ng-container *ngFor="let item of entities">
       <div class="grid-item">{{ item.buyer?.name }}</div>
-      <div class="grid-item">{{ item.debtSum | number: "1.2-2" }}</div>
-      <div class="grid-item">{{ item.positiveSum | number: "1.2-2" }}</div>
-      <div class="grid-item">{{ item.negativeSum | number: "1.2-2" }}</div>
+      <div class="grid-item">{{ item.debtSum | number: "1.2-2":"fr" }}</div>
+      <div class="grid-item">{{ item.positiveSum | number: "1.2-2":"fr" }}</div>
+      <div class="grid-item">{{ item.negativeSum | number: "1.2-2":"fr" }}</div>
       <div class="grid-item">
         <app-button
           [text]="'view' | translate"

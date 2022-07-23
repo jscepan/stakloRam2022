@@ -16,6 +16,13 @@ const routes: Routes = [
         (m) => m.WorkOrderViewModule
       ),
   },
+  {
+    path: 'debtor/:buyerOID',
+    loadChildren: () =>
+      import('@features/views/debt-view/debt-view.module').then(
+        (m) => m.DebtViewModule
+      ),
+  },
 ];
 
 @NgModule({
