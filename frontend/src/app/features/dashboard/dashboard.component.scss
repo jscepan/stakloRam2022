@@ -1,23 +1,15 @@
+:host {
+  height: 100%;
+}
 .container {
-  .content {
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 
   .content {
-    .title {
-    }
-
-    .diagram {
-      display: flex;
-
-      .resolved {
-        background-color: var(--color-success);
-      }
-      .in-process {
-        background-color: var(--color-danger);
-      }
-      .open {
-        background-color: var(--color-warning);
-      }
+    img {
+      width: 100%;
     }
   }
 }

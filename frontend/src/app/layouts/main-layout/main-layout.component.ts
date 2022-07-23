@@ -43,27 +43,21 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         activated: false,
       },
       {
-        id: 'work-orders',
-        title: this.translateService.instant('workOrder'),
-        icon: 'activity',
-        activated: false,
-      },
-      {
         id: 'invoices',
         title: this.translateService.instant('invoices'),
         icon: 'credit-card',
         activated: false,
       },
       {
-        id: 'incomes',
-        title: this.translateService.instant('incomes'),
-        icon: 'dollar-sign',
+        id: 'work-orders',
+        title: this.translateService.instant('workOrder'),
+        icon: 'activity',
         activated: false,
       },
       {
-        id: 'users',
-        title: this.translateService.instant('users'),
-        icon: 'users',
+        id: 'incomes',
+        title: this.translateService.instant('incomes'),
+        icon: 'dollar-sign',
         activated: false,
       },
       {
@@ -78,39 +72,37 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
             icon: 'minus-circle',
             activated: false,
           },
-        ],
-      },
-      {
-        id: 'settings',
-        title: this.translateService.instant('settings'),
-        icon: 'settings',
-        activated: false,
-        children: [
           {
-            id: 'settings/buyers',
+            id: 'views/buyers',
             title: this.translateService.instant('buyers'),
             icon: 'user',
             activated: false,
           },
           {
-            id: 'settings/countries',
+            id: 'views/countries',
             title: this.translateService.instant('countries'),
             icon: 'globe',
             activated: false,
           },
           {
-            id: 'settings/cities',
+            id: 'views/cities',
             title: this.translateService.instant('cities'),
             icon: 'case',
             activated: false,
           },
-          {
-            id: 'settings/application',
-            title: this.translateService.instant('applicationSettings'),
-            icon: 'tool',
-            activated: false,
-          },
         ],
+      },
+      {
+        id: 'users',
+        title: this.translateService.instant('users'),
+        icon: 'users',
+        activated: false,
+      },
+      {
+        id: 'settings/application',
+        title: this.translateService.instant('settings'),
+        icon: 'settings',
+        activated: false,
       },
     ];
     this.sidebar = {

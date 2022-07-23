@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CityCreateEditPopupService } from '@features/settings/city-create-edit-popup/city-create-edit-popup.service';
+import { CityCreateEditPopupService } from '../city-create-edit-popup/city-create-edit-popup.service';
 import { CityModel } from 'src/app/shared/models/city.model';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 import { CityWebService } from 'src/app/web-services/city.web-service';

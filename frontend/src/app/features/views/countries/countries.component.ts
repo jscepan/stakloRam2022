@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CountryCreateEditPopupService } from '@features/settings/country-create-edit/country-create-edit-popup.service';
+import { CountryCreateEditPopupService } from '../country-create-edit/country-create-edit-popup.service';
 import { Observable } from 'rxjs';
 import { CountryModel } from 'src/app/shared/models/country.model';
 import { SearchModel } from 'src/app/shared/models/search.model';

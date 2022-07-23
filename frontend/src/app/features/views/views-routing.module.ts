@@ -21,6 +21,23 @@ const routes: Routes = [
             (m) => m.DebtViewModule
           ),
       },
+      {
+        path: 'buyers',
+        loadChildren: () =>
+          import('../views/buyers/buyers.module').then((m) => m.BuyersModule),
+      },
+      {
+        path: 'countries',
+        loadChildren: () =>
+          import('../views/countries/countries.module').then(
+            (m) => m.CountriesModule
+          ),
+      },
+      {
+        path: 'cities',
+        loadChildren: () =>
+          import('../views/cities/cities.module').then((m) => m.CitiesModule),
+      },
     ],
   },
 ];

@@ -8,31 +8,10 @@ const routes: Routes = [
     component: SettingsComponent,
     children: [
       {
-        path: 'buyers',
-        loadChildren: () =>
-          import('@features/settings/buyers/buyers.module').then(
-            (m) => m.BuyersModule
-          ),
-      },
-      {
         path: 'application',
         loadChildren: () =>
           import('@features/settings/app-settings/app-settings.module').then(
             (m) => m.AppSettingsModule
-          ),
-      },
-      {
-        path: 'countries',
-        loadChildren: () =>
-          import('@features/settings/countries/countries.module').then(
-            (m) => m.CountriesModule
-          ),
-      },
-      {
-        path: 'cities',
-        loadChildren: () =>
-          import('@features/settings/cities/cities.module').then(
-            (m) => m.CitiesModule
           ),
       },
       {

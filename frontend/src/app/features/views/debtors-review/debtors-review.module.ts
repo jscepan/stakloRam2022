@@ -4,7 +4,7 @@ import { DebtorsReviewComponent } from './debtors-review.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { CountryCreateEditModule } from '@features/settings/country-create-edit/country-create-edit.module';
+import { CountryCreateEditModule } from '../country-create-edit/country-create-edit.module';
 import { SearchInputModule } from 'src/app/shared/components/search-input/search-input.module';
 import { ComponentLoadingModule } from 'src/app/shared/directives/component-loader/component-loader.module';
 import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom/scroll-to-bottom.module';
