@@ -1,8 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BuyerCreateEditPopupService } from '@features/settings/buyer-create-edit/buyer-create-edit-popup.service';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
+import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
+import {
+  SweetAlertI,
+  SweetAlertTypeEnum,
+} from 'src/app/shared/components/sweet-alert/sweet-alert.interface';
+import { SweetAlertService } from 'src/app/shared/components/sweet-alert/sweet-alert.service';
 import { BuyerModel } from 'src/app/shared/models/buyer.model';
 import { SearchModel } from 'src/app/shared/models/search.model';
+import { GlobalService } from 'src/app/shared/services/global.service';
 import { ListEntities } from 'src/app/shared/services/list-entities';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 import { BuyerWebService } from 'src/app/web-services/buyer.web-service';
@@ -24,6 +32,9 @@ export class BuyersComponent implements OnInit, OnDestroy {
   constructor(
     private buyerCreateEditPopupService: BuyerCreateEditPopupService,
     private webService: BuyerWebService,
+    private globalService: GlobalService,
+    private translateService: TranslateService,
+    private sweetAlertService: SweetAlertService,
     private listEntities: ListEntities<BuyerModel>
   ) {}
 
@@ -53,6 +64,39 @@ export class BuyersComponent implements OnInit, OnDestroy {
         this.listEntities.requestFirstPage();
       }
     });
+  }
+
+  deleteBuyer(oid: string): void {
+    this.subs.sink.$deleteBuyer = this.sweetAlertService
+      .getDataBackFromSweetAlert()
+      .subscribe((data) => {
+        if (data && data.confirmed) {
+          this.subs.sink = this.webService.deleteEntity([oid]).subscribe(() => {
+            this.globalService.showBasicAlert(
+              MODE.success,
+              this.translateService.instant('buyerDeleted'),
+              this.translateService.instant('buyerHaveBeenSuccessfullyDeleted')
+            );
+            this.listEntities.requestFirstPage();
+          });
+        }
+      });
+    const sweetAlertModel: SweetAlertI = {
+      mode: 'warning',
+      icon: 'alert-triangle',
+      type: {
+        name: SweetAlertTypeEnum.submit,
+        buttons: {
+          submit: this.translateService.instant('delete'),
+          cancel: this.translateService.instant('cancel'),
+        },
+      },
+      title: this.translateService.instant('deleteBuyer'),
+      message: this.translateService.instant(
+        'areYouSureYouWantToDeleteTheBuyer'
+      ),
+    };
+    this.sweetAlertService.openMeSweetAlert(sweetAlertModel);
   }
 
   bottomReachedHandler(): void {

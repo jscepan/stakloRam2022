@@ -1,4 +1,8 @@
 {
+  "buyerDeleted": "Kupac obrisan",
+  "buyerHaveBeenSuccessfullyDeleted": "Kupac je uspešno obrisan",
+  "deleteBuyer": "Obriši kupca",
+  "areYouSureYouWantToDeleteTheBuyer": "Da li ste sigurni da želite da obrišete kupca?",
   "accountNumber": "Broj tekućeg računa (18 karaktera bez drugih znakova - samo cifre)",
   "activate": "Aktiviraj",
   "active": "Aktivan",

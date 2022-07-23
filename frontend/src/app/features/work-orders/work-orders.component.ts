@@ -13,6 +13,7 @@ import { WorkOrderModel } from 'src/app/shared/models/work-order';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { ListEntities } from 'src/app/shared/services/list-entities';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
+import { getWorkOrderNumber } from 'src/app/shared/utils';
 import { WorkOrderWebService } from 'src/app/web-services/work-order.web-service';
 @Component({
   selector: 'app-work-orders',
@@ -27,6 +28,8 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
   entities?: Observable<WorkOrderModel[]> = this.listEntities.entities;
 
   keyword: string = '';
+
+  getWorkOrderNumber = getWorkOrderNumber;
 
   constructor(
     private globalService: GlobalService,

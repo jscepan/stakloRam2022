@@ -49,10 +49,10 @@
           {{ workOrder.buyer.name }}
         </div>
         <div class="grid-item">
-          {{ workOrder.number }}
+          {{ getWorkOrderNumber(workOrder) }}
         </div>
         <div class="grid-item">
-          {{ workOrder.dateOfCreate }}
+          {{ workOrder.dateOfCreate | date: "dd.MM.yyyy" }}
         </div>
         <div class="grid-item align-left">
           {{ workOrder.forPerson }}

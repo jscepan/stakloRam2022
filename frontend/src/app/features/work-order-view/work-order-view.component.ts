@@ -76,16 +76,6 @@ export class WorkOrderViewComponent implements OnInit, OnDestroy {
       });
       this.cellRowspan[indexOfLastForDisplay].rowspan = rowspanCounter;
     }
-    // let indexOfLast = 0;
-    // this.cellRowspan.forEach((item, i) => {
-    //   if (item.displayCell) {
-    //     item.rowspan = this.cellRowspan[indexOfLast].rowspan + 1;
-    //   } else {
-    //     indexOfLast = i;
-    //   }
-    // });
-    console.log('this.cellRowspan');
-    console.log(this.cellRowspan);
   }
 
   ngOnDestroy(): void {

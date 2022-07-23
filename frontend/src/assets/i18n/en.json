@@ -1,4 +1,8 @@
 {
+  "buyerDeleted": "Buyer deleted",
+  "buyerHaveBeenSuccessfullyDeleted": "Buyer have been successfully deleted",
+  "deleteBuyer": "Delete buyer",
+  "areYouSureYouWantToDeleteTheBuyer": "Are You sure You want to delete the Buyer",
   "accountNumber": "Account number (18 characters without any other signs - only numbers)",
   "activate": "Activate",
   "active": "Active",

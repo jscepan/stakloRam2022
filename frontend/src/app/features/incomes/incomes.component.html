@@ -31,6 +31,12 @@
         {{ "amount" | translate }}
       </div>
       <div class="grid-item header">
+        {{ "bankStatementNumber" | translate }}
+      </div>
+      <div class="grid-item header">
+        {{ "comment" | translate }}
+      </div>
+      <div class="grid-item header">
         {{ "edit" | translate }}
       </div>
       <div class="grid-item header">
@@ -41,10 +47,16 @@
           {{ income.buyer.name }}
         </div>
         <div class="grid-item">
-          {{ income.date }}
+          {{ income.date | date: "dd.MM.yyyy" }}
         </div>
         <div class="grid-item align-right">
           {{ income.amount | number: "1.2-2" }}
+        </div>
+        <div class="grid-item">
+          {{ income.bankStatementNumber | number: "1.2-2" }}
+        </div>
+        <div class="grid-item">
+          {{ income.comment | number: "1.2-2" }}
         </div>
         <div class="grid-item">
           <app-button

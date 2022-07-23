@@ -71,14 +71,6 @@ export class IncomesComponent implements OnInit, OnDestroy {
     });
   }
 
-  createOutcome(): void {
-    this.outcomeCreateEditPopupService.openDialog().subscribe((outcome) => {
-      if (outcome) {
-        // this.listEntities.requestFirstPage();
-      }
-    });
-  }
-
   editIncome(incomeOID: string): void {
     this.incomeCreateEditPopupService
       .openDialog(incomeOID)

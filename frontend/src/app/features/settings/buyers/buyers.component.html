@@ -26,18 +26,27 @@
     <div class="grid-item header">{{ "pib" | translate }}</div>
     <div class="grid-item header">{{ "email" | translate }}</div>
     <div class="grid-item header">{{ "edit" | translate }}</div>
+    <div class="grid-item header">{{ "delete" | translate }}</div>
     <ng-container *ngFor="let item of entities | async">
       <div class="grid-item">{{ item.type || "" | lowercase | translate }}</div>
-      <div class="grid-item">{{ item.name }}</div>
+      <div class="grid-item center">{{ item.name }}</div>
       <!-- <div class="grid-item">{{ item.city?.name }}</div> -->
-      <div class="grid-item">{{ item.address }}</div>
+      <div class="grid-item center">{{ item.address }}</div>
       <div class="grid-item">{{ item.maticalNumber }}</div>
       <div class="grid-item">{{ item.pib }}</div>
       <div class="grid-item">{{ item.email }}</div>
       <div class="grid-item">
         <app-button
-          [text]="'edit' | translate"
+          [iconName]="'edit'"
           (clickEvent)="editBuyer(item.oid)"
+          [isTransparentMode]="true"
+        ></app-button>
+      </div>
+      <div class="grid-item">
+        <app-button
+          [iconName]="'trash-2'"
+          (clickEvent)="deleteBuyer(item.oid)"
+          [isTransparentMode]="true"
         ></app-button>
       </div>
     </ng-container>

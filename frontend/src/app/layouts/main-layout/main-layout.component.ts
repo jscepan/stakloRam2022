@@ -44,7 +44,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       },
       {
         id: 'work-orders',
-        title: this.translateService.instant('workOrders'),
+        title: this.translateService.instant('workOrder'),
         icon: 'activity',
         activated: false,
       },
