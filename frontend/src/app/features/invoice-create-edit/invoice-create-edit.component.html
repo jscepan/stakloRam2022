@@ -284,12 +284,14 @@
                 type="text"
                 matInput
                 formControlName="description"
+                #trigger="matAutocompleteTrigger"
+                (keydown.enter)="trigger.closePanel()"
                 [matAutocomplete]="auto"
                 (keypress)="onKeypress($event, 'description', i)"
               />
               <mat-autocomplete #auto="matAutocomplete">
                 <mat-option
-                  *ngFor="let option of filteredOptions | async"
+                  *ngFor="let option of getFilteredOptions(i) | async"
                   [value]="option"
                 >
                   {{ option }}

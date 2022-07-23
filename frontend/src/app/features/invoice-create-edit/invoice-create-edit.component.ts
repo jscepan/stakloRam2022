@@ -32,6 +32,7 @@ import { BaseModel } from 'src/app/shared/models/base-model';
 import { InvoiceSelectionComponentService } from '@features/invoice-selection-popup/invoice-selection-component.service';
 import { MatSelectChange } from '@angular/material/select';
 import { map, startWith } from 'rxjs/operators';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-invoice-create-edit',
@@ -57,7 +58,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   uomOptions: EnumValueModel[] = WORK_ORDER_UOM;
   settings?: AppSettings;
   invoiceItemsOptions: string[] = [];
-  filteredOptions: Observable<string[]> | undefined;
+  filteredOptions: (Observable<string[]> | undefined)[] = [];
 
   buyersEntities: Observable<BuyerModel[]> = this.listEntities.entities;
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
@@ -273,12 +274,13 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
       })
     );
     setTimeout(() => {
-      this.filteredOptions = this.getDescription(
+      const filterOpt = this.getDescription(
         this.invoiceItemsFormArr.length - 1
       )?.valueChanges.pipe(
         startWith(''),
         map((value) => this._filter(value || ''))
       );
+      this.filteredOptions.push(filterOpt);
     });
     // invoiceItem?.tasks.forEach((task) => {
     //   this.addNewTaskToInvoiceItem(index, task);
@@ -731,6 +733,10 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     });
     // this.getSumQuantity(index);
     // this.calculateSum();
+  }
+
+  getFilteredOptions(index: number): Observable<string[]> | undefined {
+    return this.filteredOptions[index];
   }
 
   ngOnDestroy(): void {

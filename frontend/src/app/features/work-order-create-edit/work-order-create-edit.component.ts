@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -34,6 +40,7 @@ import {
 import { BuyerWebService } from 'src/app/web-services/buyer.web-service';
 import { WorkOrderWebService } from 'src/app/web-services/work-order.web-service';
 import { map, startWith } from 'rxjs/operators';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-work-order-create-edit',
@@ -57,7 +64,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   isBuyerSelected?: boolean;
   uomOptions: EnumValueModel[] = WORK_ORDER_UOM;
   workOrderItemsOptions: string[] = [];
-  filteredOptions: Observable<string[]> | undefined;
+  filteredOptions: (Observable<string[]> | undefined)[] = [];
 
   buyersEntities: Observable<BuyerModel[]> = this.listEntities.entities;
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
@@ -201,12 +208,13 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
       })
     );
     setTimeout(() => {
-      this.filteredOptions = this.getDescription(
+      const filterOpt = this.getDescription(
         this.workOrderItemsFormArr.length - 1
       )?.valueChanges.pipe(
         startWith(''),
         map((value) => this._filter(value || ''))
       );
+      this.filteredOptions.push(filterOpt);
     });
     this.calculateSum();
   }
@@ -470,6 +478,10 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     return this.workOrderItemsOptions.filter((option) =>
       option.toLowerCase().includes(filterValue)
     );
+  }
+
+  getFilteredOptions(index: number): Observable<string[]> | undefined {
+    return this.filteredOptions[index];
   }
 
   ngOnDestroy(): void {
