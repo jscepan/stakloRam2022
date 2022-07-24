@@ -42,3 +42,9 @@
 .view-button {
   margin-left: 20px;
 }
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
