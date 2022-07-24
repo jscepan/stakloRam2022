@@ -9,6 +9,9 @@ import { SearchInputModule } from 'src/app/shared/components/search-input/search
 import { ComponentLoadingModule } from 'src/app/shared/directives/component-loader/component-loader.module';
 import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom/scroll-to-bottom.module';
 import { DebtViewRoutingModule } from './debt-view-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [DebtViewComponent],
@@ -22,6 +25,9 @@ import { DebtViewRoutingModule } from './debt-view-routing.module';
     SearchInputModule,
     ComponentLoadingModule,
     ScrollToBottomModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatFormFieldModule,
   ],
 })
 export class DebtViewModule {}

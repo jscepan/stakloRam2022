@@ -1,4 +1,7 @@
 {
+  "turnover": "Promet ukupno",
+  "fromDate": "Od datuma",
+  "toDate": "Do datuma",
   "buyerDeleted": "Kupac obrisan",
   "buyerHaveBeenSuccessfullyDeleted": "Kupac je uspešno obrisan",
   "deleteBuyer": "Obriši kupca",

@@ -1,12 +1,40 @@
 <div class="container">
-  <div class="title">{{ entity?.buyer?.name }}</div>
-  <div class="grid-container standard-grid-table">
+  <div class="title grid-container standard-grid-table">
+    <div class="grid-item align-right">{{ "company" | translate }}:</div>
+    <div class="grid-item">{{ entity?.buyer?.name }}</div>
+    <div class="grid-item align-right">{{ "address" | translate }}:</div>
+    <div class="grid-item">{{ entity?.buyer?.address }}</div>
+    <div class="grid-item align-right">{{ "pib" | translate }}:</div>
+    <div class="grid-item">{{ entity?.buyer?.pib }}</div>
+  </div>
+  <form [formGroup]="formGroup" *ngIf="formGroup" class="form">
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "fromDate" | translate }}
+      </mat-label>
+      <input type="date" matInput formControlName="fromDate" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "toDate" | translate }}
+      </mat-label>
+      <input type="date" matInput formControlName="toDate" />
+    </mat-form-field>
+
+    <app-button
+      class="view-button"
+      [text]="'view' | translate"
+      (clickEvent)="viewDebtor()"
+      [disabled]="!(formGroup.dirty && formGroup.valid)"
+    ></app-button>
+  </form>
+  <div class="grid-container standard-grid-table" *ngIf="debtView">
     <div class="grid-item header">{{ "date" | translate }}</div>
     <div class="grid-item header">{{ "description" | translate }}</div>
     <div class="grid-item header">{{ "owed" | translate }}</div>
     <div class="grid-item header">{{ "debt" | translate }}</div>
     <div class="grid-item header">{{ "state" | translate }}</div>
-    <ng-container *ngFor="let t of transactions">
+    <ng-container *ngFor="let t of debtView.transactions">
       <div class="grid-item">{{ t.date | date: "dd.MM.yyyy" }}</div>
       <div class="grid-item">{{ t.description }}</div>
       <div class="grid-item align-right">
@@ -18,12 +46,18 @@
       <div class="grid-item align-right">
         {{ t.state | number: "1.2-2":"fr" }}
       </div>
-      <!-- <div class="grid-item">
-        <app-button
-          [text]="'view' | translate"
-          (clickEvent)="viewDebtor(item)"
-        ></app-button>
-      </div> -->
     </ng-container>
+    <div class="grid-item colspan2 top-border bold">
+      {{ "turnover" | translate }}:
+    </div>
+    <div class="grid-item align-right top-border bold">
+      {{ debtView.debtSum | number: "1.2-2":"fr" }}
+    </div>
+    <div class="grid-item align-right top-border bold">
+      {{ debtView.owedSum | number: "1.2-2":"fr" }}
+    </div>
+    <div class="grid-item align-right top-border bold">
+      {{ debtView.debtSum - debtView.owedSum | number: "1.2-2":"fr" }}
+    </div>
   </div>
 </div>

@@ -1,4 +1,7 @@
 {
+  "turnover": "Turnover",
+  "fromDate": "From date",
+  "toDate": "To date",
   "buyerDeleted": "Buyer deleted",
   "buyerHaveBeenSuccessfullyDeleted": "Buyer have been successfully deleted",
   "deleteBuyer": "Delete buyer",

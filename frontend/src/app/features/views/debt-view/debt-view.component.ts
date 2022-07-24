@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { DebtorModel } from 'src/app/shared/models/debtor.model';
@@ -19,7 +20,11 @@ export class DebtViewComponent implements OnInit, OnDestroy {
   buyerOID: string | null = null;
   entity?: DebtorModel;
   isLoading?: boolean = true;
-  transactions: DebtView[] = [];
+  debtView!: DebtView;
+  formGroup: FormGroup = new FormGroup({
+    fromDate: new FormControl('', [Validators.required]),
+    toDate: new FormControl('', [Validators.required]),
+  });
 
   constructor(
     private webService: ViewsWebService,
@@ -40,48 +45,88 @@ export class DebtViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  convertDebtorToTransactions(): void {
+  viewDebtor(): void {
+    this.convertDebtorToTransactions(
+      this.formGroup.get('fromDate')?.value,
+      this.formGroup.get('toDate')?.value
+    );
+  }
+
+  convertDebtorToTransactions(fromDate?: Date, toDate?: Date): void {
+    this.debtView = { owedSum: 0, debtSum: 0, transactions: [] };
+    const dateFilter: boolean = !!fromDate && !!toDate;
     this.entity?.invoices?.forEach((invoice) => {
-      this.transactions.push({
-        date: invoice.dateOfCreate,
-        description:
-          this.translateService.instant('invoice') + ': ' + invoice.number,
-        owed: invoice.grossAmount,
-        debt: 0,
-        state: 0,
-      });
+      if (
+        !dateFilter ||
+        (dateFilter &&
+          fromDate &&
+          toDate &&
+          fromDate <= invoice.dateOfCreate &&
+          invoice.dateOfCreate <= toDate)
+      ) {
+        this.debtView.transactions.push({
+          date: invoice.dateOfCreate,
+          description:
+            this.translateService.instant('invoice') + ': ' + invoice.number,
+          owed: invoice.grossAmount,
+          debt: 0,
+          state: 0,
+        });
+        this.debtView.debtSum += invoice.grossAmount;
+      }
     });
     this.entity?.incomes?.forEach((income) => {
-      this.transactions.push({
-        date: income.date,
-        description: this.translateService.instant('income'),
-        debt: income.amount,
-        owed: 0,
-        state: 0,
-      });
+      if (
+        !dateFilter ||
+        (dateFilter &&
+          fromDate &&
+          toDate &&
+          fromDate <= income.date &&
+          income.date <= toDate)
+      ) {
+        this.debtView.transactions.push({
+          date: income.date,
+          description: this.translateService.instant('income'),
+          debt: income.amount,
+          owed: 0,
+          state: 0,
+        });
+        this.debtView.owedSum += income.amount;
+      }
     });
     this.entity?.outcomes?.forEach((outcome) => {
-      this.transactions.push({
-        date: outcome.date,
-        description: this.translateService.instant('outcome'),
-        owed: outcome.amount,
-        debt: 0,
-        state: 0,
-      });
+      if (
+        !dateFilter ||
+        (dateFilter &&
+          fromDate &&
+          toDate &&
+          fromDate <= outcome.date &&
+          outcome.date <= toDate)
+      ) {
+        this.debtView.transactions.push({
+          date: outcome.date,
+          description: this.translateService.instant('outcome'),
+          owed: outcome.amount,
+          debt: 0,
+          state: 0,
+        });
+        this.debtView.debtSum += outcome.amount;
+      }
     });
-    // this.transactions.sort(function (a, b) {
-    //   return new Date(b.date) - new Date(a.date);
-    // });
+    this.debtView.transactions = this.debtView.transactions.sort((a, b) => {
+      return Number(new Date(a.date)) - Number(new Date(b.date));
+    });
 
-    for (let i = 0; i < this.transactions.length; i++) {
+    for (let i = 0; i < this.debtView.transactions.length; i++) {
       if (i === 0) {
-        this.transactions[i].state =
-          this.transactions[i].owed - this.transactions[i].debt;
+        this.debtView.transactions[i].state =
+          this.debtView.transactions[i].owed -
+          this.debtView.transactions[i].debt;
       } else {
-        this.transactions[i].state =
-          this.transactions[i - 1].state +
-          this.transactions[i].owed -
-          this.transactions[i].debt;
+        this.debtView.transactions[i].state =
+          this.debtView.transactions[i - 1].state +
+          this.debtView.transactions[i].owed -
+          this.debtView.transactions[i].debt;
       }
     }
   }

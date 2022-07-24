@@ -14,18 +14,17 @@ import com.stakloram.backend.models.Outcome;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ViewsBuilder {
 
-    private final Locator locator;
     private final BuyerStore BUYER_STORE;
     private final InvoiceStore INVOICE_STORE;
     private final IncomeStore INCOME_STORE;
     private final OutcomeStore OUTCOME_STORE;
 
     public ViewsBuilder(Locator locator) {
-        this.locator = locator;
         BUYER_STORE = new BuyerStore(locator);
         INVOICE_STORE = new InvoiceStore(locator);
         INCOME_STORE = new IncomeStore(locator);
@@ -69,6 +68,7 @@ public class ViewsBuilder {
 
                 d.setDebtSum(d.getPositiveSum() - d.getNegativeSum());
             }
+            debtors.sort((Comparator.comparing(Debtor::getDebtSum).reversed()));
         } catch (SQLException ex) {
             throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
         }
