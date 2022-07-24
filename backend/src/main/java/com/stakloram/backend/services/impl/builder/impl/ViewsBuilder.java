@@ -18,19 +18,19 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ViewsBuilder {
-
+    
     private final BuyerStore BUYER_STORE;
     private final InvoiceStore INVOICE_STORE;
     private final IncomeStore INCOME_STORE;
     private final OutcomeStore OUTCOME_STORE;
-
+    
     public ViewsBuilder(Locator locator) {
         BUYER_STORE = new BuyerStore(locator);
         INVOICE_STORE = new InvoiceStore(locator);
         INCOME_STORE = new IncomeStore(locator);
         OUTCOME_STORE = new OutcomeStore(locator);
     }
-
+    
     public List<Debtor> getAllDebtors() throws SException {
         List<Debtor> debtors = new ArrayList<>();
         try {
@@ -47,7 +47,7 @@ public class ViewsBuilder {
                     d.setPositiveSum(d.getPositiveSum() + invoice.getGrossAmount());
                 }
                 d.setInvoices(invoices);
-
+                
                 List<Income> incomes = new ArrayList<>();
                 ResultSet inc_rs = INCOME_STORE.getAllObjectsFromDatabase(" income_buyer_buyer_id=" + d.getBuyer().getId());
                 while (inc_rs.next()) {
@@ -56,7 +56,7 @@ public class ViewsBuilder {
                     d.setNegativeSum(d.getNegativeSum() + income.getAmount());
                 }
                 d.setIncomes(incomes);
-
+                
                 List<Outcome> outcomes = new ArrayList<>();
                 ResultSet out_rs = OUTCOME_STORE.getAllObjectsFromDatabase(" outcome_buyer_buyer_id=" + d.getBuyer().getId());
                 while (out_rs.next()) {
@@ -65,7 +65,7 @@ public class ViewsBuilder {
                     d.setPositiveSum(d.getPositiveSum() + outcome.getAmount());
                 }
                 d.setOutcomes(outcomes);
-
+                
                 d.setDebtSum(d.getPositiveSum() - d.getNegativeSum());
             }
             debtors.sort((Comparator.comparing(Debtor::getDebtSum).reversed()));
@@ -75,7 +75,7 @@ public class ViewsBuilder {
 //        debtors.sort(debt);
         return debtors;
     }
-
+    
     public Debtor getDebtor(String buyerOID) throws SException {
         Debtor debtor = null;
         try {
@@ -91,7 +91,7 @@ public class ViewsBuilder {
                 debtor.setPositiveSum(debtor.getPositiveSum() + invoice.getGrossAmount());
             }
             debtor.setInvoices(invoices);
-
+            
             List<Income> incomes = new ArrayList<>();
             ResultSet inc_rs = INCOME_STORE.getAllObjectsFromDatabase(" income_buyer_buyer_id=" + debtor.getBuyer().getId());
             while (inc_rs.next()) {
@@ -100,7 +100,7 @@ public class ViewsBuilder {
                 debtor.setNegativeSum(debtor.getNegativeSum() + income.getAmount());
             }
             debtor.setIncomes(incomes);
-
+            
             List<Outcome> outcomes = new ArrayList<>();
             ResultSet out_rs = OUTCOME_STORE.getAllObjectsFromDatabase(" outcome_buyer_buyer_id=" + debtor.getBuyer().getId());
             while (out_rs.next()) {
@@ -109,7 +109,7 @@ public class ViewsBuilder {
                 debtor.setPositiveSum(debtor.getPositiveSum() + outcome.getAmount());
             }
             debtor.setOutcomes(outcomes);
-
+            
             debtor.setDebtSum(debtor.getPositiveSum() - debtor.getNegativeSum());
         } catch (SQLException ex) {
             throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);

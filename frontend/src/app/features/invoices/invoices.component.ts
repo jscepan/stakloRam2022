@@ -9,6 +9,8 @@ import {
   SweetAlertTypeEnum,
 } from 'src/app/shared/components/sweet-alert/sweet-alert.interface';
 import { SweetAlertService } from 'src/app/shared/components/sweet-alert/sweet-alert.service';
+import { INVOICE_TYPES } from 'src/app/shared/constants';
+import { EnumValueModel } from 'src/app/shared/enums/enum.model';
 import { InvoiceModel } from 'src/app/shared/models/invoice.model';
 import { SearchModel } from 'src/app/shared/models/search.model';
 import { GlobalService } from 'src/app/shared/services/global.service';
@@ -32,6 +34,7 @@ export class InvoicesComponent implements OnInit, OnDestroy {
 
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
   entities?: Observable<InvoiceModel[]> = this.listEntities.entities;
+  typesOptions: EnumValueModel[] = INVOICE_TYPES;
 
   keyword: string = '';
 
@@ -120,6 +123,14 @@ export class InvoicesComponent implements OnInit, OnDestroy {
 
   bottomReachedHandler(): void {
     this.listEntities.requestNextPage();
+  }
+
+  typeChanged(event: any): void {
+    const searchFilter: SearchModel = new SearchModel();
+    if (this.typesOptions.filter((el) => el.value === event.value).length) {
+      searchFilter.attributes = [{ type: [event.value] }];
+    }
+    this.listEntities.setFilter(searchFilter);
   }
 
   ngOnDestroy(): void {

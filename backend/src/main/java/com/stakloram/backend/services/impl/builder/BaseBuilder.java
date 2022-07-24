@@ -43,7 +43,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
         try {
             return this.objectStore.createNewObjectToDatabase(object);
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx" , ex);
+            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
         }
     }
 
@@ -54,7 +54,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
             baseModel.setOid(oid);
             return baseModel;
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx" , ex);
+            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
         }
     }
 
@@ -63,7 +63,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
         try {
             return this.objectStore.deleteObjectByOid(oid);
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx" , ex);
+            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
         }
     }
 
@@ -72,7 +72,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
         try {
             return this.objectStore.getObjectByOid(oid);
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx" , ex);
+            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
         }
     }
 
@@ -83,7 +83,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
             String containsClausule = this.getContainsClausule(searchObject);
             return this.objectStore.searchObjectsFromDatabase(fromClausule, this.generateWhereClausule("", searchClausule, equalsClausule, containsClausule), skip, top);
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx" , ex);
+            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
         }
     }
 
@@ -96,7 +96,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
             ResponseWithCount rwc = this.objectStore.searchObjectsFromDatabase(this.generateWhereClausule("", searchClausule, equalsClausule, containsClausule), skip, top);
             return this.getArrayResponseFromResponseWithCount(rwc);
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx" , ex);
+            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
         }
     }
 

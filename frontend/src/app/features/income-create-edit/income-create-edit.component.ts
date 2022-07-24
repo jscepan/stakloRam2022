@@ -73,9 +73,6 @@ export class IncomeCreateEditComponent implements OnInit, OnDestroy {
   initializeCreate(buyer: BuyerModel, amount: number): void {
     if (buyer) {
       this.selectedBuyer = buyer;
-      setTimeout(() => {
-        this.formGroup.get('buyer')?.disable();
-      });
     }
     this.formGroup = new FormGroup({
       date: new FormControl(new Date().toISOString().substring(0, 10), [

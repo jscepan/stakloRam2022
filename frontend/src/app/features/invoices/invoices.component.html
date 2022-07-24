@@ -5,6 +5,22 @@
       [keyword]="keyword"
       (changeEvent)="inputSearchHandler($event)"
     ></app-search-input>
+    <div class="radio">
+      <mat-radio-group
+        aria-label="'invoiceType'|translate"
+        [color]="'primary'"
+        (change)="typeChanged($event)"
+      >
+        <mat-radio-button value="'all'">{{
+          "all" | translate
+        }}</mat-radio-button>
+        <mat-radio-button
+          value="{{ type.value }}"
+          *ngFor="let type of typesOptions"
+          >{{ type.displayName | translate }}</mat-radio-button
+        >
+      </mat-radio-group>
+    </div>
     <app-button
       [text]="'createInvoice' | translate"
       (clickEvent)="create()"

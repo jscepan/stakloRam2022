@@ -195,7 +195,9 @@
       ></app-button>
       <app-button
         [text]="'save' | translate"
-        [disabled]="!formGroup.dirty || formGroup.invalid"
+        [disabled]="
+          isEdit ? !formGroup.dirty || formGroup.invalid : formGroup.invalid
+        "
         class="update"
         (clickEvent)="handleSubmitButton()"
       ></app-button>

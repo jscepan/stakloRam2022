@@ -8,6 +8,7 @@ import { SearchInputModule } from 'src/app/shared/components/search-input/search
 import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom/scroll-to-bottom.module';
 import { ComponentLoadingModule } from 'src/app/shared/directives/component-loader/component-loader.module';
 import { IncomeCreateEditModule } from '@features/income-create-edit/income-create-edit.module';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [InvoicesComponent],
@@ -20,6 +21,7 @@ import { IncomeCreateEditModule } from '@features/income-create-edit/income-crea
     ComponentLoadingModule,
     ScrollToBottomModule,
     IncomeCreateEditModule,
+    MatRadioModule,
   ],
 })
 export class InvoicesModule {}
