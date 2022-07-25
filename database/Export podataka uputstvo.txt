@@ -6,8 +6,12 @@ Ono sto dobijemo je putanja gde izvoziti.
 Zatim izvozimo tabelu po tabelu ali je najbitnije da umesto \ upisujemo / i to je to imamo podatke u text fajlu...
 Primer:
 SELECT *
- FROM `stakloram`.`buyer`
- INTO OUTFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/buyer.txt' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n'
+FROM stakloram.buyer
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\buyer.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+
 
 
 Mi izvozimo sledece tabele:
@@ -23,4 +27,124 @@ work_order
 work_order_item
 zip_code
 
-Potom na putanji pronadjemo te fajlove pa ih uvezemo u excel.
+Potom na putanji pronadjemo te fajlove pa ih uvezemo u google worksheet ali obratiti paznju da 
+
+E sad idemo redom:
+----------------------------------------------------------------------------------------------
+USER - ovde moze i rucno da se resi sve...
+SELECT * FROM stakloram.user
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\user.csv'
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+COUNTRY - Ovo je novi entitet pa uneti samo Srbiju kao i sve one drzave koje se pojavljuju kod buyera
+----------------------------------------------------------------------------------------------
+ZIP_CODE - sad je ovo CITY pa uneti i oznaku drzave kao i za sve one gradove koji se pojavljuju kod buyera
+SELECT * FROM stakloram.zip_code
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\zipCode.csv'
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+----------------------------------------------------------------------------------------------
+BUYER - ovde obratiti paznju da se prilikom importovanja destiklira ono Convert text to numbers, dates, and formulas
+- Moraju rucno da se promene zip_code (koji se odnosi na ptt broj) u zip_code_id po novom...
+- Takodje obratiti paznju da ce sve null vrednosti biti prezentovane kao \N da tako i ostanu jer ce ih onda uvesti kao null
+- Obratiti paznju da za strana lica treba prvo kreirati gradove i drzave
+- Promeniti buyer type u novi enum value
+SELECT * FROM stakloram.buyer
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\buyer.csv'
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+----------------------------------------------------------------------------------------------
+INCOME - Ovde nema novina
+SELECT * FROM stakloram.income
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\income.csv'
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+----------------------------------------------------------------------------------------------
+OUTCOME - Ovo je potpuna novina
+----------------------------------------------------------------------------------------------
+WORK_ORDER - sva su polja identicna pa samo rokaj
+SELECT * FROM stakloram.work_order
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\work_order.csv'
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+----------------------------------------------------------------------------------------------
+WORK_ORDER_ITEM - 
+- pre je bio product_id ovde i na osnovu njega se znao uom a i taj product je u stvari work_order_item_description jer je trenutno on prazan
+- pre je bio invoice_item_has_work_order_item pa sve odande treba prebaciti u sad novu kolonu ove
+SELECT *
+FROM stakloram.work_order_item
+LEFT JOIN stakloram.product
+ON work_order_item.product_product_id=product.product_id
+LEFT JOIN stakloram.invoice_item_has_work_order_item
+ON work_order_item.work_order_item_id=invoice_item_has_work_order_item.work_order_item_work_order_item_id
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\workOrderItem.csv'
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+----------------------------------------------------------------------------------------------
+IMAGE - sve identicno samo naknadno obraditi url kolonu i ubaciti slike u projekat...
+SELECT * FROM stakloram.image
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\image.csv'
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+----------------------------------------------------------------------------------------------
+INVOICE - 
+- promeniti invoiceType u nove enum vrednosti
+- invoice_number_sign kreirati
+- additionalDescription je sad comment
+- uklanja se unpaid i paid amount kolona
+- postoje jos advance_invoice_id i pre_invoice_id ali to cemo videti sta sa tim kad zavrsim projekat
+SELECT * FROM stakloram.invoice
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\invoice.csv'
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+----------------------------------------------------------------------------------------------
+INVOICE_ITEM - identicno samo rokaj
+SELECT * FROM stakloram.invoice_item
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\invoice_item.csv'
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+----------------------------------------------------------------------------------------------
+NOTE - pre je bio u odnosu kao invoice_has_note pa ga treba joinovati
+SELECT * 
+FROM stakloram.note 
+LEFT JOIN stakloram.invoice_has_note 
+ON note.note_id=invoice_has_note.note_note_id
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\note.csv'
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+----------------------------------------------------------------------------------------------
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+POTOM VRSIMO OBRADU IMPORTA sledecim redom otprilike:
+- user
+- role
+- user_has_role
+- country
+- city
+- buyer
+- outcome
+- income
+- work_order
+- work_order_item
+- image
+- invoice
+- invoice_item
+- note
+
+LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\invoice_item.csv' 
+INTO TABLE stakloram.invoice_item 
+FIELDS TERMINATED BY ',' 
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
