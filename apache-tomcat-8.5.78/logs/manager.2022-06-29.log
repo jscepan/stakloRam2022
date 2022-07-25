@@ -1,7 +1,0 @@
-29-Jun-2022 10:48:50.969 INFO [http-nio-8080-exec-5] org.apache.catalina.core.ApplicationContext.log Manager: init: Associated with Deployer 'Catalina:type=Deployer,host=localhost'
-29-Jun-2022 10:48:50.970 INFO [http-nio-8080-exec-5] org.apache.catalina.core.ApplicationContext.log Manager: init: Global resources are available
-29-Jun-2022 10:48:51.034 INFO [http-nio-8080-exec-8] org.apache.catalina.core.ApplicationContext.log Manager: list: Listing contexts for virtual host 'localhost'
-29-Jun-2022 10:48:51.043 INFO [http-nio-8080-exec-9] org.apache.catalina.core.ApplicationContext.log Manager: list: Listing contexts for virtual host 'localhost'
-29-Jun-2022 10:48:51.063 INFO [http-nio-8080-exec-10] org.apache.catalina.core.ApplicationContext.log Manager: undeploy: Undeploying web application at '/StakloRam'
-29-Jun-2022 10:48:51.642 INFO [http-nio-8080-exec-1] org.apache.catalina.core.ApplicationContext.log Manager: install: Installing context configuration at 'file:/C:/Users/SCEPAN~1.JAN/AppData/Local/Temp/context12725483660712904780.xml'
-29-Jun-2022 10:48:52.688 INFO [http-nio-8080-exec-7] org.apache.catalina.core.ApplicationContext.log Manager: start: Starting web application '/StakloRam'
