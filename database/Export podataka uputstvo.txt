@@ -1,0 +1,26 @@
+Prvo proverimo u MYSQL gde je dozvoljen izvoz sa komandom:
+
+SHOW VARIABLES LIKE "secure_file_priv";
+Ono sto dobijemo je putanja gde izvoziti.
+
+Zatim izvozimo tabelu po tabelu ali je najbitnije da umesto \ upisujemo / i to je to imamo podatke u text fajlu...
+Primer:
+SELECT *
+ FROM `stakloram`.`buyer`
+ INTO OUTFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/buyer.txt' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n'
+
+
+Mi izvozimo sledece tabele:
+buyer,
+image,
+income
+invoice
+invoice_has_note
+invoice_item
+note
+user
+work_order
+work_order_item
+zip_code
+
+Potom na putanji pronadjemo te fajlove pa ih uvezemo u excel.
