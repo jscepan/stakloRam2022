@@ -20,7 +20,6 @@ export class InvoiceModel extends BaseModel {
   numberOfCashBill: string = '';
   currency: string = '';
   country: string = '';
-  disabled: boolean = false;
   advanceInvoiceOid?: string = '';
   preInvoiceOid?: string = '';
   @Type(() => BuyerModel)

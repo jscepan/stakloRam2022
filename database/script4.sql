@@ -203,7 +203,6 @@ CREATE TABLE IF NOT EXISTS `stakloram2022`.`invoice` (
   `invoice_number_of_cash_bill` VARCHAR(145) NULL DEFAULT NULL,
   `invoice_currency` VARCHAR(45) NULL DEFAULT NULL,
   `invoice_country` VARCHAR(445) NULL DEFAULT NULL,
-  `invoice_disabled` TINYINT(4) NULL DEFAULT NULL,
   `invoice_advance_invoice_id` INT(11) NULL DEFAULT NULL,
   `invoice_pre_invoice_id` INT(11) NULL DEFAULT NULL,
   `invoice_buyer_buyer_id` INT(11) NOT NULL,

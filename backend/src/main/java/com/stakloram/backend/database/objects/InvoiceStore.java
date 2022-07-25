@@ -28,7 +28,7 @@ public class InvoiceStore extends ObjectStore {
     public Invoice createNewObjectToDatabase(BaseModel model) throws SQLException {
         Invoice object = (Invoice) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getType().name());
         st.setInt(++i, this.getInvoiceNumberForInvoice(object));
         st.setString(++i, object.getNumber());
@@ -45,7 +45,6 @@ public class InvoiceStore extends ObjectStore {
         st.setString(++i, object.getNumberOfCashBill());
         st.setString(++i, object.getCurrency());
         st.setString(++i, object.getCountry());
-        st.setBoolean(++i, object.isDisabled());
         if (BaseModel.getIdFromOid(object.getAdvanceInvoiceOid()) == null) {
             st.setNull(++i, Types.INTEGER);
         } else {
@@ -88,7 +87,6 @@ public class InvoiceStore extends ObjectStore {
                 + this.getTableName() + "_number_of_cash_bill=?,"
                 + this.getTableName() + "_currency=?,"
                 + this.getTableName() + "_country=?,"
-                + this.getTableName() + "_disabled=?,"
                 + this.getTableName() + "_advance_invoice_id=?,"
                 + this.getTableName() + "_pre_invoice_id=?,"
                 + this.getTableName() + "_buyer_buyer_id=?"
@@ -109,7 +107,6 @@ public class InvoiceStore extends ObjectStore {
         st.setString(++i, object.getNumberOfCashBill());
         st.setString(++i, object.getCurrency());
         st.setString(++i, object.getCountry());
-        st.setBoolean(++i, object.isDisabled());
         if (Invoice.getIdFromOid(object.getAdvanceInvoiceOid()) == null) {
             st.setNull(++i, Types.INTEGER);
         } else {
@@ -146,7 +143,6 @@ public class InvoiceStore extends ObjectStore {
         object.setNumberOfCashBill(resultSet.getString(this.getTableName() + "_number_of_cash_bill"));
         object.setCurrency(resultSet.getString(this.getTableName() + "_currency"));
         object.setCountry(resultSet.getString(this.getTableName() + "_country"));
-        object.setDisabled(resultSet.getBoolean(this.getTableName() + "_disabled"));
         if (resultSet.getLong(this.getTableName() + "_advance_invoice_id") == 0) {
             object.setAdvanceInvoiceOid(null);
         } else {
@@ -189,15 +185,5 @@ public class InvoiceStore extends ObjectStore {
             }
         }
         return response;
-    }
-
-    public boolean toggleEnableDisableInvoice(String oid, boolean disabled) throws SQLException {
-        int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
-                + this.getTableName() + "_disabled=?"
-                + " WHERE " + this.getPrimaryKey() + "=?");
-        st.setBoolean(++i, disabled);
-        st.setLong(++i, Invoice.getIdFromOid(oid));
-        return st.executeUpdate() > 0;
     }
 }
