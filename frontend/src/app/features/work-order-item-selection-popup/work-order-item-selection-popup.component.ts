@@ -6,12 +6,13 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { SearchModel } from 'src/app/shared/models/search.model';
 import { WorkOrderModel } from 'src/app/shared/models/work-order';
-import { GlobalService } from 'src/app/shared/services/global.service';
+import { WorkOrderItemModel } from 'src/app/shared/models/work-order-item';
 import { ListEntities } from 'src/app/shared/services/list-entities';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 import { getWorkOrderNumber } from 'src/app/shared/utils';
@@ -20,9 +21,23 @@ import { WorkOrderWebService } from 'src/app/web-services/work-order.web-service
 export interface DialogData {
   buyerOID: string;
   excludedOids: string[];
-  isSingleSelection: boolean;
 }
 
+export interface WorkOrderSelection {
+  oid: string;
+  number: string;
+  date: Date;
+  isExpanded: boolean;
+  workOrderItems: WorkOrderItemSelection[];
+}
+export interface WorkOrderItemSelection {
+  oid: string;
+  selected: boolean;
+  description: string;
+  uom: string;
+  sumQuantity: number;
+  note: string;
+}
 @Component({
   selector: 'app-work-order-item-selection-popup',
   templateUrl: './work-order-item-selection-popup.component.html',
@@ -45,7 +60,7 @@ export class WorkOrderItemSelectionPopupComponent
   hasSelected: boolean = false;
 
   searchFilter: SearchModel = new SearchModel();
-  items: any[] = [];
+  items: WorkOrderSelection[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<WorkOrderItemSelectionPopupComponent>,
@@ -56,31 +71,24 @@ export class WorkOrderItemSelectionPopupComponent
   ) {
     this.buyerOID = data.buyerOID;
     this.excludedOids = data?.excludedOids || [];
-    this.isSingleSelection = !(data.isSingleSelection === false);
   }
 
   ngOnInit(): void {
     this.searchFilter.objectsOIDS = [{ buyer: [this.buyerOID] }];
-    // this.searchFilter.attributes = [{ settled: ['false'] }];
     this.subs.sink = this.listEntities
       .setWebService(this.webService)
       .setFilter(this.searchFilter);
 
     this.entities?.subscribe((workOrders) => {
-      this.items = workOrders
-        .filter((wo) => {
-          return !this.excludedOids.includes(wo.oid);
-        })
-        .map((wo) => {
-          return {
-            oid: wo.oid,
-            date: wo.dateOfCreate,
-            number: getWorkOrderNumber(wo),
-            forPerson: wo.forPerson,
-            note: wo.note,
-            description: wo.description,
-          };
-        });
+      this.items = workOrders.map((wo) => {
+        return {
+          oid: wo.oid,
+          number: getWorkOrderNumber(wo),
+          date: wo.dateOfCreate,
+          isExpanded: false,
+          workOrderItems: [],
+        };
+      });
     });
   }
 
@@ -88,42 +96,50 @@ export class WorkOrderItemSelectionPopupComponent
     this.cdRef.detectChanges();
   }
 
-  inputSearchHandler(text: string): void {
-    this.searchFilter.criteriaQuick = text;
-    this.listEntities.setFilter(this.searchFilter);
-  }
-
-  statusTypeChanged(statuses: string[]): void {
-    this.searchFilter = {
-      ...this.searchFilter,
-      attributes: [{ status: statuses }],
-    };
-    this.listEntities.setFilter(this.searchFilter);
-  }
-
-  handleItemClick(card: any): void {
-    this.items = this.items.map((item) => {
-      if (this.isSingleSelection) {
-        return { ...item, selected: item.oid === card.oid };
-      } else {
-        if (item.oid === card.oid) {
-          return { ...item, selected: !item.selected };
-        }
-        return { ...item };
-      }
-    });
-    this.hasSelected = this.items.filter((item) => item.selected).length > 0;
+  toggleExpandWorkOrder(workOrderOID: string): void {
+    const selectedIndex = this.items.findIndex(
+      (item) => item.oid === workOrderOID
+    );
+    if (!this.items[selectedIndex].isExpanded) {
+      this.webService.getEntityByOid(workOrderOID).subscribe((workOrder) => {
+        this.items[selectedIndex].workOrderItems = workOrder.workOrderItems
+          .filter((wo) => {
+            return !this.excludedOids.includes(wo.oid);
+          })
+          .map((item) => {
+            return {
+              selected: false,
+              oid: item.oid,
+              description: item.description,
+              note: item.note,
+              sumQuantity: item.sumQuantity,
+              uom: item.uom,
+            };
+          });
+      });
+    } else {
+      this.items[selectedIndex].workOrderItems = this.items[
+        selectedIndex
+      ].workOrderItems.map((item) => {
+        return { ...item, selected: false };
+      });
+    }
+    this.items[selectedIndex].isExpanded =
+      !this.items[selectedIndex].isExpanded;
   }
 
   public saveSelection(): void {
-    let selectedItems = this.items.filter((item) => item.selected);
-    this.entities?.subscribe((items) => {
-      this.dialogRef.close(
-        items.filter((woi) =>
-          selectedItems.find((item) => item.oid === woi.oid)
-        )
-      );
-    });
+    // let selectedItems:WorkOrderItem = [];
+    // this.items.forEach((item)=>{
+    //   item.workOrderItems.filter((item) => item.selected);
+    // })
+    // this.entities?.subscribe((items) => {
+    //   this.dialogRef.close(
+    //     items.filter((woi) =>
+    //       selectedItems.find((item) => item.oid === woi.oid)
+    //     )
+    //   );
+    // });
   }
 
   public cancelSaveSelection(): void {
@@ -132,6 +148,17 @@ export class WorkOrderItemSelectionPopupComponent
 
   bottomReachedHandler(): void {
     this.listEntities.requestNextPage();
+  }
+
+  toggleSelectAll(
+    event: MatCheckboxChange,
+    workOrderItem: WorkOrderSelection
+  ): void {
+    if (event.checked) {
+      workOrderItem.workOrderItems.forEach((t) => (t.selected = true));
+    } else {
+      workOrderItem.workOrderItems.forEach((t) => (t.selected = false));
+    }
   }
 
   ngOnDestroy(): void {

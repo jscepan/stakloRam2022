@@ -8,6 +8,6 @@ export class WorkOrderItemModel extends BaseModel {
   dimension3: number = 0;
   quantity: number = 0;
   sumQuantity: number = 0;
-  note: number = 0;
+  note: string = '';
   settled: boolean = false;
 }

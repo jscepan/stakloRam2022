@@ -40,6 +40,7 @@ import { WorkOrderWebService } from 'src/app/web-services/work-order.web-service
 import { WorkOrderModel } from 'src/app/shared/models/work-order';
 import { WorkOrderItemModel } from 'src/app/shared/models/work-order-item';
 import { WorkOrderSelectionComponentService } from '@features/work-order-selection-popup/work-order-selection-component.service';
+import { WorkOrderItemSelectionComponentService } from '@features/work-order-item-selection-popup/work-order-item-selection-component.service';
 
 @Component({
   selector: 'app-invoice-create-edit',
@@ -54,6 +55,7 @@ import { WorkOrderSelectionComponentService } from '@features/work-order-selecti
     ListEntities,
     WorkOrderWebService,
     WorkOrderSelectionComponentService,
+    WorkOrderItemSelectionComponentService,
   ],
 })
 export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
@@ -124,7 +126,8 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     private invoiceSelectionComponentService: InvoiceSelectionComponentService,
     private listEntities: ListEntities<BuyerModel>,
     private el: ElementRef,
-    private workOrderSelectionComponentService: WorkOrderSelectionComponentService
+    private workOrderSelectionComponentService: WorkOrderSelectionComponentService,
+    private workOrderItemSelectionComponentService: WorkOrderItemSelectionComponentService
   ) {}
 
   ngOnInit(): void {
@@ -428,7 +431,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     );
   }
 
-  importTasks(index: number): void {
+  importWorkOrderItems(index: number): void {
     // TODO
     console.log(index);
     //   const alreadyImportedTasks: string[] = [];
@@ -438,7 +441,12 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     //       alreadyImportedTasks.push(task.value.oid);
     //     });
     //   });
-
+    this.workOrderItemSelectionComponentService
+      .openDialog(
+        this.selectedBuyer?.oid || '',
+        this.getAllImportedWorkOrderItemOIDS()
+      )
+      .subscribe();
     // this.workOrderSelectionComponentService
     //   .openDialog(this.selectedBuyer?.oid || '', excludedOids)
     //   .subscribe((workOrders: WorkOrderModel[]) => {

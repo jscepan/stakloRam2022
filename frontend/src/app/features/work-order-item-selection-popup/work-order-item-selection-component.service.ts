@@ -13,8 +13,7 @@ export class WorkOrderItemSelectionComponentService {
 
   openDialog(
     buyerOID: string,
-    excludedOids: string[] = [],
-    isSingleSelection: boolean = false
+    excludedOids: string[] = []
   ): Observable<WorkOrderModel[]> {
     return new Observable((observer: Subscriber<WorkOrderModel[]>) => {
       const config: MatDialogConfig = new MatDialogConfig();
@@ -23,7 +22,6 @@ export class WorkOrderItemSelectionComponentService {
       config.data = {
         buyerOID,
         excludedOids,
-        isSingleSelection,
       };
 
       this.subs.sink.$openSelectPopup = this._matDialog

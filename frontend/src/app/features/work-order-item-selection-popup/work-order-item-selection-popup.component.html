@@ -1,17 +1,61 @@
-<app-search-input (changeEvent)="inputSearchHandler($event)"></app-search-input>
 <mat-dialog-content
   [componentLoading]="(isLoading | async) || false"
   scrollToBottom
   (bottomReached)="bottomReachedHandler()"
 >
-  <ng-container *ngFor="let item of items">
-    <!-- <app-work-order-selection-item
-      class="item"
-      [dataModel]="item"
-      (click)="handleItemClick(item)"
-    >
-    </app-work-order-selection-item> -->
-  </ng-container>
+  <div class="content">
+    <div class="item" *ngFor="let item of items">
+      <div class="title">
+        <div class="icon">
+          <i-feather
+            [name]="'plus'"
+            *ngIf="!item.isExpanded"
+            (click)="toggleExpandWorkOrder(item.oid)"
+          ></i-feather>
+          <i-feather
+            [name]="'minus'"
+            *ngIf="item.isExpanded"
+            (click)="toggleExpandWorkOrder(item.oid)"
+          ></i-feather>
+        </div>
+        <div class="description">
+          {{
+            ("workOrder" | translate) +
+              " " +
+              ("nr" | translate) +
+              " " +
+              item.number +
+              ", " +
+              ("date" | translate) +
+              ": " +
+              ("nr" | translate) +
+              " " +
+              item.date
+          }}
+        </div>
+      </div>
+      <div class="childrens" *ngIf="item.isExpanded">
+        <div class="child">
+          <mat-checkbox
+            color="primary"
+            (change)="toggleSelectAll($event, item)"
+            *ngIf="item.workOrderItems.length > 1"
+            >{{ "selectDeselectAll" | translate }}</mat-checkbox
+          >
+          <mat-checkbox
+            color="primary"
+            [(ngModel)]="workOrderItem.selected"
+            *ngFor="let workOrderItem of item.workOrderItems"
+          >
+            {{ workOrderItem.description }}
+            {{ workOrderItem.note }}
+            {{ workOrderItem.uom }}
+            {{ workOrderItem.sumQuantity }}
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <app-button

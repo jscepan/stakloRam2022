@@ -3,8 +3,47 @@ mat-dialog-content {
   border-bottom: 1px solid var(--attributes-border-color, #efeff3);
   display: flex;
   flex-wrap: wrap;
-  height: calc(100% - 150px);
+  height: calc(100% - 70px);
   max-height: 100%;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex-grow: 1;
+
+    .item {
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px dotted var(--color-main);
+
+      .title {
+        display: flex;
+        align-items: center;
+
+        .icon {
+          display: flex;
+
+          color: var(--color-info);
+        }
+
+        .description {
+          display: flex;
+        }
+      }
+
+      .childrens {
+        display: flex;
+        flex-direction: column;
+        margin-left: 20px;
+
+        .child {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
+  }
 }
 
 mat-dialog-actions {
