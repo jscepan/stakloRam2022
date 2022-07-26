@@ -261,7 +261,11 @@
         {{ "advanceInvoiceOid" | translate }}
       </mat-label>
       <input type="text" matInput formControlName="advanceInvoiceOid" />
-    </mat-form-field> -->
+    </mat-form-field>
+
+
+
+  -->
 
       <div
         formArrayName="invoiceItems"
@@ -269,7 +273,11 @@
         *ngIf="isBuyerSelected"
       >
         <div
-          *ngFor="let comp of invoiceItemsFormArr.controls; let i = index"
+          *ngFor="
+            let comp of invoiceItemsFormArr.controls;
+            let i = index;
+            trackBy: getInvoiceItemitemOid
+          "
           class="invoice-item"
         >
           <div [formGroupName]="i" class="form-group">
@@ -419,22 +427,30 @@
                 (focusout)="calculateInvoiceAmount(); setAllInvoiceAmounts()"
               />
             </mat-form-field>
-
-            <!--
-            <mat-chip-list
-              class="additional-button"
-              *ngFor="let task of getTasksFormArr(i).controls; let j = index"
-            >
-              <mat-chip>
-                {{ task.value.number }}
-                <i-feather
-                  matChipRemove
-                  [name]="'x'"
-                  (click)="removeTaskFromInvoiceItem(i, j)"
-                ></i-feather>
-              </mat-chip>
-            </mat-chip-list>
-            -->
+            <mat-form-field *ngIf="comp.value.workOrderItems.length > 0">
+              <mat-label>{{ "workOrder" | translate }}</mat-label>
+              <mat-select
+                formArrayName="workOrderItems"
+                multiple
+                [value]="comp.value.workOrderItems"
+              >
+                <mat-option
+                  *ngFor="
+                    let woi of getWorkOrderItemsFormArr(i).controls;
+                    let j = index
+                  "
+                  [value]="woi.value"
+                  (click)="removeWorkOrderItemFromInvoiceItem(i, j)"
+                  >{{
+                    woi.value.description +
+                      ", " +
+                      woi.value.sumQuantity +
+                      " " +
+                      getUOMDisplayValue(woi.value.uom)
+                  }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
             <app-button
               [text]="'import' | translate"
               (clickEvent)="importTasks(i)"

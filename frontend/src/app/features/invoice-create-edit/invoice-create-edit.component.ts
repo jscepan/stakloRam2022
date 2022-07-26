@@ -17,13 +17,17 @@ import { BuyerWebService } from 'src/app/web-services/buyer.web-service';
 import { UserWebService } from 'src/app/web-services/user.web-service';
 import { InvoiceWebService } from 'src/app/web-services/invoice.web-service';
 import { InvoiceModel } from 'src/app/shared/models/invoice.model';
-import { INVOICE_TYPES, WORK_ORDER_UOM } from 'src/app/shared/constants';
+import { INVOICE_TYPES, UOM_TYPES } from 'src/app/shared/constants';
 import { InvoiceItemModel } from 'src/app/shared/models/invoice-item.model';
 import {
   AppSettings,
   SettingsStoreService,
 } from 'src/app/shared/services/settings-store.service';
-import { compareByValue, roundOnDigits } from 'src/app/shared/utils';
+import {
+  compareByValue,
+  getWorkOrderNumber,
+  roundOnDigits,
+} from 'src/app/shared/utils';
 import { BuyerModel } from 'src/app/shared/models/buyer.model';
 import { ListEntities } from 'src/app/shared/services/list-entities';
 import { Observable } from 'rxjs';
@@ -32,7 +36,10 @@ import { BaseModel } from 'src/app/shared/models/base-model';
 import { InvoiceSelectionComponentService } from '@features/invoice-selection-popup/invoice-selection-component.service';
 import { MatSelectChange } from '@angular/material/select';
 import { map, startWith } from 'rxjs/operators';
-import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { WorkOrderWebService } from 'src/app/web-services/work-order.web-service';
+import { WorkOrderModel } from 'src/app/shared/models/work-order';
+import { WorkOrderItemModel } from 'src/app/shared/models/work-order-item';
+import { WorkOrderSelectionComponentService } from '@features/work-order-selection-popup/work-order-selection-component.service';
 
 @Component({
   selector: 'app-invoice-create-edit',
@@ -45,6 +52,8 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
     UserWebService,
     InvoiceSelectionComponentService,
     ListEntities,
+    WorkOrderWebService,
+    WorkOrderSelectionComponentService,
   ],
 })
 export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
@@ -55,7 +64,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   formGroup!: FormGroup;
   isEdit: boolean = false;
   typesOptions: EnumValueModel[] = INVOICE_TYPES;
-  uomOptions: EnumValueModel[] = WORK_ORDER_UOM;
+  uomOptions: EnumValueModel[] = UOM_TYPES;
   settings?: AppSettings;
   invoiceItemsOptions: string[] = [];
   filteredOptions: (Observable<string[]> | undefined)[] = [];
@@ -94,6 +103,11 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   getGrossPrice(index: number): AbstractControl | null {
     return this.invoiceItemsFormArr.controls[index].get('grossPrice');
   }
+  getWorkOrderItemsFormArr(invoiceItemIndex: number): FormArray {
+    return this.invoiceItemsFormArr.controls[invoiceItemIndex].get(
+      'workOrderItems'
+    ) as FormArray;
+  }
 
   isBuyerSelected?: boolean;
 
@@ -102,17 +116,20 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private globalService: GlobalService,
     private webService: InvoiceWebService,
+    private workOrderWebService: WorkOrderWebService,
     private buyerWebService: BuyerWebService,
     private buyerCreateEditPopupService: BuyerCreateEditPopupService,
     private settingsStoreService: SettingsStoreService,
     private translateService: TranslateService,
     private invoiceSelectionComponentService: InvoiceSelectionComponentService,
     private listEntities: ListEntities<BuyerModel>,
-    private el: ElementRef
+    private el: ElementRef,
+    private workOrderSelectionComponentService: WorkOrderSelectionComponentService
   ) {}
 
   ngOnInit(): void {
     this.invoiceOID = this.route.snapshot.paramMap.get('invoiceOID');
+    const workOrderOID = this.route.snapshot.paramMap.get('workOrderOID');
 
     this.subs.sink = this.webService
       .getAllInvoiceItemDescriptions()
@@ -130,15 +147,28 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
           this.settings = this.settingsStoreService.getSettings();
 
           this.isEdit = !!this.invoiceOID;
-          this.isEdit && this.invoiceOID
-            ? this.webService
-                .getEntityByOid(this.invoiceOID)
-                .subscribe((invoice) => {
-                  this.invoice = invoice;
-                  this.initializeCreate(true);
-                })
-            : this.initializeCreate();
-          this.isBuyerSelected = this.isEdit || false;
+          if (this.isEdit && this.invoiceOID) {
+            this.webService
+              .getEntityByOid(this.invoiceOID)
+              .subscribe((invoice) => {
+                this.invoice = invoice;
+                this.initializeCreate(true);
+              });
+            this.isBuyerSelected = true;
+          } else {
+            this.initializeCreate();
+            if (workOrderOID) {
+              this.workOrderWebService
+                .getEntityByOid(workOrderOID)
+                .subscribe((workOrder) => {
+                  this.selectedBuyer = workOrder.buyer;
+                  this.addWorkOrderToNewInvoiceItem(workOrder);
+                });
+              this.isBuyerSelected = true;
+            } else {
+              this.isBuyerSelected = false;
+            }
+          }
         }
       }
     );
@@ -210,9 +240,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
       );
     }
     if (isEdit) {
-      this.invoice.invoiceItems.forEach((item, index) =>
-        this.addNewItem(index, item)
-      );
+      this.invoice.invoiceItems.forEach((item, index) => this.addNewItem(item));
     } else {
       this.setInvoiceNumber();
     }
@@ -228,13 +256,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     return this.formGroup.get('invoiceItems') as FormArray;
   }
 
-  // getTasksFormArr(invoiceItemIndex: number): FormArray {
-  //   return this.invoiceItemsFormArr.controls[invoiceItemIndex].get(
-  //     'tasks'
-  //   ) as FormArray;
-  // }
-
-  addNewItem(index: number = 0, invoiceItem?: InvoiceItemModel): void {
+  addNewItem(invoiceItem?: InvoiceItemModel): void {
     this.invoiceItemsFormArr.push(
       new FormGroup({
         oid: new FormControl(invoiceItem?.oid || ''),
@@ -270,7 +292,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
           Validators.required,
           Validators.min(0),
         ]),
-        // tasks: new FormArray([]),
+        workOrderItems: new FormArray([]),
       })
     );
     setTimeout(() => {
@@ -282,9 +304,12 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
       );
       this.filteredOptions.push(filterOpt);
     });
-    // invoiceItem?.tasks.forEach((task) => {
-    //   this.addNewTaskToInvoiceItem(index, task);
-    // });
+    invoiceItem?.workOrderItems.forEach((woi) => {
+      this.addNewWorkOrderItemToInvoiceItem(
+        this.invoiceItemsFormArr.length - 1,
+        woi
+      );
+    });
     this.calculateInvoiceAmount();
   }
 
@@ -296,20 +321,112 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     );
   }
 
-  // addNewTaskToInvoiceItem(invoiceItemIndex: number, task: TaskModel): void {
-  //   this.getTasksFormArr(invoiceItemIndex).push(
-  //     new FormGroup({
-  //       oid: new FormControl(task.oid),
-  //       number: new FormControl(task.number),
-  //       date: new FormControl(task.dateOfCreate),
-  //       status: new FormControl(task.status),
-  //       title: new FormControl(task.title),
-  //       description: new FormControl(task.description),
-  //       buyer: new FormControl(task.buyer),
-  //       currentUser: new FormControl(task.currentUser),
-  //     })
-  //   );
-  // }
+  private addWorkOrderToNewInvoiceItem(workOrder: WorkOrderModel): void {
+    const invoiceItems: InvoiceItemModel[] = [];
+    const excludedOids = this.getAllImportedWorkOrderItemOIDS();
+
+    workOrder.workOrderItems.forEach((woi) => {
+      if (!excludedOids.includes(woi.oid)) {
+        let invoiceItem: InvoiceItemModel = {
+          oid: '',
+          description: woi.description,
+          uom: woi.uom,
+          quantity: woi.sumQuantity,
+          pricePerUnit: 0,
+          netPrice: 0,
+          vatRate: this.settings?.invoiceVatRate || 20,
+          vatAmount: 0,
+          grossPrice: 0,
+          workOrderItems: [woi],
+        };
+        const alreadyExists: InvoiceItemModel = invoiceItems.filter(
+          (item) =>
+            item.description === invoiceItem.description &&
+            item.uom === invoiceItem.uom
+        )[0];
+        if (alreadyExists) {
+          alreadyExists.quantity =
+            alreadyExists.quantity + invoiceItem.quantity;
+          alreadyExists.workOrderItems.push(woi);
+        } else {
+          invoiceItems.push(invoiceItem);
+        }
+      }
+    });
+    invoiceItems.forEach((item) => {
+      this.addNewItem(item);
+    });
+    this.addWorkOrderToComment(workOrder);
+  }
+
+  private addWorkOrderItemsToNewInvoiceItem(
+    workOrderItems: WorkOrderItemModel[],
+    workOrder: WorkOrderModel
+  ): void {
+    const invoiceItems: InvoiceItemModel[] = [];
+
+    workOrderItems.forEach((woi) => {
+      let invoiceItem: InvoiceItemModel = {
+        oid: '',
+        description: woi.description,
+        uom: woi.uom,
+        quantity: woi.sumQuantity,
+        pricePerUnit: 0,
+        netPrice: 0,
+        vatRate: this.settings?.invoiceVatRate || 20,
+        vatAmount: 0,
+        grossPrice: 0,
+        workOrderItems: [woi],
+      };
+      const alreadyExists: InvoiceItemModel = invoiceItems.filter(
+        (item) => item.uom === invoiceItem.uom
+      )[0];
+      if (alreadyExists) {
+        alreadyExists.quantity = alreadyExists.quantity + invoiceItem.quantity;
+        alreadyExists.workOrderItems.push(woi);
+      } else {
+        invoiceItems.push(invoiceItem);
+      }
+    });
+    invoiceItems.forEach((item) => {
+      this.addNewItem(item);
+    });
+    this.addWorkOrderToComment(workOrder);
+  }
+
+  private addWorkOrderToComment(workOrder: WorkOrderModel): void {
+    const commentControl = this.formGroup.get('comment');
+    if (commentControl?.value.length) {
+      commentControl.setValue(
+        commentControl.value + ', ' + getWorkOrderNumber(workOrder)
+      );
+    } else {
+      commentControl?.setValue(
+        this.translateService.instant('attachmentWorkOrderNumber') +
+          ' ' +
+          getWorkOrderNumber(workOrder)
+      );
+    }
+  }
+
+  addNewWorkOrderItemToInvoiceItem(
+    invoiceItemIndex: number,
+    workOrderItem: WorkOrderItemModel
+  ): void {
+    this.getWorkOrderItemsFormArr(invoiceItemIndex).push(
+      new FormGroup({
+        oid: new FormControl(workOrderItem.oid),
+        description: new FormControl(workOrderItem.description),
+        uom: new FormControl(workOrderItem.uom),
+        dimension1: new FormControl(workOrderItem.dimension1),
+        dimension2: new FormControl(workOrderItem.dimension2),
+        dimension3: new FormControl(workOrderItem.dimension3),
+        quantity: new FormControl(workOrderItem.quantity),
+        sumQuantity: new FormControl(workOrderItem.sumQuantity),
+        note: new FormControl(workOrderItem.note),
+      })
+    );
+  }
 
   importTasks(index: number): void {
     // TODO
@@ -322,9 +439,16 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     //     });
     //   });
 
-    //   this.tasksSelectionComponentService
-    //     .openDialog(alreadyImportedTasks, this.formGroup.get('buyer')?.value.oid)
-    //     .subscribe((tasks: TaskModel[]) => {
+    // this.workOrderSelectionComponentService
+    //   .openDialog(this.selectedBuyer?.oid || '', excludedOids)
+    //   .subscribe((workOrders: WorkOrderModel[]) => {
+    //     console.log('workOrders');
+    //     console.log(workOrders);
+    // if (workOrder as WorkOrderModel) {
+    //   this.addWorkOrderToNewInvoiceItem(<WorkOrderModel>workOrder);
+    // } else {
+    //   // this.addWorkOrderItemsToNewInvoiceItem(workOrder,)
+    // }
     //       if (tasks?.length) {
     //         tasks.forEach((task) => this.addNewTaskToInvoiceItem(index, task));
     //         let description = '';
@@ -344,28 +468,30 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     //                   description
     //           );
     //       }
-    //     });
+    // });
   }
 
-  // removeTaskFromInvoiceItem(invoiceItemIndex: number, taskIndex: number): void {
-  //   this.getTasksFormArr(invoiceItemIndex).removeAt(taskIndex);
-  // }
+  removeWorkOrderItemFromInvoiceItem(
+    invoiceItemIndex: number,
+    workOrderItemIndex: number
+  ): void {
+    this.getWorkOrderItemsFormArr(invoiceItemIndex).removeAt(
+      workOrderItemIndex
+    );
+  }
 
   buyerChanged(): void {
     setTimeout(() => {
       this.isBuyerSelected = this.formGroup.get('buyer')?.value;
 
-      // // remove all invoice items which has tasks imported
-      // for (let i = this.invoiceItemsFormArr.controls.length - 1; i >= 0; i--) {
-      //   if (
-      //     this.invoiceItemsFormArr.controls[i].value.tasks &&
-      //     this.invoiceItemsFormArr.controls[i].value.tasks.length
-      //   ) {
-      //     this.invoiceItemsFormArr.removeAt(i);
-      //   }
-      // }
-      if (this.invoiceItemsFormArr.controls.length === 0) {
-        this.addNewItem();
+      // remove all invoice items which has workOrderItems imported
+      for (let i = this.invoiceItemsFormArr.controls.length - 1; i >= 0; i--) {
+        if (
+          this.invoiceItemsFormArr.controls[i].value.workOrderItems &&
+          this.invoiceItemsFormArr.controls[i].value.workOrderItems.length
+        ) {
+          this.invoiceItemsFormArr.removeAt(i);
+        }
       }
       this.setFocusOn('dateOfCreate');
     });
@@ -581,18 +707,28 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   }
 
   autoImport(): void {
-    // TODO
-    //   this.subs.sink = this.taskWebService
-    //     .searchEntities(new SearchModel(), 0, 9999)
-    //     .subscribe((response) => {
-    //       if (response && response.totalCount > 0) {
-    //         response.entities.forEach((task, index) => {
-    //           let invoiceItem = new InvoiceItemModel();
-    //           invoiceItem.description = task.title;
-    //           this.addNewItem(index, invoiceItem);
-    //         });
-    //       }
-    //     });
+    const excludedOids: string[] = [];
+    this.workOrderSelectionComponentService
+      .openDialog(this.selectedBuyer?.oid || '', excludedOids)
+      .subscribe((workOrders: WorkOrderModel[] | undefined) => {
+        workOrders?.forEach((wo) => {
+          this.workOrderWebService
+            .getEntityByOid(wo.oid)
+            .subscribe((workOrder) => {
+              this.addWorkOrderToNewInvoiceItem(workOrder);
+            });
+        });
+      });
+  }
+
+  private getAllImportedWorkOrderItemOIDS(): string[] {
+    const excludedOids: string[] = [];
+    this.invoiceItemsFormArr.controls.forEach((invItem, index) => {
+      this.getWorkOrderItemsFormArr(index).controls.forEach((woi) => {
+        excludedOids.push(woi.value.oid);
+      });
+    });
+    return excludedOids;
   }
 
   searchHandler(text: any): void {
@@ -737,6 +873,14 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
 
   getFilteredOptions(index: number): Observable<string[]> | undefined {
     return this.filteredOptions[index];
+  }
+
+  getUOMDisplayValue(uom: string): string {
+    return this.uomOptions.filter((u) => u.value === uom)[0].displayName;
+  }
+
+  getInvoiceItemitemOid(_index: number, control: AbstractControl): string {
+    return control.value.oid + _index;
   }
 
   ngOnDestroy(): void {

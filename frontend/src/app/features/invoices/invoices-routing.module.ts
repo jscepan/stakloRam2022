@@ -12,6 +12,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'create/:workOrderOID',
+    loadChildren: () =>
+      import('@features/invoice-create-edit/invoice-create-edit.module').then(
+        (m) => m.InvoiceCreateEditModule
+      ),
+  },
+  {
     path: 'edit/:invoiceOID',
     loadChildren: () =>
       import('@features/invoice-create-edit/invoice-create-edit.module').then(

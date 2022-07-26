@@ -18,7 +18,7 @@ import { BuyerCreateEditPopupService } from '@features/views/buyer-create-edit/b
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
-import { WORK_ORDER_UOM } from 'src/app/shared/constants';
+import { UOM_TYPES } from 'src/app/shared/constants';
 import { EnumValueModel } from 'src/app/shared/enums/enum.model';
 import { BaseModel } from 'src/app/shared/models/base-model';
 import { BuyerModel } from 'src/app/shared/models/buyer.model';
@@ -62,7 +62,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   isEdit: boolean = false;
   settings?: AppSettings;
   isBuyerSelected?: boolean;
-  uomOptions: EnumValueModel[] = WORK_ORDER_UOM;
+  uomOptions: EnumValueModel[] = UOM_TYPES;
   workOrderItemsOptions: string[] = [];
   filteredOptions: (Observable<string[]> | undefined)[] = [];
 

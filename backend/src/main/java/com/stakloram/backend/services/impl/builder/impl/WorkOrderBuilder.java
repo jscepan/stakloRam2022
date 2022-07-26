@@ -106,10 +106,7 @@ public class WorkOrderBuilder extends BaseBuilder {
     @Override
     public void setColumnsForSearch() {
         this.databaseColumnsForQuickSearch = Arrays.asList("buyer_name");
-//        this.databaseColumnsForQuickSearch = Arrays.asList("buyer_name");
-//        this.databaseColumnsForAttributes.put("type", "type");
-//        this.databaseColumnsForAdvanceFilter.put("buyer", "invoice_buyer_buyer_id");
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.databaseColumnsForAdvanceFilter.put("buyer", "work_order_buyer_buyer_id");
     }
 
     @Override

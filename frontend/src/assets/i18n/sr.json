@@ -1,4 +1,6 @@
 {
+  "nr": "Br.",
+  "attachmentWorkOrderNumber": "Prilog radni nalog broj",
   "all": "Sve",
   "turnover": "Promet ukupno",
   "fromDate": "Od datuma",

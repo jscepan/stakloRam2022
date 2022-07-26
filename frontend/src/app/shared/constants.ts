@@ -60,7 +60,7 @@ export const INVOICE_TYPES: EnumValueModel[] = [
   { value: 'ADVANCE_INVOICE', displayName: 'advanceInvoice' },
 ];
 
-export const WORK_ORDER_UOM: EnumValueModel[] = [
+export const UOM_TYPES: EnumValueModel[] = [
   { value: 'M2', displayName: 'm2' },
   { value: 'M', displayName: 'm' },
   { value: 'PCS', displayName: 'pieces' },

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ArrayResponseI } from '../core/interfaces/array-response.interface';
 import { BaseWebService } from '../core/services/base.web-service';
 import { EntityBaseWebService } from '../core/services/entity-base.web-service';
 import { BASE_API_URL, DOMAIN_WORK_ORDERS } from '../shared/constants';
@@ -23,6 +24,14 @@ export class WorkOrderWebService extends EntityBaseWebService<WorkOrderModel> {
   public getAllWorkOrderItemDescriptions(): Observable<string[]> {
     return this.baseWebService.getRequest(
       `${BASE_API_URL + '/' + this.domainName}/workOrderItemDescriptions`
+    );
+  }
+
+  public getAllUnsettledWorkOrderForBuyer(
+    buyerOID: string
+  ): Observable<WorkOrderModel> {
+    return this.baseWebService.getRequest(
+      `${BASE_API_URL + '/' + this.domainName}/unsettled?buyer=${buyerOID}`
     );
   }
 }
