@@ -169,7 +169,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
                 .getEntityByOid(workOrderOID)
                 .subscribe((workOrder) => {
                   this.selectedBuyer = workOrder.buyer;
-                  this.addWorkOrderToNewInvoiceItem(workOrder);
+                  this.addWorkOrderToNewInvoiceItem([workOrder]);
                 });
               this.isBuyerSelected = true;
             } else {
@@ -328,42 +328,43 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     );
   }
 
-  private addWorkOrderToNewInvoiceItem(workOrder: WorkOrderModel): void {
+  private addWorkOrderToNewInvoiceItem(workOrders: WorkOrderModel[]): void {
     const invoiceItems: InvoiceItemModel[] = [];
     const excludedOids = this.getAllImportedWorkOrderItemOIDS();
-
-    workOrder.workOrderItems.forEach((woi) => {
-      if (!excludedOids.includes(woi.oid)) {
-        let invoiceItem: InvoiceItemModel = {
-          oid: '',
-          description: woi.description,
-          uom: woi.uom,
-          quantity: woi.sumQuantity,
-          pricePerUnit: 0,
-          netPrice: 0,
-          vatRate: this.settings?.invoiceVatRate || 20,
-          vatAmount: 0,
-          grossPrice: 0,
-          workOrderItems: [woi],
-        };
-        const alreadyExists: InvoiceItemModel = invoiceItems.filter(
-          (item) =>
-            item.description === invoiceItem.description &&
-            item.uom === invoiceItem.uom
-        )[0];
-        if (alreadyExists) {
-          alreadyExists.quantity =
-            alreadyExists.quantity + invoiceItem.quantity;
-          alreadyExists.workOrderItems.push(woi);
-        } else {
-          invoiceItems.push(invoiceItem);
+    workOrders.forEach((workOrder) => {
+      workOrder.workOrderItems.forEach((woi) => {
+        if (!excludedOids.includes(woi.oid)) {
+          let invoiceItem: InvoiceItemModel = {
+            oid: '',
+            description: woi.description,
+            uom: woi.uom,
+            quantity: woi.sumQuantity,
+            pricePerUnit: 0,
+            netPrice: 0,
+            vatRate: this.settings?.invoiceVatRate || 20,
+            vatAmount: 0,
+            grossPrice: 0,
+            workOrderItems: [woi],
+          };
+          const alreadyExists: InvoiceItemModel = invoiceItems.filter(
+            (item) =>
+              item.description === invoiceItem.description &&
+              item.uom === invoiceItem.uom
+          )[0];
+          if (alreadyExists) {
+            alreadyExists.quantity =
+              alreadyExists.quantity + invoiceItem.quantity;
+            alreadyExists.workOrderItems.push(woi);
+          } else {
+            invoiceItems.push(invoiceItem);
+          }
         }
-      }
+      });
+      this.addWorkOrderToComment(workOrder);
     });
     invoiceItems.forEach((item) => {
       this.addNewItem(item);
     });
-    this.addWorkOrderToComment(workOrder);
   }
 
   private addWorkOrderToComment(workOrder: WorkOrderModel): void {
@@ -413,9 +414,9 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
         this.getAllImportedWorkOrderItemOIDS()
       )
       .subscribe((wos: WorkOrderModel[] | undefined) => {
+        console.log('UVOZIMO: ');
         console.log(wos);
         if (wos) {
-          // grupisi po jm i kreiraj ako treba nove invoice itemse
           const invoiceItems: InvoiceItemModel[] = [];
 
           wos.forEach((workOrder) => {
@@ -451,12 +452,19 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
             });
           });
           invoiceItems.forEach((item, i) => {
-            if (i === 0) {
-              if (
-                !this.getDescription(index)?.value.includes(item.description)
-              ) {
-                this.getDescription(index)?.setValue(item.description);
+            const currDesc: string = this.getDescription(index)?.value;
+            if (
+              (!currDesc && this.getQuantity(index)?.value === 0) ||
+              (this.getDescription(index)?.value.includes(item.description) &&
+                this.getUOM(index)?.value === item.uom)
+            ) {
+              // PUT in current invoiceItem else create new
+              if (!currDesc.includes(item.description)) {
+                this.getDescription(index)?.setValue(
+                  currDesc.length ? ', ' + item.description : item.description
+                );
               }
+              this.getUOM(index)?.setValue(item.uom);
               this.getQuantity(index)?.setValue(
                 this.getQuantity(index)?.value + item.quantity
               );
@@ -712,13 +720,9 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     this.workOrderSelectionComponentService
       .openDialog(this.selectedBuyer?.oid || '', excludedOids)
       .subscribe((workOrders: WorkOrderModel[] | undefined) => {
-        workOrders?.forEach((wo) => {
-          this.workOrderWebService
-            .getEntityByOid(wo.oid)
-            .subscribe((workOrder) => {
-              this.addWorkOrderToNewInvoiceItem(workOrder);
-            });
-        });
+        if (workOrders) {
+          this.addWorkOrderToNewInvoiceItem(workOrders);
+        }
       });
   }
 

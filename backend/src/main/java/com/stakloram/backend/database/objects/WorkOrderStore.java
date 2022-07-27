@@ -56,8 +56,7 @@ public class WorkOrderStore extends ObjectStore {
                 + this.getTableName() + "_place_of_issue=?,"
                 + this.getTableName() + "_for_person=?,"
                 + this.getTableName() + "_description=?,"
-                + this.getTableName() + "_note=?,"
-                + this.getTableName() + "_buyer_buyer_id=?"
+                + this.getTableName() + "_note=? "
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setLong(++i, object.getNumber());
         st.setDate(++i, java.sql.Date.valueOf(object.getDateOfCreate()));
@@ -65,7 +64,6 @@ public class WorkOrderStore extends ObjectStore {
         st.setString(++i, object.getForPerson());
         st.setString(++i, object.getDescription());
         st.setString(++i, object.getNote());
-        st.setLong(++i, object.getBuyer().getId());
         st.setLong(++i, BaseModel.getIdFromOid(oid));
         if (st.executeUpdate() > 0) {
             return object;

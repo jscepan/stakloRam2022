@@ -88,8 +88,7 @@ public class InvoiceStore extends ObjectStore {
                 + this.getTableName() + "_currency=?,"
                 + this.getTableName() + "_country=?,"
                 + this.getTableName() + "_advance_invoice_id=?,"
-                + this.getTableName() + "_pre_invoice_id=?,"
-                + this.getTableName() + "_buyer_buyer_id=?"
+                + this.getTableName() + "_pre_invoice_id=? "
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setString(++i, object.getType().name());
         st.setInt(++i, this.getInvoiceNumberForInvoice(object));
@@ -117,7 +116,6 @@ public class InvoiceStore extends ObjectStore {
         } else {
             st.setLong(++i, Invoice.getIdFromOid(object.getPreInvoiceOid()));
         }
-        st.setLong(++i, object.getBuyer().getId());
         st.setLong(++i, Invoice.getIdFromOid(oid));
         if (st.executeUpdate() > 0) {
             return object;

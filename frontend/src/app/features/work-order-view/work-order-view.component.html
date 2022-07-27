@@ -36,32 +36,28 @@
   </div>
   <div class="body-content">
     <div class="heading">
-      <div class="column-container">
-        <div class="column">
-          <div class="line">{{ "orderer" | translate }}:</div>
-          <div class="line">{{ "forNeedsOf" | translate }}:</div>
-          <div class="line">{{ "workOrderNr" | translate }}.:</div>
-        </div>
-        <div class="column">
-          <div class="line">{{ workOrder.buyer.name }}</div>
-          <div class="line">{{ workOrder.forPerson }}</div>
-          <div class="line">{{ getWorkOrderNumber(workOrder) }}</div>
-        </div>
-      </div>
-      <div class="column-container">
-        <div class="column">
-          <div class="line">{{ "place" | translate }}:</div>
-          <div class="line">{{ "descriptionOfWork" | translate }}:</div>
-          <div class="line">{{ "date" | translate }}:</div>
-        </div>
-        <div class="column">
-          <div class="line">{{ workOrder.placeOfIssue }}</div>
-          <div class="line">{{ workOrder.description }}</div>
-          <div class="line">
+      <table>
+        <tr>
+          <td class="column1">{{ "orderer" | translate }}:</td>
+          <td class="column2">{{ workOrder.buyer.name }}</td>
+          <td class="column3">{{ "place" | translate }}:</td>
+          <td class="column4">{{ workOrder.placeOfIssue }}</td>
+        </tr>
+        <tr>
+          <td class="column1">{{ "forNeedsOf" | translate }}:</td>
+          <td class="column2">{{ workOrder.forPerson }}</td>
+          <td class="column3">{{ "descriptionOfWork" | translate }}:</td>
+          <td class="column4">{{ workOrder.description }}</td>
+        </tr>
+        <tr>
+          <td class="column1">{{ "workOrderNr" | translate }}.:</td>
+          <td class="column2">{{ getWorkOrderNumber(workOrder) }}</td>
+          <td class="column3">{{ "date" | translate }}:</td>
+          <td class="column4">
             {{ workOrder.dateOfCreate | date: "dd-MM-yyyy" }}
-          </div>
-        </div>
-      </div>
+          </td>
+        </tr>
+      </table>
     </div>
     <!--
                   *ngIf="cellRowspan[i].displayCell"

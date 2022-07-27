@@ -18,7 +18,7 @@
 
       img {
         height: 80px;
-        width: 200px;
+        width: 300px;
       }
     }
 
@@ -27,7 +27,7 @@
       flex-direction: column;
       font-weight: 600;
       padding: 20px;
-      font-size: 0.9em;
+      font-size: 1.14em;
 
       .title {
         text-transform: uppercase;
@@ -40,7 +40,7 @@
   }
   .company-description {
     text-align: center;
-    font-size: 0.7em;
+    font-size: 0.8em;
   }
 
   .body-content {
@@ -48,14 +48,21 @@
     width: 100%;
 
     .heading {
-      display: flex;
-      font-weight: 600;
-      justify-content: space-between;
-
-      .column-container {
-        display: flex;
-        .column {
-          padding: 10px;
+      table {
+        font-weight: 700;
+        tr {
+          .column1 {
+            width: 130px;
+          }
+          .column2 {
+            width: 260px;
+          }
+          .column3 {
+            width: 70px;
+          }
+          .column4 {
+            width: 120px;
+          }
         }
       }
     }
@@ -63,6 +70,7 @@
     .table {
       border-collapse: collapse;
       color: var(--color-black);
+      font-size: 1.14em;
 
       tr {
         border: 1px solid var(--color-black);
@@ -75,16 +83,18 @@
 
         td {
           border: 1px solid var(--color-black);
+          padding: 0.25rem;
         }
       }
       tr:nth-child(even) {
-        background-color: var(--color-disabled);
+        background-color: var(--color-main-lighter);
       }
     }
 
     .note {
       display: flex;
       flex-direction: column;
+      margin-top: 20px;
 
       .title {
         font-weight: 600;

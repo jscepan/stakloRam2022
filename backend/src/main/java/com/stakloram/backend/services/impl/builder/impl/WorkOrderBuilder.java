@@ -1,6 +1,5 @@
 package com.stakloram.backend.services.impl.builder.impl;
 
-import com.slaw.slaw.database.ConnectionToDatabase;
 import com.stakloram.backend.database.ResponseWithCount;
 import com.stakloram.backend.database.objects.BuyerStore;
 import com.stakloram.backend.database.objects.CityStore;
@@ -28,15 +27,15 @@ import java.util.Optional;
 import java.util.Set;
 
 public class WorkOrderBuilder extends BaseBuilder {
-
+    
     private final WorkOrderItemStore WORK_ORDER_ITEM_STORE = new WorkOrderItemStore(this.getLocator());
     private final BuyerStore BUYER_STORE = new BuyerStore(this.getLocator());
     private final CityStore CITY_STORE = new CityStore(this.getLocator());
-
+    
     public WorkOrderBuilder(Locator locator) {
         super(locator);
     }
-
+    
     @Override
     public BaseModel createNewObject(BaseModel object) throws SException {
         WorkOrder workOrder = (WorkOrder) object;
@@ -50,7 +49,7 @@ public class WorkOrderBuilder extends BaseBuilder {
         }
         return workOrder;
     }
-
+    
     @Override
     public BaseModel modifyObject(String oid, BaseModel object) throws SException {
         try {
@@ -75,7 +74,7 @@ public class WorkOrderBuilder extends BaseBuilder {
             throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
         }
     }
-
+    
     @Override
     public BaseModel getObjectByOid(String oid) throws SException {
         WorkOrder workOrder = (WorkOrder) super.getObjectByOid(oid);
@@ -99,18 +98,18 @@ public class WorkOrderBuilder extends BaseBuilder {
         workOrder.setWorkOrderItems(workOrderItems);
         return workOrder;
     }
-
+    
     @Override
     public void setObjectStore() {
         this.objectStore = new WorkOrderStore(this.getLocator());
     }
-
+    
     @Override
     public void setColumnsForSearch() {
         this.databaseColumnsForQuickSearch = Arrays.asList("buyer_name");
         this.databaseColumnsForAdvanceFilter.put("buyer", "work_order_buyer_buyer_id");
     }
-
+    
     @Override
     public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
         try {
@@ -127,7 +126,7 @@ public class WorkOrderBuilder extends BaseBuilder {
             throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
         }
     }
-
+    
     public List<WorkOrder> getAllUnsettledWorkOrder(String buyerOID) throws SException {
         try {
             List<WorkOrder> objects = new ArrayList<>();
@@ -141,6 +140,7 @@ public class WorkOrderBuilder extends BaseBuilder {
                 if (alreadyExists.isPresent()) {
                     alreadyExists.get().getWorkOrderItems().add(workOrderItem);
                 } else {
+                    workOrder.getWorkOrderItems().add(workOrderItem);
                     objects.add(workOrder);
                 }
             }
@@ -149,7 +149,7 @@ public class WorkOrderBuilder extends BaseBuilder {
             throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
         }
     }
-
+    
     public long getNextWorkOrderNumber(int year) throws SException {
         try {
             return ((WorkOrderStore) this.getObjectStore()).getLastWorkOrderNumber(year) + 1;
@@ -157,7 +157,7 @@ public class WorkOrderBuilder extends BaseBuilder {
             throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
         }
     }
-
+    
     public Set<String> getAllWorkOrderItemDescriptions() throws SException {
         Set<String> items = new HashSet<>();
         try {
@@ -170,5 +170,5 @@ public class WorkOrderBuilder extends BaseBuilder {
         }
         return items;
     }
-
+    
 }

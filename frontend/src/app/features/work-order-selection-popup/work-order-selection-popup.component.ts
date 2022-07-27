@@ -8,7 +8,8 @@ import {
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { SearchModel } from 'src/app/shared/models/search.model';
 import { WorkOrderModel } from 'src/app/shared/models/work-order';
 import { GlobalService } from 'src/app/shared/services/global.service';
@@ -40,13 +41,13 @@ export class WorkOrderSelectionPopupComponent
   public excludedOids: string[] = [];
   public isSingleSelection: boolean = true;
 
-  entities?: Observable<WorkOrderModel[]> = this.listEntities.entities;
-  isLoading?: Observable<boolean> = this.listEntities.isLoading;
+  private isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+  public isLoading: Observable<boolean> = this.isLoading$.asObservable();
+  selection: string[] = [];
 
-  hasSelected: boolean = false;
-
-  searchFilter: SearchModel = new SearchModel();
-  items: WorkOrderSelectionItem[] = [];
+  items: { item: WorkOrderSelectionItem; object: WorkOrderModel }[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<WorkOrderSelectionPopupComponent>,
@@ -61,70 +62,72 @@ export class WorkOrderSelectionPopupComponent
   }
 
   ngOnInit(): void {
-    this.searchFilter.objectsOIDS = [{ buyer: [this.buyerOID] }];
-    // this.searchFilter.attributes = [{ settled: ['false'] }];
-    this.subs.sink = this.listEntities
-      .setWebService(this.webService)
-      .setFilter(this.searchFilter);
-
-    this.entities?.subscribe((workOrders) => {
-      this.items = workOrders
-        .filter((wo) => {
-          return !this.excludedOids.includes(wo.oid);
+    this.isLoading$.next(true);
+    this.subs.sink = this.webService
+      .getAllUnsettledWorkOrderForBuyer(this.buyerOID)
+      .pipe(
+        finalize(() => {
+          this.isLoading$.next(false);
         })
-        .map((wo) => {
+      )
+      .subscribe((workOrders: WorkOrderModel[]) => {
+        this.items = workOrders.map((wo) => {
           return {
-            oid: wo.oid,
-            date: wo.dateOfCreate,
-            number: getWorkOrderNumber(wo),
-            forPerson: wo.forPerson,
-            note: wo.note,
-            description: wo.description,
+            item: {
+              oid: wo.oid,
+              date: wo.dateOfCreate,
+              number: getWorkOrderNumber(wo),
+              forPerson: wo.forPerson,
+              note: wo.note,
+              description: wo.description,
+            },
+            object: wo,
           };
         });
-    });
+      });
   }
 
   ngAfterViewInit(): void {
     this.cdRef.detectChanges();
   }
 
-  inputSearchHandler(text: string): void {
-    this.searchFilter.criteriaQuick = text;
-    this.listEntities.setFilter(this.searchFilter);
-  }
-
-  statusTypeChanged(statuses: string[]): void {
-    this.searchFilter = {
-      ...this.searchFilter,
-      attributes: [{ status: statuses }],
-    };
-    this.listEntities.setFilter(this.searchFilter);
-  }
-
   handleItemClick(card: WorkOrderSelectionItem): void {
     this.items = this.items.map((item) => {
       if (this.isSingleSelection) {
-        return { ...item, selected: item.oid === card.oid };
+        return {
+          ...item,
+          item: { ...item.item, selected: item.item.oid === card.oid },
+        };
       } else {
-        if (item.oid === card.oid) {
-          return { ...item, selected: !item.selected };
+        if (item.item.oid === card.oid) {
+          return {
+            ...item,
+            item: { ...item.item, selected: !item.item.selected },
+          };
         }
         return { ...item };
       }
     });
-    this.hasSelected = this.items.filter((item) => item.selected).length > 0;
+    this.updateSelection();
+  }
+
+  updateSelection(): void {
+    this.selection = [];
+    this.items.forEach((item) => {
+      if (item.item.selected) {
+        this.selection.push(item.item.oid);
+      }
+    });
   }
 
   public saveSelection(): void {
-    let selectedItems = this.items.filter((item) => item.selected);
-    this.entities?.subscribe((items) => {
-      this.dialogRef.close(
-        items.filter((woi) =>
-          selectedItems.find((item) => item.oid === woi.oid)
-        )
-      );
+    const selected: WorkOrderModel[] = [];
+    this.items.forEach((wo) => {
+      if (wo.item.selected) {
+        selected.push(wo.object);
+      }
     });
+    this.dialogRef.close(selected);
   }
 
   public cancelSaveSelection(): void {

@@ -8,12 +8,10 @@ import {
 } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { UOM_TYPES } from 'src/app/shared/constants';
 import { EnumValueModel } from 'src/app/shared/enums/enum.model';
-import { SearchModel } from 'src/app/shared/models/search.model';
 import { WorkOrderModel } from 'src/app/shared/models/work-order';
 import { WorkOrderItemModel } from 'src/app/shared/models/work-order-item';
 import { ListEntities } from 'src/app/shared/services/list-entities';
@@ -52,7 +50,6 @@ export class WorkOrderItemSelectionPopupComponent
   uomOptions: EnumValueModel[] = UOM_TYPES;
   getUOMDisplayValue = getUOMDisplayValue;
 
-  // entities?: Observable<WorkOrderModel[]> = this.listEntities.entities;
   private isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
@@ -60,7 +57,6 @@ export class WorkOrderItemSelectionPopupComponent
 
   selection: string[] = [];
 
-  searchFilter: SearchModel = new SearchModel();
   items: WorkOrderSelection[] = [];
 
   constructor(
@@ -76,7 +72,7 @@ export class WorkOrderItemSelectionPopupComponent
 
   ngOnInit(): void {
     this.isLoading$.next(true);
-    this.webService
+    this.subs.sink = this.webService
       .getAllUnsettledWorkOrderForBuyer(this.buyerOID)
       .pipe(
         finalize(() => {
@@ -89,17 +85,14 @@ export class WorkOrderItemSelectionPopupComponent
             oid: wo.oid,
             isExpanded: false,
             object: wo,
-            workOrderItems: [],
+            workOrderItems: wo.workOrderItems
+              .filter((woi) => !this.excludedOids.includes(woi.oid))
+              .map((woi) => {
+                return { selected: false, object: woi };
+              }),
           };
         });
       });
-
-    // this.searchFilter.objectsOIDS = [{ buyer: [this.buyerOID] }];
-    // this.subs.sink = this.listEntities
-    //   .setWebService(this.webService)
-    //   .setFilter(this.searchFilter);
-
-    // this.entities?.subscribe((workOrders) => {});
   }
 
   ngAfterViewInit(): void {
@@ -111,18 +104,6 @@ export class WorkOrderItemSelectionPopupComponent
       (item) => item.object.oid === workOrderOID
     );
     if (!this.items[selectedIndex].isExpanded) {
-      this.webService.getEntityByOid(workOrderOID).subscribe((workOrder) => {
-        this.items[selectedIndex].workOrderItems = workOrder.workOrderItems
-          .filter((wo) => {
-            return !this.excludedOids.includes(wo.oid);
-          })
-          .map((item) => {
-            return {
-              selected: false,
-              object: item,
-            };
-          });
-      });
     } else {
       this.items[selectedIndex].workOrderItems = this.items[
         selectedIndex
@@ -153,7 +134,7 @@ export class WorkOrderItemSelectionPopupComponent
       wo.workOrderItems.forEach((woi) => {
         if (woi.selected) {
           if (!selectedWO) {
-            selectedWO = wo.object;
+            selectedWO = { ...wo.object, workOrderItems: [] };
           }
           selectedWO.workOrderItems.push(woi.object);
         }
