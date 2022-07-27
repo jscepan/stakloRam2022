@@ -10,12 +10,14 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
+import { UOM_TYPES } from 'src/app/shared/constants';
+import { EnumValueModel } from 'src/app/shared/enums/enum.model';
 import { SearchModel } from 'src/app/shared/models/search.model';
 import { WorkOrderModel } from 'src/app/shared/models/work-order';
 import { WorkOrderItemModel } from 'src/app/shared/models/work-order-item';
 import { ListEntities } from 'src/app/shared/services/list-entities';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
-import { getWorkOrderNumber } from 'src/app/shared/utils';
+import { getUOMDisplayValue, getWorkOrderNumber } from 'src/app/shared/utils';
 import { WorkOrderWebService } from 'src/app/web-services/work-order.web-service';
 
 export interface DialogData {
@@ -53,6 +55,8 @@ export class WorkOrderItemSelectionPopupComponent
   invoiceType: string = '';
   public excludedOids: string[] = [];
   public isSingleSelection: boolean = true;
+  uomOptions: EnumValueModel[] = UOM_TYPES;
+  getUOMDisplayValue = getUOMDisplayValue;
 
   entities?: Observable<WorkOrderModel[]> = this.listEntities.entities;
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
@@ -141,15 +145,9 @@ export class WorkOrderItemSelectionPopupComponent
   }
 
   public saveSelection(): void {
+    const selected:WorkOrderModel[]=[];
     this.entities?.subscribe((items) => {
-      const selected: WorkOrderItemModel[] = [];
-      items.forEach((item) => {
-        item.workOrderItems.forEach((woi) => {
-          if (this.selection.includes(woi.oid)) {
-            selected.push(woi);
-          }
-        });
-      });
+
       this.dialogRef.close(selected);
     });
   }

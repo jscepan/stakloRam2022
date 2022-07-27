@@ -25,6 +25,7 @@ import {
 } from 'src/app/shared/services/settings-store.service';
 import {
   compareByValue,
+  getUOMDisplayValue,
   getWorkOrderNumber,
   roundOnDigits,
 } from 'src/app/shared/utils';
@@ -41,6 +42,7 @@ import { WorkOrderModel } from 'src/app/shared/models/work-order';
 import { WorkOrderItemModel } from 'src/app/shared/models/work-order-item';
 import { WorkOrderSelectionComponentService } from '@features/work-order-selection-popup/work-order-selection-component.service';
 import { WorkOrderItemSelectionComponentService } from '@features/work-order-item-selection-popup/work-order-item-selection-component.service';
+import { WorkOrderSelection } from '@features/work-order-item-selection-popup/work-order-item-selection-popup.component';
 
 @Component({
   selector: 'app-invoice-create-edit',
@@ -76,6 +78,8 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   searchControl: FormControl = new FormControl();
   selectedBuyer?: BuyerModel;
   compareFn: (f1: BaseModel, f2: BaseModel) => boolean = compareByValue;
+
+  getUOMDisplayValue = getUOMDisplayValue;
 
   get numberOfCashBillControl(): AbstractControl | null {
     return this.formGroup.get('numberOfCashBill');
@@ -310,7 +314,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     invoiceItem?.workOrderItems.forEach((woi) => {
       this.addNewWorkOrderItemToInvoiceItem(
         this.invoiceItemsFormArr.length - 1,
-        woi
+        [woi]
       );
     });
     this.calculateInvoiceAmount();
@@ -362,41 +366,6 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     this.addWorkOrderToComment(workOrder);
   }
 
-  private addWorkOrderItemsToNewInvoiceItem(
-    workOrderItems: WorkOrderItemModel[],
-    workOrder: WorkOrderModel
-  ): void {
-    const invoiceItems: InvoiceItemModel[] = [];
-
-    workOrderItems.forEach((woi) => {
-      let invoiceItem: InvoiceItemModel = {
-        oid: '',
-        description: woi.description,
-        uom: woi.uom,
-        quantity: woi.sumQuantity,
-        pricePerUnit: 0,
-        netPrice: 0,
-        vatRate: this.settings?.invoiceVatRate || 20,
-        vatAmount: 0,
-        grossPrice: 0,
-        workOrderItems: [woi],
-      };
-      const alreadyExists: InvoiceItemModel = invoiceItems.filter(
-        (item) => item.uom === invoiceItem.uom
-      )[0];
-      if (alreadyExists) {
-        alreadyExists.quantity = alreadyExists.quantity + invoiceItem.quantity;
-        alreadyExists.workOrderItems.push(woi);
-      } else {
-        invoiceItems.push(invoiceItem);
-      }
-    });
-    invoiceItems.forEach((item) => {
-      this.addNewItem(item);
-    });
-    this.addWorkOrderToComment(workOrder);
-  }
-
   private addWorkOrderToComment(workOrder: WorkOrderModel): void {
     const commentControl = this.formGroup.get('comment');
     if (commentControl?.value.length) {
@@ -414,69 +383,88 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
 
   addNewWorkOrderItemToInvoiceItem(
     invoiceItemIndex: number,
-    workOrderItem: WorkOrderItemModel
+    workOrderItems: WorkOrderItemModel[]
   ): void {
-    this.getWorkOrderItemsFormArr(invoiceItemIndex).push(
-      new FormGroup({
-        oid: new FormControl(workOrderItem.oid),
-        description: new FormControl(workOrderItem.description),
-        uom: new FormControl(workOrderItem.uom),
-        dimension1: new FormControl(workOrderItem.dimension1),
-        dimension2: new FormControl(workOrderItem.dimension2),
-        dimension3: new FormControl(workOrderItem.dimension3),
-        quantity: new FormControl(workOrderItem.quantity),
-        sumQuantity: new FormControl(workOrderItem.sumQuantity),
-        note: new FormControl(workOrderItem.note),
-      })
-    );
+    workOrderItems.forEach((workOrderItem) => {
+      this.getWorkOrderItemsFormArr(invoiceItemIndex).push(
+        new FormGroup({
+          oid: new FormControl(workOrderItem.oid),
+          description: new FormControl(workOrderItem.description),
+          uom: new FormControl(workOrderItem.uom),
+          dimension1: new FormControl(workOrderItem.dimension1),
+          dimension2: new FormControl(workOrderItem.dimension2),
+          dimension3: new FormControl(workOrderItem.dimension3),
+          quantity: new FormControl(workOrderItem.quantity),
+          sumQuantity: new FormControl(workOrderItem.sumQuantity),
+          note: new FormControl(workOrderItem.note),
+        })
+      );
+    });
   }
 
   importWorkOrderItems(index: number): void {
-    // TODO
-    console.log(index);
-    //   const alreadyImportedTasks: string[] = [];
-    //   this.invoiceItemsFormArr.controls.forEach((item, index) => {
-    //     let taskControls = this.getTasksFormArr(index);
-    //     taskControls.controls.forEach((task) => {
-    //       alreadyImportedTasks.push(task.value.oid);
-    //     });
-    //   });
     this.workOrderItemSelectionComponentService
       .openDialog(
         this.selectedBuyer?.oid || '',
         this.getAllImportedWorkOrderItemOIDS()
       )
-      .subscribe();
-    // this.workOrderSelectionComponentService
-    //   .openDialog(this.selectedBuyer?.oid || '', excludedOids)
-    //   .subscribe((workOrders: WorkOrderModel[]) => {
-    //     console.log('workOrders');
-    //     console.log(workOrders);
-    // if (workOrder as WorkOrderModel) {
-    //   this.addWorkOrderToNewInvoiceItem(<WorkOrderModel>workOrder);
-    // } else {
-    //   // this.addWorkOrderItemsToNewInvoiceItem(workOrder,)
-    // }
-    //       if (tasks?.length) {
-    //         tasks.forEach((task) => this.addNewTaskToInvoiceItem(index, task));
-    //         let description = '';
-    //         tasks.forEach((t, i) =>
-    //           i > 0 ? (description += ', ' + t.title) : (description += t.title)
-    //         );
-    //         this.invoiceItemsFormArr.controls[index]
-    //           .get('description')
-    //           ?.setValue(
-    //             this.invoiceItemsFormArr.controls[index].get('description')
-    //               ?.value === ''
-    //               ? this.invoiceItemsFormArr.controls[index].get('description')
-    //                   ?.value + description
-    //               : this.invoiceItemsFormArr.controls[index].get('description')
-    //                   ?.value +
-    //                   ', ' +
-    //                   description
-    //           );
-    //       }
-    // });
+      .subscribe((wos: WorkOrderModel[] | undefined) => {
+        if (wos) {
+          // grupisi po jm i kreiraj ako treba nove invoice itemse
+          const invoiceItems: InvoiceItemModel[] = [];
+
+          wos.forEach((workOrder) => {
+            workOrder.workOrderItems.forEach((woi) => {
+              let invoiceItem: InvoiceItemModel = {
+                oid: '',
+                description: woi.description,
+                uom: woi.uom,
+                quantity: woi.sumQuantity,
+                pricePerUnit: 0,
+                netPrice: 0,
+                vatRate: this.settings?.invoiceVatRate || 20,
+                vatAmount: 0,
+                grossPrice: 0,
+                workOrderItems: [woi],
+              };
+              const alreadyExists: InvoiceItemModel = invoiceItems.filter(
+                (item) => item.uom === invoiceItem.uom
+              )[0];
+              if (alreadyExists) {
+                if (!alreadyExists.description.includes(woi.description)) {
+                  alreadyExists.description =
+                    alreadyExists.description + ', ' + woi.description;
+                } else {
+                  alreadyExists.description = woi.description;
+                }
+                alreadyExists.quantity =
+                  alreadyExists.quantity + invoiceItem.quantity;
+                alreadyExists.workOrderItems.push(woi);
+              } else {
+                invoiceItems.push(invoiceItem);
+              }
+            });
+          });
+          invoiceItems.forEach((item, i) => {
+            if (i === 0) {
+              if (
+                !this.getDescription(index)?.value.includes(item.description)
+              ) {
+                this.getDescription(index)?.setValue(item.description);
+              }
+              this.getQuantity(index)?.setValue(
+                this.getQuantity(index)?.value + item.quantity
+              );
+              this.addNewWorkOrderItemToInvoiceItem(index, item.workOrderItems);
+            } else {
+              this.addNewItem(item);
+            }
+          });
+          wos.forEach((workOrder) => {
+            this.addWorkOrderToComment(workOrder);
+          });
+        }
+      });
   }
 
   removeWorkOrderItemFromInvoiceItem(
@@ -875,20 +863,10 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.setFocusOn('quantity', index, true);
     });
-    // this.getSumQuantity(index);
-    // this.calculateSum();
   }
 
   getFilteredOptions(index: number): Observable<string[]> | undefined {
     return this.filteredOptions[index];
-  }
-
-  getUOMDisplayValue(uom: string): string {
-    return this.uomOptions.filter((u) => u.value === uom)[0].displayName;
-  }
-
-  getInvoiceItemitemOid(_index: number, control: AbstractControl): string {
-    return control.value.oid + _index;
   }
 
   ngOnDestroy(): void {

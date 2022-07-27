@@ -273,11 +273,7 @@
         *ngIf="isBuyerSelected"
       >
         <div
-          *ngFor="
-            let comp of invoiceItemsFormArr.controls;
-            let i = index;
-            trackBy: getInvoiceItemitemOid
-          "
+          *ngFor="let comp of invoiceItemsFormArr.controls; let i = index"
           class="invoice-item"
         >
           <div [formGroupName]="i" class="form-group">
@@ -446,7 +442,7 @@
                       ", " +
                       woi.value.sumQuantity +
                       " " +
-                      getUOMDisplayValue(woi.value.uom)
+                      (getUOMDisplayValue(woi.value.uom) | translate)
                   }}</mat-option
                 >
               </mat-select>

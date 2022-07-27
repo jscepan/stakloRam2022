@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Observer } from 'rxjs';
+import { UOM_TYPES } from './constants';
 import { BaseModel } from './models/base-model';
 import { WorkOrderModel } from './models/work-order';
 
@@ -156,4 +157,8 @@ export function getDaysBetweenTwoDates(first: Date, second: Date): number {
 
 export function compareByValue(f1: BaseModel, f2: BaseModel) {
   return f1 && f2 && f1.oid === f2.oid;
+}
+
+export function getUOMDisplayValue(uom: string): string {
+  return UOM_TYPES.filter((u) => u.value === uom)[0].displayName;
 }

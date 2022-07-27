@@ -14,26 +14,28 @@ export class WorkOrderItemSelectionComponentService {
   openDialog(
     buyerOID: string,
     excludedOids: string[] = []
-  ): Observable<WorkOrderModel[]> {
-    return new Observable((observer: Subscriber<WorkOrderModel[]>) => {
-      const config: MatDialogConfig = new MatDialogConfig();
-      config.width = '80%';
-      config.height = '80%';
-      config.data = {
-        buyerOID,
-        excludedOids,
-      };
+  ): Observable<WorkOrderModel[] | undefined> {
+    return new Observable(
+      (observer: Subscriber<WorkOrderModel[] | undefined>) => {
+        const config: MatDialogConfig = new MatDialogConfig();
+        config.width = '80%';
+        config.height = '80%';
+        config.data = {
+          buyerOID,
+          excludedOids,
+        };
 
-      this.subs.sink.$openSelectPopup = this._matDialog
-        .open(WorkOrderItemSelectionPopupComponent, config)
-        .afterClosed()
-        .subscribe(
-          (items: WorkOrderModel[]) => {
-            observer.next(items);
-            observer.complete();
-          },
-          () => observer.error()
-        );
-    });
+        this.subs.sink.$openSelectPopup = this._matDialog
+          .open(WorkOrderItemSelectionPopupComponent, config)
+          .afterClosed()
+          .subscribe(
+            (items: WorkOrderModel[] | undefined) => {
+              observer.next(items);
+              observer.complete();
+            },
+            () => observer.error()
+          );
+      }
+    );
   }
 }

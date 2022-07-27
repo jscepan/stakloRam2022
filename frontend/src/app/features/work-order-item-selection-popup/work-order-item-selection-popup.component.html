@@ -28,9 +28,7 @@
               ", " +
               ("date" | translate) +
               ": " +
-              ("nr" | translate) +
-              " " +
-              item.date
+              (item.date | date: "dd.MM.yyyy")
           }}
         </div>
       </div>
@@ -50,9 +48,8 @@
             *ngFor="let workOrderItem of item.workOrderItems"
           >
             {{ workOrderItem.description }}
-            {{ workOrderItem.note }}
-            {{ workOrderItem.uom }}
-            {{ workOrderItem.sumQuantity }}
+            {{ "pieces" | translate }}: {{ workOrderItem.sumQuantity }}
+            {{ getUOMDisplayValue(workOrderItem.uom) | translate }}
           </mat-checkbox>
         </div>
       </div>
