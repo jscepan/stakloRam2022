@@ -37,7 +37,7 @@ public class IncomeBuilder extends BaseBuilder {
     @Override
     public Income getObjectByOid(String oid) throws SException {
         try {
-            String fromSt = this.getJoinObjectStoresForSqlFrom(Arrays.asList(BUYER_STORE));
+            String fromSt = this.getSqlFromAppendObjectStores(Arrays.asList(BUYER_STORE));
             String whereSt = this.getObjectStore().getTableName() + "." + this.getObjectStore().getPrimaryKey() + "=" + BaseModel.getIdFromOid(oid);
             ResultSet rs = this.getObjectStore().getAllObjectsFromDatabase(fromSt, whereSt);
             Income income;
@@ -61,7 +61,7 @@ public class IncomeBuilder extends BaseBuilder {
     public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
         try {
             List<BaseModel> objects = new ArrayList<>();
-            ResponseWithCount rwc = super.searchObjects(this.getJoinObjectStoresForSqlFrom(Arrays.asList(BUYER_STORE)), searchObject, skip, top);
+            ResponseWithCount rwc = super.searchObjects(this.getSqlFromAppendObjectStores(Arrays.asList(BUYER_STORE)), searchObject, skip, top);
             ResultSet rs = rwc.getResultSet();
             while (rs.next()) {
                 Income income = (Income) this.getObjectStore().getObjectFromResultSet(rs);

@@ -101,7 +101,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
     }
 
     @Override
-    public String getJoinObjectStoresForSqlFrom(List<ObjectStore> stores) {
+    public String getSqlFromAppendObjectStores(List<ObjectStore> stores) {
         StringBuilder sb = new StringBuilder();
         sb.append(" " + ConnectionToDatabase.DATABASE_NAME);
         sb.append(".");
@@ -115,6 +115,38 @@ public abstract class BaseBuilder implements IObjectBuilder {
             sb.append(this.getObjectStore().getTableName());
             sb.append(".");
             sb.append(this.getObjectStore().getTableName());
+            sb.append("_");
+            sb.append(stores.get(i).getTableName());
+            sb.append("_");
+            sb.append(stores.get(i).getPrimaryKey());
+            sb.append("=");
+            sb.append(stores.get(i).getTableName());
+            sb.append(".");
+            sb.append(stores.get(i).getPrimaryKey());
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String getSqlFromObjectStores(List<ObjectStore> stores) {
+        if (stores.isEmpty()) {
+            return "";
+        } else if (stores.size() == 1) {
+            return stores.get(0).getDefaultFromClausule();
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(" " + ConnectionToDatabase.DATABASE_NAME);
+        sb.append(".");
+        sb.append(stores.get(0).getTableName());
+        for (int i = 1; i < stores.size(); i++) {
+            sb.append(" JOIN ");
+            sb.append(ConnectionToDatabase.DATABASE_NAME);
+            sb.append(".");
+            sb.append(stores.get(i).getTableName());
+            sb.append(" ON ");
+            sb.append(stores.get(0).getTableName());
+            sb.append(".");
+            sb.append(stores.get(0).getTableName());
             sb.append("_");
             sb.append(stores.get(i).getTableName());
             sb.append("_");

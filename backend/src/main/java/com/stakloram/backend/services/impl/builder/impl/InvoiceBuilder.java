@@ -54,7 +54,7 @@ public class InvoiceBuilder extends BaseBuilder {
     public Invoice getObjectByOid(String oid) throws SException {
         Invoice invoice;
         try {
-            String fromSt = this.getJoinObjectStoresForSqlFrom(Arrays.asList(BUYER_STORE));
+            String fromSt = this.getSqlFromAppendObjectStores(Arrays.asList(BUYER_STORE));
             String whereSt = this.getObjectStore().getTableName() + "." + this.getObjectStore().getPrimaryKey() + "=" + BaseModel.getIdFromOid(oid);
             ResultSet resultSet = this.getObjectStore().getAllObjectsFromDatabase(fromSt, whereSt);
             if (resultSet.next()) {
@@ -147,7 +147,7 @@ public class InvoiceBuilder extends BaseBuilder {
     public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
         try {
             List<BaseModel> objects = new ArrayList<>();
-            ResponseWithCount rwc = super.searchObjects(this.getJoinObjectStoresForSqlFrom(Arrays.asList(BUYER_STORE)), searchObject, skip, top);
+            ResponseWithCount rwc = super.searchObjects(this.getSqlFromAppendObjectStores(Arrays.asList(BUYER_STORE)), searchObject, skip, top);
             ResultSet rs = rwc.getResultSet();
             while (rs.next()) {
                 Invoice invoice = (Invoice) this.getObjectStore().getObjectFromResultSet(rs);

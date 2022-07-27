@@ -29,9 +29,9 @@ export class WorkOrderWebService extends EntityBaseWebService<WorkOrderModel> {
 
   public getAllUnsettledWorkOrderForBuyer(
     buyerOID: string
-  ): Observable<WorkOrderModel> {
+  ): Observable<WorkOrderModel[]> {
     return this.baseWebService.getRequest(
-      `${BASE_API_URL + '/' + this.domainName}/unsettled?buyer=${buyerOID}`
+      `${BASE_API_URL + '/' + this.domainName}/unsettled?buyerOID=${buyerOID}`
     );
   }
 }

@@ -5,6 +5,7 @@ import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.services.impl.WorkOrderService;
+import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,11 @@ public class WorkOrderController {
     @RequestMapping(method = RequestMethod.POST, value = "/workorders/search")
     public ArrayResponse search(@RequestBody SearchRequest searchObject, @RequestParam Long skip, @RequestParam Long top) throws SException {
         return workOrderService.searchObjects(searchObject, skip, top);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/workorders/unsettled")
+    public List<WorkOrder> getAllUnsettled(@RequestParam String buyerOID) throws SException {
+        return workOrderService.getAllUnsettledWorkOrder(buyerOID);
     }
 
     @RequestMapping("/workorders/{workOrderOid}")

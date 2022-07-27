@@ -9,7 +9,8 @@ import {
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { UOM_TYPES } from 'src/app/shared/constants';
 import { EnumValueModel } from 'src/app/shared/enums/enum.model';
 import { SearchModel } from 'src/app/shared/models/search.model';
@@ -48,12 +49,14 @@ export class WorkOrderItemSelectionPopupComponent
   buyerOID: string = '';
   invoiceType: string = '';
   public excludedOids: string[] = [];
-  public isSingleSelection: boolean = true;
   uomOptions: EnumValueModel[] = UOM_TYPES;
   getUOMDisplayValue = getUOMDisplayValue;
 
-  entities?: Observable<WorkOrderModel[]> = this.listEntities.entities;
-  isLoading?: Observable<boolean> = this.listEntities.isLoading;
+  // entities?: Observable<WorkOrderModel[]> = this.listEntities.entities;
+  private isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+  public isLoading: Observable<boolean> = this.isLoading$.asObservable();
 
   selection: string[] = [];
 
@@ -72,21 +75,31 @@ export class WorkOrderItemSelectionPopupComponent
   }
 
   ngOnInit(): void {
-    this.searchFilter.objectsOIDS = [{ buyer: [this.buyerOID] }];
-    this.subs.sink = this.listEntities
-      .setWebService(this.webService)
-      .setFilter(this.searchFilter);
-
-    this.entities?.subscribe((workOrders) => {
-      this.items = workOrders.map((wo) => {
-        return {
-          oid: wo.oid,
-          isExpanded: false,
-          object: wo,
-          workOrderItems: [],
-        };
+    this.isLoading$.next(true);
+    this.webService
+      .getAllUnsettledWorkOrderForBuyer(this.buyerOID)
+      .pipe(
+        finalize(() => {
+          this.isLoading$.next(false);
+        })
+      )
+      .subscribe((workOrders: WorkOrderModel[]) => {
+        this.items = workOrders.map((wo) => {
+          return {
+            oid: wo.oid,
+            isExpanded: false,
+            object: wo,
+            workOrderItems: [],
+          };
+        });
       });
-    });
+
+    // this.searchFilter.objectsOIDS = [{ buyer: [this.buyerOID] }];
+    // this.subs.sink = this.listEntities
+    //   .setWebService(this.webService)
+    //   .setFilter(this.searchFilter);
+
+    // this.entities?.subscribe((workOrders) => {});
   }
 
   ngAfterViewInit(): void {

@@ -1,5 +1,6 @@
 package com.stakloram.backend.services.impl.builder.impl;
 
+import com.slaw.slaw.database.ConnectionToDatabase;
 import com.stakloram.backend.database.ResponseWithCount;
 import com.stakloram.backend.database.objects.BuyerStore;
 import com.stakloram.backend.database.objects.CityStore;
@@ -23,6 +24,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 public class WorkOrderBuilder extends BaseBuilder {
@@ -113,7 +115,7 @@ public class WorkOrderBuilder extends BaseBuilder {
     public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
         try {
             List<BaseModel> objects = new ArrayList<>();
-            ResponseWithCount rwc = super.searchObjects(this.getJoinObjectStoresForSqlFrom(Arrays.asList(BUYER_STORE)), searchObject, skip, top);
+            ResponseWithCount rwc = super.searchObjects(this.getSqlFromAppendObjectStores(Arrays.asList(BUYER_STORE)), searchObject, skip, top);
             ResultSet rs = rwc.getResultSet();
             while (rs.next()) {
                 WorkOrder workOrder = (WorkOrder) this.getObjectStore().getObjectFromResultSet(rs);
@@ -121,6 +123,28 @@ public class WorkOrderBuilder extends BaseBuilder {
                 objects.add(workOrder);
             }
             return new ArrayResponse(objects, rwc.getCount());
+        } catch (SQLException ex) {
+            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+        }
+    }
+
+    public List<WorkOrder> getAllUnsettledWorkOrder(String buyerOID) throws SException {
+        try {
+            List<WorkOrder> objects = new ArrayList<>();
+            String from = this.getSqlFromObjectStores(Arrays.asList(WORK_ORDER_ITEM_STORE, this.getObjectStore()));
+            String where = this.getObjectStore().getTableName() + "_buyer_buyer_id=" + BaseModel.getIdFromOid(buyerOID) + " AND " + WORK_ORDER_ITEM_STORE.getTableName() + "_settled=" + false;
+            ResultSet rs = this.getObjectStore().getAllObjectsFromDatabase(from, where);
+            while (rs.next()) {
+                WorkOrder workOrder = (WorkOrder) this.getObjectStore().getObjectFromResultSet(rs);
+                Optional<WorkOrder> alreadyExists = objects.stream().filter(o -> o.getOid().equals(workOrder.getOid())).findFirst();
+                WorkOrderItem workOrderItem = (WorkOrderItem) WORK_ORDER_ITEM_STORE.getObjectFromResultSet(rs);
+                if (alreadyExists.isPresent()) {
+                    alreadyExists.get().getWorkOrderItems().add(workOrderItem);
+                } else {
+                    objects.add(workOrder);
+                }
+            }
+            return objects;
         } catch (SQLException ex) {
             throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
         }

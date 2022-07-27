@@ -75,7 +75,7 @@ public class CityBuilder extends BaseBuilder {
     public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
         try {
             List<BaseModel> objects = new ArrayList<>();
-            ResponseWithCount rwc = super.searchObjects(this.getJoinObjectStoresForSqlFrom(Arrays.asList(COUNTRY_STORE)), searchObject, skip, top);
+            ResponseWithCount rwc = super.searchObjects(this.getSqlFromAppendObjectStores(Arrays.asList(COUNTRY_STORE)), searchObject, skip, top);
             ResultSet rs = rwc.getResultSet();
             while (rs.next()) {
                 City city = (City) this.getObjectStore().getObjectFromResultSet(rs);

@@ -13,7 +13,7 @@ public interface IObjectBuilder {
     public void setObjectStore();
 
     public void setColumnsForSearch();
-    
+
     public BaseModel createNewObject(BaseModel object) throws SException;
 
     public BaseModel modifyObject(String oid, BaseModel object) throws SException;
@@ -24,7 +24,9 @@ public interface IObjectBuilder {
 
     public ArrayResponse<? extends BaseModel> searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException;
 
-    public String getJoinObjectStoresForSqlFrom(List<ObjectStore> stores);
+    public String getSqlFromAppendObjectStores(List<ObjectStore> stores);
+    
+    public String getSqlFromObjectStores(List<ObjectStore> stores);
 
     public ArrayResponse getArrayResponseFromResponseWithCount(ResponseWithCount rwc) throws SException;
 
