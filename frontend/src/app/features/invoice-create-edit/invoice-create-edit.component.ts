@@ -368,7 +368,10 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
 
   private addWorkOrderToComment(workOrder: WorkOrderModel): void {
     const commentControl = this.formGroup.get('comment');
-    if (commentControl?.value.length) {
+    if (
+      commentControl?.value.length &&
+      !commentControl?.value.includes(getWorkOrderNumber(workOrder))
+    ) {
       commentControl.setValue(
         commentControl.value + ', ' + getWorkOrderNumber(workOrder)
       );
@@ -403,12 +406,14 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   }
 
   importWorkOrderItems(index: number): void {
+    // TODO
     this.workOrderItemSelectionComponentService
       .openDialog(
         this.selectedBuyer?.oid || '',
         this.getAllImportedWorkOrderItemOIDS()
       )
       .subscribe((wos: WorkOrderModel[] | undefined) => {
+        console.log(wos);
         if (wos) {
           // grupisi po jm i kreiraj ako treba nove invoice itemse
           const invoiceItems: InvoiceItemModel[] = [];

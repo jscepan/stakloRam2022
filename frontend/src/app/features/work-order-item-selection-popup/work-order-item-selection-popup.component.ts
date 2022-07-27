@@ -26,19 +26,13 @@ export interface DialogData {
 }
 
 export interface WorkOrderSelection {
-  oid: string;
-  number: string;
-  date: Date;
   isExpanded: boolean;
+  object: WorkOrderModel;
   workOrderItems: WorkOrderItemSelection[];
 }
 export interface WorkOrderItemSelection {
-  oid: string;
   selected: boolean;
-  description: string;
-  uom: string;
-  sumQuantity: number;
-  note: string;
+  object: WorkOrderItemModel;
 }
 @Component({
   selector: 'app-work-order-item-selection-popup',
@@ -87,9 +81,8 @@ export class WorkOrderItemSelectionPopupComponent
       this.items = workOrders.map((wo) => {
         return {
           oid: wo.oid,
-          number: getWorkOrderNumber(wo),
-          date: wo.dateOfCreate,
           isExpanded: false,
+          object: wo,
           workOrderItems: [],
         };
       });
@@ -102,7 +95,7 @@ export class WorkOrderItemSelectionPopupComponent
 
   toggleExpandWorkOrder(workOrderOID: string): void {
     const selectedIndex = this.items.findIndex(
-      (item) => item.oid === workOrderOID
+      (item) => item.object.oid === workOrderOID
     );
     if (!this.items[selectedIndex].isExpanded) {
       this.webService.getEntityByOid(workOrderOID).subscribe((workOrder) => {
@@ -113,11 +106,7 @@ export class WorkOrderItemSelectionPopupComponent
           .map((item) => {
             return {
               selected: false,
-              oid: item.oid,
-              description: item.description,
-              note: item.note,
-              sumQuantity: item.sumQuantity,
-              uom: item.uom,
+              object: item,
             };
           });
       });
@@ -138,18 +127,29 @@ export class WorkOrderItemSelectionPopupComponent
     this.items.forEach((item) => {
       item.workOrderItems.forEach((woi) => {
         if (woi.selected) {
-          this.selection.push(woi.oid);
+          this.selection.push(woi.object.oid);
         }
       });
     });
   }
 
   public saveSelection(): void {
-    const selected:WorkOrderModel[]=[];
-    this.entities?.subscribe((items) => {
-
-      this.dialogRef.close(selected);
+    const selected: WorkOrderModel[] = [];
+    this.items.forEach((wo) => {
+      let selectedWO: WorkOrderModel | undefined;
+      wo.workOrderItems.forEach((woi) => {
+        if (woi.selected) {
+          if (!selectedWO) {
+            selectedWO = wo.object;
+          }
+          selectedWO.workOrderItems.push(woi.object);
+        }
+      });
+      if (selectedWO) {
+        selected.push(selectedWO);
+      }
     });
+    this.dialogRef.close(selected);
   }
 
   public cancelSaveSelection(): void {

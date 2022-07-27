@@ -10,12 +10,12 @@
           <i-feather
             [name]="'plus'"
             *ngIf="!item.isExpanded"
-            (click)="toggleExpandWorkOrder(item.oid)"
+            (click)="toggleExpandWorkOrder(item.object.oid)"
           ></i-feather>
           <i-feather
             [name]="'minus'"
             *ngIf="item.isExpanded"
-            (click)="toggleExpandWorkOrder(item.oid)"
+            (click)="toggleExpandWorkOrder(item.object.oid)"
           ></i-feather>
         </div>
         <div class="description">
@@ -24,11 +24,11 @@
               " " +
               ("nr" | translate) +
               " " +
-              item.number +
+              item.object.number +
               ", " +
               ("date" | translate) +
               ": " +
-              (item.date | date: "dd.MM.yyyy")
+              (item.object.dateOfCreate | date: "dd.MM.yyyy")
           }}
         </div>
       </div>
@@ -47,9 +47,9 @@
             (change)="updateSelection()"
             *ngFor="let workOrderItem of item.workOrderItems"
           >
-            {{ workOrderItem.description }}
-            {{ "pieces" | translate }}: {{ workOrderItem.sumQuantity }}
-            {{ getUOMDisplayValue(workOrderItem.uom) | translate }}
+            {{ workOrderItem.object.description }}
+            {{ "pieces" | translate }}: {{ workOrderItem.object.sumQuantity }}
+            {{ getUOMDisplayValue(workOrderItem.object.uom) | translate }}
           </mat-checkbox>
         </div>
       </div>
