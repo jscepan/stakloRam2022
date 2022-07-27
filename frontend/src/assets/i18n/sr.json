@@ -1,4 +1,9 @@
 {
+  "saveAndCreateInvoice": "Upamti i kreiraj fakturu",
+  "field": "Polje",
+  "value": "Vrednost",
+  "addNote": "Dodaj napomenu",
+  "invoiceForeignNote": "Strana faktura opis",
   "selectDeselectAll": "Označi/očisti sve",
   "nr": "Br.",
   "attachmentWorkOrderNumber": "Prilog radni nalog broj",

@@ -86,6 +86,12 @@
       </mat-label>
       <input type="text" matInput formControlName="invoiceComplaints" />
     </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "invoiceForeignNote" | translate }}
+      </mat-label>
+      <input type="text" matInput formControlName="invoiceForeignNote" />
+    </mat-form-field>
     <h1>{{ "workOrder" | translate }}</h1>
     <mat-form-field>
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">

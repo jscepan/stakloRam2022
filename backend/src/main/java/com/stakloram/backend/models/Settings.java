@@ -1,6 +1,8 @@
 package com.stakloram.backend.models;
 
 // These are settings for FRONTEND application
+import java.util.Map;
+
 public class Settings {
 
     private String companyEmail;
@@ -18,6 +20,8 @@ public class Settings {
     private String invoiceCompanyDescription;
     private String invoiceBankAccounts;
     private String invoiceComplaints;
+    private String invoiceForeignNote;
+    private Map<String, String> invoiceForeignNotes;
 
     private String qrCodeIdentCode;
     private String qrCodeVersion;
@@ -278,5 +282,21 @@ public class Settings {
 
     public void setInvoiceComplaints(String invoiceComplaints) {
         this.invoiceComplaints = invoiceComplaints;
+    }
+
+    public String getInvoiceForeignNote() {
+        return invoiceForeignNote;
+    }
+
+    public void setInvoiceForeignNote(String invoiceForeignNote) {
+        this.invoiceForeignNote = invoiceForeignNote;
+    }
+
+    public Map<String, String> getInvoiceForeignNotes() {
+        return invoiceForeignNotes;
+    }
+
+    public void setInvoiceForeignNotes(Map<String, String> invoiceForeignNotes) {
+        this.invoiceForeignNotes = invoiceForeignNotes;
     }
 }

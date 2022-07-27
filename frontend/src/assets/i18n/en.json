@@ -1,4 +1,9 @@
 {
+  "saveAndCreateInvoice": "Save & create invoice",
+  "field": "Field",
+  "value": "Value",
+  "addNote": "Add note",
+  "invoiceForeignNote": "Foreign invoice note",
   "selectDeselectAll": "Select/deselect all",
   "nr": "Nr.",
   "attachmentWorkOrderNumber": "Attachment work order number",

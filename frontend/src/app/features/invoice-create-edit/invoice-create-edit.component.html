@@ -488,12 +488,12 @@
         >
           {{ "comment" | translate }}
         </mat-label>
-        <input
-          type="text"
+        <textarea
           matInput
           formControlName="comment"
           (keypress)="onKeypress($event, 'comment')"
-        />
+          rows="3"
+        ></textarea>
       </mat-form-field>
 
       <div class="row">
@@ -558,8 +558,36 @@
           />
         </mat-form-field>
       </div>
+      <div class="notes" *ngIf="notesFormArr.controls" formArrayName="notes">
+        <div
+          class="row"
+          *ngFor="let note of notesFormArr.controls; let i = index"
+        >
+          <div [formGroupName]="i" class="form-group">
+            <mat-form-field>
+              <mat-label>{{ "field" | translate }}</mat-label>
+              <input type="text" matInput formControlName="name" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>{{ "value" | translate }}</mat-label>
+              <input type="text" matInput formControlName="description" />
+            </mat-form-field>
+          </div>
+          <app-button
+            [iconName]="'minus'"
+            (clickEvent)="removeNote(i)"
+            [isTransparentMode]="true"
+            class="additional-button"
+          ></app-button>
+        </div>
+        <app-button
+          [text]="'addNote' | translate"
+          (clickEvent)="addNote()"
+        ></app-button>
+      </div>
     </form>
   </div>
+
   <div class="button-section" *ngIf="formGroup">
     <app-button
       [text]="'cancel' | translate"

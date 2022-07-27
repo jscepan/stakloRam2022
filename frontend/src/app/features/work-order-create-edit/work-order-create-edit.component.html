@@ -351,18 +351,28 @@
       </div>
     </form>
     <div class="button-section" *ngIf="formGroup">
-      <app-button
-        [text]="'cancel' | translate"
-        color="secondary"
-        (clickEvent)="cancel()"
-        class="cancel"
-      ></app-button>
-      <app-button
-        [text]="'save' | translate"
-        [disabled]="!formGroup.dirty || formGroup.invalid"
-        class="update"
-        (clickEvent)="handleSubmitButton()"
-      ></app-button>
+      <div class="container">
+        <app-button
+          [text]="'cancel' | translate"
+          color="secondary"
+          (clickEvent)="cancel()"
+          class="cancel"
+        ></app-button>
+      </div>
+      <div class="container">
+        <app-button
+          [text]="'save' | translate"
+          [disabled]="!formGroup.dirty || formGroup.invalid"
+          class="update"
+          (clickEvent)="handleSubmitButton()"
+        ></app-button>
+        <app-button
+          [text]="'saveAndCreateInvoice' | translate"
+          [disabled]="!formGroup.dirty || formGroup.invalid"
+          class="update"
+          (clickEvent)="handleSubmitButton(true)"
+        ></app-button>
+      </div>
     </div>
   </div>
 </div>

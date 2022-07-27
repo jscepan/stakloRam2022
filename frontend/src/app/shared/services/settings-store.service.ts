@@ -19,6 +19,8 @@ export class AppSettings {
   invoiceCompanyDescription?: string;
   invoiceBankAccounts?: string;
   invoiceComplaints?: string;
+  invoiceForeignNote?: string;
+  invoiceForeignNotes?: { [key: string]: string }[];
 
   qrCodeIdentCode?: string;
   qrCodeVersion?: string;

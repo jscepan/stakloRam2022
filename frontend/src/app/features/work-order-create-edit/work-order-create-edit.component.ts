@@ -373,7 +373,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     this.router.navigate(['/']);
   }
 
-  handleSubmitButton(): void {
+  handleSubmitButton(createInvoice: boolean = false): void {
     // this.setAllInvoiceAmounts();
     if (this.isEdit && this.workOrderOID) {
       this.webService
@@ -398,7 +398,11 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
               this.translateService.instant('newWorkOrderIsSuccessfullyCreated')
             );
             window.open('print/work-order-view/' + workOrder.oid);
-            this.router.navigate(['work-orders', 'edit', workOrder.oid]);
+            if (createInvoice) {
+              this.router.navigate(['invoices', 'create', workOrder.oid]);
+            } else {
+              location.reload();
+            }
           }
         });
     }

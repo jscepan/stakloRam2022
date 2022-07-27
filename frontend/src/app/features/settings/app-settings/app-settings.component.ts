@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
@@ -91,6 +91,11 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
             this.settingsStoreService.getSettings()?.invoiceComplaints || '',
             [Validators.required]
           ),
+          invoiceForeignNote: new FormControl(
+            this.settingsStoreService.getSettings()?.invoiceForeignNote || '',
+            [Validators.required]
+          ),
+          invoiceForeignNotes: new FormArray([]),
           qrCodeIdentCode: new FormControl(
             this.settingsStoreService.getSettings()?.qrCodeIdentCode || '',
             [Validators.required]

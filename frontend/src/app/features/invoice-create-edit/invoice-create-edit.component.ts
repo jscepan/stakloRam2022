@@ -43,6 +43,7 @@ import { WorkOrderItemModel } from 'src/app/shared/models/work-order-item';
 import { WorkOrderSelectionComponentService } from '@features/work-order-selection-popup/work-order-selection-component.service';
 import { WorkOrderItemSelectionComponentService } from '@features/work-order-item-selection-popup/work-order-item-selection-component.service';
 import { WorkOrderSelection } from '@features/work-order-item-selection-popup/work-order-item-selection-popup.component';
+import { NoteModel } from 'src/app/shared/models/note.model';
 
 @Component({
   selector: 'app-invoice-create-edit',
@@ -115,7 +116,13 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     ) as FormArray;
   }
 
-  isBuyerSelected?: boolean;
+  get invoiceItemsFormArr(): FormArray {
+    return this.formGroup.get('invoiceItems') as FormArray;
+  }
+
+  get notesFormArr(): FormArray {
+    return this.formGroup.get('notes') as FormArray;
+  }
 
   constructor(
     private router: Router,
@@ -161,19 +168,16 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
                 this.invoice = invoice;
                 this.initializeCreate(true);
               });
-            this.isBuyerSelected = true;
           } else {
             this.initializeCreate();
             if (workOrderOID) {
               this.workOrderWebService
                 .getEntityByOid(workOrderOID)
                 .subscribe((workOrder) => {
+                  this.formGroup.get('buyer')?.setValue(workOrder.buyer);
                   this.selectedBuyer = workOrder.buyer;
                   this.addWorkOrderToNewInvoiceItem([workOrder]);
                 });
-              this.isBuyerSelected = true;
-            } else {
-              this.isBuyerSelected = false;
             }
           }
         }
@@ -259,8 +263,8 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  get invoiceItemsFormArr(): FormArray {
-    return this.formGroup.get('invoiceItems') as FormArray;
+  isBuyerSelected(): boolean {
+    return !!this.formGroup.get('buyer')?.value;
   }
 
   addNewItem(invoiceItem?: InvoiceItemModel): void {
@@ -407,15 +411,12 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   }
 
   importWorkOrderItems(index: number): void {
-    // TODO
     this.workOrderItemSelectionComponentService
       .openDialog(
         this.selectedBuyer?.oid || '',
         this.getAllImportedWorkOrderItemOIDS()
       )
       .subscribe((wos: WorkOrderModel[] | undefined) => {
-        console.log('UVOZIMO: ');
-        console.log(wos);
         if (wos) {
           const invoiceItems: InvoiceItemModel[] = [];
 
@@ -547,6 +548,11 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
 
   invoiceTypeChanged(type: string): void {
     setTimeout(() => {
+      if (type !== 'FOREIGN' && this.notesFormArr.controls.length) {
+        for (let i = 0; i < this.notesFormArr.controls.length; i++) {
+          this.removeNote(i);
+        }
+      }
       switch (type) {
         case 'CASH':
           this.formGroup.addControl(
@@ -562,6 +568,28 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
           break;
         case 'FOREIGN':
           this.formGroup.get('currency')?.setValue('EUR');
+          this.formGroup
+            .get('comment')
+            ?.setValue(this.settings?.invoiceForeignNote);
+          // TODO
+          // this.settings?.invoiceForeignNotes?.forEach((note) => {
+          //   this.addNote({ oid: '', name: note.key, description: note.value });
+          // });
+          // Za sada samo HARD-CODE
+          this.addNote({
+            oid: '',
+            name: 'DEVIZNI RAČUN:',
+            description: '00-710-0000329.2',
+          });
+          this.addNote({
+            oid: '',
+            name: 'IBAN:',
+            description: 'RS35310007100000329270',
+          });
+          this.addNote({ oid: '', name: 'SWIFT:', description: 'CONARS22' });
+          this.addNote({ oid: '', name: 'Broj koleta:', description: '1' });
+          this.addNote({ oid: '', name: 'Bruto kg:', description: '1' });
+          this.addNote({ oid: '', name: 'Neto kg:', description: '1' });
           break;
         default:
           this.formGroup.removeControl('numberOfCashBill');
@@ -876,6 +904,22 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
 
   getFilteredOptions(index: number): Observable<string[]> | undefined {
     return this.filteredOptions[index];
+  }
+
+  addNote(note?: NoteModel): void {
+    this.notesFormArr.push(
+      new FormGroup({
+        oid: new FormControl(note?.oid || ''),
+        name: new FormControl(note?.name || '', [Validators.required]),
+        description: new FormControl(note?.description || '', [
+          Validators.required,
+        ]),
+      })
+    );
+  }
+
+  removeNote(index: number): void {
+    this.notesFormArr.removeAt(index);
   }
 
   ngOnDestroy(): void {

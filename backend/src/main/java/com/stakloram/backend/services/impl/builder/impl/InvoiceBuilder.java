@@ -5,6 +5,7 @@ import com.stakloram.backend.database.objects.BuyerStore;
 import com.stakloram.backend.database.objects.CityStore;
 import com.stakloram.backend.database.objects.InvoiceItemStore;
 import com.stakloram.backend.database.objects.InvoiceStore;
+import com.stakloram.backend.database.objects.NoteStore;
 import com.stakloram.backend.database.objects.WorkOrderItemStore;
 import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.BaseModel;
@@ -14,6 +15,7 @@ import com.stakloram.backend.models.Invoice;
 import com.stakloram.backend.models.InvoiceItem;
 import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.exception.SException;
+import com.stakloram.backend.models.Note;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.WorkOrderItem;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
@@ -33,6 +35,7 @@ public class InvoiceBuilder extends BaseBuilder {
     private final InvoiceItemStore INVOICE_ITEM_STORE = new InvoiceItemStore(this.getLocator());
     private final CityStore CITY_STORE = new CityStore(this.getLocator());
     private final WorkOrderItemStore WORK_ORDER_ITEM_STORE = new WorkOrderItemStore(this.getLocator());
+    private final NoteStore NOTE_STORE = new NoteStore(this.getLocator());
 
     public InvoiceBuilder(Locator locator) {
         super(locator);
@@ -88,18 +91,21 @@ public class InvoiceBuilder extends BaseBuilder {
 
     @Override
     public Invoice createNewObject(BaseModel object) throws SException {
-        Invoice invoice = (Invoice) super.createNewObject(object);
-        for (InvoiceItem invoiceItem : invoice.getInvoiceItems()) {
-            try {
+        try {
+            Invoice invoice = (Invoice) super.createNewObject(object);
+            for (InvoiceItem invoiceItem : invoice.getInvoiceItems()) {
                 InvoiceItem ii = INVOICE_ITEM_STORE.createNewObjectToDatabase(invoiceItem, invoice.getId());
                 for (int i = 0; i < ii.getWorkOrderItems().size(); i++) {
                     WORK_ORDER_ITEM_STORE.setInvoiceItemForWorkOrderItem(ii.getWorkOrderItems().get(i).getOid(), ii.getOid());
                 }
-            } catch (SQLException ex) {
-                throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
             }
+            for (Note note : invoice.getNotes()) {
+                note.setOid(NOTE_STORE.createNewObjectToDatabase(note, invoice.getId()).getOid());
+            }
+            return invoice;
+        } catch (SQLException ex) {
+            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
         }
-        return invoice;
     }
 
     @Override
