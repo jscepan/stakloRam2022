@@ -57,7 +57,7 @@ export class WorkOrderItemSelectionPopupComponent
   entities?: Observable<WorkOrderModel[]> = this.listEntities.entities;
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
 
-  hasSelected: boolean = false;
+  selection: string[] = [];
 
   searchFilter: SearchModel = new SearchModel();
   items: WorkOrderSelection[] = [];
@@ -126,20 +126,32 @@ export class WorkOrderItemSelectionPopupComponent
     }
     this.items[selectedIndex].isExpanded =
       !this.items[selectedIndex].isExpanded;
+    this.updateSelection();
+  }
+
+  updateSelection(): void {
+    this.selection = [];
+    this.items.forEach((item) => {
+      item.workOrderItems.forEach((woi) => {
+        if (woi.selected) {
+          this.selection.push(woi.oid);
+        }
+      });
+    });
   }
 
   public saveSelection(): void {
-    // let selectedItems:WorkOrderItem = [];
-    // this.items.forEach((item)=>{
-    //   item.workOrderItems.filter((item) => item.selected);
-    // })
-    // this.entities?.subscribe((items) => {
-    //   this.dialogRef.close(
-    //     items.filter((woi) =>
-    //       selectedItems.find((item) => item.oid === woi.oid)
-    //     )
-    //   );
-    // });
+    this.entities?.subscribe((items) => {
+      const selected: WorkOrderItemModel[] = [];
+      items.forEach((item) => {
+        item.workOrderItems.forEach((woi) => {
+          if (this.selection.includes(woi.oid)) {
+            selected.push(woi);
+          }
+        });
+      });
+      this.dialogRef.close(selected);
+    });
   }
 
   public cancelSaveSelection(): void {
@@ -159,6 +171,14 @@ export class WorkOrderItemSelectionPopupComponent
     } else {
       workOrderItem.workOrderItems.forEach((t) => (t.selected = false));
     }
+    this.updateSelection();
+  }
+
+  isAllChecked(item: WorkOrderSelection): boolean {
+    return (
+      item.workOrderItems.filter((woi) => woi.selected === true).length ===
+      item.workOrderItems.length
+    );
   }
 
   ngOnDestroy(): void {

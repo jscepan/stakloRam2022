@@ -40,11 +40,13 @@
             color="primary"
             (change)="toggleSelectAll($event, item)"
             *ngIf="item.workOrderItems.length > 1"
+            [checked]="isAllChecked(item)"
             >{{ "selectDeselectAll" | translate }}</mat-checkbox
           >
           <mat-checkbox
             color="primary"
             [(ngModel)]="workOrderItem.selected"
+            (change)="updateSelection()"
             *ngFor="let workOrderItem of item.workOrderItems"
           >
             {{ workOrderItem.description }}
@@ -66,7 +68,7 @@
   <app-button
     [text]="'import' | translate"
     color="primary"
-    [disabled]="!hasSelected"
+    [disabled]="!selection.length"
     (clickEvent)="saveSelection()"
   ></app-button>
 </mat-dialog-actions>

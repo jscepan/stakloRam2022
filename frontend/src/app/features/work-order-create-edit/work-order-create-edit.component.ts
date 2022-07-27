@@ -398,7 +398,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
               this.translateService.instant('newWorkOrderIsSuccessfullyCreated')
             );
             window.open('print/work-order-view/' + workOrder.oid);
-            this.router.navigate(['workOrders', 'edit', workOrder.oid]);
+            this.router.navigate(['work-orders', 'edit', workOrder.oid]);
           }
         });
     }
