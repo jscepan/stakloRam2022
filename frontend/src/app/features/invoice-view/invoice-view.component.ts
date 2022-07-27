@@ -8,7 +8,10 @@ import {
   SettingsStoreService,
 } from 'src/app/shared/services/settings-store.service';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
-import { getDaysBetweenTwoDates } from 'src/app/shared/utils';
+import {
+  getDaysBetweenTwoDates,
+  getUOMDisplayValue,
+} from 'src/app/shared/utils';
 import { InvoiceWebService } from 'src/app/web-services/invoice.web-service';
 
 @Component({
@@ -23,6 +26,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   invoiceOID: string | null = null;
   invoice!: InvoiceModel;
   settings?: AppSettings;
+  getUOMDisplayValue = getUOMDisplayValue;
   // placeholders = {
   //   amount: 'Износ:',
   //   amountRSD: 'Износ (дин)',

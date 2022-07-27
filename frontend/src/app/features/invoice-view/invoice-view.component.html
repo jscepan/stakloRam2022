@@ -127,7 +127,9 @@
       <tr *ngFor="let item of invoice.invoiceItems; let i = index">
         <td class="countNumber center">{{ i + 1 }}</td>
         <td class="description justify">{{ item.description }}</td>
-        <td class="uom center">{{ item.uom }}</td>
+        <td class="uom center">
+          {{ getUOMDisplayValue(item.uom) | translate }}
+        </td>
         <td class="quantity right">
           {{ item.quantity | number: "1.2-2":"fr" }}
         </td>
