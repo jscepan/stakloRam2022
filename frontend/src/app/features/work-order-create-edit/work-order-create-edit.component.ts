@@ -399,7 +399,9 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
             );
             window.open('print/work-order-view/' + workOrder.oid);
             if (createInvoice) {
-              this.router.navigate(['invoices', 'create', workOrder.oid]);
+              this.router.navigate(['invoices', 'create'], {
+                queryParams: { workOrderOID: workOrder.oid },
+              });
             } else {
               location.reload();
             }

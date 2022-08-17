@@ -37,6 +37,9 @@
         {{ "buyerName" | translate }}
       </div>
       <div class="grid-item header">
+        {{ "invoiceType" | translate }}
+      </div>
+      <div class="grid-item header">
         {{ "invoiceNumber" | translate }}
       </div>
       <div class="grid-item header">
@@ -69,6 +72,9 @@
           {{ invoice.buyer.name }}
         </div>
         <div class="grid-item">
+          {{ getTYPEDisplayValue(invoice.type) | translate }}
+        </div>
+        <div class="grid-item">
           {{ invoice.number }}
         </div>
         <div class="grid-item">
@@ -92,6 +98,13 @@
             [isTransparentMode]="true"
             (clickEvent)="createInvoiceFromPreInvoice(invoice)"
             *ngIf="invoice.type === 'PRE_INVOICE'"
+            [matTooltip]="'createInvoice' | translate"
+          ></app-button>
+          <app-button
+            [iconName]="'credit-card'"
+            [isTransparentMode]="true"
+            (clickEvent)="createInvoiceFromAdvanceInvoice(invoice)"
+            *ngIf="invoice.type === 'ADVANCE_INVOICE'"
             [matTooltip]="'createInvoice' | translate"
           ></app-button>
           <app-button

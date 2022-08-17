@@ -16,6 +16,7 @@ import { SearchModel } from 'src/app/shared/models/search.model';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { ListEntities } from 'src/app/shared/services/list-entities';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
+import { getTYPEDisplayValue } from 'src/app/shared/utils';
 import { InvoiceWebService } from 'src/app/web-services/invoice.web-service';
 
 @Component({
@@ -35,6 +36,7 @@ export class InvoicesComponent implements OnInit, OnDestroy {
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
   entities?: Observable<InvoiceModel[]> = this.listEntities.entities;
   typesOptions: EnumValueModel[] = INVOICE_TYPES;
+  getTYPEDisplayValue = getTYPEDisplayValue;
 
   keyword: string = '';
 
@@ -51,6 +53,7 @@ export class InvoicesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subs.sink = this.listEntities
       .setWebService(this.webService)
+      .setOrdering('DESC')
       .requestFirstPage();
   }
 
@@ -112,7 +115,15 @@ export class InvoicesComponent implements OnInit, OnDestroy {
   }
 
   createInvoiceFromPreInvoice(invoice: InvoiceModel): void {
-    // TODO
+    this.router.navigate(['invoices', 'create'], {
+      queryParams: { preInvoiceOID: invoice.oid },
+    });
+  }
+
+  createInvoiceFromAdvanceInvoice(invoice: InvoiceModel): void {
+    this.router.navigate(['invoices', 'create'], {
+      queryParams: { advanceInvoiceOID: invoice.oid },
+    });
   }
 
   viewInvoice(invoiceOID: string): void {

@@ -9,6 +9,7 @@ public class SearchRequest {
     private String criteriaQuick;
     private List< Map<String, List<String>>> attributes = new ArrayList<>();
     private List< Map<String, List<String>>> objectsOIDS = new ArrayList<>();
+    private Ordering ordering = Ordering.ASC;
 
     public SearchRequest() {
     }
@@ -35,5 +36,17 @@ public class SearchRequest {
 
     public void setObjectsOIDS(List<Map<String, List<String>>> objectsOIDS) {
         this.objectsOIDS = objectsOIDS;
+    }
+
+    public Ordering getOrdering() {
+        return ordering;
+    }
+
+    public void setOrdering(Ordering ordering) {
+        this.ordering = ordering;
+    }
+
+    public enum Ordering {
+        ASC, DESC;
     }
 }

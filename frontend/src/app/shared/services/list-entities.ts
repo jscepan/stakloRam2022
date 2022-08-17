@@ -36,6 +36,11 @@ export class ListEntities<T extends BaseModel> {
     return this;
   }
 
+  public setOrdering(orderType: 'ASC' | 'DESC'): ListEntities<T> {
+    this.searchModel.ordering = orderType;
+    return this;
+  }
+
   public setFilter(searchFilter: SearchModel): void {
     this.searchModel = searchFilter;
     this.requestFirstPage();

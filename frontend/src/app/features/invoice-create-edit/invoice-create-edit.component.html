@@ -3,6 +3,14 @@
     <div class="title">
       <h3>
         {{ (isEdit ? "editInvoice" : "createInvoice") | translate }}
+        <span *ngIf="preInvoice">
+          - {{ "madeFromPreinvoiceNr" | translate }}:
+          {{ preInvoice.number }}</span
+        >
+        <span *ngIf="advanceInvoice">
+          - {{ "madeFromAdvanceinvoiceNr" | translate }}:
+          {{ advanceInvoice.number }}</span
+        >
       </h3>
     </div>
     <form [formGroup]="formGroup" *ngIf="formGroup" class="form">
@@ -74,40 +82,6 @@
           (clickEvent)="setInvoiceNumber()"
           class="bottom-padding"
         ></app-button>
-
-        <!-- <div class="import-buttons">
-          <app-button
-            [text]="'importFromAdvanceInvoice' | translate"
-            [isTransparentMode]="true"
-            (clickEvent)="importInvoiceFrom('advanceInvoice')"
-          ></app-button>
-          <app-button
-            [text]="'importFromPreInvoice' | translate"
-            [isTransparentMode]="true"
-            (clickEvent)="importInvoiceFrom('preInvoice')"
-          ></app-button>
-        </div> -->
-        <!--
-        <mat-form-field>
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-          >
-            {{ "importFromAdvanceInvoice" | translate }}
-          </mat-label>
-          <input type="text" matInput formControlName="currency" />
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-          >
-            {{ "importFromPreInvoice" | translate }}
-          </mat-label>
-          <input type="text" matInput formControlName="currency" />
-        </mat-form-field>
-       -->
       </div>
 
       <div class="row">
@@ -250,23 +224,6 @@
           />
         </mat-form-field>
       </div>
-      <!-- <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "isFromAdvanceInvoice" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="isFromAdvanceInvoice" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "advanceInvoiceOid" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="advanceInvoiceOid" />
-    </mat-form-field>
-
-
-
-  -->
-
       <div
         formArrayName="invoiceItems"
         class="invoice-items"

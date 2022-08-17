@@ -81,7 +81,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
             String searchClausule = this.getQuickSearchClausule(this.getQuickSearchWords(searchObject));
             String equalsClausule = this.getEqualsClausule(searchObject);
             String containsClausule = this.getContainsClausule(searchObject);
-            return this.objectStore.searchObjectsFromDatabase(fromClausule, this.generateWhereClausule("", searchClausule, equalsClausule, containsClausule), skip, top);
+            return this.objectStore.searchObjectsFromDatabase(fromClausule, this.generateWhereClausule("", searchClausule, equalsClausule, containsClausule), skip, top, searchObject.getOrdering());
         } catch (SQLException ex) {
             throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
         }
@@ -93,7 +93,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
             String searchClausule = this.getQuickSearchClausule(this.getQuickSearchWords(searchObject));
             String equalsClausule = this.getEqualsClausule(searchObject);
             String containsClausule = this.getContainsClausule(searchObject);
-            ResponseWithCount rwc = this.objectStore.searchObjectsFromDatabase(this.generateWhereClausule("", searchClausule, equalsClausule, containsClausule), skip, top);
+            ResponseWithCount rwc = this.objectStore.searchObjectsFromDatabase(this.generateWhereClausule("", searchClausule, equalsClausule, containsClausule), skip, top, searchObject.getOrdering());
             return this.getArrayResponseFromResponseWithCount(rwc);
         } catch (SQLException ex) {
             throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);

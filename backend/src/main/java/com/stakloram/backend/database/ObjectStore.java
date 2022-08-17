@@ -2,6 +2,8 @@ package com.stakloram.backend.database;
 
 import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.BaseModel;
+import com.stakloram.backend.models.SearchRequest;
+import com.stakloram.backend.models.SearchRequest.Ordering;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -79,13 +81,13 @@ public abstract class ObjectStore implements IObjectStore {
     }
 
     @Override
-    public ResponseWithCount searchObjectsFromDatabase(String whereClausule, Long skip, Long top) throws SQLException {
+    public ResponseWithCount searchObjectsFromDatabase(String whereClausule, Long skip, Long top, Ordering ordering) throws SQLException {
         if (whereClausule != null && whereClausule.trim().length() > 0) {
             whereClausule = " WHERE " + whereClausule;
         }
         long count = 0;
         Statement st = this.conn.createStatement();
-        ResultSet resultSet = st.executeQuery("SELECT * from " + this.getDefaultFromClausule() + whereClausule + " limit " + skip + ", " + top);
+        ResultSet resultSet = st.executeQuery("SELECT * from " + this.getDefaultFromClausule() + " ORDER BY " + this.getTableName() + "." + this.getPrimaryKey() + " " + ordering + " " + whereClausule + " limit " + skip + ", " + top);
         Statement stCount = this.conn.createStatement();
         ResultSet resultSetCount = stCount.executeQuery("SELECT COUNT(*) AS rowcount from " + this.getDefaultFromClausule() + " " + whereClausule);
         resultSetCount.next();
@@ -94,7 +96,7 @@ public abstract class ObjectStore implements IObjectStore {
     }
 
     @Override
-    public ResponseWithCount searchObjectsFromDatabase(String fromClausule, String whereClausule) throws SQLException {
+    public ResponseWithCount searchObjectsFromDatabase(String fromClausule, String whereClausule, Ordering ordering) throws SQLException {
         if (whereClausule != null && whereClausule.trim().length() > 0) {
             whereClausule = " WHERE " + whereClausule;
         }
@@ -103,7 +105,7 @@ public abstract class ObjectStore implements IObjectStore {
         }
         long count = 0;
         Statement st = this.conn.createStatement();
-        ResultSet resultSet = st.executeQuery("SELECT * from " + fromClausule + whereClausule);
+        ResultSet resultSet = st.executeQuery("SELECT * from " + fromClausule + " ORDER BY " + this.getTableName() + "." + this.getPrimaryKey() + " " + ordering + " " + whereClausule);
         Statement stCount = this.conn.createStatement();
         ResultSet resultSetCount = stCount.executeQuery("SELECT COUNT(*) AS rowcount from " + fromClausule + " " + whereClausule);
         resultSetCount.next();
@@ -112,7 +114,7 @@ public abstract class ObjectStore implements IObjectStore {
     }
 
     @Override
-    public ResponseWithCount searchObjectsFromDatabase(String fromClausule, String whereClausule, Long skip, Long top) throws SQLException {
+    public ResponseWithCount searchObjectsFromDatabase(String fromClausule, String whereClausule, Long skip, Long top, Ordering ordering) throws SQLException {
         if (whereClausule != null && whereClausule.trim().length() > 0) {
             whereClausule = " WHERE " + whereClausule;
         }
@@ -121,10 +123,7 @@ public abstract class ObjectStore implements IObjectStore {
         }
         long count = 0;
         Statement st = this.conn.createStatement();
-        System.out.println("++++++++++++++++");
-        System.out.println("SELECT * from " + fromClausule + whereClausule + " limit " + skip + ", " + top);
-        System.out.println("SELECT COUNT(*) AS rowcount from " + fromClausule + " " + whereClausule);
-        ResultSet resultSet = st.executeQuery("SELECT * from " + fromClausule + whereClausule + " limit " + skip + ", " + top);
+        ResultSet resultSet = st.executeQuery("SELECT * from " + fromClausule + " ORDER BY " + this.getTableName() + "." + this.getPrimaryKey() + " " + ordering + " " + whereClausule + " limit " + skip + ", " + top);
         Statement stCount = this.conn.createStatement();
         ResultSet resultSetCount = stCount.executeQuery("SELECT COUNT(*) AS rowcount from " + fromClausule + " " + whereClausule);
         resultSetCount.next();

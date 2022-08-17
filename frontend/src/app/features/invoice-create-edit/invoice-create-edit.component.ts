@@ -25,7 +25,6 @@ import {
 } from 'src/app/shared/services/settings-store.service';
 import {
   compareByValue,
-  getFormatedDate,
   getUOMDisplayValue,
   getWorkOrderNumber,
   roundOnDigits,
@@ -35,7 +34,6 @@ import { ListEntities } from 'src/app/shared/services/list-entities';
 import { Observable } from 'rxjs';
 import { SearchModel } from 'src/app/shared/models/search.model';
 import { BaseModel } from 'src/app/shared/models/base-model';
-import { InvoiceSelectionComponentService } from '@features/invoice-selection-popup/invoice-selection-component.service';
 import { MatSelectChange } from '@angular/material/select';
 import { map, startWith } from 'rxjs/operators';
 import { WorkOrderWebService } from 'src/app/web-services/work-order.web-service';
@@ -43,7 +41,6 @@ import { WorkOrderModel } from 'src/app/shared/models/work-order';
 import { WorkOrderItemModel } from 'src/app/shared/models/work-order-item';
 import { WorkOrderSelectionComponentService } from '@features/work-order-selection-popup/work-order-selection-component.service';
 import { WorkOrderItemSelectionComponentService } from '@features/work-order-item-selection-popup/work-order-item-selection-component.service';
-import { WorkOrderSelection } from '@features/work-order-item-selection-popup/work-order-item-selection-popup.component';
 import { NoteModel } from 'src/app/shared/models/note.model';
 
 @Component({
@@ -55,7 +52,6 @@ import { NoteModel } from 'src/app/shared/models/note.model';
     BuyerCreateEditPopupService,
     BuyerWebService,
     UserWebService,
-    InvoiceSelectionComponentService,
     ListEntities,
     WorkOrderWebService,
     WorkOrderSelectionComponentService,
@@ -67,6 +63,8 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
 
   invoiceOID: string | null = null;
   invoice!: InvoiceModel;
+  preInvoice!: InvoiceModel;
+  advanceInvoice!: InvoiceModel;
   formGroup!: FormGroup;
   isEdit: boolean = false;
   typesOptions: EnumValueModel[] = INVOICE_TYPES;
@@ -135,7 +133,6 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     private buyerCreateEditPopupService: BuyerCreateEditPopupService,
     private settingsStoreService: SettingsStoreService,
     private translateService: TranslateService,
-    private invoiceSelectionComponentService: InvoiceSelectionComponentService,
     private listEntities: ListEntities<BuyerModel>,
     private el: ElementRef,
     private workOrderSelectionComponentService: WorkOrderSelectionComponentService,
@@ -144,7 +141,11 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.invoiceOID = this.route.snapshot.paramMap.get('invoiceOID');
-    const workOrderOID = this.route.snapshot.paramMap.get('workOrderOID');
+    const workOrderOID = this.route.snapshot.queryParamMap.get('workOrderOID');
+    const preInvoiceOID =
+      this.route.snapshot.queryParamMap.get('preInvoiceOID');
+    const advanceInvoiceOID =
+      this.route.snapshot.queryParamMap.get('advanceInvoiceOID');
 
     this.subs.sink = this.webService
       .getAllInvoiceItemDescriptions()
@@ -163,11 +164,25 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
 
           this.isEdit = !!this.invoiceOID;
           if (this.isEdit && this.invoiceOID) {
-            this.webService
+            this.subs.sink = this.webService
               .getEntityByOid(this.invoiceOID)
               .subscribe((invoice) => {
                 this.invoice = invoice;
-                this.initializeCreate(true);
+                if (this.invoice.preInvoiceOid) {
+                  this.subs.sink = this.webService
+                    .getEntityByOid(this.invoice.preInvoiceOid)
+                    .subscribe((inv) => {
+                      this.preInvoice = inv;
+                    });
+                }
+                if (this.invoice.advanceInvoiceOid) {
+                  this.subs.sink = this.webService
+                    .getEntityByOid(this.invoice.advanceInvoiceOid)
+                    .subscribe((inv) => {
+                      this.preInvoice = inv;
+                    });
+                }
+                this.initializeCreate();
               });
           } else {
             this.initializeCreate();
@@ -179,6 +194,10 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
                   this.selectedBuyer = workOrder.buyer;
                   this.addWorkOrderToNewInvoiceItem([workOrder]);
                 });
+            } else if (preInvoiceOID) {
+              this.importInvoiceFrom('preInvoice', preInvoiceOID);
+            } else if (advanceInvoiceOID) {
+              this.importInvoiceFrom('advanceInvoice', advanceInvoiceOID);
             }
           }
         }
@@ -186,8 +205,8 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     );
   }
 
-  initializeCreate(isEdit: boolean = false): void {
-    if (isEdit) this.selectedBuyer = this.invoice.buyer;
+  initializeCreate(): void {
+    if (this.isEdit) this.selectedBuyer = this.invoice.buyer;
 
     this.formGroup = new FormGroup({
       type: new FormControl(this.invoice?.type || this.typesOptions[0].value, [
@@ -242,6 +261,8 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
       buyer: new FormControl(this.selectedBuyer || '', [Validators.required]),
       invoiceItems: new FormArray([]),
       notes: new FormArray([]),
+      preInvoiceOid: new FormControl(this.preInvoice?.oid),
+      advanceInvoiceOid: new FormControl(this.advanceInvoice?.oid),
     });
     if (this.formGroup.get('type')?.value === 'CASH') {
       this.formGroup.addControl(
@@ -251,7 +272,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
         ])
       );
     }
-    if (isEdit) {
+    if (this.isEdit) {
       this.invoice.invoiceItems.forEach((item, index) => this.addNewItem(item));
     } else {
       this.setInvoiceNumber();
@@ -777,51 +798,34 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     invoiceOID: string
   ): void {
     this.webService.getEntityByOid(invoiceOID).subscribe((previousInvoice) => {
-      if (type === 'advanceInvoice') {
-      } else if (type === 'preInvoice') {
-        // Faktura izdata na osnovu predračuna broj 1/2022 izdatog 17/08/2022. godine.
-        this.formGroup.get('comment')?.setValue(
-          this.translateService.instant('invoiceCreatedOnPreInvoice', {
+      type === 'advanceInvoice'
+        ? (this.advanceInvoice = previousInvoice)
+        : (this.preInvoice = previousInvoice);
+      this.selectedBuyer = previousInvoice.buyer;
+      this.initializeCreate();
+      this.formGroup.get('comment')?.setValue(
+        this.translateService.instant(
+          type === 'advanceInvoice'
+            ? 'invoiceCreatedOnAdvanceInvoice'
+            : 'invoiceCreatedOnPreInvoice',
+          {
             invoiceNumber: previousInvoice.number,
             invoiceDate:
-              previousInvoice.dateOfCreate.getDate() +
+              new Date(previousInvoice.dateOfCreate).getDay() +
               '/' +
-              previousInvoice.dateOfCreate.getMonth() +
+              new Date(previousInvoice.dateOfCreate).getMonth() +
               '/' +
-              previousInvoice.dateOfCreate.getFullYear(),
-          })
-        );
-      }
+              new Date(previousInvoice.dateOfCreate).getFullYear(),
+          }
+        )
+      );
+      previousInvoice.invoiceItems.forEach((item, index) => {
+        item.oid = '';
+        item.workOrderItems = [];
+        this.addNewItem(item);
+      });
+      this.formGroup.markAsDirty();
     });
-
-    //   if (type === 'advanceInvoice') {
-    //     this.invoiceSelectionComponentService
-    //       .openDialog('ADVANCE_INVOICE', this.formGroup.get('buyer')?.value.oid)
-    //       .subscribe((invoices: InvoiceModel[]) => {
-    //         // if (tasks?.length) {
-    //         //   tasks.forEach((task) => this.addNewTaskToInvoiceItem(index, task));
-    //         //   let description = '';
-    //         //   tasks.forEach((t, i) =>
-    //         //     i > 0 ? (description += ', ' + t.title) : (description += t.title)
-    //         //   );
-    //         //   this.invoiceItemsFormArr.controls[index]
-    //         //     .get('description')
-    //         //     ?.setValue(
-    //         //       this.invoiceItemsFormArr.controls[index].get('description')
-    //         //         ?.value === ''
-    //         //         ? this.invoiceItemsFormArr.controls[index].get('description')
-    //         //             ?.value + description
-    //         //         : this.invoiceItemsFormArr.controls[index].get('description')
-    //         //             ?.value +
-    //         //             ', ' +
-    //         //             description
-    //         //     );
-    //         // }
-    //       });
-    //     //
-    //   } else {
-    //     //
-    //   }
   }
 
   bottomReachedHandlerBuyers(): void {

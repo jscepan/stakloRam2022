@@ -1,5 +1,9 @@
 {
+  "invoiceType": "Invoice type",
+  "madeFromPreinvoiceNr": "Made from preinvoice number",
+  "madeFromAdvanceinvoiceNr": "Made from advance invoice number",
   "invoiceCreatedOnPreInvoice": "Invoice create on pre-invoice number {{invoiceNumber}} created {{invoiceDate}}",
+  "invoiceCreatedOnAdvanceInvoice": "Invoice create on advance-invoice number {{invoiceNumber}} created {{invoiceDate}}",
   "saveAndCreateInvoice": "Save & create invoice",
   "field": "Field",
   "value": "Value",
