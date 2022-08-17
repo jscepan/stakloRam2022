@@ -11,7 +11,7 @@
         [color]="'primary'"
         (change)="typeChanged($event)"
       >
-        <mat-radio-button value="'all'">{{
+        <mat-radio-button value="'all'" [checked]="true">{{
           "all" | translate
         }}</mat-radio-button>
         <mat-radio-button
