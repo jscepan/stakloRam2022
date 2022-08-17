@@ -1,4 +1,5 @@
 {
+  "invoiceCreatedOnPreInvoice": "Invoice create on pre-invoice number {{invoiceNumber}} created {{invoiceDate}}",
   "saveAndCreateInvoice": "Save & create invoice",
   "field": "Field",
   "value": "Value",

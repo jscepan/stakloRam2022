@@ -1,4 +1,5 @@
 {
+  "invoiceCreatedOnPreInvoice": "Faktura izdata na osnovu predračuna broj {{invoiceNumber}} izdatog {{invoiceDate}} godine",
   "saveAndCreateInvoice": "Upamti i kreiraj fakturu",
   "field": "Polje",
   "value": "Vrednost",

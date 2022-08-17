@@ -25,6 +25,7 @@ import {
 } from 'src/app/shared/services/settings-store.service';
 import {
   compareByValue,
+  getFormatedDate,
   getUOMDisplayValue,
   getWorkOrderNumber,
   roundOnDigits,
@@ -548,8 +549,9 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
 
   invoiceTypeChanged(type: string): void {
     setTimeout(() => {
+      this.formGroup.get('comment')?.setValue('');
       if (type !== 'FOREIGN' && this.notesFormArr.controls.length) {
-        for (let i = 0; i < this.notesFormArr.controls.length; i++) {
+        for (let i = this.notesFormArr.controls.length - 1; i >= 0; i--) {
           this.removeNote(i);
         }
       }
@@ -770,36 +772,57 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     this.listEntities.setFilter(searchFilter);
   }
 
-  // importInvoiceFrom(type: 'advanceInvoice' | 'preInvoice'): void {
-  //   if (type === 'advanceInvoice') {
-  //     this.invoiceSelectionComponentService
-  //       .openDialog('ADVANCE_INVOICE', this.formGroup.get('buyer')?.value.oid)
-  //       .subscribe((invoices: InvoiceModel[]) => {
-  //         // if (tasks?.length) {
-  //         //   tasks.forEach((task) => this.addNewTaskToInvoiceItem(index, task));
-  //         //   let description = '';
-  //         //   tasks.forEach((t, i) =>
-  //         //     i > 0 ? (description += ', ' + t.title) : (description += t.title)
-  //         //   );
-  //         //   this.invoiceItemsFormArr.controls[index]
-  //         //     .get('description')
-  //         //     ?.setValue(
-  //         //       this.invoiceItemsFormArr.controls[index].get('description')
-  //         //         ?.value === ''
-  //         //         ? this.invoiceItemsFormArr.controls[index].get('description')
-  //         //             ?.value + description
-  //         //         : this.invoiceItemsFormArr.controls[index].get('description')
-  //         //             ?.value +
-  //         //             ', ' +
-  //         //             description
-  //         //     );
-  //         // }
-  //       });
-  //     //
-  //   } else {
-  //     //
-  //   }
-  // }
+  importInvoiceFrom(
+    type: 'advanceInvoice' | 'preInvoice',
+    invoiceOID: string
+  ): void {
+    this.webService.getEntityByOid(invoiceOID).subscribe((previousInvoice) => {
+      if (type === 'advanceInvoice') {
+      } else if (type === 'preInvoice') {
+        // Faktura izdata na osnovu predračuna broj 1/2022 izdatog 17/08/2022. godine.
+        this.formGroup.get('comment')?.setValue(
+          this.translateService.instant('invoiceCreatedOnPreInvoice', {
+            invoiceNumber: previousInvoice.number,
+            invoiceDate:
+              previousInvoice.dateOfCreate.getDate() +
+              '/' +
+              previousInvoice.dateOfCreate.getMonth() +
+              '/' +
+              previousInvoice.dateOfCreate.getFullYear(),
+          })
+        );
+      }
+    });
+
+    //   if (type === 'advanceInvoice') {
+    //     this.invoiceSelectionComponentService
+    //       .openDialog('ADVANCE_INVOICE', this.formGroup.get('buyer')?.value.oid)
+    //       .subscribe((invoices: InvoiceModel[]) => {
+    //         // if (tasks?.length) {
+    //         //   tasks.forEach((task) => this.addNewTaskToInvoiceItem(index, task));
+    //         //   let description = '';
+    //         //   tasks.forEach((t, i) =>
+    //         //     i > 0 ? (description += ', ' + t.title) : (description += t.title)
+    //         //   );
+    //         //   this.invoiceItemsFormArr.controls[index]
+    //         //     .get('description')
+    //         //     ?.setValue(
+    //         //       this.invoiceItemsFormArr.controls[index].get('description')
+    //         //         ?.value === ''
+    //         //         ? this.invoiceItemsFormArr.controls[index].get('description')
+    //         //             ?.value + description
+    //         //         : this.invoiceItemsFormArr.controls[index].get('description')
+    //         //             ?.value +
+    //         //             ', ' +
+    //         //             description
+    //         //     );
+    //         // }
+    //       });
+    //     //
+    //   } else {
+    //     //
+    //   }
+  }
 
   bottomReachedHandlerBuyers(): void {
     this.listEntities.requestNextPage();
