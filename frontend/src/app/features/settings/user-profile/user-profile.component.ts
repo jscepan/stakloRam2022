@@ -45,7 +45,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.email,
       ]),
-      language: new FormControl(this.languages[0], [Validators.required]),
+      language: new FormControl(this.user?.language || this.languages[0], [
+        Validators.required,
+      ]),
     });
   }
 

@@ -136,7 +136,7 @@ public class InvoiceBuilder extends BaseBuilder {
                     WORK_ORDER_ITEM_STORE.setInvoiceItemForWorkOrderItem(task.getOid(), inv.getOid());
                 }
                 for (BaseModel task : mapOfDifferencesTasks.get(Helper.Action.FOR_DELETE)) {
-                    WORK_ORDER_ITEM_STORE.removeInvoiceItemForWorkOrderItem(inv.getOid());
+                    WORK_ORDER_ITEM_STORE.removeInvoiceItemForWorkOrderItem(task.getOid());
                 }
             }
             for (BaseModel inv : mapOfDifferences.get(Helper.Action.FOR_DELETE)) {
