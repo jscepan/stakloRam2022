@@ -9,6 +9,7 @@ import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom
 import { ComponentLoadingModule } from 'src/app/shared/directives/component-loader/component-loader.module';
 import { IncomeCreateEditModule } from '@features/income-create-edit/income-create-edit.module';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [InvoicesComponent],
@@ -22,6 +23,7 @@ import { MatRadioModule } from '@angular/material/radio';
     ScrollToBottomModule,
     IncomeCreateEditModule,
     MatRadioModule,
+    MatTooltipModule,
   ],
 })
 export class InvoicesModule {}

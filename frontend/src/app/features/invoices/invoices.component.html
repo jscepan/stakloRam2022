@@ -55,7 +55,7 @@
         {{ "grossAmount" | translate }}
       </div>
       <div class="grid-item header">
-        {{ "createIncome" | translate }}
+        {{ "create" | translate }}
       </div>
       <div class="grid-item header">
         {{ "view" | translate }}
@@ -88,9 +88,18 @@
         </div>
         <div class="grid-item">
           <app-button
+            [iconName]="'credit-card'"
+            [isTransparentMode]="true"
+            (clickEvent)="createInvoiceFromPreInvoice(invoice)"
+            *ngIf="invoice.type === 'PRE_INVOICE'"
+            [matTooltip]="'createInvoice' | translate"
+          ></app-button>
+          <app-button
             [iconName]="'dollar-sign'"
             [isTransparentMode]="true"
             (clickEvent)="createIncome(invoice)"
+            *ngIf="invoice.type === 'DOMESTIC' || invoice.type === 'FOREIGN'"
+            [matTooltip]="'createIncome' | translate"
           ></app-button>
         </div>
         <div class="grid-item">
@@ -98,6 +107,7 @@
             [iconName]="'eye'"
             [isTransparentMode]="true"
             (clickEvent)="viewInvoice(invoice.oid)"
+            [matTooltip]="'viewInvoice' | translate"
           ></app-button>
         </div>
         <div class="grid-item">
@@ -105,6 +115,7 @@
             [iconName]="'edit'"
             [isTransparentMode]="true"
             (clickEvent)="editInvoice(invoice.oid)"
+            [matTooltip]="'editInvoice' | translate"
           ></app-button>
         </div>
         <div class="grid-item">
@@ -112,6 +123,7 @@
             [iconName]="'trash-2'"
             [isTransparentMode]="true"
             (clickEvent)="deleteInvoice(invoice.oid)"
+            [matTooltip]="'deleteInvoice' | translate"
           ></app-button>
         </div>
       </ng-container>

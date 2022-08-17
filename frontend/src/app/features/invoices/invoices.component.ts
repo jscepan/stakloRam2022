@@ -108,13 +108,11 @@ export class InvoicesComponent implements OnInit, OnDestroy {
   createIncome(invoice: InvoiceModel): void {
     this.incomeCreateEditPopupService
       .openDialog(undefined, invoice.buyer, invoice.grossAmount)
-      .subscribe((income) => {
-        console.log('income');
-        console.log(income);
-        // if (income) {
-        //   this.listEntities.requestFirstPage();
-        // }
-      });
+      .subscribe(() => {});
+  }
+
+  createInvoiceFromPreInvoice(invoice: InvoiceModel): void {
+    // TODO
   }
 
   viewInvoice(invoiceOID: string): void {
