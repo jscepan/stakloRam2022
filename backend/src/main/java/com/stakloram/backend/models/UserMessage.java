@@ -14,15 +14,16 @@ public class UserMessage {
         // Locale locale = MTContext.getContext().getLocale();
 
 //        Locale locale = new Locale("en");
-//        LocaleContextHolder.setLocale(new Locale("rs"));
+        LocaleContextHolder.setLocale(new Locale("rs"));
 //        System.out.println("111" + LocaleContextHolder.getLocale());
-//        String str = ResourceBundle.getBundle(RESOURCE, LocaleContextHolder.getLocale()).getString(key);
+        String str = ResourceBundle.getBundle(RESOURCE, LocaleContextHolder.getLocale()).getString(key);
         try {
 
         } catch (Exception e) {
-            String str = ResourceBundle.getBundle(RESOURCE, locale).getString(key);
-            return MessageFormat.format(str, params);
+//            String str = ResourceBundle.getBundle(RESOURCE, locale).getString(key);
+//            return MessageFormat.format(str, params);
+            return "";
         }
-        return key;
+        return str;
     }
 }
