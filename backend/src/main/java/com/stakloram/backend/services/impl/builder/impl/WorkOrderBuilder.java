@@ -12,6 +12,7 @@ import com.stakloram.backend.models.Buyer;
 import com.stakloram.backend.models.City;
 import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.SearchRequest;
+import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.models.WorkOrderItem;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
@@ -27,15 +28,15 @@ import java.util.Optional;
 import java.util.Set;
 
 public class WorkOrderBuilder extends BaseBuilder {
-    
+
     private final WorkOrderItemStore WORK_ORDER_ITEM_STORE = new WorkOrderItemStore(this.getLocator());
     private final BuyerStore BUYER_STORE = new BuyerStore(this.getLocator());
     private final CityStore CITY_STORE = new CityStore(this.getLocator());
-    
+
     public WorkOrderBuilder(Locator locator) {
         super(locator);
     }
-    
+
     @Override
     public BaseModel createNewObject(BaseModel object) throws SException {
         WorkOrder workOrder = (WorkOrder) object;
@@ -44,12 +45,12 @@ public class WorkOrderBuilder extends BaseBuilder {
             try {
                 WORK_ORDER_ITEM_STORE.createNewObjectToDatabase(woi, workOrder.getId());
             } catch (SQLException ex) {
-                throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx");
+                throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
             }
         }
         return workOrder;
     }
-    
+
     @Override
     public BaseModel modifyObject(String oid, BaseModel object) throws SException {
         try {
@@ -71,10 +72,10 @@ public class WorkOrderBuilder extends BaseBuilder {
             }
             return workOrder;
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
-    
+
     @Override
     public BaseModel getObjectByOid(String oid) throws SException {
         WorkOrder workOrder = (WorkOrder) super.getObjectByOid(oid);
@@ -84,7 +85,7 @@ public class WorkOrderBuilder extends BaseBuilder {
             buyer.setCity((City) CITY_STORE.getObjectByOid(buyer.getCity().getOid()));
             workOrder.setBuyer(buyer);
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx");
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
         List<WorkOrderItem> workOrderItems = new ArrayList<>();
         try {
@@ -93,23 +94,23 @@ public class WorkOrderBuilder extends BaseBuilder {
                 workOrderItems.add(WORK_ORDER_ITEM_STORE.getObjectFromResultSet(rs));
             }
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx");
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
         workOrder.setWorkOrderItems(workOrderItems);
         return workOrder;
     }
-    
+
     @Override
     public void setObjectStore() {
         this.objectStore = new WorkOrderStore(this.getLocator());
     }
-    
+
     @Override
     public void setColumnsForSearch() {
         this.databaseColumnsForQuickSearch = Arrays.asList("buyer_name");
         this.databaseColumnsForAdvanceFilter.put("buyer", "work_order_buyer_buyer_id");
     }
-    
+
     @Override
     public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
         try {
@@ -123,10 +124,10 @@ public class WorkOrderBuilder extends BaseBuilder {
             }
             return new ArrayResponse(objects, rwc.getCount());
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
-    
+
     public List<WorkOrder> getAllUnsettledWorkOrder(String buyerOID) throws SException {
         try {
             List<WorkOrder> objects = new ArrayList<>();
@@ -146,18 +147,18 @@ public class WorkOrderBuilder extends BaseBuilder {
             }
             return objects;
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
-    
+
     public long getNextWorkOrderNumber(int year) throws SException {
         try {
             return ((WorkOrderStore) this.getObjectStore()).getLastWorkOrderNumber(year) + 1;
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
-    
+
     public Set<String> getAllWorkOrderItemDescriptions() throws SException {
         Set<String> items = new HashSet<>();
         try {
@@ -166,9 +167,9 @@ public class WorkOrderBuilder extends BaseBuilder {
                 items.add(rs.getString("work_order_item_description"));
             }
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
         return items;
     }
-    
+
 }

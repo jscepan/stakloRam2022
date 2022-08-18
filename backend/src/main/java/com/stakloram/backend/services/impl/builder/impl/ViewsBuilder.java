@@ -12,6 +12,7 @@ import com.stakloram.backend.models.Invoice;
 import com.stakloram.backend.models.Invoice.InvoiceType;
 import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.Outcome;
+import com.stakloram.backend.models.UserMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -76,9 +77,8 @@ public class ViewsBuilder {
             }
             debtors.sort((Comparator.comparing(Debtor::getDebtSum).reversed()));
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
-//        debtors.sort(debt);
         return debtors;
     }
 
@@ -123,9 +123,8 @@ public class ViewsBuilder {
 
             debtor.setDebtSum(debtor.getPositiveSum() - debtor.getNegativeSum());
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
-//        debtors.sort(debt);
         return debtor;
     }
 }

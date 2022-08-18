@@ -5,6 +5,7 @@ import com.stakloram.backend.models.Invoice;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.Income;
 import com.stakloram.backend.models.Invoice.InvoiceType;
+import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.services.ServiceModel;
 import com.stakloram.backend.services.impl.builder.impl.IncomeBuilder;
 import com.stakloram.backend.services.impl.builder.impl.InvoiceBuilder;
@@ -43,7 +44,7 @@ public class InvoiceService extends ServiceModel {
                 }
             }
             this.rollback();
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx");
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         } else {
             return super.createNewObject(object);
         }

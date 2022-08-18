@@ -8,6 +8,7 @@ import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.Role;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.User;
+import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
 import com.stakloram.backend.util.Helper;
 import java.sql.ResultSet;
@@ -54,7 +55,7 @@ public class UserBuilder extends BaseBuilder {
             try {
                 USER_HAS_ROLE_STORE.createNewObjectToDatabase(user.getId(), role.getId());
             } catch (SQLException ex) {
-                throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+                throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
             }
         }
         return user;
@@ -82,7 +83,7 @@ public class UserBuilder extends BaseBuilder {
             }
             return user;
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
@@ -90,7 +91,7 @@ public class UserBuilder extends BaseBuilder {
         try {
             return USER_STORE.changeUserPassword(user.getOid(), newPassword);
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
@@ -98,7 +99,7 @@ public class UserBuilder extends BaseBuilder {
         try {
             return USER_STORE.changeUserPassword(userOid, newPassword);
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
@@ -115,10 +116,10 @@ public class UserBuilder extends BaseBuilder {
                 user.setRoles(roles);
                 return user;
             } else {
-                throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx");
+                throw new SException(UserMessage.getLocalizedMessage("objectNotFound"));
             }
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
@@ -135,10 +136,10 @@ public class UserBuilder extends BaseBuilder {
                 user.setRoles(roles);
                 return user;
             } else {
-                throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx");
+                throw new SException(UserMessage.getLocalizedMessage("objectNotFound"));
             }
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
@@ -151,7 +152,7 @@ public class UserBuilder extends BaseBuilder {
             }
             return roles;
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 }

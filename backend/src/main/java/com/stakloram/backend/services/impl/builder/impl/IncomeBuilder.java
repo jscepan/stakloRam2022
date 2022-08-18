@@ -9,6 +9,7 @@ import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.SearchRequest;
+import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,9 +47,9 @@ public class IncomeBuilder extends BaseBuilder {
                 income.setBuyer(BUYER_STORE.getObjectFromResultSet(rs));
                 return income;
             }
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx");
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
@@ -70,7 +71,7 @@ public class IncomeBuilder extends BaseBuilder {
             }
             return new ArrayResponse(objects, rwc.getCount());
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 }

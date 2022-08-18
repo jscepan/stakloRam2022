@@ -37,7 +37,7 @@ public abstract class ServiceModel implements IService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             if (authentication.getName() == null) {
-                throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx");
+                throw new SException(UserMessage.getLocalizedMessage("wrongUsername"));
             }
             this.currentUser = (new UserBuilder(this.locator)).getUserByUsername(authentication.getName());
         }
@@ -72,7 +72,7 @@ public abstract class ServiceModel implements IService {
             return baseModel;
         }
         this.rollback();
-        throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx");
+        throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
     }
 
     @Override
@@ -86,9 +86,9 @@ public abstract class ServiceModel implements IService {
                 return baseModel;
             }
             this.rollback();
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx");
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         } catch (SException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 

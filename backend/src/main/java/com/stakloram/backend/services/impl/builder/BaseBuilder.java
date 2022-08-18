@@ -8,6 +8,7 @@ import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.SearchRequest;
+import com.stakloram.backend.models.UserMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
         try {
             return this.objectStore.createNewObjectToDatabase(object);
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
@@ -54,7 +55,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
             baseModel.setOid(oid);
             return baseModel;
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
@@ -63,7 +64,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
         try {
             return this.objectStore.deleteObjectByOid(oid);
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
@@ -72,7 +73,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
         try {
             return this.objectStore.getObjectByOid(oid);
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
@@ -83,7 +84,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
             String containsClausule = this.getContainsClausule(searchObject);
             return this.objectStore.searchObjectsFromDatabase(fromClausule, this.generateWhereClausule("", searchClausule, equalsClausule, containsClausule), skip, top, searchObject.getOrdering());
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
@@ -96,7 +97,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
             ResponseWithCount rwc = this.objectStore.searchObjectsFromDatabase(this.generateWhereClausule("", searchClausule, equalsClausule, containsClausule), skip, top, searchObject.getOrdering());
             return this.getArrayResponseFromResponseWithCount(rwc);
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
@@ -168,7 +169,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
                 objects.add(this.objectStore.getObjectFromResultSet(rs));
             }
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
         return new ArrayResponse(objects, rwc.getCount());
     }

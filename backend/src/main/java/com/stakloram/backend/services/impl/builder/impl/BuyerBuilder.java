@@ -7,6 +7,7 @@ import com.stakloram.backend.models.Buyer;
 import com.stakloram.backend.models.City;
 import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.exception.SException;
+import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -36,7 +37,7 @@ public class BuyerBuilder extends BaseBuilder {
             buyer.setCity((City) CITY_STORE.getObjectByOid(buyer.getCity().getOid()));
             return buyer;
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx");
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 

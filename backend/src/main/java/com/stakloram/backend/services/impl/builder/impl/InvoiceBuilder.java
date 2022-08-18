@@ -17,6 +17,7 @@ import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.Note;
 import com.stakloram.backend.models.SearchRequest;
+import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.models.WorkOrderItem;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
 import com.stakloram.backend.util.Helper;
@@ -81,11 +82,10 @@ public class InvoiceBuilder extends BaseBuilder {
                 invoice.setInvoiceItems(invoiceItems);
                 return invoice;
             } else {
-                throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx");
-
+                throw new SException(UserMessage.getLocalizedMessage("objectNotFound"));
             }
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
@@ -104,7 +104,7 @@ public class InvoiceBuilder extends BaseBuilder {
             }
             return invoice;
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
@@ -145,7 +145,7 @@ public class InvoiceBuilder extends BaseBuilder {
             }
             return invoice;
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
@@ -162,7 +162,7 @@ public class InvoiceBuilder extends BaseBuilder {
             }
             return new ArrayResponse(objects, rwc.getCount());
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
@@ -176,7 +176,7 @@ public class InvoiceBuilder extends BaseBuilder {
                 }
                 INVOICE_ITEM_STORE.deleteObjectByOid(item.getOid());
             } catch (SQLException ex) {
-                throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+                throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
             }
         }
 
@@ -187,7 +187,7 @@ public class InvoiceBuilder extends BaseBuilder {
         try {
             return ((InvoiceStore) this.getObjectStore()).getLastInvoiceNumber(invoiceType, year) + 1;
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
@@ -199,7 +199,7 @@ public class InvoiceBuilder extends BaseBuilder {
                 items.add(rs.getString("invoice_item_description"));
             }
         } catch (SQLException ex) {
-            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx", ex);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
         return items;
     }

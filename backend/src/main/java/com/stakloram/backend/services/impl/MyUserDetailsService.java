@@ -5,6 +5,7 @@ import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.MyUserDetails;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.User;
+import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.services.impl.builder.impl.UserBuilder;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,7 +30,7 @@ public class MyUserDetailsService implements UserDetailsService {
             });
             return new MyUserDetails(user.getUsername(), user.getPassword(), user.isEnabled(), authorities);
         } catch (SException ex) {
-            throw new UsernameNotFoundException("xxxxxxxEXCEPTIONxxxxxxxxx" , ex);
+            throw new UsernameNotFoundException(UserMessage.getLocalizedMessage("wrongUsername"));
         }
     }
 
@@ -39,7 +40,7 @@ public class MyUserDetailsService implements UserDetailsService {
         if (user != null) {
             return userBuilder.changeUserPassword(user, newPassword);
         }
-        throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx");
+        throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
     }
 //
 //    public boolean changeUserPassword(User user, String newPassword) throws SException {
