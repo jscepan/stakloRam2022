@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { DebtorModel } from 'src/app/shared/models/debtor.model';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
+import { getTYPEDisplayValue } from 'src/app/shared/utils';
 import { CountryWebService } from 'src/app/web-services/country.web-service';
 import { ViewsWebService } from 'src/app/web-services/views.web-service';
 import { DebtView } from './debt-view.interface';
@@ -67,7 +68,9 @@ export class DebtViewComponent implements OnInit, OnDestroy {
         this.debtView.transactions.push({
           date: invoice.dateOfCreate,
           description:
-            this.translateService.instant('invoice') + ': ' + invoice.number,
+            this.translateService.instant(getTYPEDisplayValue(invoice.type)) +
+            ': ' +
+            invoice.number,
           owed: invoice.grossAmount,
           debt: 0,
           state: 0,
@@ -86,7 +89,12 @@ export class DebtViewComponent implements OnInit, OnDestroy {
       ) {
         this.debtView.transactions.push({
           date: income.date,
-          description: this.translateService.instant('income'),
+          description:
+            this.translateService.instant('income') +
+            (income.comment ? ', ' + income.comment : '') +
+            (income.bankStatementNumber
+              ? ', Izvod: ' + income.bankStatementNumber
+              : ''),
           debt: income.amount,
           owed: 0,
           state: 0,
