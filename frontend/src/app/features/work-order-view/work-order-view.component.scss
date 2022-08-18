@@ -75,6 +75,7 @@
       tr {
         border: 1px solid var(--color-black);
         background-color: var(--color-white);
+        -webkit-print-color-adjust: exact;
 
         th {
           font-weight: 600;
@@ -88,6 +89,7 @@
       }
       tr:nth-child(even) {
         background-color: var(--color-main-lighter);
+        -webkit-print-color-adjust: exact;
       }
     }
 
