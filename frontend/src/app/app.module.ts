@@ -10,8 +10,8 @@ import { CoreModule } from './core/core.module';
 import { MatMenuModule } from '@angular/material/menu';
 import { SettingsStoreService } from './shared/services/settings-store.service';
 import { registerLocaleData } from '@angular/common';
-import localeFr from '@angular/common/locales/fr';
-registerLocaleData(localeFr);
+import localeDe from '@angular/common/locales/de';
+registerLocaleData(localeDe);
 
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -39,7 +39,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   providers: [
     LanguageService,
     SettingsStoreService,
-    { provide: LOCALE_ID, useValue: 'fr-FR' },
+    { provide: LOCALE_ID, useValue: 'de-DE' },
   ],
   bootstrap: [AppComponent],
 })

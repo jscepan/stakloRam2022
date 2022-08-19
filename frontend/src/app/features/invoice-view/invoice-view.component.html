@@ -131,20 +131,20 @@
           {{ getUOMDisplayValue(item.uom) | translate }}
         </td>
         <td class="quantity right">
-          {{ item.quantity | number: "1.2-2":"fr" }}
+          {{ item.quantity | number: "1.2-2":"de" }}
         </td>
         <td class="unitPrice right">
-          {{ item.pricePerUnit | number: "1.2-2":"fr" }}
+          {{ item.pricePerUnit | number: "1.2-2":"de" }}
         </td>
         <td class="netPrice right">
-          {{ item.netPrice | number: "1.2-2":"fr" }}
+          {{ item.netPrice | number: "1.2-2":"de" }}
         </td>
         <td class="vatRate center">{{ item.vatRate }}%</td>
         <td class="vatAmount right">
-          {{ item.vatAmount | number: "1.2-2":"fr" }}
+          {{ item.vatAmount | number: "1.2-2":"de" }}
         </td>
         <td class="grossPrice right">
-          {{ item.grossPrice | number: "1.2-2":"fr" }}
+          {{ item.grossPrice | number: "1.2-2":"de" }}
         </td>
       </tr>
       <tr>
@@ -152,7 +152,7 @@
           {{ "invoiceNetPriceAllCaps" | translate }}:
         </td>
         <td colspan="2" class="right" style="border-left: none">
-          {{ invoice.netAmount | number: "1.2-2":"fr" }}
+          {{ invoice.netAmount | number: "1.2-2":"de" }}
         </td>
       </tr>
       <tr>
@@ -168,7 +168,7 @@
           {{ "invoiceVatAmountAllCaps" | translate }}:
         </td>
         <td colspan="2" class="right" style="border: none">
-          {{ invoice.vatAmount | number: "1.2-2":"fr" }}
+          {{ invoice.vatAmount | number: "1.2-2":"de" }}
         </td>
       </tr>
       <tr>
@@ -195,7 +195,7 @@
             border-top-style: double;
           "
         >
-          {{ invoice.grossAmount | number: "1.2-2":"fr" }}
+          {{ invoice.grossAmount | number: "1.2-2":"de" }}
         </td>
       </tr>
       <ng-container *ngIf="invoice.advanceInvoiceOid">
@@ -203,18 +203,18 @@
           <td colspan="7" class="bold right" style="border: none">
             {{ "advancePayment" | translate }}:
           </td>
-          <td colspan="2" class="right" style="border-left: none">
-            {{ invoice.advancePayAmount | number: "1.2-2":"fr" }}
+          <td colspan="2" class="bold right" style="border-left: none">
+            {{ invoice.advancePayAmount | number: "1.2-2":"de" }}
           </td>
         </tr>
         <tr>
           <td colspan="7" class="bold right" style="border: none">
             {{ "forPay" | translate }}:
           </td>
-          <td colspan="2" class="right" style="border-left: none">
+          <td colspan="2" class="bold right" style="border-left: none">
             {{
               invoice.grossAmount - invoice.advancePayAmount
-                | number: "1.2-2":"fr"
+                | number: "1.2-2":"de"
             }}
           </td>
         </tr>

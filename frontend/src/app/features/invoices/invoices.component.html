@@ -84,13 +84,13 @@
           {{ invoice.dateOfMaturity | date: "dd.MM.yyyy" }}
         </div>
         <div class="grid-item align-right">
-          {{ invoice.netAmount | number: "1.2-2":"fr" }}
+          {{ invoice.netAmount | number: "1.2-2":"de" }}
         </div>
         <div class="grid-item align-right">
-          {{ invoice.vatAmount | number: "1.2-2":"fr" }}
+          {{ invoice.vatAmount | number: "1.2-2":"de" }}
         </div>
         <div class="grid-item align-right">
-          {{ invoice.grossAmount | number: "1.2-2":"fr" }}
+          {{ invoice.grossAmount | number: "1.2-2":"de" }}
         </div>
         <div class="grid-item">
           <app-button
