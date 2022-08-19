@@ -149,7 +149,7 @@
       </tr>
       <tr>
         <td colspan="7" class="right" style="border: none">
-          {{ "invoiceNetPriceAllCaps" | translate }}
+          {{ "invoiceNetPriceAllCaps" | translate }}:
         </td>
         <td colspan="2" class="right" style="border-left: none">
           {{ invoice.netAmount | number: "1.2-2":"fr" }}
@@ -157,7 +157,7 @@
       </tr>
       <tr>
         <td colspan="7" class="right" style="border: none">
-          {{ "invoiceVatRateAllCaps" | translate }}
+          {{ "invoiceVatRateAllCaps" | translate }}:
         </td>
         <td colspan="2" class="right" style="border-left: none">
           {{ invoice.vatRate }}%
@@ -165,7 +165,7 @@
       </tr>
       <tr>
         <td colspan="7" class="right" style="border: none">
-          {{ "invoiceVatAmountAllCaps" | translate }}
+          {{ "invoiceVatAmountAllCaps" | translate }}:
         </td>
         <td colspan="2" class="right" style="border: none">
           {{ invoice.vatAmount | number: "1.2-2":"fr" }}
@@ -180,6 +180,7 @@
             border-right: none;
             border-top: 3px double;
             border-top-style: double;
+            border-bottom: none;
           "
           class="bold right"
         >
@@ -197,6 +198,27 @@
           {{ invoice.grossAmount | number: "1.2-2":"fr" }}
         </td>
       </tr>
+      <ng-container *ngIf="invoice.advanceInvoiceOid">
+        <tr>
+          <td colspan="7" class="bold right" style="border: none">
+            {{ "advancePayment" | translate }}:
+          </td>
+          <td colspan="2" class="right" style="border-left: none">
+            {{ invoice.advancePayAmount | number: "1.2-2":"fr" }}
+          </td>
+        </tr>
+        <tr>
+          <td colspan="7" class="bold right" style="border: none">
+            {{ "forPay" | translate }}:
+          </td>
+          <td colspan="2" class="right" style="border-left: none">
+            {{
+              invoice.grossAmount - invoice.advancePayAmount
+                | number: "1.2-2":"fr"
+            }}
+          </td>
+        </tr>
+      </ng-container>
     </table>
     <div class="complaints">
       {{

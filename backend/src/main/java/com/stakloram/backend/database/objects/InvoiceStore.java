@@ -28,7 +28,7 @@ public class InvoiceStore extends ObjectStore {
     public Invoice createNewObjectToDatabase(BaseModel model) throws SQLException {
         Invoice object = (Invoice) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getType().name());
         st.setInt(++i, this.getInvoiceNumberForInvoice(object));
         st.setString(++i, object.getNumber());
@@ -50,6 +50,7 @@ public class InvoiceStore extends ObjectStore {
         } else {
             st.setLong(++i, BaseModel.getIdFromOid(object.getAdvanceInvoiceOid()));
         }
+        st.setDouble(++i, object.getAdvancePayAmount());
         if (BaseModel.getIdFromOid(object.getPreInvoiceOid()) == null) {
             st.setNull(++i, Types.INTEGER);
         } else {
@@ -67,6 +68,8 @@ public class InvoiceStore extends ObjectStore {
 
     @Override
     public Invoice modifyObject(String oid, BaseModel model) throws SQLException {
+        System.out.println("oid: " + oid);
+        System.out.println(model);
         Invoice object = (Invoice) model;
         object.setOid(oid);
         int i = 0;
@@ -87,8 +90,7 @@ public class InvoiceStore extends ObjectStore {
                 + this.getTableName() + "_number_of_cash_bill=?,"
                 + this.getTableName() + "_currency=?,"
                 + this.getTableName() + "_country=?,"
-                + this.getTableName() + "_advance_invoice_id=?,"
-                + this.getTableName() + "_pre_invoice_id=? "
+                + this.getTableName() + "_advance_pay_amount=? "
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setString(++i, object.getType().name());
         st.setInt(++i, this.getInvoiceNumberForInvoice(object));
@@ -106,16 +108,7 @@ public class InvoiceStore extends ObjectStore {
         st.setString(++i, object.getNumberOfCashBill());
         st.setString(++i, object.getCurrency());
         st.setString(++i, object.getCountry());
-        if (Invoice.getIdFromOid(object.getAdvanceInvoiceOid()) == null) {
-            st.setNull(++i, Types.INTEGER);
-        } else {
-            st.setLong(++i, Invoice.getIdFromOid(object.getAdvanceInvoiceOid()));
-        }
-        if (Invoice.getIdFromOid(object.getPreInvoiceOid()) == null) {
-            st.setNull(++i, Types.INTEGER);
-        } else {
-            st.setLong(++i, Invoice.getIdFromOid(object.getPreInvoiceOid()));
-        }
+        st.setDouble(++i, object.getAdvancePayAmount());
         st.setLong(++i, Invoice.getIdFromOid(oid));
         if (st.executeUpdate() > 0) {
             return object;
@@ -146,6 +139,7 @@ public class InvoiceStore extends ObjectStore {
         } else {
             object.setAdvanceInvoiceOid(BaseModel.getOidFromId(object, resultSet.getLong(this.getTableName() + "_advance_invoice_id")));
         }
+        object.setAdvancePayAmount(resultSet.getDouble(this.getTableName() + "_advance_pay_amount"));
         if (resultSet.getLong(this.getTableName() + "_pre_invoice_id") == 0) {
             object.setPreInvoiceOid(null);
         } else {

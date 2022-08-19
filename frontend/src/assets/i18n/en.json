@@ -1,4 +1,7 @@
 {
+  "advancePayAmount": "Advance pay amount",
+  "forPay": "FOR PAY",
+  "advancePayment": "ADVANCE PAYMENT",
   "invoiceType": "Invoice type",
   "madeFromPreinvoiceNr": "Made from preinvoice number",
   "madeFromAdvanceinvoiceNr": "Made from advance invoice number",

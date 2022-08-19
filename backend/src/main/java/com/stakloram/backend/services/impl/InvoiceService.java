@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class InvoiceService extends ServiceModel {
 
-    private IncomeBuilder incomeBuilder = new IncomeBuilder(this.locator);
+    private final IncomeBuilder incomeBuilder = new IncomeBuilder(this.locator);
 
     @Override
     public void setBaseBuilder() {
@@ -53,9 +53,18 @@ public class InvoiceService extends ServiceModel {
 
     @Override
     public void checkRequestDataForCreate(BaseModel object) throws SException {
+        this.checkIsAdvanceAmountAppropriate((Invoice) object);
     }
 
     @Override
     public void checkRequestDataForModify(String oid, BaseModel object) throws SException {
+        this.checkIsAdvanceAmountAppropriate((Invoice) object);
+    }
+
+    private void checkIsAdvanceAmountAppropriate(Invoice invoice) throws SException {
+        // If invoice is made from advance invoice check amounts...
+        if (invoice.getAdvanceInvoiceOid() != null && invoice.getAdvancePayAmount() > 0 && (invoice.getGrossAmount() < invoice.getAdvancePayAmount())) {
+            throw new SException(UserMessage.getLocalizedMessage("wrongAmountOfAdvancePayAmount"));
+        }
     }
 }

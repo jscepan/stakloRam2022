@@ -21,6 +21,7 @@ export class InvoiceModel extends BaseModel {
   currency: string = '';
   country: string = '';
   advanceInvoiceOid?: string = '';
+  advancePayAmount: number = 0;
   preInvoiceOid?: string = '';
   @Type(() => BuyerModel)
   buyer: BuyerModel = new BuyerModel();

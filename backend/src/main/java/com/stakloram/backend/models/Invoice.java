@@ -23,6 +23,7 @@ public class Invoice extends BaseModel {
     private String currency;
     private String country;
     private String advanceInvoiceOid;
+    private double advancePayAmount;
     private String preInvoiceOid;
     private Buyer buyer;
     private List<InvoiceItem> invoiceItems = new ArrayList<>();
@@ -39,7 +40,30 @@ public class Invoice extends BaseModel {
         super(id);
     }
 
-    public Invoice(InvoiceType type, String number, String numberSign, LocalDate dateOfCreate, LocalDate dateOfTurnover, LocalDate dateOfMaturity, String placeOfIssue, String methodOfPayment, String comment, double netAmount, double vatRate, double vatAmount, double grossAmount, String numberOfCashBill, String currency, String country, String advanceInvoiceOid, String preInvoiceOid, Buyer buyer, String oid) {
+    public Invoice(InvoiceType type, String number, String numberSign, LocalDate dateOfCreate, LocalDate dateOfTurnover, LocalDate dateOfMaturity, String placeOfIssue, String methodOfPayment, String comment, double netAmount, double vatRate, double vatAmount, double grossAmount, String numberOfCashBill, String currency, String country, String advanceInvoiceOid, double advancePayAmount, String preInvoiceOid, Buyer buyer) {
+        this.type = type;
+        this.number = number;
+        this.numberSign = numberSign;
+        this.dateOfCreate = dateOfCreate;
+        this.dateOfTurnover = dateOfTurnover;
+        this.dateOfMaturity = dateOfMaturity;
+        this.placeOfIssue = placeOfIssue;
+        this.methodOfPayment = methodOfPayment;
+        this.comment = comment;
+        this.netAmount = netAmount;
+        this.vatRate = vatRate;
+        this.vatAmount = vatAmount;
+        this.grossAmount = grossAmount;
+        this.numberOfCashBill = numberOfCashBill;
+        this.currency = currency;
+        this.country = country;
+        this.advanceInvoiceOid = advanceInvoiceOid;
+        this.advancePayAmount = advancePayAmount;
+        this.preInvoiceOid = preInvoiceOid;
+        this.buyer = buyer;
+    }
+
+    public Invoice(InvoiceType type, String number, String numberSign, LocalDate dateOfCreate, LocalDate dateOfTurnover, LocalDate dateOfMaturity, String placeOfIssue, String methodOfPayment, String comment, double netAmount, double vatRate, double vatAmount, double grossAmount, String numberOfCashBill, String currency, String country, String advanceInvoiceOid, double advancePayAmount, String preInvoiceOid, Buyer buyer, String oid) {
         super(oid);
         this.type = type;
         this.number = number;
@@ -58,11 +82,12 @@ public class Invoice extends BaseModel {
         this.currency = currency;
         this.country = country;
         this.advanceInvoiceOid = advanceInvoiceOid;
+        this.advancePayAmount = advancePayAmount;
         this.preInvoiceOid = preInvoiceOid;
         this.buyer = buyer;
     }
 
-    public Invoice(InvoiceType type, String number, String numberSign, LocalDate dateOfCreate, LocalDate dateOfTurnover, LocalDate dateOfMaturity, String placeOfIssue, String methodOfPayment, String comment, double netAmount, double vatRate, double vatAmount, double grossAmount, String numberOfCashBill, String currency, String country, String advanceInvoiceOid, String preInvoiceOid, Buyer buyer, Long id) {
+    public Invoice(InvoiceType type, String number, String numberSign, LocalDate dateOfCreate, LocalDate dateOfTurnover, LocalDate dateOfMaturity, String placeOfIssue, String methodOfPayment, String comment, double netAmount, double vatRate, double vatAmount, double grossAmount, String numberOfCashBill, String currency, String country, String advanceInvoiceOid, double advancePayAmount, String preInvoiceOid, Buyer buyer, Long id) {
         super(id);
         this.type = type;
         this.number = number;
@@ -81,6 +106,7 @@ public class Invoice extends BaseModel {
         this.currency = currency;
         this.country = country;
         this.advanceInvoiceOid = advanceInvoiceOid;
+        this.advancePayAmount = advancePayAmount;
         this.preInvoiceOid = preInvoiceOid;
         this.buyer = buyer;
     }
@@ -253,9 +279,17 @@ public class Invoice extends BaseModel {
         this.notes = notes;
     }
 
+    public double getAdvancePayAmount() {
+        return advancePayAmount;
+    }
+
+    public void setAdvancePayAmount(double advancePayAmount) {
+        this.advancePayAmount = advancePayAmount;
+    }
+
     @Override
     public String toString() {
-        return "Invoice{" + "type=" + type + ", number=" + number + ", numberSign=" + numberSign + ", dateOfCreate=" + dateOfCreate + ", dateOfTurnover=" + dateOfTurnover + ", dateOfMaturity=" + dateOfMaturity + ", placeOfIssue=" + placeOfIssue + ", methodOfPayment=" + methodOfPayment + ", comment=" + comment + ", netAmount=" + netAmount + ", vatRate=" + vatRate + ", vatAmount=" + vatAmount + ", grossAmount=" + grossAmount + ", numberOfCashBill=" + numberOfCashBill + ", currency=" + currency + ", country=" + country + ", advanceInvoiceOid=" + advanceInvoiceOid + ", preInvoiceOid=" + preInvoiceOid + ", buyer=" + buyer + ", invoiceItems=" + invoiceItems + ", notes=" + notes + '}';
+        return "Invoice{" + "type=" + type + ", number=" + number + ", numberSign=" + numberSign + ", dateOfCreate=" + dateOfCreate + ", dateOfTurnover=" + dateOfTurnover + ", dateOfMaturity=" + dateOfMaturity + ", placeOfIssue=" + placeOfIssue + ", methodOfPayment=" + methodOfPayment + ", comment=" + comment + ", netAmount=" + netAmount + ", vatRate=" + vatRate + ", vatAmount=" + vatAmount + ", grossAmount=" + grossAmount + ", numberOfCashBill=" + numberOfCashBill + ", currency=" + currency + ", country=" + country + ", advanceInvoiceOid=" + advanceInvoiceOid + ", advancePayAmount=" + advancePayAmount + ", preInvoiceOid=" + preInvoiceOid + ", buyer=" + buyer + ", invoiceItems=" + invoiceItems + ", notes=" + notes + '}';
     }
 
     public enum InvoiceType {

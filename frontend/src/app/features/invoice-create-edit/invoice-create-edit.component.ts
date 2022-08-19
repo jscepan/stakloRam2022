@@ -263,6 +263,9 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
       notes: new FormArray([]),
       preInvoiceOid: new FormControl(this.preInvoice?.oid),
       advanceInvoiceOid: new FormControl(this.advanceInvoice?.oid),
+      advancePayAmount: new FormControl(
+        this.invoice?.advancePayAmount || this.advanceInvoice?.grossAmount || 0
+      ),
     });
     if (this.formGroup.get('type')?.value === 'CASH') {
       this.formGroup.addControl(
@@ -531,6 +534,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
 
   removeItem(index: number): void {
     this.invoiceItemsFormArr.removeAt(index);
+    this.calculateInvoiceAmount();
   }
 
   cancel(): void {
@@ -804,20 +808,21 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
       this.selectedBuyer = previousInvoice.buyer;
       this.initializeCreate();
       this.formGroup.get('comment')?.setValue(
-        this.translateService.instant(
-          type === 'advanceInvoice'
-            ? 'invoiceCreatedOnAdvanceInvoice'
-            : 'invoiceCreatedOnPreInvoice',
-          {
-            invoiceNumber: previousInvoice.number,
-            invoiceDate:
-              new Date(previousInvoice.dateOfCreate).getDay() +
-              '/' +
-              new Date(previousInvoice.dateOfCreate).getMonth() +
-              '/' +
-              new Date(previousInvoice.dateOfCreate).getFullYear(),
-          }
-        )
+        this.formGroup.get('comment')?.value +
+          this.translateService.instant(
+            type === 'advanceInvoice'
+              ? 'invoiceCreatedOnAdvanceInvoice'
+              : 'invoiceCreatedOnPreInvoice',
+            {
+              invoiceNumber: previousInvoice.number,
+              invoiceDate:
+                new Date(previousInvoice.dateOfCreate).getDay() +
+                '/' +
+                new Date(previousInvoice.dateOfCreate).getMonth() +
+                '/' +
+                new Date(previousInvoice.dateOfCreate).getFullYear(),
+            }
+          )
       );
       previousInvoice.invoiceItems.forEach((item, index) => {
         item.oid = '';

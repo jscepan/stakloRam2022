@@ -53,7 +53,7 @@ public class InvoiceItemStore extends ObjectStore {
         int i = 0;
         PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_description=?,"
-                + this.getTableName() + "_unit_of_measure=?,"
+                + this.getTableName() + "_uom=?,"
                 + this.getTableName() + "_quantity=?,"
                 + this.getTableName() + "_price_per_unit=?,"
                 + this.getTableName() + "_net_price=?,"
@@ -71,6 +71,7 @@ public class InvoiceItemStore extends ObjectStore {
         st.setDouble(++i, object.getGrossPrice());
         st.setLong(++i, BaseModel.getIdFromOid(oid));
         if (st.executeUpdate() > 0) {
+            System.out.println("USPELO JE");
             return object;
         }
         return null;

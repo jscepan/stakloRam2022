@@ -1,4 +1,7 @@
 {
+  "advancePayAmount": "Avansna uplata",
+  "forPay": "ZA UPLATU",
+  "advancePayment": "AVANS",
   "invoiceType": "Vrsta fakture",
   "madeFromPreinvoiceNr": "Na osnovu profakture broj",
   "madeFromAdvanceinvoiceNr": "Na osnovu avansnog računa broj",

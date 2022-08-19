@@ -514,6 +514,20 @@
             [readonly]="true"
           />
         </mat-form-field>
+        <mat-form-field *ngIf="advanceInvoice || invoice.advancePayAmount > 0">
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "advancePayAmount" | translate }}
+          </mat-label>
+          <input
+            type="text"
+            appDecimal
+            matInput
+            formControlName="advancePayAmount"
+          />
+        </mat-form-field>
       </div>
       <div class="notes" *ngIf="notesFormArr.controls" formArrayName="notes">
         <div
