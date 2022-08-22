@@ -7,41 +7,21 @@ import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.UserMessage;
-import com.stakloram.backend.models.User;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
-import com.stakloram.backend.services.impl.builder.impl.UserBuilder;
 import java.sql.SQLException;
 import java.util.List;
 import static java.util.Objects.*;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 public abstract class ServiceModel implements IService {
 
     public static final int SKIP = 50;
     public static final int TOP = 50;
-    private User currentUser;
 
     protected final Locator locator = new Locator(new ConnectionToDatabase().connect());
     protected BaseBuilder baseBuilder;
 
     public ServiceModel() {
         this.setBaseBuilder();
-    }
-
-    public User getCurrentUser() throws SException {
-        if (this.currentUser != null) {
-            return this.currentUser;
-        }
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            if (authentication.getName() == null) {
-                throw new SException(UserMessage.getLocalizedMessage("wrongUsername"));
-            }
-            this.currentUser = (new UserBuilder(this.locator)).getUserByUsername(authentication.getName());
-        }
-        return this.currentUser;
     }
 
     public Locator getLocator() {
