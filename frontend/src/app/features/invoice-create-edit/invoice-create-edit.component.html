@@ -514,7 +514,9 @@
             [readonly]="true"
           />
         </mat-form-field>
-        <mat-form-field *ngIf="advanceInvoice || invoice.advancePayAmount > 0">
+        <mat-form-field
+          *ngIf="advanceInvoice || (invoice && invoice.advancePayAmount > 0)"
+        >
           <mat-label
             [class.mark-required]="true"
             [class.mark-opt-required]="true"

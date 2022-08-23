@@ -30,8 +30,6 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) throws Exception {
 
         try {
-            System.out.println("----------------------");
-            System.out.println("authRequest.getUsername(): " + authRequest.getUsername() + ", authRequest.getPassword(): " + authRequest.getPassword());
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
             );
@@ -41,8 +39,6 @@ public class AuthController {
 
         final UserDetails user = userService.loadUserByUsername(authRequest.getUsername());
         final String jwt = jwtUtil.generateToken(user);
-        System.out.println("user");
-        System.out.println(user);
         return ResponseEntity.ok(new AuthResponse(jwt));
     }
 

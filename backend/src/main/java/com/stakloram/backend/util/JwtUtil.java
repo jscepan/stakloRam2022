@@ -1,5 +1,6 @@
 package com.stakloram.backend.util;
 
+import com.stakloram.backend.models.MyUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -41,7 +42,7 @@ public class JwtUtil {
         // TODO
         Map<String, Object> claims = new HashMap<>();
 //        claims.put("user_oid", user.getOid());
-//        claims.put("roles", user.getAuthorities());
+        claims.put("roles", user.getAuthorities());
         return createToken(claims, user.getUsername());
     }
 
@@ -58,6 +59,4 @@ public class JwtUtil {
         final String username = extractUsername(token);
         return (username.equals(user.getUsername()) && !isTokenExpired(token));
     }
-    
-    
 }

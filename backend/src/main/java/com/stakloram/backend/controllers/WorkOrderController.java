@@ -8,6 +8,7 @@ import com.stakloram.backend.services.impl.WorkOrderService;
 import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,9 +52,9 @@ public class WorkOrderController {
         return (WorkOrder) this.workOrderService.createNewObject(object);
     }
 
+//    @PreAuthorize("hasAnyRole('admin','backoffice')")
     @RequestMapping(method = RequestMethod.PUT, value = "/workorders/{workOrderOid}")
     public WorkOrder modify(@PathVariable String workOrderOid, @RequestBody WorkOrder object) throws SException {
         return (WorkOrder) this.workOrderService.modifyObject(workOrderOid, object);
     }
-
 }
