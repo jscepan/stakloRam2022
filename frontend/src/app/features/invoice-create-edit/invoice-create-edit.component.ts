@@ -513,6 +513,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     this.getWorkOrderItemsFormArr(invoiceItemIndex).removeAt(
       workOrderItemIndex
     );
+    this.formGroup.markAsDirty();
   }
 
   buyerChanged(): void {

@@ -12,7 +12,12 @@
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
         {{ "fromDate" | translate }}
       </mat-label>
-      <input type="date" matInput formControlName="fromDate" />
+      <input
+        type="date"
+        matInput
+        formControlName="fromDate"
+        (change)="dateChange()"
+      />
     </mat-form-field>
     <mat-form-field>
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">

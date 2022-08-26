@@ -123,20 +123,20 @@ public class InvoiceBuilder extends BaseBuilder {
             }
             for (BaseModel inv : mapOfDifferences.get(Helper.Action.FOR_UPDATE)) {
                 INVOICE_ITEM_STORE.modifyObject(inv.getOid(), inv);
-                List<WorkOrderItem> tasks = new ArrayList<>();
+
+                // Get list of previously work order items for this specific invoice item
+                List<WorkOrderItem> previousWorkOrderItems = new ArrayList<>();
                 ResultSet r = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_invoice_item_invoice_item_id=" + inv.getId());
                 while (r.next()) {
-                    tasks.add(WORK_ORDER_ITEM_STORE.getObjectFromResultSet(r));
+                    previousWorkOrderItems.add(WORK_ORDER_ITEM_STORE.getObjectFromResultSet(r));
                 }
-                Map<Helper.Action, List<? extends BaseModel>> mapOfDifferencesTasks = Helper.findDifferenceBetweenLists(tasks, ((InvoiceItem) inv).getWorkOrderItems());
-                for (BaseModel task : mapOfDifferencesTasks.get(Helper.Action.FOR_CREATE)) {
-                    WORK_ORDER_ITEM_STORE.setInvoiceItemForWorkOrderItem(task.getOid(), inv.getOid());
+
+                Map<Helper.Action, List<? extends BaseModel>> mapOfDifferencesWorkOrderItems = Helper.findDifferenceBetweenLists(((InvoiceItem) inv).getWorkOrderItems(), previousWorkOrderItems);
+                for (BaseModel workOrderItem : mapOfDifferencesWorkOrderItems.get(Helper.Action.FOR_CREATE)) {
+                    WORK_ORDER_ITEM_STORE.setInvoiceItemForWorkOrderItem(workOrderItem.getOid(), inv.getOid());
                 }
-                for (BaseModel task : mapOfDifferencesTasks.get(Helper.Action.FOR_UPDATE)) {
-                    WORK_ORDER_ITEM_STORE.setInvoiceItemForWorkOrderItem(task.getOid(), inv.getOid());
-                }
-                for (BaseModel task : mapOfDifferencesTasks.get(Helper.Action.FOR_DELETE)) {
-                    WORK_ORDER_ITEM_STORE.removeInvoiceItemForWorkOrderItem(task.getOid());
+                for (BaseModel workOrderItem : mapOfDifferencesWorkOrderItems.get(Helper.Action.FOR_DELETE)) {
+                    WORK_ORDER_ITEM_STORE.removeInvoiceItemForWorkOrderItem(workOrderItem.getOid());
                 }
             }
             for (BaseModel inv : mapOfDifferences.get(Helper.Action.FOR_DELETE)) {

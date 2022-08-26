@@ -46,6 +46,19 @@ export class DebtViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  dateChange(): void {
+    const fromDate = this.formGroup.get('fromDate')?.value;
+    const toDate = this.formGroup.get('toDate')?.value;
+    if (
+      (fromDate && !toDate) ||
+      (fromDate && toDate && new Date(toDate) < new Date(fromDate))
+    ) {
+      this.formGroup
+        .get('toDate')
+        ?.setValue(this.formGroup.get('fromDate')?.value);
+    }
+  }
+
   viewDebtor(): void {
     this.convertDebtorToTransactions(
       this.formGroup.get('fromDate')?.value,
