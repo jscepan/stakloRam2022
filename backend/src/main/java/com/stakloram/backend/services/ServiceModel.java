@@ -1,6 +1,5 @@
 package com.stakloram.backend.services;
 
-import com.stakloram.backend.controllers.WorkOrderController;
 import com.stakloram.backend.database.ConnectionToDatabase;
 import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.BaseModel;
@@ -13,7 +12,6 @@ import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
 import com.stakloram.backend.services.impl.builder.impl.HistoryBuilder;
 import java.sql.SQLException;
-import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 import static java.util.Objects.*;
@@ -29,13 +27,19 @@ public abstract class ServiceModel implements IService {
 
     protected final Locator locator = new Locator(new ConnectionToDatabase().connect());
 
-    HistoryBuilder history = new HistoryBuilder(locator);
+    public final HistoryBuilder history = new HistoryBuilder(locator);
 
     protected BaseBuilder baseBuilder;
 
     public ServiceModel() {
         this.setBaseBuilder();
     }
+
+    @Override
+    public void checkRequestDataForModify(String oid, BaseModel baseModel) throws SException{
+    this.checkRequestDataForCreate(baseModel);
+    }
+    
 
     public Locator getLocator() {
         return locator;
@@ -101,8 +105,6 @@ public abstract class ServiceModel implements IService {
                 this.rollback();
                 return false;
             }
-        }
-        for (BaseModel object : objects) {
             this.history.createNewObject(new History(History.Action.DELETE, object.getClass().getSimpleName().toLowerCase(), object.toString(), null, LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), object.getOid()));
         }
         this.endTransaction();
@@ -134,5 +136,15 @@ public abstract class ServiceModel implements IService {
         } catch (SQLException ex) {
             logger.error(ex.toString());
         }
+    }
+
+    public void checkIsAmountPositive(double number) throws SException {
+        if (number <= 0) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData"));
+        }
+    }
+
+    public boolean isObjectWithOid(BaseModel object) throws SException {
+        return (object.getOid() == null || object.getOid().length() == 0);
     }
 }

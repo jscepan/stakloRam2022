@@ -15,10 +15,6 @@ public class RoleService extends ServiceModel {
     }
 
     @Override
-    public void checkRequestDataForCreate(BaseModel object) throws SException {
-    }
-
-    @Override
-    public void checkRequestDataForModify(String oid, BaseModel object) throws SException {
+    public void checkRequestDataForCreate(BaseModel baseModel) throws SException {
     }
 }

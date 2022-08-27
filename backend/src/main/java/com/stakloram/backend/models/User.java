@@ -113,6 +113,6 @@ public class User extends BaseModel {
 
     @Override
     public String toString() {
-        return "User{" + "displayName=" + displayName + ", username=" + username + ", password=" + password + ", enabled=" + enabled + ", fullName=" + fullName + ", email=" + email + ", language=" + language + ", roles=" + roles + '}';
+        return "User{" + "displayName=" + displayName + ", username=" + username + ", enabled=" + enabled + ", fullName=" + fullName + ", email=" + email + ", language=" + language + ", roles=" + roles + '}';
     }
 }

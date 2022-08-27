@@ -3,12 +3,16 @@ package com.stakloram.backend.services.impl;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Invoice;
 import com.stakloram.backend.exception.SException;
+import com.stakloram.backend.models.History;
 import com.stakloram.backend.models.Income;
 import com.stakloram.backend.models.Invoice.InvoiceType;
+import com.stakloram.backend.models.User;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.services.ServiceModel;
 import com.stakloram.backend.services.impl.builder.impl.IncomeBuilder;
 import com.stakloram.backend.services.impl.builder.impl.InvoiceBuilder;
+import com.stakloram.backend.util.DataChecker;
+import java.time.LocalDateTime;
 import java.util.Set;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +43,7 @@ public class InvoiceService extends ServiceModel {
             if (invoice != null) {
                 Income income = this.incomeBuilder.createNewObject(new Income(invoice.getDateOfCreate(), invoice.getGrossAmount(), "Gotovinski račun " + invoice.getNumber(), "", invoice.getBuyer(), ""));
                 if (income != null) {
+                    super.history.createNewObject(new History(History.Action.CREATE, object.getClass().getSimpleName().toLowerCase(), null, object.toString(), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), null));
                     this.endTransaction();
                     return invoice;
                 }
@@ -52,16 +57,40 @@ public class InvoiceService extends ServiceModel {
     }
 
     @Override
-    public void checkRequestDataForCreate(BaseModel object) throws SException {
-        this.checkIsAdvanceAmountAppropriate((Invoice) object);
-    }
+    public void checkRequestDataForCreate(BaseModel baseModel) throws SException {
+        Invoice invoice = (Invoice) baseModel;
+        if ( // Type
+                DataChecker.isNull(invoice.getType())
+                || invoice.getType().name().trim().isEmpty()
+                // Currency
+                || DataChecker.isNull(invoice.getCurrency())
+                || invoice.getCurrency().trim().isEmpty()
+                // Number
+                || DataChecker.isNull(invoice.getNumber())
+                || invoice.getNumber().trim().isEmpty()
+                // Buyer
+                || super.isObjectWithOid(invoice.getBuyer())
+                // Dates
+                || DataChecker.isNull(invoice.getDateOfCreate())
+                || DataChecker.isNull(invoice.getDateOfTurnover())
+                || DataChecker.isNull(invoice.getDateOfMaturity())
+                // Country
+                || DataChecker.isNull(invoice.getCountry())
+                || invoice.getCountry().trim().isEmpty()
+                // Place
+                || DataChecker.isNull(invoice.getPlaceOfIssue())
+                || invoice.getPlaceOfIssue().trim().isEmpty()
+                // Payment method
+                || DataChecker.isNull(invoice.getMethodOfPayment())
+                || invoice.getMethodOfPayment().trim().isEmpty()) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData"));
+        }
+        if (invoice.getType() == InvoiceType.CASH) {
+            if (DataChecker.isNull(invoice.getNumberOfCashBill()) || invoice.getNumberOfCashBill().trim().isEmpty()) {
+                throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData"));
+            }
+        }
 
-    @Override
-    public void checkRequestDataForModify(String oid, BaseModel object) throws SException {
-        this.checkIsAdvanceAmountAppropriate((Invoice) object);
-    }
-
-    private void checkIsAdvanceAmountAppropriate(Invoice invoice) throws SException {
         // If invoice is made from advance invoice check amounts...
         if (invoice.getAdvanceInvoiceOid() != null && invoice.getAdvancePayAmount() > 0 && (invoice.getGrossAmount() < invoice.getAdvancePayAmount())) {
             throw new SException(UserMessage.getLocalizedMessage("wrongAmountOfAdvancePayAmount"));

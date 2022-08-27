@@ -26,7 +26,7 @@ public interface IService {
 
     void endTransaction();
 
-    public void checkRequestDataForCreate(BaseModel object) throws SException;
+    public void checkRequestDataForCreate(BaseModel baseModel) throws SException;
 
-    public void checkRequestDataForModify(String oid, BaseModel object) throws SException;
+    public void checkRequestDataForModify(String oid, BaseModel baseModel) throws SException;
 }

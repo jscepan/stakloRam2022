@@ -2,11 +2,13 @@ package com.stakloram.backend.services.impl;
 
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.exception.SException;
+import com.stakloram.backend.models.History;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.models.User;
 import com.stakloram.backend.services.ServiceModel;
 import com.stakloram.backend.services.impl.builder.impl.UserBuilder;
 import com.stakloram.backend.util.DataChecker;
+import java.time.LocalDateTime;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,9 +23,27 @@ public class UserService extends ServiceModel {
     }
 
     public BaseModel changeUserProfile(String oid, User object) throws SException {
-        if (DataChecker.isNull(oid) || oid.trim().isEmpty()) {
-            throw new SException(UserMessage.getLocalizedMessage("oidCantBeEmpty"));
+        this.checkRequestDataForModify(oid, object);
+        User previousUser = ((UserBuilder) this.getBaseBuilder()).getObjectByOid(oid);
+        if (previousUser == null) {
+            this.rollback();
+            throw new SException(UserMessage.getLocalizedMessage("cantFindUserWithThisUsername"));
         }
+        this.startTransaction();
+        previousUser.setEmail(object.getEmail());
+        previousUser.setFullName(object.getFullName());
+        previousUser.setLanguage(object.getLanguage());
+        previousUser.setUsername(object.getUsername());
+        previousUser = ((UserBuilder) this.getBaseBuilder()).modifyObject(oid, previousUser);
+        this.history.createNewObject(new History(History.Action.UPDATE, object.getClass().getSimpleName().toLowerCase(), previousUser != null ? previousUser.toString() : "", object.toString(), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), object.getOid()));
+        this.endTransaction();
+        return previousUser;
+    }
+
+    @Override
+    public void checkRequestDataForCreate(BaseModel baseModel) throws SException {
+        User object = (User) baseModel;
+        String oid = object.getOid();
         if (DataChecker.isNull(oid) || oid.trim().isEmpty()) {
             throw new SException(UserMessage.getLocalizedMessage("userCantBeEmpty"));
         }
@@ -42,27 +62,6 @@ public class UserService extends ServiceModel {
         if (object.getUsername().contains(" ")) {
             throw new SException(UserMessage.getLocalizedMessage("usernameCantContainsEmptySpace"));
         }
-        User user = ((UserBuilder) this.getBaseBuilder()).getObjectByOid(oid);
-        if (user == null) {
-            this.rollback();
-            throw new SException(UserMessage.getLocalizedMessage("cantFindUserWithThisUsername"));
-        }
-        this.startTransaction();
-        user.setEmail(object.getEmail());
-        user.setFullName(object.getFullName());
-        user.setLanguage(object.getLanguage());
-        user.setUsername(object.getUsername());
-        user = ((UserBuilder) this.getBaseBuilder()).modifyObject(oid, user);
-        this.endTransaction();
-        return user;
-    }
-
-    @Override
-    public void checkRequestDataForCreate(BaseModel object) throws SException {
-    }
-
-    @Override
-    public void checkRequestDataForModify(String oid, BaseModel object) throws SException {
     }
 
     public User getCurrentUserProfile() throws SException {
