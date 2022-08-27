@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_API_URL } from 'src/app/shared/constants';
+import { BaseModel } from 'src/app/shared/models/base-model';
 import { SearchModel } from 'src/app/shared/models/search.model';
 import { constructUrl } from 'src/app/shared/utils';
 import { ArrayResponseI } from '../interfaces/array-response.interface';
@@ -49,7 +50,7 @@ export abstract class EntityBaseWebService<T> {
     );
   };
 
-  deleteEntity = (data: string[]): Observable<void> => {
+  deleteEntity = (data: BaseModel[]): Observable<void> => {
     return this.baseWebService.deleteRequest<void>(
       `${BASE_API_URL + '/' + this.domainName}`,
       data

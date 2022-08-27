@@ -51,7 +51,7 @@ public class IncomeController {
 
 //    @PreAuthorize("hasRole('admin')")
     @RequestMapping(method = RequestMethod.DELETE, value = "/incomes")
-    public boolean delete(@RequestBody List<String> objectOids) throws SException {
-        return this.incomeService.deleteObjects(objectOids);
+    public boolean delete(@RequestBody List<Income> objects) throws SException {
+        return this.incomeService.deleteObjects(objects);
     }
 }

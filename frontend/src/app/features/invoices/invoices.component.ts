@@ -71,13 +71,13 @@ export class InvoicesComponent implements OnInit, OnDestroy {
     this.router.navigate(['invoices', 'edit', invoiceOID]);
   }
 
-  deleteInvoice(invoiceOID: string): void {
+  deleteInvoice(invoice: InvoiceModel): void {
     this.subs.sink.$deleteInvoice = this.sweetAlertService
       .getDataBackFromSweetAlert()
       .subscribe((data) => {
         if (data && data.confirmed) {
           this.subs.sink = this.webService
-            .deleteEntity([invoiceOID])
+            .deleteEntity([invoice])
             .subscribe(() => {
               this.globalService.showBasicAlert(
                 MODE.success,

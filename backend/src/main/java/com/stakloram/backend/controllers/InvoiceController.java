@@ -65,7 +65,7 @@ public class InvoiceController {
 
 //    @PreAuthorize("hasRole('admin')")
     @RequestMapping(method = RequestMethod.DELETE, value = "/invoices")
-    public boolean delete(@RequestBody List<String> objectOids) throws SException {
-        return invoiceService.deleteObjects(objectOids);
+    public boolean delete(@RequestBody List<Invoice> objects) throws SException {
+        return invoiceService.deleteObjects(objects);
     }
 }

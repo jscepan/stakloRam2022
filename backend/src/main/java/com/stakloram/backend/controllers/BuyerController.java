@@ -51,7 +51,7 @@ public class BuyerController {
 
 //    @PreAuthorize("hasRole('admin')")
     @RequestMapping(method = RequestMethod.DELETE, value = "/buyers")
-    public boolean delete(@RequestBody List<String> objectOids) throws SException {
-        return this.buyerService.deleteObjects(objectOids);
+    public boolean delete(@RequestBody List<Buyer> objects) throws SException {
+        return this.buyerService.deleteObjects(objects);
     }
 }

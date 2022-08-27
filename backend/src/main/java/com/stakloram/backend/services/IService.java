@@ -18,7 +18,7 @@ public interface IService {
 
     public BaseModel modifyObject(String oid, BaseModel object) throws SException;
 
-    public boolean deleteObjects(List<String> oids) throws SException;
+    public boolean deleteObjects(List<? extends BaseModel> objects) throws SException;
 
     void startTransaction();
 

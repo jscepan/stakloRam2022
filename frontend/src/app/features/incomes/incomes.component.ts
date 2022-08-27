@@ -81,13 +81,13 @@ export class IncomesComponent implements OnInit, OnDestroy {
       });
   }
 
-  deleteIncome(incomeOID: string): void {
+  deleteIncome(income: IncomeModel): void {
     this.subs.sink.$deleteIncome = this.sweetAlertService
       .getDataBackFromSweetAlert()
       .subscribe((data) => {
         if (data && data.confirmed) {
           this.subs.sink = this.webService
-            .deleteEntity([incomeOID])
+            .deleteEntity([income])
             .subscribe(() => {
               this.globalService.showBasicAlert(
                 MODE.success,

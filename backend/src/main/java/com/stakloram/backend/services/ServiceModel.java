@@ -6,10 +6,15 @@ import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.exception.SException;
+import com.stakloram.backend.models.History;
 import com.stakloram.backend.models.SearchRequest;
+import com.stakloram.backend.models.User;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
+import com.stakloram.backend.services.impl.builder.impl.HistoryBuilder;
 import java.sql.SQLException;
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.List;
 import static java.util.Objects.*;
 import org.slf4j.Logger;
@@ -23,6 +28,9 @@ public abstract class ServiceModel implements IService {
     public static final int TOP = 50;
 
     protected final Locator locator = new Locator(new ConnectionToDatabase().connect());
+
+    HistoryBuilder history = new HistoryBuilder(locator);
+
     protected BaseBuilder baseBuilder;
 
     public ServiceModel() {
@@ -53,6 +61,7 @@ public abstract class ServiceModel implements IService {
         this.startTransaction();
         BaseModel baseModel = this.baseBuilder.createNewObject(object);
         if (baseModel != null) {
+            this.history.createNewObject(new History(History.Action.CREATE, object.getClass().getSimpleName().toLowerCase(), null, object.toString(), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), null));
             this.endTransaction();
             return baseModel;
         }
@@ -65,8 +74,10 @@ public abstract class ServiceModel implements IService {
         this.checkRequestDataForModify(oid, object);
         try {
             this.startTransaction();
+            BaseModel previousObject = this.baseBuilder.getObjectByOid(oid);
             BaseModel baseModel = this.baseBuilder.modifyObject(oid, object);
             if (baseModel != null) {
+                this.history.createNewObject(new History(History.Action.UPDATE, object.getClass().getSimpleName().toLowerCase(), previousObject != null ? previousObject.toString() : "", object.toString(), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), object.getOid()));
                 this.endTransaction();
                 return baseModel;
             }
@@ -79,17 +90,20 @@ public abstract class ServiceModel implements IService {
     }
 
     @Override
-    public boolean deleteObjects(List<String> oids) throws SException {
-        if (isNull(oids) || oids.size() == 0) {
+    public boolean deleteObjects(List<? extends BaseModel> objects) throws SException {
+        if (isNull(objects) || objects.isEmpty()) {
             throw new SException(UserMessage.getLocalizedMessage("noDataForDelete"));
         }
         this.startTransaction();
-        for (String oid : oids) {
-            boolean deleted = this.baseBuilder.deleteObjectByOid(oid);
+        for (BaseModel object : objects) {
+            boolean deleted = this.baseBuilder.deleteObjectByOid(object.getOid());
             if (!deleted) {
                 this.rollback();
                 return false;
             }
+        }
+        for (BaseModel object : objects) {
+            this.history.createNewObject(new History(History.Action.DELETE, object.getClass().getSimpleName().toLowerCase(), object.toString(), null, LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), object.getOid()));
         }
         this.endTransaction();
         return true;

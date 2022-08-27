@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,6 +31,10 @@ public class Helper {
 
     public static java.sql.Date convertLocalDateToSqlDate(LocalDate date) {
         return Date.valueOf(date);
+    }
+
+    public static java.sql.Timestamp convertLocalDateToSqlTime(LocalDateTime date) {
+        return Timestamp.valueOf(date);
     }
 
     public static String readFromFile(String filePath) {

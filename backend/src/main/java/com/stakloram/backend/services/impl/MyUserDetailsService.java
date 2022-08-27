@@ -33,7 +33,7 @@ public class MyUserDetailsService implements UserDetailsService {
             user.getRoles().forEach(role -> {
                 authorities.add(new SimpleGrantedAuthority((role.getName())));
             });
-            return new MyUserDetails(user.getUsername(), user.getPassword(), user.isEnabled(), authorities);
+            return new MyUserDetails(user.getOid(), user.getUsername(), user.getPassword(), user.isEnabled(), authorities);
         } catch (SException ex) {
             logger.error(ex.toString());
             throw new UsernameNotFoundException(UserMessage.getLocalizedMessage("wrongUsername"));

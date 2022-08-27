@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class MyUserDetails implements UserDetails {
 
+    private String oid;
     private String username;
     private String password;
     private boolean isEnabled;
@@ -14,11 +15,20 @@ public class MyUserDetails implements UserDetails {
     public MyUserDetails() {
     }
 
-    public MyUserDetails(String username, String password, boolean isEnabled, Collection<? extends GrantedAuthority> authorities) {
+    public MyUserDetails(String oid, String username, String password, boolean isEnabled, Collection<? extends GrantedAuthority> authorities) {
+        this.oid = oid;
         this.username = username;
         this.password = password;
         this.isEnabled = isEnabled;
         this.authorities = authorities;
+    }
+
+    public String getOid() {
+        return oid;
+    }
+
+    public void setOid(String oid) {
+        this.oid = oid;
     }
 
     public boolean isIsEnabled() {
@@ -75,5 +85,4 @@ public class MyUserDetails implements UserDetails {
     public boolean isEnabled() {
         return this.isEnabled;
     }
-
 }

@@ -51,7 +51,7 @@ public class OutcomeController {
 
 //    @PreAuthorize("hasAnyRole('admin')")
     @RequestMapping(method = RequestMethod.DELETE, value = "/outcomes")
-    public boolean delete(@RequestBody List<String> objectOids) throws SException {
-        return this.outcomeService.deleteObjects(objectOids);
+    public boolean delete(@RequestBody List<Outcome> objects) throws SException {
+        return this.outcomeService.deleteObjects(objects);
     }
 }

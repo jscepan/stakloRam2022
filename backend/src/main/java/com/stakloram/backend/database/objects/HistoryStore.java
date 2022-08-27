@@ -30,7 +30,7 @@ public class HistoryStore extends ObjectStore {
         st.setString(++i, object.getObjectType());
         st.setString(++i, object.getPreviousValue());
         st.setString(++i, object.getNewValue());
-        st.setDate(++i, Helper.convertLocalDateTimeToDateTime(object.getTime()));
+        st.setTimestamp(++i, Helper.convertLocalDateToSqlTime(object.getTime()));
         st.setLong(++i, object.getUser().getId());
 
         if (st.executeUpdate() > 0) {
@@ -58,7 +58,7 @@ public class HistoryStore extends ObjectStore {
         st.setString(++i, object.getObjectType());
         st.setString(++i, object.getPreviousValue());
         st.setString(++i, object.getNewValue());
-        st.setDate(++i, Helper.convertLocalDateTimeToDateTime(object.getTime()));
+        st.setTimestamp(++i, Helper.convertLocalDateToSqlTime(object.getTime()));
         st.setLong(++i, object.getUser().getId());
         st.setLong(++i, BaseModel.getIdFromOid(oid));
         if (st.executeUpdate() > 0) {

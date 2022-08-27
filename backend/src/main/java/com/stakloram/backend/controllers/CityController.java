@@ -45,7 +45,7 @@ public class CityController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/cities")
-    public boolean delete(@RequestBody List<String> objectOids) throws SException {
-        return this.cityService.deleteObjects(objectOids);
+    public boolean delete(@RequestBody List<City> objects) throws SException {
+        return this.cityService.deleteObjects(objects);
     }
 }

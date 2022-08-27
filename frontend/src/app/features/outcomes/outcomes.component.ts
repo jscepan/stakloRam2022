@@ -78,13 +78,13 @@ export class OutcomesComponent implements OnInit, OnDestroy {
       });
   }
 
-  deleteOutcome(outcomeOID: string): void {
+  deleteOutcome(outcome: OutcomeModel): void {
     this.subs.sink.$deleteOutcome = this.sweetAlertService
       .getDataBackFromSweetAlert()
       .subscribe((data) => {
         if (data && data.confirmed) {
           this.subs.sink = this.webService
-            .deleteEntity([outcomeOID])
+            .deleteEntity([outcome])
             .subscribe(() => {
               this.globalService.showBasicAlert(
                 MODE.success,

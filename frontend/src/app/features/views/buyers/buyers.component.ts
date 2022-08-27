@@ -66,19 +66,23 @@ export class BuyersComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteBuyer(oid: string): void {
+  deleteBuyer(buyer: BuyerModel): void {
     this.subs.sink.$deleteBuyer = this.sweetAlertService
       .getDataBackFromSweetAlert()
       .subscribe((data) => {
         if (data && data.confirmed) {
-          this.subs.sink = this.webService.deleteEntity([oid]).subscribe(() => {
-            this.globalService.showBasicAlert(
-              MODE.success,
-              this.translateService.instant('buyerDeleted'),
-              this.translateService.instant('buyerHaveBeenSuccessfullyDeleted')
-            );
-            this.listEntities.requestFirstPage();
-          });
+          this.subs.sink = this.webService
+            .deleteEntity([buyer])
+            .subscribe(() => {
+              this.globalService.showBasicAlert(
+                MODE.success,
+                this.translateService.instant('buyerDeleted'),
+                this.translateService.instant(
+                  'buyerHaveBeenSuccessfullyDeleted'
+                )
+              );
+              this.listEntities.requestFirstPage();
+            });
         }
       });
     const sweetAlertModel: SweetAlertI = {

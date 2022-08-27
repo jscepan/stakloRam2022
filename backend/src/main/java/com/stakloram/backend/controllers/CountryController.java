@@ -45,8 +45,8 @@ public class CountryController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/countries")
-    public boolean delete(@RequestBody List<String> objectOids) throws SException {
-        return this.countryService.deleteObjects(objectOids);
+    public boolean delete(@RequestBody List<Country> objects) throws SException {
+        return this.countryService.deleteObjects(objects);
     }
 
 }

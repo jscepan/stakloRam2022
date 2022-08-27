@@ -64,13 +64,13 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
     this.router.navigate(['work-orders', 'edit', workOrderOID]);
   }
 
-  deleteWorkOrder(workOrderOID: string): void {
+  deleteWorkOrder(workOrder: WorkOrderModel): void {
     this.subs.sink.$deleteWorkOrder = this.sweetAlertService
       .getDataBackFromSweetAlert()
       .subscribe((data) => {
         if (data && data.confirmed) {
           this.subs.sink = this.webService
-            .deleteEntity([workOrderOID])
+            .deleteEntity([workOrder])
             .subscribe(() => {
               this.globalService.showBasicAlert(
                 MODE.success,
