@@ -16,8 +16,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class BaseBuilder implements IObjectBuilder {
+
+    public Logger logger = LoggerFactory.getLogger(BaseBuilder.class);
 
     private final Locator locator;
     protected ObjectStore objectStore;
@@ -44,6 +48,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
         try {
             return this.objectStore.createNewObjectToDatabase(object);
         } catch (SQLException ex) {
+            logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -55,6 +60,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
             baseModel.setOid(oid);
             return baseModel;
         } catch (SQLException ex) {
+            logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -64,6 +70,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
         try {
             return this.objectStore.deleteObjectByOid(oid);
         } catch (SQLException ex) {
+            logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -73,6 +80,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
         try {
             return this.objectStore.getObjectByOid(oid);
         } catch (SQLException ex) {
+            logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -84,6 +92,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
             String containsClausule = this.getContainsClausule(searchObject);
             return this.objectStore.searchObjectsFromDatabase(fromClausule, this.generateWhereClausule("", searchClausule, equalsClausule, containsClausule), skip, top, searchObject.getOrdering());
         } catch (SQLException ex) {
+            logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -97,6 +106,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
             ResponseWithCount rwc = this.objectStore.searchObjectsFromDatabase(this.generateWhereClausule("", searchClausule, equalsClausule, containsClausule), skip, top, searchObject.getOrdering());
             return this.getArrayResponseFromResponseWithCount(rwc);
         } catch (SQLException ex) {
+            logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -169,6 +179,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
                 objects.add(this.objectStore.getObjectFromResultSet(rs));
             }
         } catch (SQLException ex) {
+            logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
         return new ArrayResponse(objects, rwc.getCount());

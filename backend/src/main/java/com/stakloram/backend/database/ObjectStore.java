@@ -2,15 +2,18 @@ package com.stakloram.backend.database;
 
 import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.BaseModel;
-import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.SearchRequest.Ordering;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class ObjectStore implements IObjectStore {
+
+    Logger logger = LoggerFactory.getLogger(ObjectStore.class);
 
     protected String tableName;
     protected final String primaryKey;

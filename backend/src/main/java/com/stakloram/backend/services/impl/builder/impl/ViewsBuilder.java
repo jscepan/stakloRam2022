@@ -18,8 +18,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ViewsBuilder {
+
+    Logger logger = LoggerFactory.getLogger(ViewsBuilder.class);
 
     private final BuyerStore BUYER_STORE;
     private final InvoiceStore INVOICE_STORE;
@@ -77,6 +81,7 @@ public class ViewsBuilder {
             }
             debtors.sort((Comparator.comparing(Debtor::getDebtSum).reversed()));
         } catch (SQLException ex) {
+            logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
         return debtors;
@@ -123,6 +128,7 @@ public class ViewsBuilder {
 
             debtor.setDebtSum(debtor.getPositiveSum() - debtor.getNegativeSum());
         } catch (SQLException ex) {
+            logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
         return debtor;

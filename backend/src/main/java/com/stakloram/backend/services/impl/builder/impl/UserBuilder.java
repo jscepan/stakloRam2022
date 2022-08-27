@@ -55,6 +55,7 @@ public class UserBuilder extends BaseBuilder {
             try {
                 USER_HAS_ROLE_STORE.createNewObjectToDatabase(user.getId(), role.getId());
             } catch (SQLException ex) {
+                super.logger.error(ex.toString());
                 throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
             }
         }
@@ -72,7 +73,7 @@ public class UserBuilder extends BaseBuilder {
                     previousUserRoles.add(ROLE_STORE.getObjectFromResultSet(rs));
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(UserBuilder.class.getName()).log(Level.SEVERE, null, ex);
+                super.logger.error(ex.toString());
             }
             Map<Helper.Action, List<? extends BaseModel>> mapOfDifferences = Helper.findDifferenceBetweenLists(user.getRoles(), previousUserRoles);
             for (BaseModel role : mapOfDifferences.get(Helper.Action.FOR_CREATE)) {
@@ -83,6 +84,7 @@ public class UserBuilder extends BaseBuilder {
             }
             return user;
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -91,6 +93,7 @@ public class UserBuilder extends BaseBuilder {
         try {
             return USER_STORE.changeUserPassword(user.getOid(), newPassword);
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -99,6 +102,7 @@ public class UserBuilder extends BaseBuilder {
         try {
             return USER_STORE.changeUserPassword(userOid, newPassword);
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -119,6 +123,7 @@ public class UserBuilder extends BaseBuilder {
                 throw new SException(UserMessage.getLocalizedMessage("objectNotFound"));
             }
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -139,6 +144,7 @@ public class UserBuilder extends BaseBuilder {
                 throw new SException(UserMessage.getLocalizedMessage("objectNotFound"));
             }
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -152,6 +158,7 @@ public class UserBuilder extends BaseBuilder {
             }
             return roles;
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }

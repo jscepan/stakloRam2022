@@ -2,7 +2,6 @@ package com.stakloram.backend.util;
 
 import com.stakloram.backend.models.BaseModel;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,11 +13,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Helper {
+
+    Logger logger = LoggerFactory.getLogger(Helper.class);
 
     public static java.sql.Date convertLocalDateTimeToDateTime(LocalDateTime date) {
         return Date.valueOf(date.toLocalDate());
@@ -43,14 +43,14 @@ public class Helper {
             }
             reader.close();
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Helper.class.getName()).log(Level.SEVERE, null, ex);
+            LoggerFactory.getLogger(Helper.class).error("", ex);
         } catch (IOException ex) {
-            Logger.getLogger(Helper.class.getName()).log(Level.SEVERE, null, ex);
+            LoggerFactory.getLogger(Helper.class).error("", ex);
         } finally {
             try {
                 reader.close();
             } catch (IOException ex) {
-                Logger.getLogger(Helper.class.getName()).log(Level.SEVERE, null, ex);
+                LoggerFactory.getLogger(Helper.class).error("", ex);
             }
         }
         return data;

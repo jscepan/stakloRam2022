@@ -7,6 +7,8 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,13 +19,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
-
+    
+    Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
+    
     @Autowired
     private MyUserDetailsService userService;
-
+    
     @Autowired
     private JwtUtil jwtUtil;
-
+    
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // IF user try to login then don't ask for JWT
@@ -37,7 +41,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     String jwt = null;
                     jwt = authorizationHeader.substring(7);
                     username = jwtUtil.extractUsername(jwt);
-
+                    
                     if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                         UserDetails user = this.userService.loadUserByUsername(username);
                         if (jwtUtil.validateToken(jwt, user)) {
@@ -48,7 +52,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     }
                     filterChain.doFilter(request, response);
                 } catch (Exception e) {
-                    // TODO
+                    logger.error(e.toString());
                 }
             } else {
                 filterChain.doFilter(request, response);

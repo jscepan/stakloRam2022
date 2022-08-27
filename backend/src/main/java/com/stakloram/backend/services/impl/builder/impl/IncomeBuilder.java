@@ -49,6 +49,7 @@ public class IncomeBuilder extends BaseBuilder {
             }
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -71,6 +72,7 @@ public class IncomeBuilder extends BaseBuilder {
             }
             return new ArrayResponse(objects, rwc.getCount());
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }

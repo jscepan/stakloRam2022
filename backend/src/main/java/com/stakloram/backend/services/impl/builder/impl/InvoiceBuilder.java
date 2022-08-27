@@ -85,6 +85,7 @@ public class InvoiceBuilder extends BaseBuilder {
                 throw new SException(UserMessage.getLocalizedMessage("objectNotFound"));
             }
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -104,6 +105,7 @@ public class InvoiceBuilder extends BaseBuilder {
             }
             return invoice;
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -145,6 +147,7 @@ public class InvoiceBuilder extends BaseBuilder {
             }
             return invoice;
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -162,6 +165,7 @@ public class InvoiceBuilder extends BaseBuilder {
             }
             return new ArrayResponse(objects, rwc.getCount());
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -176,6 +180,7 @@ public class InvoiceBuilder extends BaseBuilder {
                 }
                 INVOICE_ITEM_STORE.deleteObjectByOid(item.getOid());
             } catch (SQLException ex) {
+                super.logger.error(ex.toString());
                 throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
             }
         }
@@ -187,6 +192,7 @@ public class InvoiceBuilder extends BaseBuilder {
         try {
             return ((InvoiceStore) this.getObjectStore()).getLastInvoiceNumber(invoiceType, year) + 1;
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -199,6 +205,7 @@ public class InvoiceBuilder extends BaseBuilder {
                 items.add(rs.getString("invoice_item_description"));
             }
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
         return items;

@@ -44,8 +44,10 @@ public class CityBuilder extends BaseBuilder {
             city.setCountry((Country) COUNTRY_STORE.getObjectByOid(city.getCountry().getOid()));
             return city;
         } catch (SException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -57,6 +59,7 @@ public class CityBuilder extends BaseBuilder {
             city.setCountry((Country) COUNTRY_STORE.getObjectByOid(city.getCountry().getOid()));
             return city;
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -68,6 +71,7 @@ public class CityBuilder extends BaseBuilder {
             city.setCountry((Country) COUNTRY_STORE.getObjectByOid(city.getCountry().getOid()));
             return city;
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -85,6 +89,7 @@ public class CityBuilder extends BaseBuilder {
             }
             return new ArrayResponse(objects, rwc.getCount());
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }

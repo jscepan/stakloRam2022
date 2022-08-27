@@ -31,7 +31,6 @@ public class SettingsService {
         try {
             objectMapper.writeValue(new File(Constants.SETTINGS_FILE), settings);
         } catch (IOException ex) {
-            Logger.getLogger(SettingsService.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
         return settings;

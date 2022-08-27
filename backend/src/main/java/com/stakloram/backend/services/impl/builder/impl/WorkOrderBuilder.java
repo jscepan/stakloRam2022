@@ -45,6 +45,7 @@ public class WorkOrderBuilder extends BaseBuilder {
             try {
                 WORK_ORDER_ITEM_STORE.createNewObjectToDatabase(woi, workOrder.getId());
             } catch (SQLException ex) {
+                super.logger.error(ex.toString());
                 throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
             }
         }
@@ -72,6 +73,7 @@ public class WorkOrderBuilder extends BaseBuilder {
             }
             return workOrder;
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -85,6 +87,7 @@ public class WorkOrderBuilder extends BaseBuilder {
             buyer.setCity((City) CITY_STORE.getObjectByOid(buyer.getCity().getOid()));
             workOrder.setBuyer(buyer);
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
         List<WorkOrderItem> workOrderItems = new ArrayList<>();
@@ -94,6 +97,7 @@ public class WorkOrderBuilder extends BaseBuilder {
                 workOrderItems.add(WORK_ORDER_ITEM_STORE.getObjectFromResultSet(rs));
             }
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
         workOrder.setWorkOrderItems(workOrderItems);
@@ -124,6 +128,7 @@ public class WorkOrderBuilder extends BaseBuilder {
             }
             return new ArrayResponse(objects, rwc.getCount());
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -147,6 +152,7 @@ public class WorkOrderBuilder extends BaseBuilder {
             }
             return objects;
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -155,6 +161,7 @@ public class WorkOrderBuilder extends BaseBuilder {
         try {
             return ((WorkOrderStore) this.getObjectStore()).getLastWorkOrderNumber(year) + 1;
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -167,6 +174,7 @@ public class WorkOrderBuilder extends BaseBuilder {
                 items.add(rs.getString("work_order_item_description"));
             }
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
         return items;

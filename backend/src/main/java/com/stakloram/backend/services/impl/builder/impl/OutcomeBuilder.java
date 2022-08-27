@@ -49,6 +49,7 @@ public class OutcomeBuilder extends BaseBuilder {
             }
             throw new SException(UserMessage.getLocalizedMessage("objectNotFound"));
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -71,6 +72,7 @@ public class OutcomeBuilder extends BaseBuilder {
             }
             return new ArrayResponse(objects, rwc.getCount());
         } catch (SQLException ex) {
+            super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }

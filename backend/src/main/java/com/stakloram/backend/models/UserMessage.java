@@ -14,7 +14,7 @@ public class UserMessage {
         // Locale locale = MTContext.getContext().getLocale();
 
 //        Locale locale = new Locale("en");
-        LocaleContextHolder.setLocale(new Locale("rs"));
+        LocaleContextHolder.setLocale(locale);
 //        System.out.println("111" + LocaleContextHolder.getLocale());
         String str = ResourceBundle.getBundle(RESOURCE, LocaleContextHolder.getLocale()).getString(key);
         try {

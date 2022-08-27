@@ -1,5 +1,6 @@
 package com.stakloram.backend.services;
 
+import com.stakloram.backend.controllers.WorkOrderController;
 import com.stakloram.backend.database.ConnectionToDatabase;
 import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.BaseModel;
@@ -11,8 +12,12 @@ import com.stakloram.backend.services.impl.builder.BaseBuilder;
 import java.sql.SQLException;
 import java.util.List;
 import static java.util.Objects.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class ServiceModel implements IService {
+
+    Logger logger = LoggerFactory.getLogger(ServiceModel.class);
 
     public static final int SKIP = 50;
     public static final int TOP = 50;
@@ -68,6 +73,7 @@ public abstract class ServiceModel implements IService {
             this.rollback();
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         } catch (SException ex) {
+            logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
@@ -94,6 +100,7 @@ public abstract class ServiceModel implements IService {
         try {
             this.locator.getCONN().setAutoCommit(false);
         } catch (SQLException ex) {
+            logger.error(ex.toString());
         }
     }
 
@@ -102,6 +109,7 @@ public abstract class ServiceModel implements IService {
         try {
             this.locator.getCONN().rollback();
         } catch (SQLException ex) {
+            logger.error(ex.toString());
         }
     }
 
@@ -110,6 +118,7 @@ public abstract class ServiceModel implements IService {
         try {
             this.locator.getCONN().commit();
         } catch (SQLException ex) {
+            logger.error(ex.toString());
         }
     }
 }

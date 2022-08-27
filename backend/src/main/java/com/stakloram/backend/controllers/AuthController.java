@@ -5,6 +5,8 @@ import com.stakloram.backend.models.AuthRequest;
 import com.stakloram.backend.models.AuthResponse;
 import com.stakloram.backend.services.impl.MyUserDetailsService;
 import com.stakloram.backend.util.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
 public class AuthController {
+
+    Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -34,6 +38,7 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
             );
         } catch (BadCredentialsException e) {
+            logger.error(e.toString());
             throw new Exception("Incorrect username or password", e);
         }
 
@@ -49,6 +54,7 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getOldPassword())
             );
         } catch (BadCredentialsException e) {
+            logger.error(e.toString());
             throw new Exception("Incorrect username or password", e);
         }
         if (userService.changeUserPassword(authRequest.getUsername(), authRequest.getOldPassword(), authRequest.getNewPassword())) {

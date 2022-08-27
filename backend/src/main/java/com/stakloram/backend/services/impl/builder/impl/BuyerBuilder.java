@@ -37,7 +37,8 @@ public class BuyerBuilder extends BaseBuilder {
             buyer.setCity((City) CITY_STORE.getObjectByOid(buyer.getCity().getOid()));
             return buyer;
         } catch (SQLException ex) {
-            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+            super.logger.error(ex.toString());
+          throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 

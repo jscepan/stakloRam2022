@@ -4,11 +4,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import javax.sql.DataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ConnectionToDatabase {
+
+    Logger logger = LoggerFactory.getLogger(ConnectionToDatabase.class);
 
     public static final String DATABASE_NAME = "stakloram2022";
     private static final String DATABASE_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -32,7 +36,7 @@ public class ConnectionToDatabase {
             String url = URL + DATABASE_NAME + "?user=" + USERNAME + "&password=" + PASSWORD + "&autoReconnect=true&useSSL=false&characterEncoding=UTF-8";
             connection = (Connection) DriverManager.getConnection(url);
         } catch (ClassNotFoundException | SQLException e) {
-            e.getMessage();
+            logger.error(e.toString());
         }
         return connection;
     }
@@ -53,6 +57,7 @@ public class ConnectionToDatabase {
                 connection.close();
                 connection = null;
             } catch (SQLException e) {
+                logger.error(e.toString());
             }
         }
     }

@@ -6,9 +6,12 @@ import com.stakloram.backend.models.MyUserDetails;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.User;
 import com.stakloram.backend.models.UserMessage;
+import com.stakloram.backend.services.ServiceModel;
 import com.stakloram.backend.services.impl.builder.impl.UserBuilder;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
+
+    Logger logger = LoggerFactory.getLogger(MyUserDetailsService.class);
 
     protected final Locator locator = new Locator(new ConnectionToDatabase().connect());
 
@@ -30,6 +35,7 @@ public class MyUserDetailsService implements UserDetailsService {
             });
             return new MyUserDetails(user.getUsername(), user.getPassword(), user.isEnabled(), authorities);
         } catch (SException ex) {
+            logger.error(ex.toString());
             throw new UsernameNotFoundException(UserMessage.getLocalizedMessage("wrongUsername"));
         }
     }
