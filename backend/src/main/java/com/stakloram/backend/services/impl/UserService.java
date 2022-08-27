@@ -73,7 +73,6 @@ public class UserService extends ServiceModel {
             return (new UserBuilder(this.locator)).getUserByUsername(authentication.getName());
         }
         throw new SException(UserMessage.getLocalizedMessage("wrongUsername"));
-//        return (new UserBuilder(this.locator)).getObjectByOid(this.getLocator().getCurrentUserOID());
     }
 
     public boolean setNewUserPassword(String oid, String password) throws SException {

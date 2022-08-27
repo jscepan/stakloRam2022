@@ -1,3 +1,1 @@
-export enum MePermissionTypes {
-  USER_ANY = 'user:*',
-}
+export enum MePermissionTypes {}

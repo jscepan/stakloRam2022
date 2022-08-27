@@ -185,6 +185,7 @@
   "newUserIsSuccessfullyCreated": "Nov korisnik uspešno kreiran",
   "newWorkOrderIsSuccessfullyCreated": "Radni nalog uspešno kreiran",
   "noResults": "Nema rezultata",
+  "notAllowed": "Nedozvoljena radnja",
   "note": "Napomena",
   "notes": "Napomene",
   "nr": "Br.",
@@ -289,6 +290,7 @@
   "workOrderNr": "Radni nalog br.",
   "worker": "Radnik",
   "youDidntSelectAnyBuyer": "You didn't select any buyer!",
+  "youDontHaveAccess": "Nemate pristup",
   "zipCode": "PTT broj",
   "zipCodeCity": "PTT i mesto"
 }

@@ -185,6 +185,7 @@
   "newUserIsSuccessfullyCreated": "New user is successfully created",
   "newWorkOrderIsSuccessfullyCreated": "New work order is successfully created",
   "noResults": "No results",
+  "notAllowed": "Not Allowed",
   "note": "Note",
   "notes": "Notes",
   "nr": "Nr.",
@@ -289,6 +290,7 @@
   "workOrderNr": "Work order num.",
   "worker": "Worker",
   "youDidntSelectAnyBuyer": "You didn't select any buyer!",
+  "youDontHaveAccess": "You don't have access",
   "zipCode": "Zip code",
   "zipCodeCity": "Zip code and city"
 }

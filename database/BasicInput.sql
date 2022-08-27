@@ -1,6 +1,7 @@
 -- Insert role
 insert into stakloram2022.role values (null, 'admin');
 insert into stakloram2022.role values (null, 'worker');
+insert into stakloram2022.role values (null, 'worker_chief');
 insert into stakloram2022.role values (null, 'backoffice');
 
 -- Insert user
@@ -9,6 +10,7 @@ insert into stakloram2022.user values (null, 'Administrator', 'admin', 'admin', 
 insert into stakloram2022.user_has_role values (1,1);
 insert into stakloram2022.user_has_role values (1,2);
 insert into stakloram2022.user_has_role values (1,3);
+insert into stakloram2022.user_has_role values (1,4);
 
 -- Insert country
 insert into stakloram2022.country values (1,'Srbija');

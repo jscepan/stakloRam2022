@@ -1,5 +1,4 @@
 import { BaseModel } from './base-model';
-import { PermissionModel } from './permission.model';
 import { RoleModel } from './role.model';
 
 export class UserModel extends BaseModel {
@@ -10,5 +9,5 @@ export class UserModel extends BaseModel {
   email: string = '';
   language: string = '';
   roles: RoleModel[] = [];
-  permissions: PermissionModel[] = [];
+  privileges: string[] = [];
 }

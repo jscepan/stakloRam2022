@@ -39,10 +39,6 @@ export class AuthGuard implements CanActivate {
         map((response: UserModel) => {
           if (response) {
             this.authStoreService.user = response ? response : null;
-            this.authStoreService.permissions = response.permissions
-              ? response.permissions
-              : null;
-            this.authStoreService.language = response.language;
             return true;
           }
           this.router.navigate([this.redirectToNotAuthorizedPage]);

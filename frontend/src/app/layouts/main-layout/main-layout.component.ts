@@ -180,7 +180,6 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     this.router.navigate(['auth/login']);
     this.authStoreService.canceledURL = null;
     this.authStoreService.user = null;
-    this.authStoreService.permissions = null;
     this.authStoreService.canceledURL = null;
     this.localStorageService.remove('jwt');
   }

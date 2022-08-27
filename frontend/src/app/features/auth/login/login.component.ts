@@ -53,12 +53,6 @@ export class LoginComponent implements OnInit {
             .getCurrentUser()
             .subscribe((response: UserModel) => {
               this.authStoreService.user = response;
-              this.authStoreService.permissions = response.permissions
-                ? response.permissions
-                : null;
-              this.authStoreService.language = response.language
-                ? response.language
-                : null;
               this.router.navigate(['/']);
 
               if (this.authStoreService.canceledURL) {
