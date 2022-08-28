@@ -36,10 +36,9 @@ public abstract class ServiceModel implements IService {
     }
 
     @Override
-    public void checkRequestDataForModify(String oid, BaseModel baseModel) throws SException{
-    this.checkRequestDataForCreate(baseModel);
+    public void checkRequestDataForModify(String oid, BaseModel baseModel) throws SException {
+        this.checkRequestDataForCreate(baseModel);
     }
-    
 
     public Locator getLocator() {
         return locator;
@@ -145,6 +144,6 @@ public abstract class ServiceModel implements IService {
     }
 
     public boolean isObjectWithOid(BaseModel object) throws SException {
-        return (object.getOid() == null || object.getOid().length() == 0);
+        return !((object.getOid() == null) || (object.getOid().length() == 0));
     }
 }

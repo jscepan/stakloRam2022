@@ -25,9 +25,9 @@ export class BasePermissionGuard {
       return true;
     } else {
       this.globalService.showBasicAlert(
-        MODE.success,
-        this.translateService.instant('notAllowed'),
-        this.translateService.instant('youDontHaveAccess')
+        MODE.error,
+        this.translateService.instant('Nedozvoljeno'),
+        this.translateService.instant('Nemate pristup')
       );
       this.router.navigate(['/']);
       return false;

@@ -44,9 +44,6 @@ public class UserService extends ServiceModel {
     public void checkRequestDataForCreate(BaseModel baseModel) throws SException {
         User object = (User) baseModel;
         String oid = object.getOid();
-        if (DataChecker.isNull(oid) || oid.trim().isEmpty()) {
-            throw new SException(UserMessage.getLocalizedMessage("userCantBeEmpty"));
-        }
         if (DataChecker.isNull(object.getEmail()) || object.getEmail().trim().isEmpty() || !DataChecker.isEmail(object.getEmail())) {
             throw new SException(UserMessage.getLocalizedMessage("emailError"));
         }

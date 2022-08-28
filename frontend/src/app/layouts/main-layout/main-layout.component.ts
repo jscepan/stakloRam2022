@@ -27,14 +27,10 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     private languageService: LanguageService,
     private translateService: TranslateService,
     private authStoreService: AuthStoreService,
-    private userWebService: UserWebService,
     private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit(): void {
-    this.subs.sink = this.userWebService.getUserProfile().subscribe((user) => {
-      this.authStoreService.user = user;
-    });
     let navItems: SidebarNavItemI[] = [
       {
         id: 'dashboard',

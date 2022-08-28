@@ -1,5 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { LanguageService } from 'src/app/language.service';
+import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
+import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
+import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
+import { UserWebService } from 'src/app/web-services/user.web-service';
 
 @Component({
   selector: 'app-print-layout',
@@ -8,9 +11,18 @@ import { LanguageService } from 'src/app/language.service';
   providers: [],
 })
 export class PrintLayoutComponent implements OnInit, OnDestroy {
-  constructor(private languageService: LanguageService) {}
+  public subs: SubscriptionManager = new SubscriptionManager();
 
-  ngOnInit(): void {}
+  constructor(
+    private userWebService: UserWebService,
+    private authStoreService: AuthStoreService
+  ) {}
+
+  ngOnInit(): void {
+    this.subs.sink = this.userWebService.getUserProfile().subscribe((user) => {
+      this.authStoreService.user = user;
+    });
+  }
 
   ngOnDestroy(): void {}
 }
