@@ -289,6 +289,7 @@
   "workOrderIsSuccessfullyUpdated": "Work order is successfully updated",
   "workOrderNr": "Work order num.",
   "worker": "Worker",
+  "worker_chief": "Worker chief",
   "youDidntSelectAnyBuyer": "You didn't select any buyer!",
   "youDontHaveAccess": "You don't have access",
   "zipCode": "Zip code",

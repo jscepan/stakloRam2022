@@ -289,6 +289,7 @@
   "workOrderIsSuccessfullyUpdated": "Radni nalog je uspešno izmenjen",
   "workOrderNr": "Radni nalog br.",
   "worker": "Radnik",
+  "worker_chief": "Šef radnika",
   "youDidntSelectAnyBuyer": "You didn't select any buyer!",
   "youDontHaveAccess": "Nemate pristup",
   "zipCode": "PTT broj",

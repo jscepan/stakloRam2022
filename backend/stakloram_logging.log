@@ -13,3 +13,18 @@
 2022-08-28 03:35:04.842  INFO 17916 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2022-08-28 03:35:04.843  INFO 17916 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2022-08-28 03:35:04.844  INFO 17916 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-08-28 03:48:03.599  INFO 1864 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 16.0.2 on DESKTOP-3DDETGI with PID 1864 (D:\StakloRam\stakloRam2022\backend\target\classes started by Scepan in D:\StakloRam\stakloRam2022\backend)
+2022-08-28 03:48:03.602 DEBUG 1864 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
+2022-08-28 03:48:03.602  INFO 1864 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
+2022-08-28 03:48:04.748  INFO 1864 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-08-28 03:48:04.758  INFO 1864 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-08-28 03:48:04.758  INFO 1864 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
+2022-08-28 03:48:04.868  INFO 1864 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-08-28 03:48:04.869  INFO 1864 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1213 ms
+2022-08-28 03:48:05.060 DEBUG 1864 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
+2022-08-28 03:48:05.462  INFO 1864 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7d17ee50, org.springframework.security.web.context.SecurityContextPersistenceFilter@1b6924cb, org.springframework.security.web.header.HeaderWriterFilter@5984feef, org.springframework.web.filter.CorsFilter@44fdce3c, org.springframework.security.web.authentication.logout.LogoutFilter@ba17be6, com.stakloram.backend.auth.JwtRequestFilter@44bd4b0a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@141d3d43, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6419a0e1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@712c5463, org.springframework.security.web.session.SessionManagementFilter@77ab22be, org.springframework.security.web.access.ExceptionTranslationFilter@63d5874f, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7cac93fe]
+2022-08-28 03:48:05.606  INFO 1864 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-08-28 03:48:05.615  INFO 1864 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 2.431 seconds (JVM running for 2.782)
+2022-08-28 03:50:09.107  INFO 1864 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-08-28 03:50:09.107  INFO 1864 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-08-28 03:50:09.108  INFO 1864 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
