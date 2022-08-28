@@ -131,6 +131,7 @@
           (clickEvent)="createBuyer()"
           class="create-buyer-button"
           *ngIf="!isEdit"
+          [disabled]="!hasPrivilege('BUYER_CREATE')"
         ></app-button>
       </div>
 

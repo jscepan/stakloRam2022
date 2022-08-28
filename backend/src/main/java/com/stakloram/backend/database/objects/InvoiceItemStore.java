@@ -71,7 +71,6 @@ public class InvoiceItemStore extends ObjectStore {
         st.setDouble(++i, object.getGrossPrice());
         st.setLong(++i, BaseModel.getIdFromOid(oid));
         if (st.executeUpdate() > 0) {
-            System.out.println("USPELO JE");
             return object;
         }
         return null;

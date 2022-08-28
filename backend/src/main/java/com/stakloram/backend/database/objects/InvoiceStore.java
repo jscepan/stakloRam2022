@@ -68,8 +68,6 @@ public class InvoiceStore extends ObjectStore {
 
     @Override
     public Invoice modifyObject(String oid, BaseModel model) throws SQLException {
-        System.out.println("oid: " + oid);
-        System.out.println(model);
         Invoice object = (Invoice) model;
         object.setOid(oid);
         int i = 0;

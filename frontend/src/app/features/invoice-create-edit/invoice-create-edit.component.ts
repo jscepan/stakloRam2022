@@ -42,6 +42,7 @@ import { WorkOrderItemModel } from 'src/app/shared/models/work-order-item';
 import { WorkOrderSelectionComponentService } from '@features/work-order-selection-popup/work-order-selection-component.service';
 import { WorkOrderItemSelectionComponentService } from '@features/work-order-item-selection-popup/work-order-item-selection-component.service';
 import { NoteModel } from 'src/app/shared/models/note.model';
+import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 
 @Component({
   selector: 'app-invoice-create-edit',
@@ -136,7 +137,8 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     private listEntities: ListEntities<BuyerModel>,
     private el: ElementRef,
     private workOrderSelectionComponentService: WorkOrderSelectionComponentService,
-    private workOrderItemSelectionComponentService: WorkOrderItemSelectionComponentService
+    private workOrderItemSelectionComponentService: WorkOrderItemSelectionComponentService,
+    private authStoreService: AuthStoreService
   ) {}
 
   ngOnInit(): void {
@@ -203,6 +205,10 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+
+  hasPrivilege(privilege: string): boolean {
+    return this.authStoreService.isAllowed(privilege);
   }
 
   initializeCreate(): void {

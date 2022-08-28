@@ -12,6 +12,7 @@ import {
 import { SweetAlertService } from 'src/app/shared/components/sweet-alert/sweet-alert.service';
 import { IncomeModel } from 'src/app/shared/models/income.model';
 import { SearchModel } from 'src/app/shared/models/search.model';
+import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { ListEntities } from 'src/app/shared/services/list-entities';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
@@ -25,7 +26,6 @@ import { IncomeWebService } from 'src/app/web-services/income.web-service';
     SweetAlertService,
     ListEntities,
     IncomeCreateEditPopupService,
-    OutcomeCreateEditPopupService,
   ],
 })
 export class IncomesComponent implements OnInit, OnDestroy {
@@ -44,13 +44,17 @@ export class IncomesComponent implements OnInit, OnDestroy {
     private listEntities: ListEntities<IncomeModel>,
     private router: Router,
     private incomeCreateEditPopupService: IncomeCreateEditPopupService,
-    private outcomeCreateEditPopupService: OutcomeCreateEditPopupService
+    private authStoreService: AuthStoreService
   ) {}
 
   ngOnInit(): void {
     this.subs.sink = this.listEntities
       .setWebService(this.webService)
       .requestFirstPage();
+  }
+
+  hasPrivilege(privilege: string): boolean {
+    return this.authStoreService.isAllowed(privilege);
   }
 
   inputSearchHandler(text: string): void {

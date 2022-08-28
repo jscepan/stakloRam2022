@@ -113,6 +113,7 @@
             (clickEvent)="createIncome(invoice)"
             *ngIf="invoice.type === 'DOMESTIC' || invoice.type === 'FOREIGN'"
             [matTooltip]="'createIncome' | translate"
+            [disabled]="!hasPrivilege('INCOME_CREATE')"
           ></app-button>
         </div>
         <div class="grid-item">

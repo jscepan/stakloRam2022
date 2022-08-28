@@ -3,6 +3,7 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
+import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import {
   AppSettings,
@@ -25,7 +26,8 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
     private router: Router,
     private globalService: GlobalService,
     private translateService: TranslateService,
-    private settingsStoreService: SettingsStoreService
+    private settingsStoreService: SettingsStoreService,
+    private authStoreService: AuthStoreService
   ) {}
 
   ngOnInit(): void {
@@ -171,6 +173,10 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  hasPrivilege(privilege: string): boolean {
+    return this.authStoreService.isAllowed(privilege);
   }
 
   updateSettings(): void {

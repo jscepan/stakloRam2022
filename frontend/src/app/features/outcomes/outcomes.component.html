@@ -8,6 +8,7 @@
     <app-button
       [text]="'createOutcome' | translate"
       (clickEvent)="create()"
+      [disabled]="!hasPrivilege('OUTCOME_CREATE')"
     ></app-button>
     <app-button
       [text]="'incomes' | translate"

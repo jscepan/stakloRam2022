@@ -6,6 +6,7 @@ import { CityWebService } from 'src/app/web-services/city.web-service';
 import { ListEntities } from 'src/app/shared/services/list-entities';
 import { Observable } from 'rxjs';
 import { SearchModel } from 'src/app/shared/models/search.model';
+import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 
 @Component({
   selector: 'app-cities',
@@ -24,13 +25,18 @@ export class CitiesComponent implements OnInit, OnDestroy {
   constructor(
     private cityCreateEditPopupService: CityCreateEditPopupService,
     private webService: CityWebService,
-    private listEntities: ListEntities<CityModel>
+    private listEntities: ListEntities<CityModel>,
+    private authStoreService: AuthStoreService
   ) {}
 
   ngOnInit(): void {
     this.subs.sink = this.listEntities
       .setWebService(this.webService)
       .requestFirstPage();
+  }
+
+  hasPrivilege(privilege: string): boolean {
+    return this.authStoreService.isAllowed(privilege);
   }
 
   inputSearchHandler(text: string): void {

@@ -58,6 +58,7 @@
       (clickEvent)="createCountry()"
       class="create-button"
       [color]="'secondary'"
+      [disabled]="!hasPrivilege('COUNTRY_CREATE')"
     ></app-button>
 
     <div class="button-section">

@@ -22,6 +22,7 @@ import { SearchModel } from 'src/app/shared/models/search.model';
 import { BaseModel } from 'src/app/shared/models/base-model';
 import { compareByValue } from 'src/app/shared/utils';
 import { MatSelectChange } from '@angular/material/select';
+import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 
 export interface DialogData {
   oid: string;
@@ -75,7 +76,8 @@ export class BuyerCreateEditComponent implements OnInit, OnDestroy {
     private webService: BuyerWebService,
     private cityCreateEditPopupService: CityCreateEditPopupService,
     private translateService: TranslateService,
-    private listEntities: ListEntities<CityModel>
+    private listEntities: ListEntities<CityModel>,
+    private authStoreService: AuthStoreService
   ) {}
 
   ngOnInit(): void {
@@ -86,6 +88,10 @@ export class BuyerCreateEditComponent implements OnInit, OnDestroy {
       .setWebService(this.cityWebService)
       .requestFirstPage();
     this.isEdit ? this.initializeEdit() : this.initializeCreate();
+  }
+
+  hasPrivilege(privilege: string): boolean {
+    return this.authStoreService.isAllowed(privilege);
   }
 
   initializeCreate(): void {

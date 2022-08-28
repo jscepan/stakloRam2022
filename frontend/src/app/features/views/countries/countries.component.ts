@@ -6,6 +6,7 @@ import { SearchModel } from 'src/app/shared/models/search.model';
 import { ListEntities } from 'src/app/shared/services/list-entities';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 import { CountryWebService } from 'src/app/web-services/country.web-service';
+import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 
 @Component({
   selector: 'app-countries',
@@ -24,13 +25,18 @@ export class CountriesComponent implements OnInit, OnDestroy {
   constructor(
     private countryCreateEditPopupService: CountryCreateEditPopupService,
     private webService: CountryWebService,
-    private listEntities: ListEntities<CountryModel>
+    private listEntities: ListEntities<CountryModel>,
+    private authStoreService: AuthStoreService
   ) {}
 
   ngOnInit(): void {
     this.subs.sink = this.listEntities
       .setWebService(this.webService)
       .requestFirstPage();
+  }
+
+  hasPrivilege(privilege: string): boolean {
+    return this.authStoreService.isAllowed(privilege);
   }
 
   inputSearchHandler(text: string): void {

@@ -132,41 +132,32 @@ public class User extends BaseModel {
                     this.privileges.add(Privilege.INVOICES_VIEW);
                     this.privileges.add(Privilege.INVOICE_VIEW);
                     this.privileges.add(Privilege.INVOICE_CREATE);
-                    this.privileges.add(Privilege.INVOICE_MODIFY);
                     this.privileges.add(Privilege.INVOICE_DELETE);
                     this.privileges.add(Privilege.INCOMES_VIEW);
                     this.privileges.add(Privilege.INCOME_VIEW);
                     this.privileges.add(Privilege.INCOME_CREATE);
-                    this.privileges.add(Privilege.INCOME_MODIFY);
                     this.privileges.add(Privilege.INCOME_DELETE);
                     this.privileges.add(Privilege.OUTCOMES_VIEW);
                     this.privileges.add(Privilege.OUTCOME_VIEW);
                     this.privileges.add(Privilege.OUTCOME_CREATE);
-                    this.privileges.add(Privilege.OUTCOME_MODIFY);
                     this.privileges.add(Privilege.OUTCOME_DELETE);
                     this.privileges.add(Privilege.WORK_ORDERS_VIEW);
                     this.privileges.add(Privilege.WORK_ORDER_VIEW);
                     this.privileges.add(Privilege.WORK_ORDER_CREATE);
-                    this.privileges.add(Privilege.WORK_ORDER_MODIFY);
                     this.privileges.add(Privilege.WORK_ORDER_DELETE);
                     this.privileges.add(Privilege.DEBTORS_VIEW);
                     this.privileges.add(Privilege.DEBTOR_VIEW);
                     this.privileges.add(Privilege.BUYERS_VIEW);
                     this.privileges.add(Privilege.BUYER_CREATE);
-                    this.privileges.add(Privilege.BUYER_MODIFY);
                     this.privileges.add(Privilege.BUYER_DELETE);
                     this.privileges.add(Privilege.COUNTRIES_VIEW);
                     this.privileges.add(Privilege.COUNTRY_CREATE);
-                    this.privileges.add(Privilege.COUNTRY_MODIFY);
                     this.privileges.add(Privilege.COUNTRY_DELETE);
                     this.privileges.add(Privilege.CITIES_VIEW);
                     this.privileges.add(Privilege.CITY_CREATE);
-                    this.privileges.add(Privilege.CITY_MODIFY);
                     this.privileges.add(Privilege.CITY_DELETE);
                     this.privileges.add(Privilege.USERS_VIEW);
                     this.privileges.add(Privilege.USER_CREATE);
-                    this.privileges.add(Privilege.USER_MODIFY);
-                    this.privileges.add(Privilege.USER_DELETE);
                     this.privileges.add(Privilege.SETTINGS_VIEW);
                     this.privileges.add(Privilege.SETTINGS_MODIFY);
                     break;
@@ -183,49 +174,39 @@ public class User extends BaseModel {
                     this.privileges.add(Privilege.WORK_ORDERS_VIEW);
                     this.privileges.add(Privilege.WORK_ORDER_VIEW);
                     this.privileges.add(Privilege.WORK_ORDER_CREATE);
-                    this.privileges.add(Privilege.WORK_ORDER_MODIFY);
                     this.privileges.add(Privilege.BUYERS_VIEW);
                     this.privileges.add(Privilege.BUYER_CREATE);
-                    this.privileges.add(Privilege.BUYER_MODIFY);
                     this.privileges.add(Privilege.COUNTRIES_VIEW);
                     this.privileges.add(Privilege.COUNTRY_CREATE);
-                    this.privileges.add(Privilege.COUNTRY_MODIFY);
                     this.privileges.add(Privilege.CITIES_VIEW);
                     this.privileges.add(Privilege.CITY_CREATE);
-                    this.privileges.add(Privilege.CITY_MODIFY);
+                    this.privileges.add(Privilege.USERS_VIEW);
                     break;
                 case "backoffice":
                     this.privileges.add(Privilege.INVOICES_VIEW);
                     this.privileges.add(Privilege.INVOICE_VIEW);
                     this.privileges.add(Privilege.INVOICE_CREATE);
-                    this.privileges.add(Privilege.INVOICE_MODIFY);
                     this.privileges.add(Privilege.INCOMES_VIEW);
                     this.privileges.add(Privilege.INCOME_VIEW);
                     this.privileges.add(Privilege.INCOME_CREATE);
-                    this.privileges.add(Privilege.INCOME_MODIFY);
                     this.privileges.add(Privilege.OUTCOMES_VIEW);
                     this.privileges.add(Privilege.OUTCOME_VIEW);
                     this.privileges.add(Privilege.OUTCOME_CREATE);
-                    this.privileges.add(Privilege.OUTCOME_MODIFY);
                     this.privileges.add(Privilege.WORK_ORDERS_VIEW);
                     this.privileges.add(Privilege.WORK_ORDER_VIEW);
                     this.privileges.add(Privilege.WORK_ORDER_CREATE);
-                    this.privileges.add(Privilege.WORK_ORDER_MODIFY);
                     this.privileges.add(Privilege.DEBTORS_VIEW);
                     this.privileges.add(Privilege.BUYERS_VIEW);
                     this.privileges.add(Privilege.BUYER_CREATE);
-                    this.privileges.add(Privilege.BUYER_MODIFY);
                     this.privileges.add(Privilege.COUNTRIES_VIEW);
                     this.privileges.add(Privilege.COUNTRY_CREATE);
-                    this.privileges.add(Privilege.COUNTRY_MODIFY);
                     this.privileges.add(Privilege.CITIES_VIEW);
                     this.privileges.add(Privilege.CITY_CREATE);
-                    this.privileges.add(Privilege.CITY_MODIFY);
                     this.privileges.add(Privilege.SETTINGS_VIEW);
+                    this.privileges.add(Privilege.USERS_VIEW);
                     break;
             }
         }
-        this.getRoles().forEach(role -> System.out.println(role));
     }
 
     @Override
@@ -235,15 +216,15 @@ public class User extends BaseModel {
 
     public enum Privilege {
         USER_ANY,
-        INVOICES_VIEW, INVOICE_VIEW, INVOICE_CREATE, INVOICE_MODIFY, INVOICE_DELETE,
-        INCOMES_VIEW, INCOME_VIEW, INCOME_CREATE, INCOME_MODIFY, INCOME_DELETE,
-        OUTCOMES_VIEW, OUTCOME_VIEW, OUTCOME_CREATE, OUTCOME_MODIFY, OUTCOME_DELETE,
-        WORK_ORDERS_VIEW, WORK_ORDER_VIEW, WORK_ORDER_CREATE, WORK_ORDER_MODIFY, WORK_ORDER_DELETE,
+        INVOICES_VIEW, INVOICE_VIEW, INVOICE_CREATE, INVOICE_DELETE,
+        INCOMES_VIEW, INCOME_VIEW, INCOME_CREATE, INCOME_DELETE,
+        OUTCOMES_VIEW, OUTCOME_VIEW, OUTCOME_CREATE, OUTCOME_DELETE,
+        WORK_ORDERS_VIEW, WORK_ORDER_VIEW, WORK_ORDER_CREATE, WORK_ORDER_DELETE,
         DEBTORS_VIEW, DEBTOR_VIEW,
-        BUYERS_VIEW, BUYER_CREATE, BUYER_MODIFY, BUYER_DELETE,
-        COUNTRIES_VIEW, COUNTRY_CREATE, COUNTRY_MODIFY, COUNTRY_DELETE,
-        CITIES_VIEW, CITY_CREATE, CITY_MODIFY, CITY_DELETE,
-        USERS_VIEW, USER_CREATE, USER_MODIFY, USER_DELETE,
+        BUYERS_VIEW, BUYER_CREATE, BUYER_DELETE,
+        COUNTRIES_VIEW, COUNTRY_CREATE, COUNTRY_DELETE,
+        CITIES_VIEW, CITY_CREATE, CITY_DELETE,
+        USERS_VIEW, USER_CREATE,
         SETTINGS_VIEW, SETTINGS_MODIFY
     }
 }

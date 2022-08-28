@@ -222,7 +222,12 @@
     ></app-button>
     <app-button
       [text]="'save' | translate"
-      [disabled]="!formGroup?.dirty || formGroup?.invalid || false"
+      [disabled]="
+        !formGroup?.dirty ||
+        formGroup?.invalid ||
+        false ||
+        !hasPrivilege('SETTINGS_MODIFY')
+      "
       class="update"
       (clickEvent)="updateSettings()"
     ></app-button>

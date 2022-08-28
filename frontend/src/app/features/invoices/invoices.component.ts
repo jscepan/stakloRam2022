@@ -13,6 +13,7 @@ import { INVOICE_TYPES } from 'src/app/shared/constants';
 import { EnumValueModel } from 'src/app/shared/enums/enum.model';
 import { InvoiceModel } from 'src/app/shared/models/invoice.model';
 import { SearchModel } from 'src/app/shared/models/search.model';
+import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { ListEntities } from 'src/app/shared/services/list-entities';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
@@ -47,7 +48,8 @@ export class InvoicesComponent implements OnInit, OnDestroy {
     private webService: InvoiceWebService,
     private incomeCreateEditPopupService: IncomeCreateEditPopupService,
     private sweetAlertService: SweetAlertService,
-    private listEntities: ListEntities<InvoiceModel>
+    private listEntities: ListEntities<InvoiceModel>,
+    private authStoreService: AuthStoreService
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +57,10 @@ export class InvoicesComponent implements OnInit, OnDestroy {
       .setWebService(this.webService)
       .setOrdering('DESC')
       .requestFirstPage();
+  }
+
+  hasPrivilege(privilege: string): boolean {
+    return this.authStoreService.isAllowed(privilege);
   }
 
   inputSearchHandler(text: string): void {

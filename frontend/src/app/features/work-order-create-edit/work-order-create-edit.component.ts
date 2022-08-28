@@ -41,6 +41,7 @@ import { BuyerWebService } from 'src/app/web-services/buyer.web-service';
 import { WorkOrderWebService } from 'src/app/web-services/work-order.web-service';
 import { map, startWith } from 'rxjs/operators';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 
 @Component({
   selector: 'app-work-order-create-edit',
@@ -108,7 +109,8 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private settingsStoreService: SettingsStoreService,
     private webService: WorkOrderWebService,
-    private el: ElementRef
+    private el: ElementRef,
+    private authStoreService: AuthStoreService
   ) {}
 
   ngOnInit(): void {
@@ -142,6 +144,10 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+
+  hasPrivilege(privilege: string): boolean {
+    return this.authStoreService.isAllowed(privilege);
   }
 
   initializeCreate(): void {

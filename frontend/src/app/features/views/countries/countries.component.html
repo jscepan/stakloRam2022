@@ -9,6 +9,7 @@
       [text]="'createCountry' | translate"
       (clickEvent)="createCountry()"
       class="create-button"
+      [disabled]="!hasPrivilege('COUNTRY_CREATE')"
     ></app-button>
   </div>
 
@@ -26,6 +27,7 @@
         <app-button
           [text]="'edit' | translate"
           (clickEvent)="editCountry(item.oid)"
+          [disabled]="!hasPrivilege('COUNTRY_CREATE')"
         ></app-button>
       </div>
     </ng-container>

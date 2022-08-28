@@ -13,6 +13,7 @@ import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interfac
 import { BaseModel } from 'src/app/shared/models/base-model';
 import { CountryModel } from 'src/app/shared/models/country.model';
 import { SearchModel } from 'src/app/shared/models/search.model';
+import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { ListEntities } from 'src/app/shared/services/list-entities';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
@@ -61,7 +62,8 @@ export class CityCreateEditComponent implements OnInit, OnDestroy {
     private webService: CityWebService,
     private countryWebService: CountryWebService,
     private translateService: TranslateService,
-    private listEntities: ListEntities<CountryModel>
+    private listEntities: ListEntities<CountryModel>,
+    private authStoreService: AuthStoreService
   ) {}
 
   ngOnInit(): void {
@@ -73,6 +75,10 @@ export class CityCreateEditComponent implements OnInit, OnDestroy {
       .requestFirstPage();
 
     this.isEdit ? this.initializeEdit() : this.initializeCreate();
+  }
+
+  hasPrivilege(privilege: string): boolean {
+    return this.authStoreService.isAllowed(privilege);
   }
 
   initializeCreate(): void {

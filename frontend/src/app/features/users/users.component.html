@@ -11,6 +11,7 @@
         (clickEvent)="createUser()"
         class="create-button"
         [iconName]="'user-plus'"
+        [disabled]="!hasPrivilege('USER_CREATE')"
       ></app-button>
     </div>
 
@@ -41,12 +42,14 @@
           <app-button
             [text]="'edit' | translate"
             (clickEvent)="editUser(item.oid)"
+            [disabled]="!hasPrivilege('USER_CREATE')"
           ></app-button>
         </div>
         <div class="grid-item">
           <app-button
             [text]="'resetPassword' | translate"
             (clickEvent)="resetPassword(item.oid)"
+            [disabled]="!hasPrivilege('USER_CREATE')"
           ></app-button>
         </div>
       </ng-container>

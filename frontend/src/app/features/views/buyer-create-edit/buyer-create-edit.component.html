@@ -94,6 +94,7 @@
         class="create-button"
         [iconName]="'plus'"
         [color]="'secondary'"
+        [disabled]="!hasPrivilege('CITY_CREATE')"
       ></app-button>
     </div>
 

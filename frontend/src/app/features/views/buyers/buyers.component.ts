@@ -10,6 +10,7 @@ import {
 import { SweetAlertService } from 'src/app/shared/components/sweet-alert/sweet-alert.service';
 import { BuyerModel } from 'src/app/shared/models/buyer.model';
 import { SearchModel } from 'src/app/shared/models/search.model';
+import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { ListEntities } from 'src/app/shared/services/list-entities';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
@@ -35,13 +36,18 @@ export class BuyersComponent implements OnInit, OnDestroy {
     private globalService: GlobalService,
     private translateService: TranslateService,
     private sweetAlertService: SweetAlertService,
-    private listEntities: ListEntities<BuyerModel>
+    private listEntities: ListEntities<BuyerModel>,
+    private authStoreService: AuthStoreService
   ) {}
 
   ngOnInit(): void {
     this.subs.sink = this.listEntities
       .setWebService(this.webService)
       .requestFirstPage();
+  }
+
+  hasPrivilege(privilege: string): boolean {
+    return this.authStoreService.isAllowed(privilege);
   }
 
   inputSearchHandler(text: string): void {

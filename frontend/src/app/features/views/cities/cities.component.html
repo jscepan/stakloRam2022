@@ -9,6 +9,7 @@
       [text]="'createCity' | translate"
       (clickEvent)="createCity()"
       class="create-button"
+      [disabled]="!hasPrivilege('CITY_CREATE')"
     ></app-button>
   </div>
 

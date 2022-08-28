@@ -1,9 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { BasePermissionGuard } from 'src/app/core/guards/base-permission.guard';
 import { InvoicesComponent } from './invoices.component';
 
 const routes: Routes = [
-  { path: '', component: InvoicesComponent },
+  {
+    path: '',
+    component: InvoicesComponent,
+    canActivate: [BasePermissionGuard],
+    data: {
+      permission: 'INVOICES_VIEW',
+    },
+  },
   {
     path: 'create',
     loadChildren: () =>

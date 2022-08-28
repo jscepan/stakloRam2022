@@ -1,9 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { BasePermissionGuard } from 'src/app/core/guards/base-permission.guard';
 import { WorkOrdersComponent } from './work-orders.component';
 
 const routes: Routes = [
-  { path: '', component: WorkOrdersComponent },
+  {
+    path: '',
+    component: WorkOrdersComponent,
+    canActivate: [BasePermissionGuard],
+    data: {
+      permission: 'WORK_ORDERS_VIEW',
+    },
+  },
   {
     path: 'create',
     loadChildren: () =>

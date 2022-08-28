@@ -9,6 +9,7 @@
       [text]="'createBuyer' | translate"
       (clickEvent)="createBuyer()"
       class="create-button"
+      [disabled]="!hasPrivilege('BUYER_CREATE')"
     ></app-button>
   </div>
 
@@ -40,6 +41,7 @@
           [iconName]="'edit'"
           (clickEvent)="editBuyer(item.oid)"
           [isTransparentMode]="true"
+          [disabled]="!hasPrivilege('BUYER_CREATE')"
         ></app-button>
       </div>
       <div class="grid-item">
@@ -47,6 +49,7 @@
           [iconName]="'trash-2'"
           (clickEvent)="deleteBuyer(item)"
           [isTransparentMode]="true"
+          [disabled]="!hasPrivilege('BUYER_DELETE')"
         ></app-button>
       </div>
     </ng-container>

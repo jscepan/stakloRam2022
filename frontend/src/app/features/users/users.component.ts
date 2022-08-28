@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
 import { SearchModel } from 'src/app/shared/models/search.model';
 import { UserModel } from 'src/app/shared/models/user.model';
+import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { ListEntities } from 'src/app/shared/services/list-entities';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
@@ -36,13 +37,18 @@ export class UsersComponent implements OnInit, OnDestroy {
     private webService: UserWebService,
     private globalService: GlobalService,
     private translateService: TranslateService,
-    private listEntities: ListEntities<UserModel>
+    private listEntities: ListEntities<UserModel>,
+    private authStoreService: AuthStoreService
   ) {}
 
   ngOnInit(): void {
     this.subs.sink = this.listEntities
       .setWebService(this.webService)
       .requestFirstPage();
+  }
+
+  hasPrivilege(privilege: string): boolean {
+    return this.authStoreService.isAllowed(privilege);
   }
 
   inputSearchHandler(text: string): void {
