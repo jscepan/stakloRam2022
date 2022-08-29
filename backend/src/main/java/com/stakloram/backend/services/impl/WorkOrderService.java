@@ -31,14 +31,14 @@ public class WorkOrderService extends ServiceModel {
     @Override
     public void checkRequestDataForCreate(BaseModel baseModel) throws SException {
         WorkOrder wo = (WorkOrder) baseModel;
-        if (super.isObjectWithOid(wo.getBuyer())) {
-            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData"));
+        if (!super.isObjectWithOid(wo.getBuyer())) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("buyer"));
         }
         for (WorkOrderItem woi : wo.getWorkOrderItems()) {
             if (DataChecker.isNull(woi.getDescription()) || woi.getDescription().trim().isEmpty()) {
-                throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData"));
+                throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("description"));
             }
-            super.checkIsAmountPositive(woi.getSumQuantity());
+            super.checkIsAmountPositive(woi.getSumQuantity(), UserMessage.getLocalizedMessage("amount"));
         }
     }
 

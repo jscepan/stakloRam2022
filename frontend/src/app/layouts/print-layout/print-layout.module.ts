@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { PrintLayoutComponent } from './print-layout.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { PrintRoutingModule } from './print-routing.module';
+import { PrintLayoutRoutingModule } from './print-layout-routing.module';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { SidebarModule } from 'src/app/shared/components/sidebar/sidebar.module';
 
@@ -15,7 +15,7 @@ import { SidebarModule } from 'src/app/shared/components/sidebar/sidebar.module'
     RouterModule,
     TranslateModule,
     MatTooltipModule,
-    PrintRoutingModule,
+    PrintLayoutRoutingModule,
     SidebarModule,
   ],
   providers: [GlobalService],

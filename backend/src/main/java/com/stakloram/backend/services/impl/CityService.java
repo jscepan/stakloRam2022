@@ -20,8 +20,14 @@ public class CityService extends ServiceModel {
     @Override
     public void checkRequestDataForCreate(BaseModel baseModel) throws SException {
         City object = (City) baseModel;
-        if (!super.isObjectWithOid(object.getCountry()) || DataChecker.isNull(object.getName()) || object.getName().trim().isEmpty() || DataChecker.isNull(object.getZipCode()) || object.getZipCode().trim().isEmpty()) {
-            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData"));
+        if (!super.isObjectWithOid(object.getCountry())) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("country"));
+        }
+        if (DataChecker.isNull(object.getName()) || object.getName().trim().isEmpty()) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("cityName"));
+        }
+        if (DataChecker.isNull(object.getZipCode()) || object.getZipCode().trim().isEmpty()) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("zipCode"));
         }
     }
 }

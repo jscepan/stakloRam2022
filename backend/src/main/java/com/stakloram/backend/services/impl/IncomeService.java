@@ -19,9 +19,9 @@ public class IncomeService extends ServiceModel {
     @Override
     public void checkRequestDataForCreate(BaseModel baseModel) throws SException {
         Income object = (Income) baseModel;
-        super.checkIsAmountPositive(object.getAmount());
+        super.checkIsAmountPositive(object.getAmount(),UserMessage.getLocalizedMessage("fulfillAllRequiredData"));
         if (!super.isObjectWithOid(object.getBuyer())) {
-            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData"));
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData")+" - "+UserMessage.getLocalizedMessage("buyer"));
         }
     }
 }

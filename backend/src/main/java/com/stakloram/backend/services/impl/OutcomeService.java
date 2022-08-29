@@ -19,9 +19,9 @@ public class OutcomeService extends ServiceModel {
     @Override
     public void checkRequestDataForCreate(BaseModel baseModel) throws SException {
         Outcome object = (Outcome) baseModel;
-        super.checkIsAmountPositive(object.getAmount());
+        super.checkIsAmountPositive(object.getAmount(), UserMessage.getLocalizedMessage("amount"));
         if (!super.isObjectWithOid(object.getBuyer())) {
-            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData"));
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("buyer"));
         }
     }
 }

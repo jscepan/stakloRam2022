@@ -59,41 +59,46 @@ public class InvoiceService extends ServiceModel {
     @Override
     public void checkRequestDataForCreate(BaseModel baseModel) throws SException {
         Invoice invoice = (Invoice) baseModel;
-        if ( // Type
-                DataChecker.isNull(invoice.getType())
-                || invoice.getType().name().trim().isEmpty()
-                // Currency
-                || DataChecker.isNull(invoice.getCurrency())
-                || invoice.getCurrency().trim().isEmpty()
-                // Number
-                || DataChecker.isNull(invoice.getNumber())
-                || invoice.getNumber().trim().isEmpty()
-                // Buyer
-                || super.isObjectWithOid(invoice.getBuyer())
-                // Dates
-                || DataChecker.isNull(invoice.getDateOfCreate())
-                || DataChecker.isNull(invoice.getDateOfTurnover())
-                || DataChecker.isNull(invoice.getDateOfMaturity())
-                // Country
-                || DataChecker.isNull(invoice.getCountry())
-                || invoice.getCountry().trim().isEmpty()
-                // Place
-                || DataChecker.isNull(invoice.getPlaceOfIssue())
-                || invoice.getPlaceOfIssue().trim().isEmpty()
-                // Payment method
-                || DataChecker.isNull(invoice.getMethodOfPayment())
-                || invoice.getMethodOfPayment().trim().isEmpty()) {
-            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData"));
+        if (DataChecker.isNull(invoice.getType()) || invoice.getType().name().trim().isEmpty()) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage(""));
         }
+        if (DataChecker.isNull(invoice.getCurrency()) || invoice.getCurrency().trim().isEmpty()) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("currency"));
+        }
+        if (DataChecker.isNull(invoice.getNumber()) || invoice.getNumber().trim().isEmpty()) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("number"));
+        }
+        if (!super.isObjectWithOid(invoice.getBuyer())) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("buyer"));
+        }
+        if (DataChecker.isNull(invoice.getDateOfCreate())) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("dateOfCreate"));
+        }
+        if (DataChecker.isNull(invoice.getDateOfTurnover())) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("dateOfTurnover"));
+        }
+        if (DataChecker.isNull(invoice.getDateOfMaturity())) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("dateOfMaturity"));
+        }
+        if (DataChecker.isNull(invoice.getCountry()) || invoice.getCountry().trim().isEmpty()) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("country"));
+        }
+        if (DataChecker.isNull(invoice.getPlaceOfIssue()) || invoice.getPlaceOfIssue().trim().isEmpty()) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("placeOfIssue"));
+        }
+        if (DataChecker.isNull(invoice.getMethodOfPayment()) || invoice.getMethodOfPayment().trim().isEmpty()) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("methodOfPayment"));
+        }
+
         if (invoice.getType() == InvoiceType.CASH) {
             if (DataChecker.isNull(invoice.getNumberOfCashBill()) || invoice.getNumberOfCashBill().trim().isEmpty()) {
-                throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData"));
+                throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("numberOfCashBill"));
             }
         }
 
         // If invoice is made from advance invoice check amounts...
         if (invoice.getAdvanceInvoiceOid() != null && invoice.getAdvancePayAmount() > 0 && (invoice.getGrossAmount() < invoice.getAdvancePayAmount())) {
-            throw new SException(UserMessage.getLocalizedMessage("wrongAmountOfAdvancePayAmount"));
+            throw new SException(UserMessage.getLocalizedMessage("wrongAmountOfAdvancePayAmount") + " - " + UserMessage.getLocalizedMessage("amount"));
         }
     }
 }

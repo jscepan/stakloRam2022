@@ -29,7 +29,7 @@ export class BasePermissionGuard {
         this.translateService.instant('Nedozvoljeno'),
         this.translateService.instant('Nemate pristup')
       );
-      this.router.navigate(['/']);
+      // this.router.navigate(['/']);
       return false;
     }
   }

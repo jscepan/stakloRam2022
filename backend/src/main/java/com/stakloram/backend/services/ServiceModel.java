@@ -137,9 +137,9 @@ public abstract class ServiceModel implements IService {
         }
     }
 
-    public void checkIsAmountPositive(double number) throws SException {
+    public void checkIsAmountPositive(double number, String errorMessageContinue) throws SException {
         if (number <= 0) {
-            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData"));
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + errorMessageContinue);
         }
     }
 

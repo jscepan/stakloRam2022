@@ -20,12 +20,21 @@ public class BuyerService extends ServiceModel {
     @Override
     public void checkRequestDataForCreate(BaseModel baseModel) throws SException {
         Buyer buyer = (Buyer) baseModel;
-        if (DataChecker.isNull(buyer.getName()) || buyer.getName().trim().isEmpty() || DataChecker.isNull(buyer.getAddress()) || buyer.getAddress().trim().isEmpty() || super.isObjectWithOid(buyer.getCity())) {
-            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData"));
+        if (DataChecker.isNull(buyer.getName()) || buyer.getName().trim().isEmpty()) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("buyerName"));
+        }
+        if (DataChecker.isNull(buyer.getAddress()) || buyer.getAddress().trim().isEmpty()) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("buyerAddress"));
+        }
+        if (!super.isObjectWithOid(buyer.getCity())) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("buyerCity"));
         }
         if (buyer.getType() == Buyer.BuyerType.COMPANY) {
-            if (DataChecker.isNull(buyer.getMaticalNumber()) || buyer.getMaticalNumber().trim().isEmpty() || DataChecker.isNull(buyer.getPib()) || buyer.getPib().trim().isEmpty()) {
-                throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData"));
+            if (DataChecker.isNull(buyer.getMaticalNumber()) || buyer.getMaticalNumber().trim().isEmpty()) {
+                throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("buyerMaticalNumber"));
+            }
+            if (DataChecker.isNull(buyer.getPib()) || buyer.getPib().trim().isEmpty()) {
+                throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("buyerPIB"));
             }
         }
     }
