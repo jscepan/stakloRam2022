@@ -44,9 +44,9 @@ public class UserService extends ServiceModel {
     public void checkRequestDataForCreate(BaseModel baseModel) throws SException {
         User object = (User) baseModel;
         String oid = object.getOid();
-        if (DataChecker.isNull(object.getEmail()) || object.getEmail().trim().isEmpty() || !DataChecker.isEmail(object.getEmail())) {
-            throw new SException(UserMessage.getLocalizedMessage("emailError"));
-        }
+//        if (DataChecker.isNull(object.getEmail()) || object.getEmail().trim().isEmpty() || !DataChecker.isEmail(object.getEmail())) {
+//            throw new SException(UserMessage.getLocalizedMessage("emailError"));
+//        }
         if (DataChecker.isNull(object.getFullName()) || object.getFullName().trim().isEmpty()) {
             throw new SException(UserMessage.getLocalizedMessage("fullNameIsRequiredField"));
         }

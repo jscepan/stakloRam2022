@@ -164,6 +164,7 @@ public class User extends BaseModel {
                 case "worker":
                     this.privileges.add(Privilege.WORK_ORDERS_VIEW);
                     this.privileges.add(Privilege.WORK_ORDER_VIEW);
+                    this.privileges.add(Privilege.WORK_ORDER_CREATE);
                     this.privileges.add(Privilege.BUYERS_VIEW);
                     this.privileges.add(Privilege.COUNTRIES_VIEW);
                     this.privileges.add(Privilege.CITIES_VIEW);

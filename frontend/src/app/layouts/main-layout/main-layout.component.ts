@@ -43,18 +43,21 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         title: this.translateService.instant('invoices'),
         icon: 'credit-card',
         activated: false,
+        hidden: !this.authStoreService.isAllowed('INVOICES_VIEW'),
       },
       {
         id: 'work-orders',
         title: this.translateService.instant('workOrder'),
         icon: 'activity',
         activated: false,
+        hidden: !this.authStoreService.isAllowed('WORK_ORDERS_VIEW'),
       },
       {
         id: 'incomes',
         title: this.translateService.instant('incomes'),
         icon: 'dollar-sign',
         activated: false,
+        hidden: !this.authStoreService.isAllowed('INCOMES_VIEW'),
       },
       {
         id: 'views',
@@ -63,28 +66,32 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         activated: false,
         children: [
           {
-            id: 'views/debtors-review',
-            title: this.translateService.instant('debtorsReview'),
-            icon: 'minus-circle',
-            activated: false,
-          },
-          {
             id: 'views/buyers',
             title: this.translateService.instant('buyers'),
             icon: 'user',
             activated: false,
+            hidden: !this.authStoreService.isAllowed('BUYERS_VIEW'),
           },
           {
             id: 'views/countries',
             title: this.translateService.instant('countries'),
             icon: 'globe',
             activated: false,
+            hidden: !this.authStoreService.isAllowed('COUNTRIES_VIEW'),
           },
           {
             id: 'views/cities',
             title: this.translateService.instant('cities'),
             icon: 'case',
             activated: false,
+            hidden: !this.authStoreService.isAllowed('CITIES_VIEW'),
+          },
+          {
+            id: 'views/debtors-review',
+            title: this.translateService.instant('debtorsReview'),
+            icon: 'minus-circle',
+            activated: false,
+            hidden: !this.authStoreService.isAllowed('DEBTORS_VIEW'),
           },
         ],
       },
@@ -93,12 +100,14 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         title: this.translateService.instant('users'),
         icon: 'users',
         activated: false,
+        hidden: !this.authStoreService.isAllowed('USERS_VIEW'),
       },
       {
         id: 'settings/application',
         title: this.translateService.instant('settings'),
         icon: 'settings',
         activated: false,
+        hidden: !this.authStoreService.isAllowed('SETTINGS_VIEW'),
       },
     ];
     this.sidebar = {

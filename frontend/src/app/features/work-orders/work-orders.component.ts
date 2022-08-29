@@ -43,6 +43,7 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subs.sink = this.listEntities
       .setWebService(this.webService)
+      .setOrdering('DESC')
       .requestFirstPage();
   }
 
