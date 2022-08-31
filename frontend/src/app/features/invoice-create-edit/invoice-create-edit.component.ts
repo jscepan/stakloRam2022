@@ -572,7 +572,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
               this.translateService.instant('successfully'),
               this.translateService.instant('newInvoiceIsSuccessfullyCreated')
             );
-            window.open('print/invoice-view/' + invoice.oid);
+            window.open('#/print/invoice-view/' + invoice.oid);
             this.router.navigate(['invoices', 'edit', invoice.oid]);
           }
         });

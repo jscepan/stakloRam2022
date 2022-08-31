@@ -58,7 +58,7 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
   }
 
   viewWorkOrder(workOrderOID: string): void {
-    window.open('print/work-order-view/' + workOrderOID);
+    window.open('#/print/work-order-view/' + workOrderOID);
   }
 
   editWorkOrder(workOrderOID: string): void {

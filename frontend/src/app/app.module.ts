@@ -9,7 +9,11 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CoreModule } from './core/core.module';
 import { MatMenuModule } from '@angular/material/menu';
 import { SettingsStoreService } from './shared/services/settings-store.service';
-import { registerLocaleData } from '@angular/common';
+import {
+  HashLocationStrategy,
+  LocationStrategy,
+  registerLocaleData,
+} from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 registerLocaleData(localeDe);
 
@@ -40,6 +44,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     LanguageService,
     SettingsStoreService,
     { provide: LOCALE_ID, useValue: 'de-DE' },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [AppComponent],
 })

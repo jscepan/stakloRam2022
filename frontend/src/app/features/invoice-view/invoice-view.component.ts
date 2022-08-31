@@ -8,10 +8,7 @@ import {
   SettingsStoreService,
 } from 'src/app/shared/services/settings-store.service';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
-import {
-  getDaysBetweenTwoDates,
-  getUOMDisplayValue,
-} from 'src/app/shared/utils';
+import { getUOMDisplayValue } from 'src/app/shared/utils';
 import { InvoiceWebService } from 'src/app/web-services/invoice.web-service';
 
 @Component({

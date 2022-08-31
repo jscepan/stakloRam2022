@@ -6,7 +6,7 @@ import { Title } from '@angular/platform-browser';
   providedIn: 'root',
 })
 export class LanguageService {
-  static defaultLanguage = 'en';
+  static defaultLanguage = 'sr';
   public supportedLanguages = ['en', 'sr'];
 
   public selectedLanguage!: string;

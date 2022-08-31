@@ -133,7 +133,7 @@ export class InvoicesComponent implements OnInit, OnDestroy {
   }
 
   viewInvoice(invoiceOID: string): void {
-    window.open('print/invoice-view/' + invoiceOID);
+    window.open('#/print/invoice-view/' + invoiceOID);
   }
 
   bottomReachedHandler(): void {

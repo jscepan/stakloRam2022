@@ -403,7 +403,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
               this.translateService.instant('successfully'),
               this.translateService.instant('newWorkOrderIsSuccessfullyCreated')
             );
-            window.open('print/work-order-view/' + workOrder.oid);
+            window.open('#/print/work-order-view/' + workOrder.oid);
             if (createInvoice) {
               this.router.navigate(['invoices', 'create'], {
                 queryParams: { workOrderOID: workOrder.oid },

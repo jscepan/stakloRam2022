@@ -30,7 +30,7 @@ export class DebtorsReviewComponent implements OnInit, OnDestroy {
   }
 
   viewDebtor(item: DebtorModel): void {
-    window.open('print/debtor/' + item.buyer?.oid);
+    window.open('#/print/debtor/' + item.buyer?.oid);
   }
 
   inputSearchHandler(text: string): void {
