@@ -180,4 +180,7 @@ public class WorkOrderBuilder extends BaseBuilder {
         return items;
     }
 
+    private String generateImageName(WorkOrder workOrder, String fileExtension) {
+        return "workOrder_" + workOrder.getNumber() + "_" + Helper.generateRandomString(15) + "." + fileExtension;
+    }
 }

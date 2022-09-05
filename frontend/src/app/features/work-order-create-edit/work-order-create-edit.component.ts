@@ -42,6 +42,7 @@ import { WorkOrderWebService } from 'src/app/web-services/work-order.web-service
 import { map, startWith } from 'rxjs/operators';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
+import { ImageUploadModel } from 'src/app/shared/models/image-upload';
 
 @Component({
   selector: 'app-work-order-create-edit',
@@ -379,6 +380,8 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     this.router.navigate(['/']);
   }
 
+  file!: Blob;
+
   handleSubmitButton(createInvoice: boolean = false): void {
     // this.setAllInvoiceAmounts();
     if (this.isEdit && this.workOrderOID) {
@@ -394,25 +397,30 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
           }
         });
     } else {
-      this.webService
-        .createEntity(this.formGroup.value)
-        .subscribe((workOrder) => {
-          if (workOrder) {
-            this.globalService.showBasicAlert(
-              MODE.success,
-              this.translateService.instant('successfully'),
-              this.translateService.instant('newWorkOrderIsSuccessfullyCreated')
-            );
-            window.open('#/print/work-order-view/' + workOrder.oid);
-            if (createInvoice) {
-              this.router.navigate(['invoices', 'create'], {
-                queryParams: { workOrderOID: workOrder.oid },
-              });
-            } else {
-              location.reload();
-            }
-          }
-        });
+      const workOrder = this.formGroup.value;
+      const images: ImageUploadModel[] = [
+        { file: this.file, description: 'xxxx  description  xx' },
+      ];
+      workOrder.images = images;
+      console.log('workOrder');
+      console.log(workOrder);
+      this.webService.createEntity(workOrder).subscribe((workOrder) => {
+        if (workOrder) {
+          this.globalService.showBasicAlert(
+            MODE.success,
+            this.translateService.instant('successfully'),
+            this.translateService.instant('newWorkOrderIsSuccessfullyCreated')
+          );
+          // window.open('#/print/work-order-view/' + workOrder.oid);
+          // if (createInvoice) {
+          //   this.router.navigate(['invoices', 'create'], {
+          //     queryParams: { workOrderOID: workOrder.oid },
+          //   });
+          // } else {
+          //   location.reload();
+          // }
+        }
+      });
     }
   }
 
@@ -495,6 +503,13 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   getFilteredOptions(index: number): Observable<string[]> | undefined {
     return this.filteredOptions[index];
   }
+
+  onFileSelected(event: any): void {
+    this.file = <File>event.target.files[0];
+    console.log(<File>event.target.files[0]);
+  }
+
+  addNewImage(): void {}
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();

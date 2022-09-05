@@ -350,6 +350,27 @@
           ></textarea>
         </mat-form-field>
       </div>
+      <div class="row">
+        <input type="file" (change)="onFileSelected($event)" />
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "description" | translate }}
+          </mat-label>
+          <input
+            type="text"
+            appDecimal
+            matInput
+            formControlName="description"
+          />
+        </mat-form-field>
+      </div>
+      <app-button
+        [text]="'addNewImage' | translate"
+        (clickEvent)="addNewImage()"
+      ></app-button>
     </form>
     <div class="button-section" *ngIf="formGroup">
       <div class="container">

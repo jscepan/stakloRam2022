@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,6 +87,24 @@ public class Helper {
         difference.put(Action.FOR_UPDATE, listForModify);
         difference.put(Action.FOR_DELETE, previousList);
         return difference;
+    }
+
+    public static String generateRandomString(int n) {
+        byte[] array = new byte[256];
+        new Random().nextBytes(array);
+        String randomString = new String(array, Charset.forName("UTF-8"));
+        StringBuilder r = new StringBuilder();
+        for (int k = 0; k < randomString.length(); k++) {
+            char ch = randomString.charAt(k);
+            if (((ch >= 'a' && ch <= 'z')
+                    || (ch >= 'A' && ch <= 'Z')
+                    || (ch >= '0' && ch <= '9'))
+                    && (n > 0)) {
+                r.append(ch);
+                n--;
+            }
+        }
+        return r.toString();
     }
 
     public enum Action {

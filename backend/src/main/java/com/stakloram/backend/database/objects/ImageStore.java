@@ -28,7 +28,7 @@ public class ImageStore extends ObjectStore {
     public Image createNewObjectToDatabase(BaseModel model, WorkOrder workOrder) throws SQLException {
         Image object = (Image) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,null)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,null)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getUrl());
         st.setString(++i, object.getDescription());
         st.setLong(++i, workOrder.getId());
