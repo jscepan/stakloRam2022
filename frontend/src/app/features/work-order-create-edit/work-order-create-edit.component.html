@@ -39,7 +39,6 @@
           </mat-label>
           <mat-select
             formControlName="buyer"
-            [disabled]="isEdit"
             (valueChange)="buyerChanged()"
             [compareWith]="compareFn"
             (infiniteScroll)="bottomReachedHandlerBuyers()"
@@ -350,25 +349,45 @@
           ></textarea>
         </mat-form-field>
       </div>
-      <div class="row">
-        <input type="file" (change)="onFileSelected($event)" />
-        <mat-form-field>
-          <mat-label
-            [class.mark-required]="true"
-            [class.mark-opt-required]="true"
-          >
-            {{ "description" | translate }}
-          </mat-label>
-          <input
-            type="text"
-            appDecimal
-            matInput
-            formControlName="description"
-          />
-        </mat-form-field>
+      <div class="images">
+        <div *ngFor="let image of workOrderImages; let j = index" class="image">
+          <div class="button-container">
+            <app-button
+              [iconName]="'upload'"
+              [isTransparentMode]="true"
+              (clickEvent)="uploadFile(j)"
+            ></app-button>
+            <input
+              type="file"
+              #fileCtrl
+              (change)="onFileSelected($event, j)"
+              hidden
+            />
+            <mat-form-field>
+              <mat-label
+                [class.mark-required]="true"
+                [class.mark-opt-required]="true"
+              >
+                {{ "description" | translate }}
+              </mat-label>
+              <input type="text" matInput />
+            </mat-form-field>
+            <app-button
+              [iconName]="'minus'"
+              [isTransparentMode]="true"
+              (clickEvent)="removeImage(j)"
+            ></app-button>
+          </div>
+          <div
+            class="image-preview"
+            [ngStyle]="{
+              'background-image': 'url(' + image.url + ')'
+            }"
+          ></div>
+        </div>
       </div>
       <app-button
-        [text]="'addNewImage' | translate"
+        [text]="'addImage' | translate"
         (clickEvent)="addNewImage()"
       ></app-button>
     </form>

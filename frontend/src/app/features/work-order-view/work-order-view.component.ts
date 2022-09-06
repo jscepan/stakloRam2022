@@ -8,7 +8,7 @@ import {
   SettingsStoreService,
 } from 'src/app/shared/services/settings-store.service';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
-import { getWorkOrderNumber } from 'src/app/shared/utils';
+import { getWorkOrderImageUrl, getWorkOrderNumber } from 'src/app/shared/utils';
 import { WorkOrderWebService } from 'src/app/web-services/work-order.web-service';
 
 @Component({
@@ -25,6 +25,7 @@ export class WorkOrderViewComponent implements OnInit, OnDestroy {
   settings?: AppSettings;
   getWorkOrderNumber = getWorkOrderNumber;
   cellRowspan: { displayCell: boolean; rowspan: number }[] = [];
+  getWorkOrderImageUrl = getWorkOrderImageUrl;
 
   constructor(
     private route: ActivatedRoute,

@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Observer } from 'rxjs';
-import { INVOICE_TYPES, UOM_TYPES } from './constants';
+import { BASE_API_URL, INVOICE_TYPES, UOM_TYPES } from './constants';
 import { BaseModel } from './models/base-model';
 import { WorkOrderModel } from './models/work-order';
 
@@ -165,4 +165,8 @@ export function getUOMDisplayValue(uom: string): string {
 
 export function getTYPEDisplayValue(uom: string): string {
   return INVOICE_TYPES.filter((u) => u.value === uom)[0].displayName;
+}
+
+export function getWorkOrderImageUrl(url: string): string {
+  return BASE_API_URL + '/' + url;
 }

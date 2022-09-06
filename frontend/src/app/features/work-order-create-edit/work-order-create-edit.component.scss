@@ -104,3 +104,39 @@
 .cons-measure-checkbox {
   margin-top: 15px;
 }
+
+.images {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .image {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-main-light);
+    margin: 10px;
+
+    .button-container {
+      display: flex;
+      flex-grow: 1;
+      justify-content: space-evenly;
+      border-bottom: 1px dotted var(--color-main-light);
+
+      app-button {
+        margin-top: 10px;
+      }
+    }
+
+    .image-preview {
+      height: 400px;
+      width: 400px;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+  }
+}
+
+.display-none {
+  display: none;
+}

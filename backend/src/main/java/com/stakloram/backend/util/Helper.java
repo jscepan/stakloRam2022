@@ -15,9 +15,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
 
 public class Helper {
 
@@ -105,6 +107,18 @@ public class Helper {
             }
         }
         return r.toString();
+    }
+
+    public static String getFileExtension(MultipartFile file) {
+        try {
+            Optional<String> value = Optional.ofNullable(file.getOriginalFilename())
+                    .filter(f -> f.contains("."))
+                    .map(f -> f.substring(file.getOriginalFilename().lastIndexOf(".") + 1));
+
+            return value.get();
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     public enum Action {

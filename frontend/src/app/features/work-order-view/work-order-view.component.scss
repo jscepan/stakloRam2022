@@ -108,6 +108,16 @@
       }
     }
 
+    .images {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      .image {
+        width: 45%;
+      }
+    }
+
     .signature {
       display: flex;
       width: 100%;

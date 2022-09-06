@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
 import { BaseModel } from './base-model';
 import { BuyerModel } from './buyer.model';
+import { ImageModel } from './image.model';
 import { WorkOrderItemModel } from './work-order-item';
 
 export class WorkOrderModel extends BaseModel {
@@ -13,4 +14,5 @@ export class WorkOrderModel extends BaseModel {
   @Type(() => BuyerModel)
   buyer: BuyerModel = new BuyerModel();
   workOrderItems: WorkOrderItemModel[] = [];
+  images: ImageModel[] = [];
 }

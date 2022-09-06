@@ -3,6 +3,7 @@ package com.stakloram.backend.services.impl.builder.impl;
 import com.stakloram.backend.database.ResponseWithCount;
 import com.stakloram.backend.database.objects.BuyerStore;
 import com.stakloram.backend.database.objects.CityStore;
+import com.stakloram.backend.database.objects.ImageStore;
 import com.stakloram.backend.database.objects.WorkOrderItemStore;
 import com.stakloram.backend.database.objects.WorkOrderStore;
 import com.stakloram.backend.exception.SException;
@@ -10,6 +11,7 @@ import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Buyer;
 import com.stakloram.backend.models.City;
+import com.stakloram.backend.models.Image;
 import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.UserMessage;
@@ -26,12 +28,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class WorkOrderBuilder extends BaseBuilder {
 
     private final WorkOrderItemStore WORK_ORDER_ITEM_STORE = new WorkOrderItemStore(this.getLocator());
     private final BuyerStore BUYER_STORE = new BuyerStore(this.getLocator());
     private final CityStore CITY_STORE = new CityStore(this.getLocator());
+    private final ImageStore IMAGE_STORE = new ImageStore(this.getLocator());
 
     public WorkOrderBuilder(Locator locator) {
         super(locator);
@@ -44,6 +49,14 @@ public class WorkOrderBuilder extends BaseBuilder {
         for (WorkOrderItem woi : workOrder.getWorkOrderItems()) {
             try {
                 WORK_ORDER_ITEM_STORE.createNewObjectToDatabase(woi, workOrder.getId());
+            } catch (SQLException ex) {
+                super.logger.error(ex.toString());
+                throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+            }
+        }
+        for (Image image : workOrder.getImages()) {
+            try {
+                IMAGE_STORE.createNewObjectToDatabase(image, workOrder);
             } catch (SQLException ex) {
                 super.logger.error(ex.toString());
                 throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
@@ -71,6 +84,8 @@ public class WorkOrderBuilder extends BaseBuilder {
             for (BaseModel workOrderItem : mapOfDifferences.get(Helper.Action.FOR_DELETE)) {
                 WORK_ORDER_ITEM_STORE.deleteObjectByOid(workOrderItem.getOid());
             }
+            // TODO logic for images
+
             return workOrder;
         } catch (SQLException ex) {
             super.logger.error(ex.toString());
@@ -91,16 +106,22 @@ public class WorkOrderBuilder extends BaseBuilder {
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
         List<WorkOrderItem> workOrderItems = new ArrayList<>();
+        List<Image> images = new ArrayList<>();
         try {
             ResultSet rs = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_work_order_work_order_id=" + workOrder.getId());
             while (rs.next()) {
                 workOrderItems.add(WORK_ORDER_ITEM_STORE.getObjectFromResultSet(rs));
+            }
+            rs = IMAGE_STORE.getAllObjectsFromDatabase(IMAGE_STORE.getTableName() + "_work_order_work_order_id=" + workOrder.getId());
+            while (rs.next()) {
+                images.add(IMAGE_STORE.getObjectFromResultSet(rs));
             }
         } catch (SQLException ex) {
             super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
         workOrder.setWorkOrderItems(workOrderItems);
+        workOrder.setImages(images);
         return workOrder;
     }
 
@@ -178,9 +199,5 @@ public class WorkOrderBuilder extends BaseBuilder {
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
         return items;
-    }
-
-    private String generateImageName(WorkOrder workOrder, String fileExtension) {
-        return "workOrder_" + workOrder.getNumber() + "_" + Helper.generateRandomString(15) + "." + fileExtension;
     }
 }

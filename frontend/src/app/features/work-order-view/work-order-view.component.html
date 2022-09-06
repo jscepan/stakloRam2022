@@ -101,6 +101,15 @@
         {{ workOrder.note }}
       </div>
     </div>
+    <div class="images">
+      <div
+        class="image"
+        *ngFor="let image of workOrder.images"
+        [ngStyle]="{
+          'background-image': 'url(' + getWorkOrderImageUrl(image.url) + ')'
+        }"
+      ></div>
+    </div>
     <div class="signature">
       <div class="signature-container">
         <div class="title">{{ "goodsGiveBy" | translate }}:</div>

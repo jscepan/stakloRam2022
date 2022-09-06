@@ -1,9 +1,12 @@
 import {
+  AfterContentChecked,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   OnDestroy,
   OnInit,
-  ViewChild,
+  QueryList,
+  ViewChildren,
 } from '@angular/core';
 import {
   AbstractControl,
@@ -18,7 +21,7 @@ import { BuyerCreateEditPopupService } from '@features/views/buyer-create-edit/b
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
-import { UOM_TYPES } from 'src/app/shared/constants';
+import { BASE_API_URL, UOM_TYPES } from 'src/app/shared/constants';
 import { EnumValueModel } from 'src/app/shared/enums/enum.model';
 import { BaseModel } from 'src/app/shared/models/base-model';
 import { BuyerModel } from 'src/app/shared/models/buyer.model';
@@ -35,14 +38,15 @@ import { SubscriptionManager } from 'src/app/shared/services/subscription.manage
 import {
   compareByValue,
   getConstructionMeasure,
+  getWorkOrderImageUrl,
   roundOnDigits,
 } from 'src/app/shared/utils';
 import { BuyerWebService } from 'src/app/web-services/buyer.web-service';
 import { WorkOrderWebService } from 'src/app/web-services/work-order.web-service';
 import { map, startWith } from 'rxjs/operators';
-import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
-import { ImageUploadModel } from 'src/app/shared/models/image-upload';
+import { ImageWebService } from 'src/app/web-services/image.web-service';
+import { ImageModel } from 'src/app/shared/models/image.model';
 
 @Component({
   selector: 'app-work-order-create-edit',
@@ -53,6 +57,7 @@ import { ImageUploadModel } from 'src/app/shared/models/image-upload';
     BuyerCreateEditPopupService,
     BuyerWebService,
     ListEntities,
+    ImageWebService,
   ],
 })
 export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
@@ -100,6 +105,14 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   sumPieces: number = 0;
   sumHours: number = 0;
 
+  workOrderImages: {
+    oid: string;
+    url: string;
+    description: string;
+    file?: Blob;
+  }[] = [];
+  @ViewChildren('fileCtrl') fileCtrls!: QueryList<ElementRef>;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -110,8 +123,10 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private settingsStoreService: SettingsStoreService,
     private webService: WorkOrderWebService,
+    private imageWebService: ImageWebService,
     private el: ElementRef,
-    private authStoreService: AuthStoreService
+    private authStoreService: AuthStoreService,
+    private ref: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -174,7 +189,9 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     this.selectedBuyer = this.workOrder.buyer;
     this.formGroup = new FormGroup({
       number: new FormControl(this.workOrder.number, [Validators.required]),
-      buyer: new FormControl(this.selectedBuyer, [Validators.required]),
+      buyer: new FormControl({ value: this.selectedBuyer, disabled: true }, [
+        Validators.required,
+      ]),
       dateOfCreate: new FormControl(this.workOrder.dateOfCreate, [
         Validators.required,
       ]),
@@ -189,6 +206,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     this.workOrder.workOrderItems.forEach((item, index) =>
       this.addNewItem(item)
     );
+    this.workOrder.images.forEach((item, index) => this.addNewImage(item));
   }
 
   get workOrderItemsFormArr(): FormArray {
@@ -380,10 +398,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     this.router.navigate(['/']);
   }
 
-  file!: Blob;
-
   handleSubmitButton(createInvoice: boolean = false): void {
-    // this.setAllInvoiceAmounts();
     if (this.isEdit && this.workOrderOID) {
       this.webService
         .updateEntity(this.workOrderOID, this.formGroup.value)
@@ -397,31 +412,56 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
           }
         });
     } else {
-      const workOrder = this.formGroup.value;
-      const images: ImageUploadModel[] = [
-        { file: this.file, description: 'xxxx  description  xx' },
-      ];
-      workOrder.images = images;
-      console.log('workOrder');
-      console.log(workOrder);
-      this.webService.createEntity(workOrder).subscribe((workOrder) => {
-        if (workOrder) {
-          this.globalService.showBasicAlert(
-            MODE.success,
-            this.translateService.instant('successfully'),
-            this.translateService.instant('newWorkOrderIsSuccessfullyCreated')
-          );
-          // window.open('#/print/work-order-view/' + workOrder.oid);
-          // if (createInvoice) {
-          //   this.router.navigate(['invoices', 'create'], {
-          //     queryParams: { workOrderOID: workOrder.oid },
-          //   });
-          // } else {
-          //   location.reload();
-          // }
+      const formData = new FormData();
+      let hasUploadedImages: boolean = false;
+      this.workOrderImages.forEach((imageObj) => {
+        if (imageObj.file) {
+          formData.append('files', imageObj.file);
+          hasUploadedImages = true;
         }
       });
+      const workOrder: WorkOrderModel = this.formGroup.value;
+      if (hasUploadedImages) {
+        workOrder.images = [];
+        this.subs.sink = this.imageWebService
+          .upload(formData)
+          .subscribe((response) => {
+            response.forEach((imageName, index) => {
+              workOrder.images.push({
+                oid: '',
+                url: imageName,
+                description: this.workOrderImages[index].description,
+              });
+            });
+            this.createWorkOrderRequest(createInvoice, workOrder);
+          });
+      } else {
+        this.createWorkOrderRequest(createInvoice, workOrder);
+      }
     }
+  }
+
+  private createWorkOrderRequest(
+    createInvoice: boolean,
+    wo: WorkOrderModel
+  ): void {
+    this.subs.sink = this.webService.createEntity(wo).subscribe((workOrder) => {
+      if (workOrder) {
+        this.globalService.showBasicAlert(
+          MODE.success,
+          this.translateService.instant('successfully'),
+          this.translateService.instant('newWorkOrderIsSuccessfullyCreated')
+        );
+        window.open('#/print/work-order-view/' + workOrder.oid);
+        if (createInvoice) {
+          this.router.navigate(['invoices', 'create'], {
+            queryParams: { workOrderOID: workOrder.oid },
+          });
+        } else {
+          location.reload();
+        }
+      }
+    });
   }
 
   openedToggleOnUomSelect(isOppened: boolean, index: number): void {
@@ -504,12 +544,41 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     return this.filteredOptions[index];
   }
 
-  onFileSelected(event: any): void {
-    this.file = <File>event.target.files[0];
-    console.log(<File>event.target.files[0]);
+  onFileSelected(event: any, index: number): void {
+    this.workOrderImages[index].file = event.target.files[0];
+    this.workOrderImages[index].oid = '';
+    this.workOrderImages[index].url = this.getImageUrl(index);
   }
 
-  addNewImage(): void {}
+  addNewImage(image?: ImageModel): void {
+    this.workOrderImages.push({
+      oid: image?.oid || '',
+      url: image?.url || '',
+      description: image?.description || '',
+      file: undefined,
+    });
+  }
+
+  removeImage(index: number): void {
+    this.workOrderImages.splice(index, 1);
+    this.formGroup.markAsDirty();
+  }
+
+  private getImageUrl(index: number): string {
+    const file: Blob | undefined = this.workOrderImages[index].file;
+    if (file) {
+      const url = URL.createObjectURL(file);
+      return url;
+    } else if (this.workOrderImages[index].url) {
+      return getWorkOrderImageUrl(this.workOrderImages[index].url);
+    } else {
+      return '';
+    }
+  }
+
+  uploadFile(index: number): void {
+    this.fileCtrls.get(index)?.nativeElement.click();
+  }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();

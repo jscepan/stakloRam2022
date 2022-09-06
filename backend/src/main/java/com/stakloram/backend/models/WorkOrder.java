@@ -14,6 +14,7 @@ public class WorkOrder extends BaseModel {
     private String note;
     private Buyer buyer;
     private List<WorkOrderItem> workOrderItems = new ArrayList<>();
+    private List<Image> images = new ArrayList<>();
 
     public WorkOrder() {
     }
@@ -110,6 +111,14 @@ public class WorkOrder extends BaseModel {
 
     public void setWorkOrderItems(List<WorkOrderItem> workOrderItems) {
         this.workOrderItems = workOrderItems;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 
     @Override
