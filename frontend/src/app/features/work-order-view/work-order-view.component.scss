@@ -114,7 +114,11 @@
       flex-wrap: wrap;
 
       .image {
-        width: 45%;
+        max-width: 45%;
+        // max-height: 300px;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
       }
     }
 

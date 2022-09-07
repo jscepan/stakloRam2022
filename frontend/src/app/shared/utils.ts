@@ -168,5 +168,5 @@ export function getTYPEDisplayValue(uom: string): string {
 }
 
 export function getWorkOrderImageUrl(url: string): string {
-  return BASE_API_URL + '/' + url;
+  return BASE_API_URL + '/images/' + url;
 }
