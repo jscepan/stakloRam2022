@@ -2,6 +2,7 @@ package com.stakloram.backend.services.impl;
 
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.BaseModel;
+import com.stakloram.backend.models.Image;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.models.WorkOrderItem;
@@ -40,6 +41,11 @@ public class WorkOrderService extends ServiceModel {
                 throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("description"));
             }
             super.checkIsAmountPositive(woi.getSumQuantity(), UserMessage.getLocalizedMessage("amount"));
+        }
+        for (Image image : wo.getImages()) {
+            if (DataChecker.isNull(image) || image.getUrl().isEmpty()) {
+                throw new SException(UserMessage.getLocalizedMessage("imageIsntSelected"));
+            }
         }
     }
 

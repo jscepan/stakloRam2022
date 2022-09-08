@@ -24,39 +24,6 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   invoice!: InvoiceModel;
   settings?: AppSettings;
   getUOMDisplayValue = getUOMDisplayValue;
-  // placeholders = {
-  //   amount: 'Износ:',
-  //   amountRSD: 'Износ (дин)',
-  //   byInvoiceCome: 'По пријему рачуна',
-  //   counter: 'Ред. бр.',
-  //   dateOfInvoice: 'Датум рачуна: ',
-  //   dateOfTurnover: 'Датум промета услуга:',
-  //   dayFromInvoice: ' дан од дана пријема рачуна',
-  //   daysFromInvoice: ' дана од дана пријема рачуна',
-  //   deadline: 'Рок плаћања: ',
-  //   forPay: 'За уплату (дин)',
-  //   greetings: 'С поштовањем,',
-  //   headerLine1: 'СТОЈКОВИЋ / STOJKOVIĆ',
-  //   headerLine2: 'ORTAČKO ADVOKATSKO DRUŠTVO',
-  //   incomeDoneOnName: 'Уплату извршити на име:',
-  //   invoiceAdvanceNumber: 'Авансни рачун број.',
-  //   invoiceCashNumber: 'Готовински рачун број.',
-  //   invoicePreNumber: 'Предрачун број.',
-  //   invoiceNumber: 'Рачун број.',
-  //   legalServices: 'Правне услуге:',
-  //   mb: 'МБ: ',
-  //   noteAboutTax: 'Напомена о пореском ослобођењу: НЕМА ПОРЕСКОГ ОСЛОБОЂЕЊА',
-  //   pib: 'ПИБ: ',
-  //   placeOfInvoice: 'Место издавања рачуна: ',
-  //   placeOfTurnover: 'Место промета услуга:',
-  //   serviceDescription: 'Опис услуге',
-  //   vat: 'ПДВ',
-  // };
-  // invoiceItemsVatRates: {
-  //   netAmount: number;
-  //   vatRate: number;
-  //   vatAmount: number;
-  // }[] = [];
 
   constructor(
     private router: Router,
@@ -80,42 +47,12 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
               .getEntityByOid(this.invoiceOID)
               .subscribe((invoice) => {
                 this.invoice = invoice;
-                // this.setInvoiceItemsVatRates();
               });
           }
         }
       }
     );
   }
-
-  // setInvoiceItemsVatRates(): void {
-  //   this.invoice.invoiceItems.forEach((invoiceItem) => {
-  //     let netAmount: number = invoiceItem.netPrice;
-  //     let vatRate: number = invoiceItem.vatRate;
-  //     let vatAmount: number = invoiceItem.vatAmount;
-  //     const index: number = this.invoiceItemsVatRates.findIndex(
-  //       (item) => item.vatRate === invoiceItem.vatRate
-  //     );
-  //     if (index >= 0) {
-  //       netAmount += this.invoiceItemsVatRates[index].netAmount;
-  //       vatAmount += this.invoiceItemsVatRates[index].vatAmount;
-  //       this.invoiceItemsVatRates[index] = { netAmount, vatRate, vatAmount };
-  //     } else {
-  //       this.invoiceItemsVatRates.push({
-  //         netAmount,
-  //         vatRate,
-  //         vatAmount,
-  //       });
-  //     }
-  //   });
-  // }
-
-  // getInvoiceDateOfMaturity(invoice: InvoiceModel): number {
-  //   return getDaysBetweenTwoDates(
-  //     new Date(invoice.dateOfMaturity),
-  //     new Date(invoice.dateOfCreate)
-  //   );
-  // }
 
   getQrCodeDataForInvoice(invoice: InvoiceModel): string {
     let qrCode = '';

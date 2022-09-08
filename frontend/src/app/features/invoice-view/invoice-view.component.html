@@ -89,6 +89,14 @@
           </div>
         </div>
       </div>
+      <div class="qr-code">
+        <qrcode
+          [qrdata]="getQrCodeDataForInvoice(invoice)"
+          [width]="130"
+          [errorCorrectionLevel]="'M'"
+          *ngIf="settings?.qrCodeShowOnInvoice"
+        ></qrcode>
+      </div>
       <div class="column-container-buyer">
         <div class="row">
           <div class="wrapper">
@@ -104,11 +112,6 @@
           {{ invoice.buyer.maticalNumber }}
         </div>
       </div>
-      <qrcode
-        [qrdata]="getQrCodeDataForInvoice(invoice)"
-        [width]="130"
-        [errorCorrectionLevel]="'M'"
-      ></qrcode>
     </div>
     <table [style]="{ 'border-collapse': 'collapse' }" class="table">
       <tr>

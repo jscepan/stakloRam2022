@@ -1,8 +1,9 @@
 package com.stakloram.backend.models;
 
-// These are settings for FRONTEND application
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
+// These are settings for FRONTEND application
 public class Settings {
 
     private String companyEmail;
@@ -21,8 +22,9 @@ public class Settings {
     private String invoiceBankAccounts;
     private String invoiceComplaints;
     private String invoiceForeignNote;
-    private Map<String, String> invoiceForeignNotes;
+    private List<KeyValue> invoiceForeignNotes = new ArrayList<>();
 
+    private boolean qrCodeShowOnInvoice;
     private String qrCodeIdentCode;
     private String qrCodeVersion;
     private String qrCodeSignSet;
@@ -82,6 +84,14 @@ public class Settings {
 
     public void setInvoiceVatRate(double invoiceVatRate) {
         this.invoiceVatRate = invoiceVatRate;
+    }
+
+    public boolean isQrCodeShowOnInvoice() {
+        return qrCodeShowOnInvoice;
+    }
+
+    public void setQrCodeShowOnInvoice(boolean qrCodeShowOnInvoice) {
+        this.qrCodeShowOnInvoice = qrCodeShowOnInvoice;
     }
 
     public String getQrCodeIdentCode() {
@@ -292,11 +302,11 @@ public class Settings {
         this.invoiceForeignNote = invoiceForeignNote;
     }
 
-    public Map<String, String> getInvoiceForeignNotes() {
+    public List<KeyValue> getInvoiceForeignNotes() {
         return invoiceForeignNotes;
     }
 
-    public void setInvoiceForeignNotes(Map<String, String> invoiceForeignNotes) {
+    public void setInvoiceForeignNotes(List<KeyValue> invoiceForeignNotes) {
         this.invoiceForeignNotes = invoiceForeignNotes;
     }
 }

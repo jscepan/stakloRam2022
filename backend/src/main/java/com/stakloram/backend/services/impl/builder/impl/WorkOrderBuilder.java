@@ -54,7 +54,7 @@ public class WorkOrderBuilder extends BaseBuilder {
         }
         for (Image image : workOrder.getImages()) {
             try {
-                IMAGE_STORE.createNewObjectToDatabase(image, workOrder);
+                IMAGE_STORE.createNewObjectToDatabase(image, workOrder.getOid());
             } catch (SQLException ex) {
                 super.logger.error(ex.toString());
                 throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
@@ -82,8 +82,39 @@ public class WorkOrderBuilder extends BaseBuilder {
             for (BaseModel workOrderItem : mapOfDifferences.get(Helper.Action.FOR_DELETE)) {
                 WORK_ORDER_ITEM_STORE.deleteObjectByOid(workOrderItem.getOid());
             }
-            // TODO logic for images
 
+            List<Image> oldWorkOrderImages = new ArrayList<>();
+            ResultSet resultSetImages = IMAGE_STORE.getAllObjectsFromDatabase(IMAGE_STORE.getTableName() + "_work_order_work_order_id=" + workOrder.getId());
+            System.out.println("3333333333");
+            while (resultSetImages.next()) {
+                System.out.println("pre");
+                oldWorkOrderImages.add(IMAGE_STORE.getObjectFromResultSet(resultSetImages));
+                System.out.println("posle");
+            }
+
+            System.out.println("4444444444");
+            Map<Helper.Action, List<? extends BaseModel>> mapOfDifferencesImages = Helper.findDifferenceBetweenLists(workOrder.getImages(), oldWorkOrderImages);
+            for (BaseModel image : mapOfDifferencesImages.get(Helper.Action.FOR_CREATE)) {
+                System.out.println("----create-----");
+                System.out.println("OID: " + ((Image) image).getOid());
+                System.out.println("URL: " + ((Image) image).getUrl());
+                System.out.println("DESC: " + ((Image) image).getDescription());
+                IMAGE_STORE.createNewObjectToDatabase(image, workOrder.getOid());
+            }
+            for (BaseModel image : mapOfDifferencesImages.get(Helper.Action.FOR_UPDATE)) {
+                System.out.println("---update-----");
+                System.out.println("OID: " + ((Image) image).getOid());
+                System.out.println("URL: " + ((Image) image).getUrl());
+                System.out.println("DESC: " + ((Image) image).getDescription());
+                IMAGE_STORE.modifyObject(image.getOid(), image);
+            }
+            for (BaseModel image : mapOfDifferencesImages.get(Helper.Action.FOR_DELETE)) {
+                System.out.println("-----delete------");
+                System.out.println("OID: " + ((Image) image).getOid());
+                System.out.println("URL: " + ((Image) image).getUrl());
+                System.out.println("DESC: " + ((Image) image).getDescription());
+                IMAGE_STORE.deleteObjectByOid(image.getOid());
+            }
             return workOrder;
         } catch (SQLException ex) {
             super.logger.error(ex.toString());

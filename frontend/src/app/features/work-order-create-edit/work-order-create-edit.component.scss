@@ -60,6 +60,10 @@
         .text-area {
           min-width: 400px;
         }
+
+        &.bottom-margin {
+          margin-bottom: 20px;
+        }
       }
 
       .work-order-items {
@@ -80,6 +84,10 @@
             }
           }
         }
+      }
+
+      .add-image-button {
+        margin-bottom: 20px;
       }
     }
 
@@ -131,7 +139,7 @@
       height: 400px;
       width: 400px;
       background-position: center;
-      background-size: cover;
+      background-size: contain;
       background-repeat: no-repeat;
     }
   }

@@ -1,6 +1,4 @@
 import {
-  AfterContentChecked,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   OnDestroy,
@@ -21,7 +19,7 @@ import { BuyerCreateEditPopupService } from '@features/views/buyer-create-edit/b
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
-import { BASE_API_URL, UOM_TYPES } from 'src/app/shared/constants';
+import { UOM_TYPES } from 'src/app/shared/constants';
 import { EnumValueModel } from 'src/app/shared/enums/enum.model';
 import { BaseModel } from 'src/app/shared/models/base-model';
 import { BuyerModel } from 'src/app/shared/models/buyer.model';
@@ -110,6 +108,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     url: string;
     description: string;
     file?: Blob;
+    fullUrl: string;
   }[] = [];
   @ViewChildren('fileCtrl') fileCtrls!: QueryList<ElementRef>;
 
@@ -125,8 +124,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     private webService: WorkOrderWebService,
     private imageWebService: ImageWebService,
     private el: ElementRef,
-    private authStoreService: AuthStoreService,
-    private ref: ChangeDetectorRef
+    private authStoreService: AuthStoreService
   ) {}
 
   ngOnInit(): void {
@@ -189,9 +187,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     this.selectedBuyer = this.workOrder.buyer;
     this.formGroup = new FormGroup({
       number: new FormControl(this.workOrder.number, [Validators.required]),
-      buyer: new FormControl({ value: this.selectedBuyer, disabled: true }, [
-        Validators.required,
-      ]),
+      buyer: new FormControl(this.selectedBuyer, [Validators.required]),
       dateOfCreate: new FormControl(this.workOrder.dateOfCreate, [
         Validators.required,
       ]),
@@ -399,9 +395,50 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   }
 
   handleSubmitButton(createInvoice: boolean = false): void {
+    const formData = new FormData();
+    let hasUploadedImages: boolean = false;
+    const workOrder: WorkOrderModel = this.formGroup.value;
+    workOrder.images = [];
+    this.workOrderImages.forEach((imageObj) => {
+      if (imageObj.file) {
+        formData.append('files', imageObj.file);
+        hasUploadedImages = true;
+        workOrder.images.push({
+          oid: '',
+          url: '',
+          description: imageObj.description || '',
+        });
+      } else if (imageObj.oid) {
+        workOrder.images.push({
+          oid: imageObj.oid,
+          url: imageObj.url,
+          description: imageObj.description,
+        });
+      }
+    });
+    if (hasUploadedImages) {
+      this.subs.sink = this.imageWebService
+        .upload(formData)
+        .subscribe((response) => {
+          response.forEach((imageName, index) => {
+            for (let i = 0; i < workOrder.images.length; i++) {
+              if (workOrder.images[i].url === '') {
+                workOrder.images[i].url = imageName;
+                break;
+              }
+            }
+          });
+          this.submit(createInvoice, workOrder);
+        });
+    } else {
+      this.submit(createInvoice, workOrder);
+    }
+  }
+
+  private submit(createInvoice: boolean, workOrder: WorkOrderModel): void {
     if (this.isEdit && this.workOrderOID) {
       this.webService
-        .updateEntity(this.workOrderOID, this.formGroup.value)
+        .updateEntity(this.workOrderOID, workOrder)
         .subscribe((invoice) => {
           if (invoice) {
             this.globalService.showBasicAlert(
@@ -412,32 +449,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
           }
         });
     } else {
-      const formData = new FormData();
-      let hasUploadedImages: boolean = false;
-      this.workOrderImages.forEach((imageObj) => {
-        if (imageObj.file) {
-          formData.append('files', imageObj.file);
-          hasUploadedImages = true;
-        }
-      });
-      const workOrder: WorkOrderModel = this.formGroup.value;
-      if (hasUploadedImages) {
-        workOrder.images = [];
-        this.subs.sink = this.imageWebService
-          .upload(formData)
-          .subscribe((response) => {
-            response.forEach((imageName, index) => {
-              workOrder.images.push({
-                oid: '',
-                url: imageName,
-                description: this.workOrderImages[index].description,
-              });
-            });
-            this.createWorkOrderRequest(createInvoice, workOrder);
-          });
-      } else {
-        this.createWorkOrderRequest(createInvoice, workOrder);
-      }
+      this.createWorkOrderRequest(createInvoice, workOrder);
     }
   }
 
@@ -545,15 +557,22 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   }
 
   onFileSelected(event: any, index: number): void {
-    this.workOrderImages[index].file = event.target.files[0];
-    this.workOrderImages[index].oid = '';
-    this.workOrderImages[index].url = this.getImageUrl(index);
+    const file: Blob | undefined = event.target.files[0];
+    if (file) {
+      this.workOrderImages[index].file = file;
+      const url = URL.createObjectURL(file);
+      this.workOrderImages[index].oid = '';
+      this.workOrderImages[index].url = url;
+      this.workOrderImages[index].fullUrl = url;
+    }
+    this.formGroup.markAsDirty();
   }
 
   addNewImage(image?: ImageModel): void {
     this.workOrderImages.push({
       oid: image?.oid || '',
       url: image?.url || '',
+      fullUrl: image?.url ? getWorkOrderImageUrl(image.url) : '',
       description: image?.description || '',
       file: undefined,
     });
@@ -562,18 +581,6 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   removeImage(index: number): void {
     this.workOrderImages.splice(index, 1);
     this.formGroup.markAsDirty();
-  }
-
-  private getImageUrl(index: number): string {
-    const file: Blob | undefined = this.workOrderImages[index].file;
-    if (file) {
-      const url = URL.createObjectURL(file);
-      return url;
-    } else if (this.workOrderImages[index].url) {
-      return getWorkOrderImageUrl(this.workOrderImages[index].url);
-    } else {
-      return '';
-    }
   }
 
   uploadFile(index: number): void {

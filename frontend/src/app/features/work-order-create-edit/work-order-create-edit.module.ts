@@ -5,7 +5,7 @@ import { WorkOrderCreateEditComponent } from './work-order-create-edit.component
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { BuyerCreateEditModule } from '@features/views/buyer-create-edit/buyer-create-edit.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -28,6 +28,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     ButtonModule,
     BuyerCreateEditModule,
     ReactiveFormsModule,
+    FormsModule,
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,

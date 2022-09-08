@@ -15,7 +15,7 @@ export class LanguageService {
     private translateService: TranslateService,
     private titleService: Title
   ) {
-    let selectedLanguage = localStorage.getItem('language');
+    let selectedLanguage = localStorage.getItem('languageStakloRam');
     if (!selectedLanguage) {
       selectedLanguage = LanguageService.defaultLanguage;
     }
@@ -25,7 +25,7 @@ export class LanguageService {
   changeLanguage(languageCode: string): void {
     this.selectedLanguage = languageCode;
     this.translateService.use(languageCode);
-    localStorage.setItem('language', languageCode);
+    localStorage.setItem('languageStakloRam', languageCode);
 
     this.setBrowserTitle();
   }

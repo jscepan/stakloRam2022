@@ -25,7 +25,6 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -52,14 +51,14 @@ public class WorkOrderController {
             throw new FileNotFoundException();
         }
         InputStream in = new FileInputStream(file);
-        return new ResponseEntity<byte[]>(IOUtils.toByteArray(in), HttpStatus.CREATED);
+        return new ResponseEntity<>(IOUtils.toByteArray(in), HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/images")
     public List<String> upload(@RequestParam("files") List<MultipartFile> multipartFiles) throws SException, IOException {
         List<String> fileNames = new ArrayList<>();
         for (MultipartFile file : multipartFiles) {
-            String filename = "workOrder_" + LocalDate.now() + "_" + LocalTime.now() + "_" + Helper.generateRandomString(15) + "." + Helper.getFileExtension(file);
+            String filename = "workOrder_" + LocalDate.now() + "_" + LocalTime.now().getHour() + "_" + LocalTime.now().getMinute() + "_" + LocalTime.now().getSecond() + "_" + Helper.generateRandomString(15) + "." + Helper.getFileExtension(file);
             Path fileStorage = get(IMAGE_DIRECTORY, filename).toAbsolutePath().normalize();
             copy(file.getInputStream(), fileStorage, REPLACE_EXISTING);
             fileNames.add(filename);

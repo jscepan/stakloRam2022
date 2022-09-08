@@ -44,6 +44,7 @@
             (infiniteScroll)="bottomReachedHandlerBuyers()"
             msInfiniteScroll
             (selectionChange)="selectBuyer($event)"
+            [disabled]="isEdit"
           >
             <mat-option>
               <ngx-mat-select-search
@@ -257,7 +258,7 @@
                 (change)="calculateSum()"
               />
             </mat-form-field>
-            <mat-form-field class="full-width">
+            <mat-form-field>
               <mat-label
                 [class.mark-required]="true"
                 [class.mark-opt-required]="true"
@@ -287,7 +288,7 @@
           </div>
         </div>
       </div>
-      <div class="row full-width">
+      <div class="row full-width bottom-margin">
         <app-button
           [iconName]="'plus'"
           [text]="'addNewItem' | translate"
@@ -370,7 +371,12 @@
               >
                 {{ "description" | translate }}
               </mat-label>
-              <input type="text" matInput />
+              <input
+                type="text"
+                matInput
+                [(ngModel)]="image.description"
+                [ngModelOptions]="{ standalone: true }"
+              />
             </mat-form-field>
             <app-button
               [iconName]="'minus'"
@@ -381,7 +387,7 @@
           <div
             class="image-preview"
             [ngStyle]="{
-              'background-image': 'url(' + image.url + ')'
+              'background-image': 'url(' + image.fullUrl + ')'
             }"
           ></div>
         </div>
@@ -389,6 +395,7 @@
       <app-button
         [text]="'addImage' | translate"
         (clickEvent)="addNewImage()"
+        class="add-image-button"
       ></app-button>
     </form>
     <div class="button-section" *ngIf="formGroup">
@@ -412,6 +419,7 @@
           [disabled]="!formGroup.dirty || formGroup.invalid"
           class="update"
           (clickEvent)="handleSubmitButton(true)"
+          *ngIf="!isEdit"
         ></app-button>
       </div>
     </div>

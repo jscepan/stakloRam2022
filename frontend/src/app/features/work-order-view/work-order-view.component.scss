@@ -112,13 +112,12 @@
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
+      flex-grow: 1;
+      justify-content: space-between;
 
       .image {
-        max-width: 45%;
-        // max-height: 300px;
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
+        object-fit: contain;
+        width: 350px;
       }
     }
 

@@ -92,6 +92,39 @@
       </mat-label>
       <input type="text" matInput formControlName="invoiceForeignNote" />
     </mat-form-field>
+    <div formArrayName="invoiceForeignNotes" class="invoice-foreign-notes">
+      <div
+        *ngFor="let comp of invoiceForeignNotesFormArr.controls; let j = index"
+        class="invoice-foreign-note"
+      >
+        <div [formGroupName]="j" class="form-group">
+          <mat-form-field>
+            <mat-label
+              [class.mark-required]="true"
+              [class.mark-opt-required]="true"
+            >
+              {{ "key" | translate }}
+            </mat-label>
+            <input type="text" matInput formControlName="key" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label
+              [class.mark-required]="true"
+              [class.mark-opt-required]="true"
+            >
+              {{ "value" | translate }}
+            </mat-label>
+            <input type="text" matInput formControlName="value" />
+          </mat-form-field>
+          <app-button
+            [iconName]="'minus'"
+            (clickEvent)="removeNote(j)"
+            [isTransparentMode]="true"
+            class="additional-button"
+          ></app-button>
+        </div>
+      </div>
+    </div>
     <h1>{{ "workOrder" | translate }}</h1>
     <mat-form-field>
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
@@ -158,6 +191,15 @@
       <input type="text" matInput formControlName="workOrderHeadingLine3" />
     </mat-form-field>
     <h1>{{ "qrCodeSettings" | translate }}</h1>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "qrCodeShowOnInvoice" | translate }}
+      </mat-label>
+      <mat-select matSelect formControlName="qrCodeShowOnInvoice">
+        <mat-option [value]="true">{{ "yes" | translate }}</mat-option>
+        <mat-option [value]="false">{{ "no" | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
     <mat-form-field>
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
         {{ "identCode" | translate }}

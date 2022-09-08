@@ -102,11 +102,10 @@
       </div>
     </div>
     <div class="images">
-      <img
-        src="{{ getWorkOrderImageUrl(image.url) }}"
-        class="image"
-        *ngFor="let image of workOrder.images"
-      />
+      <div *ngFor="let image of workOrder.images">
+        <p>{{ image.description }}</p>
+        <img src="{{ getWorkOrderImageUrl(image.url) }}" class="image" />
+      </div>
     </div>
     <div class="signature">
       <div class="signature-container">

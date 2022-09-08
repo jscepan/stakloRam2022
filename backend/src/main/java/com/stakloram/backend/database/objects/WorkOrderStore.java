@@ -87,7 +87,7 @@ public class WorkOrderStore extends ObjectStore {
     public long getLastWorkOrderNumber(int year) throws SQLException {
         long lastWorkOrderNumber = 0;
         Statement st = this.getConn().createStatement();
-        ResultSet resultSet = st.executeQuery("SELECT * from " + ConnectionToDatabase.DATABASE_NAME + "." + this.tableName + " WHERE " + this.getPrimaryKey() + "=(SELECT MAX(work_order_number) FROM " + ConnectionToDatabase.DATABASE_NAME + "." + this.tableName + " WHERE year(work_order_date_of_create)=" + year + ") and year(work_order_date_of_create)="+year);
+        ResultSet resultSet = st.executeQuery("SELECT * from " + ConnectionToDatabase.DATABASE_NAME + "." + this.tableName + " WHERE work_order_number=(SELECT MAX(work_order_number) FROM " + ConnectionToDatabase.DATABASE_NAME + "." + this.tableName + " WHERE year(work_order_date_of_create)=" + year + ") and year(work_order_date_of_create)=" + year);
         while (resultSet.next()) {
             lastWorkOrderNumber = resultSet.getLong(this.getTableName() + "_number");
         }

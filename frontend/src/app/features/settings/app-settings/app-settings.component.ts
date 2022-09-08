@@ -22,6 +22,10 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
 
   formGroup!: FormGroup;
 
+  get invoiceForeignNotesFormArr(): FormArray {
+    return this.formGroup.get('invoiceForeignNotes') as FormArray;
+  }
+
   constructor(
     private router: Router,
     private globalService: GlobalService,
@@ -98,6 +102,10 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
             [Validators.required]
           ),
           invoiceForeignNotes: new FormArray([]),
+          qrCodeShowOnInvoice: new FormControl(
+            this.settingsStoreService.getSettings()?.qrCodeShowOnInvoice,
+            [Validators.required]
+          ),
           qrCodeIdentCode: new FormControl(
             this.settingsStoreService.getSettings()?.qrCodeIdentCode || '',
             [Validators.required]
@@ -171,8 +179,27 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
             [Validators.required]
           ),
         });
+        this.settingsStoreService
+          .getSettings()
+          ?.invoiceForeignNotes?.forEach((note) => {
+            this.addNote({ key: note.key, value: note.value });
+          });
       }
     });
+  }
+
+  addNote(note: { key: string; value: string }): void {
+    this.invoiceForeignNotesFormArr.push(
+      new FormGroup({
+        key: new FormControl(note?.key || '', [Validators.required]),
+        value: new FormControl(note?.value || '', [Validators.required]),
+      })
+    );
+  }
+
+  removeNote(index: number): void {
+    this.invoiceForeignNotesFormArr.removeAt(index);
+    this.formGroup.markAsDirty();
   }
 
   hasPrivilege(privilege: string): boolean {

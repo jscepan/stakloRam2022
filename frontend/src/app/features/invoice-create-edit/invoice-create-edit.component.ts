@@ -605,25 +605,9 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
           this.formGroup
             .get('comment')
             ?.setValue(this.settings?.invoiceForeignNote);
-          // TODO
-          // this.settings?.invoiceForeignNotes?.forEach((note) => {
-          //   this.addNote({ oid: '', name: note.key, description: note.value });
-          // });
-          // Za sada samo HARD-CODE
-          this.addNote({
-            oid: '',
-            name: 'DEVIZNI RAČUN:',
-            description: '00-710-0000329.2',
+          this.settings?.invoiceForeignNotes?.forEach((note) => {
+            this.addNote({ oid: '', name: note.key, description: note.value });
           });
-          this.addNote({
-            oid: '',
-            name: 'IBAN:',
-            description: 'RS35310007100000329270',
-          });
-          this.addNote({ oid: '', name: 'SWIFT:', description: 'CONARS22' });
-          this.addNote({ oid: '', name: 'Broj koleta:', description: '1' });
-          this.addNote({ oid: '', name: 'Bruto kg:', description: '1' });
-          this.addNote({ oid: '', name: 'Neto kg:', description: '1' });
           break;
         default:
           this.formGroup.removeControl('numberOfCashBill');
