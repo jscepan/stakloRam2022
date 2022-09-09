@@ -126,7 +126,8 @@ export class DebtViewComponent implements OnInit, OnDestroy {
       ) {
         this.debtView.transactions.push({
           date: outcome.date,
-          description: this.translateService.instant('outcome'),
+          description:
+            this.translateService.instant('outcome') + ', ' + outcome.comment,
           owed: outcome.amount,
           debt: 0,
           state: 0,

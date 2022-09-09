@@ -16,43 +16,47 @@
     </div>
 
     <div
-      class="grid-container standard-grid-table"
+      class="users"
       [componentLoading]="(isLoading | async) || false"
       scrollToBottom
       (bottomReached)="bottomReachedHandler()"
     >
-      <div class="grid-item header">{{ "username" | translate }}</div>
-      <div class="grid-item header">{{ "fullName" | translate }}</div>
-      <div class="grid-item header">{{ "email" | translate }}</div>
-      <div class="grid-item header">{{ "enabled" | translate }}</div>
-      <div class="grid-item header">{{ "edit" | translate }}</div>
-      <div class="grid-item header">{{ "resetPassword" | translate }}</div>
-      <ng-container *ngFor="let item of entities | async">
-        <div class="grid-item">{{ item.username }}</div>
-        <div class="grid-item">{{ item.fullName }}</div>
-        <div class="grid-item">{{ item.email }}</div>
-        <div
-          class="grid-item"
-          [class.active]="item.enabled"
-          [class.inactive]="!item.enabled"
-        >
-          {{ item.enabled ? ("active" | translate) : ("inactive" | translate) }}
-        </div>
-        <div class="grid-item">
-          <app-button
-            [text]="'edit' | translate"
-            (clickEvent)="editUser(item.oid)"
-            [disabled]="!hasPrivilege('USER_CREATE')"
-          ></app-button>
-        </div>
-        <div class="grid-item">
-          <app-button
-            [text]="'resetPassword' | translate"
-            (clickEvent)="resetPassword(item.oid)"
-            [disabled]="!hasPrivilege('USER_CREATE')"
-          ></app-button>
-        </div>
-      </ng-container>
+      <div class="grid-container standard-grid-table">
+        <div class="grid-item header">{{ "username" | translate }}</div>
+        <div class="grid-item header">{{ "fullName" | translate }}</div>
+        <div class="grid-item header">{{ "email" | translate }}</div>
+        <div class="grid-item header">{{ "enabled" | translate }}</div>
+        <div class="grid-item header">{{ "edit" | translate }}</div>
+        <div class="grid-item header">{{ "resetPassword" | translate }}</div>
+        <ng-container *ngFor="let item of entities | async">
+          <div class="grid-item">{{ item.username }}</div>
+          <div class="grid-item">{{ item.fullName }}</div>
+          <div class="grid-item">{{ item.email }}</div>
+          <div
+            class="grid-item"
+            [class.active]="item.enabled"
+            [class.inactive]="!item.enabled"
+          >
+            {{
+              item.enabled ? ("active" | translate) : ("inactive" | translate)
+            }}
+          </div>
+          <div class="grid-item">
+            <app-button
+              [text]="'edit' | translate"
+              (clickEvent)="editUser(item.oid)"
+              [disabled]="!hasPrivilege('USER_CREATE')"
+            ></app-button>
+          </div>
+          <div class="grid-item">
+            <app-button
+              [text]="'resetPassword' | translate"
+              (clickEvent)="resetPassword(item.oid)"
+              [disabled]="!hasPrivilege('USER_CREATE')"
+            ></app-button>
+          </div>
+        </ng-container>
+      </div>
     </div>
   </div>
 </div>

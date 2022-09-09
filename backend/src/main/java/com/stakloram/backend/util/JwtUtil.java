@@ -1,6 +1,5 @@
 package com.stakloram.backend.util;
 
-import com.stakloram.backend.models.MyUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

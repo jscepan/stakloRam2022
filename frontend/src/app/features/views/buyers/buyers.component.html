@@ -14,44 +14,48 @@
   </div>
 
   <div
-    class="grid-container standard-grid-table"
+    class="buyers"
     [componentLoading]="(isLoading | async) || false"
     scrollToBottom
     (bottomReached)="bottomReachedHandler()"
   >
-    <div class="grid-item header">{{ "type" | translate }}</div>
-    <div class="grid-item header">{{ "name" | translate }}</div>
-    <!-- <div class="grid-item header">{{ "city" | translate }}</div> -->
-    <div class="grid-item header">{{ "address" | translate }}</div>
-    <div class="grid-item header">{{ "maticalNumber" | translate }}</div>
-    <div class="grid-item header">{{ "pib" | translate }}</div>
-    <div class="grid-item header">{{ "email" | translate }}</div>
-    <div class="grid-item header">{{ "edit" | translate }}</div>
-    <div class="grid-item header">{{ "delete" | translate }}</div>
-    <ng-container *ngFor="let item of entities | async">
-      <div class="grid-item">{{ item.type || "" | lowercase | translate }}</div>
-      <div class="grid-item center">{{ item.name }}</div>
-      <!-- <div class="grid-item">{{ item.city?.name }}</div> -->
-      <div class="grid-item center">{{ item.address }}</div>
-      <div class="grid-item">{{ item.maticalNumber }}</div>
-      <div class="grid-item">{{ item.pib }}</div>
-      <div class="grid-item">{{ item.email }}</div>
-      <div class="grid-item">
-        <app-button
-          [iconName]="'edit'"
-          (clickEvent)="editBuyer(item.oid)"
-          [isTransparentMode]="true"
-          [disabled]="!hasPrivilege('BUYER_CREATE')"
-        ></app-button>
-      </div>
-      <div class="grid-item">
-        <app-button
-          [iconName]="'trash-2'"
-          (clickEvent)="deleteBuyer(item)"
-          [isTransparentMode]="true"
-          [disabled]="!hasPrivilege('BUYER_DELETE')"
-        ></app-button>
-      </div>
-    </ng-container>
+    <div class="grid-container standard-grid-table">
+      <div class="grid-item header">{{ "type" | translate }}</div>
+      <div class="grid-item header">{{ "name" | translate }}</div>
+      <!-- <div class="grid-item header">{{ "city" | translate }}</div> -->
+      <div class="grid-item header">{{ "address" | translate }}</div>
+      <div class="grid-item header">{{ "maticalNumber" | translate }}</div>
+      <div class="grid-item header">{{ "pib" | translate }}</div>
+      <div class="grid-item header">{{ "email" | translate }}</div>
+      <div class="grid-item header">{{ "edit" | translate }}</div>
+      <div class="grid-item header">{{ "delete" | translate }}</div>
+      <ng-container *ngFor="let item of entities | async">
+        <div class="grid-item">
+          {{ item.type || "" | lowercase | translate }}
+        </div>
+        <div class="grid-item center">{{ item.name }}</div>
+        <!-- <div class="grid-item">{{ item.city?.name }}</div> -->
+        <div class="grid-item center">{{ item.address }}</div>
+        <div class="grid-item">{{ item.maticalNumber }}</div>
+        <div class="grid-item">{{ item.pib }}</div>
+        <div class="grid-item">{{ item.email }}</div>
+        <div class="grid-item">
+          <app-button
+            [iconName]="'edit'"
+            (clickEvent)="editBuyer(item.oid)"
+            [isTransparentMode]="true"
+            [disabled]="!hasPrivilege('BUYER_CREATE')"
+          ></app-button>
+        </div>
+        <div class="grid-item">
+          <app-button
+            [iconName]="'trash-2'"
+            (clickEvent)="deleteBuyer(item)"
+            [isTransparentMode]="true"
+            [disabled]="!hasPrivilege('BUYER_DELETE')"
+          ></app-button>
+        </div>
+      </ng-container>
+    </div>
   </div>
 </div>

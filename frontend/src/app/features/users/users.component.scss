@@ -12,21 +12,24 @@
       margin: 20px;
     }
 
-    .grid-container {
-      display: grid;
-      grid-template-columns: auto auto auto auto auto auto;
-      max-height: calc(100% - 150px);
+    .users {
+      height: calc(100% - 150px);
       overflow-y: auto;
 
-      .grid-item {
-        &.active {
-          font-weight: 600;
-          color: var(--color-success);
-        }
+      .grid-container {
+        display: grid;
+        grid-template-columns: auto auto auto auto auto auto;
 
-        &.inactive {
-          font-weight: 600;
-          color: var(--color-danger);
+        .grid-item {
+          &.active {
+            font-weight: 600;
+            color: var(--color-success);
+          }
+
+          &.inactive {
+            font-weight: 600;
+            color: var(--color-danger);
+          }
         }
       }
     }

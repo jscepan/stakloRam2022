@@ -85,34 +85,18 @@ public class WorkOrderBuilder extends BaseBuilder {
 
             List<Image> oldWorkOrderImages = new ArrayList<>();
             ResultSet resultSetImages = IMAGE_STORE.getAllObjectsFromDatabase(IMAGE_STORE.getTableName() + "_work_order_work_order_id=" + workOrder.getId());
-            System.out.println("3333333333");
             while (resultSetImages.next()) {
-                System.out.println("pre");
                 oldWorkOrderImages.add(IMAGE_STORE.getObjectFromResultSet(resultSetImages));
-                System.out.println("posle");
             }
 
-            System.out.println("4444444444");
             Map<Helper.Action, List<? extends BaseModel>> mapOfDifferencesImages = Helper.findDifferenceBetweenLists(workOrder.getImages(), oldWorkOrderImages);
             for (BaseModel image : mapOfDifferencesImages.get(Helper.Action.FOR_CREATE)) {
-                System.out.println("----create-----");
-                System.out.println("OID: " + ((Image) image).getOid());
-                System.out.println("URL: " + ((Image) image).getUrl());
-                System.out.println("DESC: " + ((Image) image).getDescription());
                 IMAGE_STORE.createNewObjectToDatabase(image, workOrder.getOid());
             }
             for (BaseModel image : mapOfDifferencesImages.get(Helper.Action.FOR_UPDATE)) {
-                System.out.println("---update-----");
-                System.out.println("OID: " + ((Image) image).getOid());
-                System.out.println("URL: " + ((Image) image).getUrl());
-                System.out.println("DESC: " + ((Image) image).getDescription());
                 IMAGE_STORE.modifyObject(image.getOid(), image);
             }
             for (BaseModel image : mapOfDifferencesImages.get(Helper.Action.FOR_DELETE)) {
-                System.out.println("-----delete------");
-                System.out.println("OID: " + ((Image) image).getOid());
-                System.out.println("URL: " + ((Image) image).getUrl());
-                System.out.println("DESC: " + ((Image) image).getDescription());
                 IMAGE_STORE.deleteObjectByOid(image.getOid());
             }
             return workOrder;
@@ -189,6 +173,8 @@ public class WorkOrderBuilder extends BaseBuilder {
             String from = this.getSqlFromObjectStores(Arrays.asList(WORK_ORDER_ITEM_STORE, this.getObjectStore()));
             String where = this.getObjectStore().getTableName() + "_buyer_buyer_id=" + BaseModel.getIdFromOid(buyerOID) + " AND " + WORK_ORDER_ITEM_STORE.getTableName() + "_settled=" + false;
             ResultSet rs = this.getObjectStore().getAllObjectsFromDatabase(from, where);
+            System.out.println("from: " + from);
+            System.out.println("where: " + where);
             while (rs.next()) {
                 WorkOrder workOrder = (WorkOrder) this.getObjectStore().getObjectFromResultSet(rs);
                 Optional<WorkOrder> alreadyExists = objects.stream().filter(o -> o.getOid().equals(workOrder.getOid())).findFirst();
