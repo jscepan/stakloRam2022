@@ -66,6 +66,7 @@ export class InvoicesComponent implements OnInit, OnDestroy {
   inputSearchHandler(text: string): void {
     const searchFilter: SearchModel = new SearchModel();
     searchFilter.criteriaQuick = text;
+    searchFilter.ordering = 'DESC';
     this.listEntities.setFilter(searchFilter);
   }
 

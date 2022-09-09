@@ -19,15 +19,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
-    
+
     Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
-    
+
     @Autowired
     private MyUserDetailsService userService;
-    
+
     @Autowired
     private JwtUtil jwtUtil;
-    
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // IF user try to login then don't ask for JWT
@@ -41,7 +41,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     String jwt = null;
                     jwt = authorizationHeader.substring(7);
                     username = jwtUtil.extractUsername(jwt);
-                    
+
                     if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                         UserDetails user = this.userService.loadUserByUsername(username);
                         if (jwtUtil.validateToken(jwt, user)) {

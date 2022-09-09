@@ -101,4 +101,9 @@ public class WorkOrderController {
     public WorkOrder modify(@PathVariable String workOrderOid, @RequestBody WorkOrder object) throws SException {
         return (WorkOrder) this.workOrderService.modifyObject(workOrderOid, object);
     }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/workorders")
+    public boolean delete(@RequestBody List<WorkOrder> objects) throws SException {
+        return this.workOrderService.deleteObjects(objects);
+    }
 }

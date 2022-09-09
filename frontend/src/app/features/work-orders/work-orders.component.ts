@@ -10,6 +10,7 @@ import {
 import { SweetAlertService } from 'src/app/shared/components/sweet-alert/sweet-alert.service';
 import { SearchModel } from 'src/app/shared/models/search.model';
 import { WorkOrderModel } from 'src/app/shared/models/work-order';
+import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { ListEntities } from 'src/app/shared/services/list-entities';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
@@ -37,7 +38,8 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
     private webService: WorkOrderWebService,
     private sweetAlertService: SweetAlertService,
     private listEntities: ListEntities<WorkOrderModel>,
-    private router: Router
+    private router: Router,
+    private authStoreService: AuthStoreService
   ) {}
 
   ngOnInit(): void {
@@ -105,6 +107,10 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
 
   bottomReachedHandler(): void {
     this.listEntities.requestNextPage();
+  }
+
+  hasPrivilege(privilege: string): boolean {
+    return this.authStoreService.isAllowed(privilege);
   }
 
   ngOnDestroy(): void {

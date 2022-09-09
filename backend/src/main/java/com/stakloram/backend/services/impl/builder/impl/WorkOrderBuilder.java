@@ -107,6 +107,26 @@ public class WorkOrderBuilder extends BaseBuilder {
     }
 
     @Override
+    public boolean deleteObjectByOid(String oid) throws SException {
+        try {
+            ResultSet rs = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_work_order_work_order_id=" + BaseModel.getIdFromOid(oid));
+            while (rs.next()) {
+                WorkOrderItem woi = WORK_ORDER_ITEM_STORE.getObjectFromResultSet(rs);
+                WORK_ORDER_ITEM_STORE.deleteObjectByOid(woi.getOid());
+            }
+            ResultSet rsImages = IMAGE_STORE.getAllObjectsFromDatabase(IMAGE_STORE.getTableName() + "_work_order_work_order_id=" + BaseModel.getIdFromOid(oid));
+            while (rsImages.next()) {
+                Image image = IMAGE_STORE.getObjectFromResultSet(rsImages);
+                IMAGE_STORE.deleteObjectByOid(image.getOid());
+            }
+            return this.objectStore.deleteObjectByOid(oid);
+        } catch (SQLException ex) {
+            super.logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("referrencialError") + " - " + UserMessage.getLocalizedMessage("removeThisObjectFromOtherPlacesFirst"));
+        }
+    }
+
+    @Override
     public BaseModel getObjectByOid(String oid) throws SException {
         WorkOrder workOrder = (WorkOrder) super.getObjectByOid(oid);
         Buyer buyer;
@@ -173,8 +193,6 @@ public class WorkOrderBuilder extends BaseBuilder {
             String from = this.getSqlFromObjectStores(Arrays.asList(WORK_ORDER_ITEM_STORE, this.getObjectStore()));
             String where = this.getObjectStore().getTableName() + "_buyer_buyer_id=" + BaseModel.getIdFromOid(buyerOID) + " AND " + WORK_ORDER_ITEM_STORE.getTableName() + "_settled=" + false;
             ResultSet rs = this.getObjectStore().getAllObjectsFromDatabase(from, where);
-            System.out.println("from: " + from);
-            System.out.println("where: " + where);
             while (rs.next()) {
                 WorkOrder workOrder = (WorkOrder) this.getObjectStore().getObjectFromResultSet(rs);
                 Optional<WorkOrder> alreadyExists = objects.stream().filter(o -> o.getOid().equals(workOrder.getOid())).findFirst();

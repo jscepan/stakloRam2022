@@ -24,6 +24,7 @@
     <app-button
       [text]="'createInvoice' | translate"
       (clickEvent)="create()"
+      [disabled]="!hasPrivilege('INVOICE_CREATE')"
     ></app-button>
   </div>
   <div
@@ -122,6 +123,7 @@
             [isTransparentMode]="true"
             (clickEvent)="viewInvoice(invoice.oid)"
             [matTooltip]="'viewInvoice' | translate"
+            [disabled]="!hasPrivilege('INVOICE_VIEW')"
           ></app-button>
         </div>
         <div class="grid-item">
@@ -130,6 +132,7 @@
             [isTransparentMode]="true"
             (clickEvent)="editInvoice(invoice.oid)"
             [matTooltip]="'editInvoice' | translate"
+            [disabled]="!hasPrivilege('INVOICE_CREATE')"
           ></app-button>
         </div>
         <div class="grid-item">
@@ -138,6 +141,7 @@
             [isTransparentMode]="true"
             (clickEvent)="deleteInvoice(invoice)"
             [matTooltip]="'deleteInvoice' | translate"
+            [disabled]="!hasPrivilege('INVOICE_DELETE')"
           ></app-button>
         </div>
       </ng-container>
