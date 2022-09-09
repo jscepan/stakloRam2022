@@ -25,15 +25,17 @@
             *ngIf="item.children && item.activated && dataModel.isExpanded"
           >
             <div class="item-children">
-              <div class="item-child" *ngFor="let childItem of item.children">
+              <ng-container *ngFor="let childItem of item.children">
                 <ng-container *ngIf="!childItem.hidden">
-                  <div (click)="selectItem(childItem)">
-                    <div *ngIf="!childItem.hidden" class="title">
-                      {{ childItem.title | translate }}
+                  <div class="item-child">
+                    <div (click)="selectItem(childItem)">
+                      <div *ngIf="!childItem.hidden" class="title">
+                        {{ childItem.title | translate }}
+                      </div>
                     </div>
                   </div>
                 </ng-container>
-              </div>
+              </ng-container>
             </div>
           </ng-container>
         </div>

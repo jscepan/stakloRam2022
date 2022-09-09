@@ -1192,7 +1192,7 @@ insert into city values
 (null, '43000', 'Zvečan', 1),
 (null, '19227', 'Zvezdan', 1),
 (null, '18333', 'Zvonce', 1);
-
+/*
 insert into stakloram2022.buyer values (null,'COMPANY','Prva kompanija doo', 'Marsala Birjuzova 28', '20354404', '11102020','Nikola Nikolic','+38124 444-635','+381 60 5-723-726','nikola@gmail.com',null,44,'JBKJS189');
 insert into stakloram2022.buyer values (null,'COMPANY','Druga kompanija doo', 'Jo Lajosa 47', '2030404', '10102020','Petar Petrovic','+38124 555-635','+381 60 5-723-555','petar@gmail.com',null,245,'JBKJS189');
 insert into stakloram2022.buyer values (null,'COMPANY','Treca kompanija doo', 'Aleja 223', '2290404', '14102020','Marko Markovic','+38124 666-635','+381 60 5-723-666','marko@gmail.com',null,75,null);
@@ -1201,4 +1201,4 @@ insert into stakloram2022.buyer values (null,'COMPANY','Peta kompanija doo', 'Le
 insert into stakloram2022.buyer values (null,'PERSON','Scepan Jankovic', 'Marsal Tita 94', null, null,null,'+38124 250-999','+381 60 5-723-999','jscepan@gmail.com','MAN',472,null);
 insert into stakloram2022.buyer values (null,'PERSON','Svetlana Maslovaric', 'Arsenija Carnojevica 67', null, null,null,'+38124 250-999','+381 60 5-723-999','maslovarics@gmail.com','WOMAN',159,null);
 insert into stakloram2022.buyer values (null,'PERSON','Fizicko lice', 'Bez adrese', null, null,null,null,null,null,null,357,null);
-
+*/

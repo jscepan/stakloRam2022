@@ -293,3 +293,446 @@
 2022-09-09 19:25:19.462 ERROR 23256 --- [http-nio-8081-exec-5] c.s.backend.auth.JwtRequestFilter        : org.springframework.web.util.NestedServletException: Request processing failed; nested exception is java.lang.NullPointerException: Cannot invoke "com.stakloram.backend.models.WorkOrder.getBuyer()" because "workOrder" is null
 2022-09-09 19:25:47.701 ERROR 23256 --- [http-nio-8081-exec-8] c.s.backend.auth.JwtRequestFilter        : org.springframework.web.util.NestedServletException: Request processing failed; nested exception is java.lang.NullPointerException: Cannot invoke "com.stakloram.backend.models.WorkOrder.getBuyer()" because "workOrder" is null
 2022-09-09 19:25:51.418 ERROR 23256 --- [http-nio-8081-exec-7] c.s.backend.auth.JwtRequestFilter        : org.springframework.web.util.NestedServletException: Request processing failed; nested exception is java.lang.NullPointerException: Cannot invoke "com.stakloram.backend.models.WorkOrder.getBuyer()" because "workOrder" is null
+2022-09-09 19:30:54.914  INFO 27440 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 16.0.2 on DESKTOP-3DDETGI with PID 27440 (D:\StakloRam\stakloRam2022\backend\target\classes started by Scepan in D:\StakloRam\stakloRam2022\backend)
+2022-09-09 19:30:54.918 DEBUG 27440 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
+2022-09-09 19:30:54.919  INFO 27440 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
+2022-09-09 19:30:56.883  INFO 27440 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-09-09 19:30:56.899  INFO 27440 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-09-09 19:30:56.900  INFO 27440 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
+2022-09-09 19:30:57.067  INFO 27440 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-09-09 19:30:57.068  INFO 27440 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2075 ms
+2022-09-09 19:30:57.397 DEBUG 27440 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
+2022-09-09 19:30:57.906  INFO 27440 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2022-09-09 19:30:58.023  INFO 27440 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2c63762b, org.springframework.security.web.context.SecurityContextPersistenceFilter@4f4c88f9, org.springframework.security.web.header.HeaderWriterFilter@727320fa, org.springframework.web.filter.CorsFilter@7a9eccc4, org.springframework.security.web.authentication.logout.LogoutFilter@551e4c6d, com.stakloram.backend.auth.JwtRequestFilter@117525fe, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@cb39552, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6749fe50, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@78422efb, org.springframework.security.web.session.SessionManagementFilter@75e27856, org.springframework.security.web.access.ExceptionTranslationFilter@34d45ec0, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@12a470dd]
+2022-09-09 19:30:58.251  INFO 27440 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-09-09 19:30:58.265  INFO 27440 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 3.964 seconds (JVM running for 4.438)
+2022-09-09 19:31:02.354  INFO 27440 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-09-09 19:31:02.355  INFO 27440 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-09-09 19:31:02.356  INFO 27440 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-09-09 19:33:06.702  INFO 25180 --- [main] c.s.backend.StakloRamBeApplicationTests  : Starting StakloRamBeApplicationTests using Java 16.0.2 on DESKTOP-3DDETGI with PID 25180 (started by Scepan in D:\StakloRam\stakloRam2022\backend)
+2022-09-09 19:33:06.703 DEBUG 25180 --- [main] c.s.backend.StakloRamBeApplicationTests  : Running with Spring Boot v2.6.7, Spring v5.3.19
+2022-09-09 19:33:06.704  INFO 25180 --- [main] c.s.backend.StakloRamBeApplicationTests  : No active profile set, falling back to 1 default profile: "default"
+2022-09-09 19:33:09.225  INFO 25180 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2022-09-09 19:33:09.445  INFO 25180 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2272cbb0, org.springframework.security.web.context.SecurityContextPersistenceFilter@40d60f2, org.springframework.security.web.header.HeaderWriterFilter@31b7d869, org.springframework.web.filter.CorsFilter@3f6f3cc, org.springframework.security.web.authentication.logout.LogoutFilter@2c991465, com.stakloram.backend.auth.JwtRequestFilter@180b3819, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6d8796c1, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6cd98a05, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@733c464f, org.springframework.security.web.session.SessionManagementFilter@346f41a9, org.springframework.security.web.access.ExceptionTranslationFilter@724aefc3, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@25be445f]
+2022-09-09 19:33:09.910  INFO 25180 --- [main] c.s.backend.StakloRamBeApplicationTests  : Started StakloRamBeApplicationTests in 3.67 seconds (JVM running for 4.958)
+2022-09-09 19:33:26.687  INFO 28248 --- [main] c.s.backend.StakloRamBeApplicationTests  : Starting StakloRamBeApplicationTests using Java 16.0.2 on DESKTOP-3DDETGI with PID 28248 (started by Scepan in D:\StakloRam\stakloRam2022\backend)
+2022-09-09 19:33:26.690 DEBUG 28248 --- [main] c.s.backend.StakloRamBeApplicationTests  : Running with Spring Boot v2.6.7, Spring v5.3.19
+2022-09-09 19:33:26.691  INFO 28248 --- [main] c.s.backend.StakloRamBeApplicationTests  : No active profile set, falling back to 1 default profile: "default"
+2022-09-09 19:33:28.998  INFO 28248 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2022-09-09 19:33:29.235  INFO 28248 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1450131a, org.springframework.security.web.context.SecurityContextPersistenceFilter@6d8796c1, org.springframework.security.web.header.HeaderWriterFilter@6d2a2560, org.springframework.web.filter.CorsFilter@5f7eee96, org.springframework.security.web.authentication.logout.LogoutFilter@76130a29, com.stakloram.backend.auth.JwtRequestFilter@3a36cd5, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2c413ffc, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6f6c6077, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@53f0d09c, org.springframework.security.web.session.SessionManagementFilter@4aa11206, org.springframework.security.web.access.ExceptionTranslationFilter@53c1179a, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@706ddbc8]
+2022-09-09 19:33:29.713  INFO 28248 --- [main] c.s.backend.StakloRamBeApplicationTests  : Started StakloRamBeApplicationTests in 3.477 seconds (JVM running for 4.728)
+2022-09-09 19:33:38.632  INFO 1280 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 16.0.2 on DESKTOP-3DDETGI with PID 1280 (D:\StakloRam\stakloRam2022\backend\target\classes started by Scepan in D:\StakloRam\stakloRam2022\backend)
+2022-09-09 19:33:38.635 DEBUG 1280 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
+2022-09-09 19:33:38.636  INFO 1280 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
+2022-09-09 19:33:40.248  INFO 1280 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-09-09 19:33:40.266  INFO 1280 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-09-09 19:33:40.266  INFO 1280 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
+2022-09-09 19:33:40.430  INFO 1280 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-09-09 19:33:40.430  INFO 1280 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1724 ms
+2022-09-09 19:33:40.740 DEBUG 1280 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
+2022-09-09 19:33:41.184  INFO 1280 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2022-09-09 19:33:41.294  INFO 1280 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@696db620, org.springframework.security.web.context.SecurityContextPersistenceFilter@766a49c7, org.springframework.security.web.header.HeaderWriterFilter@7d32e714, org.springframework.web.filter.CorsFilter@6968c1d6, org.springframework.security.web.authentication.logout.LogoutFilter@1b2df3aa, com.stakloram.backend.auth.JwtRequestFilter@5f7989fa, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@75e27856, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1f3b992, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7d986d83, org.springframework.security.web.session.SessionManagementFilter@7523a3dc, org.springframework.security.web.access.ExceptionTranslationFilter@2152ab30, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@6a1ef65c]
+2022-09-09 19:33:41.504  INFO 1280 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-09-09 19:33:41.515  INFO 1280 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 3.472 seconds (JVM running for 3.965)
+2022-09-09 19:33:42.813  INFO 1280 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-09-09 19:33:42.814  INFO 1280 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-09-09 19:33:42.815  INFO 1280 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-09-09 19:49:07.916  INFO 24180 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 16.0.2 on DESKTOP-3DDETGI with PID 24180 (D:\StakloRam\stakloRam2022\backend\target\classes started by Scepan in D:\StakloRam\stakloRam2022\backend)
+2022-09-09 19:49:07.921 DEBUG 24180 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
+2022-09-09 19:49:07.922  INFO 24180 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
+2022-09-09 19:49:09.701  INFO 24180 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-09-09 19:49:09.720  INFO 24180 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-09-09 19:49:09.721  INFO 24180 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
+2022-09-09 19:49:09.931  INFO 24180 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-09-09 19:49:09.931  INFO 24180 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1938 ms
+2022-09-09 19:49:10.268 DEBUG 24180 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
+2022-09-09 19:49:10.749  INFO 24180 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2022-09-09 19:49:10.867  INFO 24180 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5416f8db, org.springframework.security.web.context.SecurityContextPersistenceFilter@34d45ec0, org.springframework.security.web.header.HeaderWriterFilter@3166f664, org.springframework.web.filter.CorsFilter@64e1377c, org.springframework.security.web.authentication.logout.LogoutFilter@17410c07, com.stakloram.backend.auth.JwtRequestFilter@80bfdc6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@727320fa, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@51a18b21, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@b0fd744, org.springframework.security.web.session.SessionManagementFilter@7d32e714, org.springframework.security.web.access.ExceptionTranslationFilter@1dd74143, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@2f10f633]
+2022-09-09 19:49:11.144  INFO 24180 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-09-09 19:49:11.158  INFO 24180 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 3.847 seconds (JVM running for 4.379)
+2022-09-09 19:49:21.004  INFO 24180 --- [http-nio-8081-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-09-09 19:49:21.006  INFO 24180 --- [http-nio-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-09-09 19:49:21.007  INFO 24180 --- [http-nio-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-09-09 19:52:47.052  INFO 13332 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 16.0.2 on DESKTOP-3DDETGI with PID 13332 (D:\StakloRam\stakloRam2022\backend\target\classes started by Scepan in D:\StakloRam\stakloRam2022\backend)
+2022-09-09 19:52:47.055 DEBUG 13332 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
+2022-09-09 19:52:47.056  INFO 13332 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
+2022-09-09 19:52:48.650  INFO 13332 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-09-09 19:52:48.665  INFO 13332 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-09-09 19:52:48.665  INFO 13332 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
+2022-09-09 19:52:48.817  INFO 13332 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-09-09 19:52:48.818  INFO 13332 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1693 ms
+2022-09-09 19:52:49.108 DEBUG 13332 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
+2022-09-09 19:52:49.566  INFO 13332 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2022-09-09 19:52:49.664  INFO 13332 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3f6bf8aa, org.springframework.security.web.context.SecurityContextPersistenceFilter@7beae796, org.springframework.security.web.header.HeaderWriterFilter@62b790a5, org.springframework.web.filter.CorsFilter@13c8ac77, org.springframework.security.web.authentication.logout.LogoutFilter@127705e4, com.stakloram.backend.auth.JwtRequestFilter@cb7fa71, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@52bf7bf6, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@40a72ecd, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4bdf, org.springframework.security.web.session.SessionManagementFilter@2a53f215, org.springframework.security.web.access.ExceptionTranslationFilter@57fbc06f, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7d986d83]
+2022-09-09 19:52:49.863  INFO 13332 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-09-09 19:52:49.874  INFO 13332 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 3.404 seconds (JVM running for 3.877)
+2022-09-09 19:52:57.416  INFO 13332 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-09-09 19:52:57.416  INFO 13332 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-09-09 19:52:57.417  INFO 13332 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-09-09 20:04:06.557  WARN 13332 --- [http-nio-8081-exec-1] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' not supported]
+2022-09-09 20:04:24.397 ERROR 13332 --- [http-nio-8081-exec-2] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1] with root cause
+
+java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+	at com.stakloram.backend.models.BaseModel.getIdFromOid(BaseModel.java:40) ~[classes/:na]
+	at com.stakloram.backend.database.ObjectStore.getObjectByOid(ObjectStore.java:48) ~[classes/:na]
+	at com.stakloram.backend.services.impl.builder.BaseBuilder.getObjectByOid(BaseBuilder.java:81) ~[classes/:na]
+	at com.stakloram.backend.services.impl.builder.impl.BuyerBuilder.getObjectByOid(BuyerBuilder.java:36) ~[classes/:na]
+	at com.stakloram.backend.services.impl.builder.impl.BuyerBuilder.getObjectByOid(BuyerBuilder.java:15) ~[classes/:na]
+	at com.stakloram.backend.services.ServiceModel.getObjectByOID(ServiceModel.java:58) ~[classes/:na]
+	at com.stakloram.backend.controllers.BuyerController.getById(BuyerController.java:37) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:78) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1067) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:963) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:655) ~[tomcat-embed-core-9.0.62.jar:4.0.FR]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:764) ~[tomcat-embed-core-9.0.62.jar:4.0.FR]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:227) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:111) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:327) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:115) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:81) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:122) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:116) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:126) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:81) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:109) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:149) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at com.stakloram.backend.auth.JwtRequestFilter.doFilterInternal(JwtRequestFilter.java:58) ~[classes/:na]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:110) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:80) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:211) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:183) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:354) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:197) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:360) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:890) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1743) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at java.base/java.lang.Thread.run(Thread.java:831) ~[na:na]
+
+2022-09-09 20:04:58.394 ERROR 13332 --- [http-nio-8081-exec-6] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1] with root cause
+
+java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+	at com.stakloram.backend.models.BaseModel.getIdFromOid(BaseModel.java:40) ~[classes/:na]
+	at com.stakloram.backend.database.ObjectStore.getObjectByOid(ObjectStore.java:48) ~[classes/:na]
+	at com.stakloram.backend.services.impl.builder.BaseBuilder.getObjectByOid(BaseBuilder.java:81) ~[classes/:na]
+	at com.stakloram.backend.services.impl.builder.impl.BuyerBuilder.getObjectByOid(BuyerBuilder.java:36) ~[classes/:na]
+	at com.stakloram.backend.services.impl.builder.impl.BuyerBuilder.getObjectByOid(BuyerBuilder.java:15) ~[classes/:na]
+	at com.stakloram.backend.services.ServiceModel.getObjectByOID(ServiceModel.java:58) ~[classes/:na]
+	at com.stakloram.backend.controllers.BuyerController.getById(BuyerController.java:37) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:78) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1067) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:963) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:655) ~[tomcat-embed-core-9.0.62.jar:4.0.FR]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:764) ~[tomcat-embed-core-9.0.62.jar:4.0.FR]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:227) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:111) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:327) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:115) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:81) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:122) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:116) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:126) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:81) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:109) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:149) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at com.stakloram.backend.auth.JwtRequestFilter.doFilterInternal(JwtRequestFilter.java:58) ~[classes/:na]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:110) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:80) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:211) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:183) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:354) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:197) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:360) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:890) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1743) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at java.base/java.lang.Thread.run(Thread.java:831) ~[na:na]
+
+2022-09-09 20:05:00.804 ERROR 13332 --- [http-nio-8081-exec-3] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1] with root cause
+
+java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+	at com.stakloram.backend.models.BaseModel.getIdFromOid(BaseModel.java:40) ~[classes/:na]
+	at com.stakloram.backend.database.ObjectStore.getObjectByOid(ObjectStore.java:48) ~[classes/:na]
+	at com.stakloram.backend.services.impl.builder.BaseBuilder.getObjectByOid(BaseBuilder.java:81) ~[classes/:na]
+	at com.stakloram.backend.services.impl.builder.impl.BuyerBuilder.getObjectByOid(BuyerBuilder.java:36) ~[classes/:na]
+	at com.stakloram.backend.services.impl.builder.impl.BuyerBuilder.getObjectByOid(BuyerBuilder.java:15) ~[classes/:na]
+	at com.stakloram.backend.services.ServiceModel.getObjectByOID(ServiceModel.java:58) ~[classes/:na]
+	at com.stakloram.backend.controllers.BuyerController.getById(BuyerController.java:37) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:78) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1067) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:963) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:655) ~[tomcat-embed-core-9.0.62.jar:4.0.FR]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) ~[spring-webmvc-5.3.19.jar:5.3.19]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:764) ~[tomcat-embed-core-9.0.62.jar:4.0.FR]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:227) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:111) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:327) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:115) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:81) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:122) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:116) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:126) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:81) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:109) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:149) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at com.stakloram.backend.auth.JwtRequestFilter.doFilterInternal(JwtRequestFilter.java:58) ~[classes/:na]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:110) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:80) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:211) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:183) ~[spring-security-web-5.6.3.jar:5.6.3]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:354) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.19.jar:5.3.19]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:197) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:360) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:890) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1743) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-9.0.62.jar:9.0.62]
+	at java.base/java.lang.Thread.run(Thread.java:831) ~[na:na]
+
+2022-09-09 20:09:24.745  INFO 19728 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 16.0.2 on DESKTOP-3DDETGI with PID 19728 (D:\StakloRam\stakloRam2022\backend\target\classes started by Scepan in D:\StakloRam\stakloRam2022\backend)
+2022-09-09 20:09:24.748 DEBUG 19728 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
+2022-09-09 20:09:24.749  INFO 19728 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
+2022-09-09 20:09:26.378  INFO 19728 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-09-09 20:09:26.399  INFO 19728 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-09-09 20:09:26.399  INFO 19728 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
+2022-09-09 20:09:26.553  INFO 19728 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-09-09 20:09:26.553  INFO 19728 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1737 ms
+2022-09-09 20:09:26.831 DEBUG 19728 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
+2022-09-09 20:09:27.310  INFO 19728 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2022-09-09 20:09:27.415  INFO 19728 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@77f991c, org.springframework.security.web.context.SecurityContextPersistenceFilter@6bccd036, org.springframework.security.web.header.HeaderWriterFilter@18137eab, org.springframework.web.filter.CorsFilter@3a7e365, org.springframework.security.web.authentication.logout.LogoutFilter@21da4b5f, com.stakloram.backend.auth.JwtRequestFilter@7e74a380, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6a756082, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7beae796, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2ceee4b6, org.springframework.security.web.session.SessionManagementFilter@1db7157f, org.springframework.security.web.access.ExceptionTranslationFilter@eb6ec6, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@1319bc2a]
+2022-09-09 20:09:27.613  INFO 19728 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-09-09 20:09:27.626  INFO 19728 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 3.504 seconds (JVM running for 4.008)
+2022-09-09 20:09:36.262  INFO 19728 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-09-09 20:09:36.263  INFO 19728 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-09-09 20:09:36.264  INFO 19728 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-09-09 20:12:52.211  INFO 26552 --- [main] c.s.backend.StakloRamBeApplicationTests  : Starting StakloRamBeApplicationTests using Java 16.0.2 on DESKTOP-3DDETGI with PID 26552 (started by Scepan in D:\StakloRam\stakloRam2022\backend)
+2022-09-09 20:12:52.213 DEBUG 26552 --- [main] c.s.backend.StakloRamBeApplicationTests  : Running with Spring Boot v2.6.7, Spring v5.3.19
+2022-09-09 20:12:52.215  INFO 26552 --- [main] c.s.backend.StakloRamBeApplicationTests  : No active profile set, falling back to 1 default profile: "default"
+2022-09-09 20:12:54.763  INFO 26552 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2022-09-09 20:12:54.986  INFO 26552 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2d2b6960, org.springframework.security.web.context.SecurityContextPersistenceFilter@62d1dc3c, org.springframework.security.web.header.HeaderWriterFilter@5e8507f1, org.springframework.web.filter.CorsFilter@38291795, org.springframework.security.web.authentication.logout.LogoutFilter@350ec690, com.stakloram.backend.auth.JwtRequestFilter@234c5e41, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@18539cb1, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@22d9bc14, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@40ef0af8, org.springframework.security.web.session.SessionManagementFilter@31b7d869, org.springframework.security.web.access.ExceptionTranslationFilter@5edacf20, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4cc7d00d]
+2022-09-09 20:12:55.535  INFO 26552 --- [main] c.s.backend.StakloRamBeApplicationTests  : Started StakloRamBeApplicationTests in 3.978 seconds (JVM running for 5.56)
+2022-09-09 20:13:15.065  INFO 28392 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 16.0.2 on DESKTOP-3DDETGI with PID 28392 (D:\StakloRam\stakloRam2022\backend\target\classes started by Scepan in D:\StakloRam\stakloRam2022\backend)
+2022-09-09 20:13:15.069 DEBUG 28392 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
+2022-09-09 20:13:15.070  INFO 28392 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
+2022-09-09 20:13:16.793  INFO 28392 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-09-09 20:13:16.811  INFO 28392 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-09-09 20:13:16.811  INFO 28392 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
+2022-09-09 20:13:16.979  INFO 28392 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-09-09 20:13:16.980  INFO 28392 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1836 ms
+2022-09-09 20:13:17.285 DEBUG 28392 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
+2022-09-09 20:13:17.760  INFO 28392 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2022-09-09 20:13:17.865  INFO 28392 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@e784320, org.springframework.security.web.context.SecurityContextPersistenceFilter@6b63e6ad, org.springframework.security.web.header.HeaderWriterFilter@51a18b21, org.springframework.web.filter.CorsFilter@3f6bf8aa, org.springframework.security.web.authentication.logout.LogoutFilter@3fb9a67f, com.stakloram.backend.auth.JwtRequestFilter@78054f54, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6749fe50, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@bbd4791, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@13c8ac77, org.springframework.security.web.session.SessionManagementFilter@1f3b992, org.springframework.security.web.access.ExceptionTranslationFilter@3ce443f9, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@6968c1d6]
+2022-09-09 20:13:18.087  INFO 28392 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-09-09 20:13:18.101  INFO 28392 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 3.644 seconds (JVM running for 4.122)
+2022-09-09 20:13:25.070  INFO 28392 --- [http-nio-8081-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-09-09 20:13:25.071  INFO 28392 --- [http-nio-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-09-09 20:13:25.072  INFO 28392 --- [http-nio-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-09-09 20:19:51.076  INFO 23616 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 16.0.2 on DESKTOP-3DDETGI with PID 23616 (D:\StakloRam\stakloRam2022\backend\target\classes started by Scepan in D:\StakloRam\stakloRam2022\backend)
+2022-09-09 20:19:51.082 DEBUG 23616 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
+2022-09-09 20:19:51.084  INFO 23616 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
+2022-09-09 20:19:54.861  INFO 23616 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-09-09 20:19:54.891  INFO 23616 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-09-09 20:19:54.892  INFO 23616 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
+2022-09-09 20:19:55.155  INFO 23616 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-09-09 20:19:55.156  INFO 23616 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3962 ms
+2022-09-09 20:19:55.570 DEBUG 23616 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
+2022-09-09 20:19:56.365  INFO 23616 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2022-09-09 20:19:56.599  INFO 23616 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3a7e365, org.springframework.security.web.context.SecurityContextPersistenceFilter@4f4c88f9, org.springframework.security.web.header.HeaderWriterFilter@727320fa, org.springframework.web.filter.CorsFilter@2ceee4b6, org.springframework.security.web.authentication.logout.LogoutFilter@551e4c6d, com.stakloram.backend.auth.JwtRequestFilter@7e74a380, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@cb39552, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6749fe50, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@12a470dd, org.springframework.security.web.session.SessionManagementFilter@75e27856, org.springframework.security.web.access.ExceptionTranslationFilter@34d45ec0, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@e280403]
+2022-09-09 20:19:56.982  INFO 23616 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-09-09 20:19:57.005  INFO 23616 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 6.813 seconds (JVM running for 7.5)
