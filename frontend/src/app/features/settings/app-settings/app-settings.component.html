@@ -92,6 +92,7 @@
       </mat-label>
       <input type="text" matInput formControlName="invoiceForeignNote" />
     </mat-form-field>
+    <h2>{{ "invoiceForeignNote" | translate }}</h2>
     <div formArrayName="invoiceForeignNotes" class="invoice-foreign-notes">
       <div
         *ngFor="let comp of invoiceForeignNotesFormArr.controls; let j = index"

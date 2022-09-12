@@ -1,0 +1,10 @@
+Imas i uputstvo na:
+https://www.ubackup.com/enterprise-backup/mysql-automatic-backup-5740.html
+
+
+Kreiras fajl sa oznakom .bat i sledecim tekstom:(gde je prva recenica putanja do mysql server bin foldera, a u drugoj podesiti posle -p password za mysql i putanju za kopiju svih baza)...
+cd "C:\Program Files\MySQL\MySQL Server 8.0\bin"
+mysqldump -h 127.0.0.1 -u root -ppassword --all-databases > "D:\000\allmysql.sql"
+
+
+Zatim pokrenuti Task Scheduler pa onda kao na sajtu...
