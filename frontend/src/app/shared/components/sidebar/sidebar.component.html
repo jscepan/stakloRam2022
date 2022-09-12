@@ -13,6 +13,9 @@
               <i-feather
                 class="sidebar-icon"
                 name="{{ item.icon }}"
+                [matTooltip]="item.title | translate"
+                [matTooltipPosition]="'right'"
+                [matTooltipDisabled]="dataModel.isExpanded"
               ></i-feather>
             </div>
             <ng-container *ngIf="dataModel.isExpanded">

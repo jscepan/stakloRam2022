@@ -276,3 +276,19 @@ Caused by: java.net.BindException: Cannot assign requested address: bind
 2022-09-12 10:54:44.230  INFO 18984 --- [http-nio-127.0.0.1-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2022-09-12 10:54:44.230  INFO 18984 --- [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2022-09-12 10:54:44.234  INFO 18984 --- [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2022-09-12 11:01:14.054  INFO 29836 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 1.8.0_341 on DESKTOP-3DDETGI with PID 29836 (D:\StakloRam\stakloRam2022\backend\target\classes started by Scepan in D:\StakloRam\stakloRam2022\backend)
+2022-09-12 11:01:14.057 DEBUG 29836 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
+2022-09-12 11:01:14.058  INFO 29836 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
+2022-09-12 11:01:15.598  INFO 29836 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-09-12 11:01:15.609  INFO 29836 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-09-12 11:01:15.609  INFO 29836 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
+2022-09-12 11:01:15.762  INFO 29836 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-09-12 11:01:15.762  INFO 29836 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1650 ms
+2022-09-12 11:01:16.031 DEBUG 29836 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
+2022-09-12 11:01:16.546  INFO 29836 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2022-09-12 11:01:16.653  INFO 29836 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@11b377c5, org.springframework.security.web.context.SecurityContextPersistenceFilter@6482eef, org.springframework.security.web.header.HeaderWriterFilter@4cb0a000, org.springframework.web.filter.CorsFilter@7bca6fac, org.springframework.security.web.authentication.logout.LogoutFilter@7048535f, com.stakloram.backend.auth.JwtRequestFilter@75b3673, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5b498842, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2fc2a205, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5c60b0a0, org.springframework.security.web.session.SessionManagementFilter@41b0ae4c, org.springframework.security.web.access.ExceptionTranslationFilter@7495699f, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@16a49a5d]
+2022-09-12 11:01:16.827  INFO 29836 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-09-12 11:01:16.839  INFO 29836 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 3.287 seconds (JVM running for 3.7)
+2022-09-12 11:03:14.514  INFO 29836 --- [http-nio-127.0.0.1-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-09-12 11:03:14.514  INFO 29836 --- [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-09-12 11:03:14.516  INFO 29836 --- [http-nio-127.0.0.1-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
