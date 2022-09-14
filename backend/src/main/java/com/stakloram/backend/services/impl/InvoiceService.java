@@ -1,5 +1,7 @@
 package com.stakloram.backend.services.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Invoice;
 import com.stakloram.backend.exception.SException;
@@ -14,6 +16,8 @@ import com.stakloram.backend.services.impl.builder.impl.InvoiceBuilder;
 import com.stakloram.backend.util.DataChecker;
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,7 +47,12 @@ public class InvoiceService extends ServiceModel {
             if (invoice != null) {
                 Income income = this.incomeBuilder.createNewObject(new Income(invoice.getDateOfCreate(), invoice.getGrossAmount(), "Gotovinski račun " + invoice.getNumber(), "", invoice.getBuyer(), ""));
                 if (income != null) {
-                    super.history.createNewObject(new History(History.Action.CREATE, object.getClass().getSimpleName().toLowerCase(), null, object.toString(), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), null));
+                    try {
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        super.history.createNewObject(new History(History.Action.CREATE, object.getClass().getSimpleName().toLowerCase(), null, objectMapper.writeValueAsString(object), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), null));
+                    } catch (JsonProcessingException ex) {
+                        super.logger.error(ex.toString());
+                    }
                     this.endTransaction();
                     return invoice;
                 }

@@ -1,5 +1,7 @@
 package com.stakloram.backend.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stakloram.backend.database.ConnectionToDatabase;
 import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.BaseModel;
@@ -20,7 +22,7 @@ import org.slf4j.LoggerFactory;
 
 public abstract class ServiceModel implements IService {
 
-    Logger logger = LoggerFactory.getLogger(ServiceModel.class);
+    public Logger logger = LoggerFactory.getLogger(ServiceModel.class);
 
     public static final int SKIP = 50;
     public static final int TOP = 50;
@@ -64,7 +66,12 @@ public abstract class ServiceModel implements IService {
         this.startTransaction();
         BaseModel baseModel = this.baseBuilder.createNewObject(object);
         if (baseModel != null) {
-            this.history.createNewObject(new History(History.Action.CREATE, object.getClass().getSimpleName().toLowerCase(), null, object.toString(), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), null));
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                this.history.createNewObject(new History(History.Action.CREATE, object.getClass().getSimpleName().toLowerCase(), null, objectMapper.writeValueAsString(object), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), null));
+            } catch (JsonProcessingException ex) {
+                logger.error(ex.toString());
+            }
             this.endTransaction();
             return baseModel;
         }
@@ -80,16 +87,17 @@ public abstract class ServiceModel implements IService {
             BaseModel previousObject = this.baseBuilder.getObjectByOid(oid);
             BaseModel baseModel = this.baseBuilder.modifyObject(oid, object);
             if (baseModel != null) {
-                this.history.createNewObject(new History(History.Action.UPDATE, object.getClass().getSimpleName().toLowerCase(), previousObject != null ? previousObject.toString() : "", object.toString(), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), object.getOid()));
+                ObjectMapper objectMapper = new ObjectMapper();
+                this.history.createNewObject(new History(History.Action.UPDATE, object.getClass().getSimpleName().toLowerCase(), previousObject != null ? objectMapper.writeValueAsString(previousObject) : "", objectMapper.writeValueAsString(object), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), object.getOid()));
                 this.endTransaction();
                 return baseModel;
             }
             this.rollback();
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
-        } catch (SException ex) {
+        } catch (SException | JsonProcessingException ex) {
             logger.error(ex.toString());
-            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
+        throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
     }
 
     @Override
@@ -104,7 +112,12 @@ public abstract class ServiceModel implements IService {
                 this.rollback();
                 return false;
             }
-            this.history.createNewObject(new History(History.Action.DELETE, object.getClass().getSimpleName().toLowerCase(), object.toString(), null, LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), object.getOid()));
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                this.history.createNewObject(new History(History.Action.DELETE, object.getClass().getSimpleName().toLowerCase(), objectMapper.writeValueAsString(object), null, LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), object.getOid()));
+            } catch (JsonProcessingException ex) {
+                logger.error(ex.toString());
+            }
         }
         this.endTransaction();
         return true;
