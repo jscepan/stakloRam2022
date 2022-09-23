@@ -21,11 +21,12 @@ public class SettingsService {
         ObjectMapper objectMapper = JsonMapper.builder()
                 .addModule(new JavaTimeModule())
                 .build();
-        Settings settings = null;
+        Settings settings;
         try {
             settings = objectMapper.readValue(dataFromFile, Settings.class);
         } catch (JsonProcessingException ex) {
             Logger.getLogger(SettingsService.class.getName()).log(Level.SEVERE, null, ex);
+            return this.modify(new Settings());
         }
         return settings;
     }

@@ -1,6 +1,6 @@
 FRONTEND:
 In development mode in constants.ts set BASE_API_URL to 'http://localhost:8081' to work with BE in development mode...
-After changes only do build with - npm run build   - it will build project directly in  backend path
+After changes only do build with - npm run build   - it will build project directly in  backend path GOOD PRACTICE IS TO DELETE PREVIOUS BUILD FRONTEND...
 
 
 

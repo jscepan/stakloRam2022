@@ -57,7 +57,9 @@ public class Helper {
             LoggerFactory.getLogger(Helper.class).error("", ex);
         } finally {
             try {
-                reader.close();
+                if (reader != null) {
+                    reader.close();
+                }
             } catch (IOException ex) {
                 LoggerFactory.getLogger(Helper.class).error("", ex);
             }
