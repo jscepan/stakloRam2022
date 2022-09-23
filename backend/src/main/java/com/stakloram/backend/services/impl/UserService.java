@@ -2,6 +2,8 @@ package com.stakloram.backend.services.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.History;
@@ -11,8 +13,6 @@ import com.stakloram.backend.services.ServiceModel;
 import com.stakloram.backend.services.impl.builder.impl.UserBuilder;
 import com.stakloram.backend.util.DataChecker;
 import java.time.LocalDateTime;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,7 +39,9 @@ public class UserService extends ServiceModel {
         previousUser.setLanguage(object.getLanguage());
         previousUser.setUsername(object.getUsername());
         previousUser = ((UserBuilder) this.getBaseBuilder()).modifyObject(oid, previousUser);
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = JsonMapper.builder()
+                .addModule(new JavaTimeModule())
+                .build();
         try {
             this.history.createNewObject(new History(History.Action.UPDATE, object.getClass().getSimpleName().toLowerCase(), previousUser != null ? objectMapper.writeValueAsString(previousUser) : "", objectMapper.writeValueAsString(object), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), object.getOid()));
         } catch (JsonProcessingException ex) {

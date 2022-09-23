@@ -2,6 +2,8 @@ package com.stakloram.backend.services.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Invoice;
 import com.stakloram.backend.exception.SException;
@@ -48,7 +50,9 @@ public class InvoiceService extends ServiceModel {
                 Income income = this.incomeBuilder.createNewObject(new Income(invoice.getDateOfCreate(), invoice.getGrossAmount(), "Gotovinski račun " + invoice.getNumber(), "", invoice.getBuyer(), ""));
                 if (income != null) {
                     try {
-                        ObjectMapper objectMapper = new ObjectMapper();
+                        ObjectMapper objectMapper = JsonMapper.builder()
+                                .addModule(new JavaTimeModule())
+                                .build();
                         super.history.createNewObject(new History(History.Action.CREATE, object.getClass().getSimpleName().toLowerCase(), null, objectMapper.writeValueAsString(object), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), null));
                     } catch (JsonProcessingException ex) {
                         super.logger.error(ex.toString());

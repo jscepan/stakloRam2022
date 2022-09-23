@@ -2,6 +2,8 @@ package com.stakloram.backend.services.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.stakloram.backend.constants.Constants;
 import com.stakloram.backend.models.Settings;
 import com.stakloram.backend.util.Helper;
@@ -16,7 +18,9 @@ public class SettingsService {
 
     public Settings getSettings() {
         String dataFromFile = Helper.readFromFile(Constants.SETTINGS_FILE);
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = JsonMapper.builder()
+                .addModule(new JavaTimeModule())
+                .build();
         Settings settings = null;
         try {
             settings = objectMapper.readValue(dataFromFile, Settings.class);
@@ -27,7 +31,9 @@ public class SettingsService {
     }
 
     public Settings modify(Settings settings) {
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = JsonMapper.builder()
+                .addModule(new JavaTimeModule())
+                .build();
         try {
             objectMapper.writeValue(new File(Constants.SETTINGS_FILE), settings);
         } catch (IOException ex) {

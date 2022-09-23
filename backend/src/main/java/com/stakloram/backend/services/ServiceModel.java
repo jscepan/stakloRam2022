@@ -2,6 +2,8 @@ package com.stakloram.backend.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.stakloram.backend.database.ConnectionToDatabase;
 import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.BaseModel;
@@ -67,7 +69,9 @@ public abstract class ServiceModel implements IService {
         BaseModel baseModel = this.baseBuilder.createNewObject(object);
         if (baseModel != null) {
             try {
-                ObjectMapper objectMapper = new ObjectMapper();
+                ObjectMapper objectMapper = JsonMapper.builder()
+                        .addModule(new JavaTimeModule())
+                        .build();
                 this.history.createNewObject(new History(History.Action.CREATE, object.getClass().getSimpleName().toLowerCase(), null, objectMapper.writeValueAsString(object), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), null));
             } catch (JsonProcessingException ex) {
                 logger.error(ex.toString());
@@ -88,10 +92,11 @@ public abstract class ServiceModel implements IService {
             BaseModel baseModel = this.baseBuilder.modifyObject(oid, object);
             if (baseModel != null) {
                 try {
-                    ObjectMapper objectMapper = new ObjectMapper();
+                    ObjectMapper objectMapper = JsonMapper.builder()
+                            .addModule(new JavaTimeModule())
+                            .build();
                     this.history.createNewObject(new History(History.Action.UPDATE, object.getClass().getSimpleName().toLowerCase(), previousObject != null ? objectMapper.writeValueAsString(previousObject) : "", objectMapper.writeValueAsString(object), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), object.getOid()));
                 } catch (JsonProcessingException ex) {
-                    System.out.println("PUKLO JE>>>>");
                     logger.error(ex.toString());
                 }
                 this.endTransaction();
@@ -118,7 +123,9 @@ public abstract class ServiceModel implements IService {
                 return false;
             }
             try {
-                ObjectMapper objectMapper = new ObjectMapper();
+                ObjectMapper objectMapper = JsonMapper.builder()
+                        .addModule(new JavaTimeModule())
+                        .build();
                 this.history.createNewObject(new History(History.Action.DELETE, object.getClass().getSimpleName().toLowerCase(), objectMapper.writeValueAsString(object), null, LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), object.getOid()));
             } catch (JsonProcessingException ex) {
                 logger.error(ex.toString());

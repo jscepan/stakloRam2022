@@ -10,6 +10,7 @@ ConnectionToDatabase contains all needed properties for MySQL username, password
 
 
 BACKEND:
+in StakloRamBeApplication to remove CORS error  just remove comments...
 application.properties contains all needed properties
 Constants - contains image directory path, and settings file name, 
 After changes only do build and you can use JAR file as builded project...
