@@ -51,6 +51,10 @@ export class UsersComponent implements OnInit, OnDestroy {
     return this.authStoreService.isAllowed(privilege);
   }
 
+  isThisUser(user: UserModel): boolean {
+    return user.oid === this.authStoreService.user?.oid;
+  }
+
   inputSearchHandler(text: string): void {
     const searchFilter: SearchModel = new SearchModel();
     searchFilter.criteriaQuick = text;

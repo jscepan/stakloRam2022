@@ -45,14 +45,14 @@
             <app-button
               [text]="'edit' | translate"
               (clickEvent)="editUser(item.oid)"
-              [disabled]="!hasPrivilege('USER_CREATE')"
+              [disabled]="!hasPrivilege('USER_CREATE') || isThisUser(item)"
             ></app-button>
           </div>
           <div class="grid-item">
             <app-button
               [text]="'resetPassword' | translate"
               (clickEvent)="resetPassword(item.oid)"
-              [disabled]="!hasPrivilege('USER_CREATE')"
+              [disabled]="!hasPrivilege('USER_CREATE') || isThisUser(item)"
             ></app-button>
           </div>
         </ng-container>

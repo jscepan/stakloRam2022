@@ -30,11 +30,9 @@
             <div class="item-children">
               <ng-container *ngFor="let childItem of item.children">
                 <ng-container *ngIf="!childItem.hidden">
-                  <div class="item-child">
-                    <div (click)="selectItem(childItem)">
-                      <div *ngIf="!childItem.hidden" class="title">
-                        {{ childItem.title | translate }}
-                      </div>
+                  <div class="item-child" (click)="selectItem(childItem)">
+                    <div *ngIf="!childItem.hidden" class="title">
+                      {{ childItem.title | translate }}
                     </div>
                   </div>
                 </ng-container>

@@ -145,6 +145,7 @@ export class InvoicesComponent implements OnInit, OnDestroy {
     const searchFilter: SearchModel = new SearchModel();
     if (this.typesOptions.filter((el) => el.value === event.value).length) {
       searchFilter.attributes = [{ type: [event.value] }];
+      searchFilter.ordering = 'DESC';
     }
     this.listEntities.setFilter(searchFilter);
   }
