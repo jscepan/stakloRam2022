@@ -2,7 +2,6 @@ package com.stakloram.backend.services.impl.builder.impl;
 
 import com.stakloram.backend.database.objects.HistoryStore;
 import com.stakloram.backend.exception.SException;
-import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.History;
 import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.UserMessage;

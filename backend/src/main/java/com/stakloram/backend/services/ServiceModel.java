@@ -87,14 +87,19 @@ public abstract class ServiceModel implements IService {
             BaseModel previousObject = this.baseBuilder.getObjectByOid(oid);
             BaseModel baseModel = this.baseBuilder.modifyObject(oid, object);
             if (baseModel != null) {
-                ObjectMapper objectMapper = new ObjectMapper();
-                this.history.createNewObject(new History(History.Action.UPDATE, object.getClass().getSimpleName().toLowerCase(), previousObject != null ? objectMapper.writeValueAsString(previousObject) : "", objectMapper.writeValueAsString(object), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), object.getOid()));
+                try {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    this.history.createNewObject(new History(History.Action.UPDATE, object.getClass().getSimpleName().toLowerCase(), previousObject != null ? objectMapper.writeValueAsString(previousObject) : "", objectMapper.writeValueAsString(object), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), object.getOid()));
+                } catch (JsonProcessingException ex) {
+                    System.out.println("PUKLO JE>>>>");
+                    logger.error(ex.toString());
+                }
                 this.endTransaction();
                 return baseModel;
             }
             this.rollback();
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
-        } catch (SException | JsonProcessingException ex) {
+        } catch (SException ex) {
             logger.error(ex.toString());
         }
         throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));

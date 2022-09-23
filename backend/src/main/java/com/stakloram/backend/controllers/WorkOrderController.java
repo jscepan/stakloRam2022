@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import static java.nio.file.Files.copy;
 import java.nio.file.Path;
 import static java.nio.file.Paths.get;
@@ -59,6 +60,10 @@ public class WorkOrderController {
         List<String> fileNames = new ArrayList<>();
         for (MultipartFile file : multipartFiles) {
             String filename = "workOrder_" + LocalDate.now() + "_" + LocalTime.now().getHour() + "_" + LocalTime.now().getMinute() + "_" + LocalTime.now().getSecond() + "_" + Helper.generateRandomString(15) + "." + Helper.getFileExtension(file);
+            File f = new File(IMAGE_DIRECTORY);
+            if (!(f.exists() && f.isDirectory())) {
+                f.mkdir();
+            }
             Path fileStorage = get(IMAGE_DIRECTORY, filename).toAbsolutePath().normalize();
             copy(file.getInputStream(), fileStorage, REPLACE_EXISTING);
             fileNames.add(filename);

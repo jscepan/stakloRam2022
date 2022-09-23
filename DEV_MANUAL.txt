@@ -1,0 +1,15 @@
+FRONTEND:
+In development mode in constants.ts set BASE_API_URL to 'http://localhost:8081' to work with BE in development mode...
+After changes only do build with - npm run build   - it will build project directly in  backend path
+
+
+
+DATABASE
+ConnectionToDatabase contains all needed properties for MySQL username, password, url...
+
+
+
+BACKEND:
+application.properties contains all needed properties
+Constants - contains image directory path, and settings file name, 
+After changes only do build and you can use JAR file as builded project...
