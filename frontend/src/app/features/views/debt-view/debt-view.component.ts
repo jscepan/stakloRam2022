@@ -46,6 +46,16 @@ export class DebtViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  currentYear(): void {
+    this.formGroup
+      .get('fromDate')
+      ?.setValue(new Date().getFullYear() + '-01-01');
+    this.formGroup
+      .get('toDate')
+      ?.setValue(new Date().toISOString().substring(0, 10));
+    this.formGroup.markAsDirty();
+  }
+
   dateChange(): void {
     const fromDate = this.formGroup.get('fromDate')?.value;
     const toDate = this.formGroup.get('toDate')?.value;

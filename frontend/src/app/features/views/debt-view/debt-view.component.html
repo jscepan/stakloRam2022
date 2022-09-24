@@ -28,6 +28,12 @@
 
     <app-button
       class="view-button no-print"
+      [text]="'currentYear' | translate"
+      (clickEvent)="currentYear()"
+    ></app-button>
+
+    <app-button
+      class="view-button no-print"
       [text]="'view' | translate"
       (clickEvent)="viewDebtor()"
       [disabled]="!(formGroup.dirty && formGroup.valid)"

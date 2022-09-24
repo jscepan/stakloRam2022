@@ -1,2 +1,2 @@
 cd "C:\Program Files\MySQL\MySQL Server 8.0\bin"
-mysqldump -h 127.0.0.1 -u root -ppassword --all-databases > "D:\000\allmysql.sql"
+mysqldump -h 127.0.0.1 -u root -ppassword stakloram2022 > "D:\000\database_backup_%date:~-10,2%-%date:~-7,2%-%date:~-4,4%-%time:~0,2%_%time:~3,2%_%time:~6,2%.sql"
