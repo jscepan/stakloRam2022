@@ -1,6 +1,7 @@
 export interface DebtView {
   owedSum: number;
   debtSum: number;
+  startAmount: number;
   transactions: Transaction[];
 }
 

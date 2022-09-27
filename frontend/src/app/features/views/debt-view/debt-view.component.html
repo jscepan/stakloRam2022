@@ -45,6 +45,24 @@
     <div class="grid-item header">{{ "owed" | translate }}</div>
     <div class="grid-item header">{{ "debt" | translate }}</div>
     <div class="grid-item header">{{ "state" | translate }}</div>
+    <div class="grid-item">-</div>
+    <div class="grid-item">{{ "startAmount" | translate }}</div>
+    <div class="grid-item align-right">
+      {{
+        (debtView.startAmount >= 0 ? debtView.startAmount : 0)
+          | number: "1.2-2":"de"
+      }}
+    </div>
+    <div class="grid-item align-right">
+      {{
+        (debtView.startAmount < 0 ? debtView.startAmount : 0)
+          | number: "1.2-2":"de"
+      }}
+    </div>
+    <div class="grid-item align-right">
+      {{ debtView.startAmount | number: "1.2-2":"de" }}
+    </div>
+
     <ng-container *ngFor="let t of debtView.transactions">
       <div class="grid-item">{{ t.date | date: "dd.MM.yyyy" }}</div>
       <div class="grid-item">{{ t.description }}</div>
@@ -62,13 +80,22 @@
       {{ "turnover" | translate }}:
     </div>
     <div class="grid-item align-right top-border bold">
-      {{ debtView.debtSum | number: "1.2-2":"de" }}
+      {{
+        debtView.debtSum + (debtView.startAmount > 0 ? debtView.startAmount : 0)
+          | number: "1.2-2":"de"
+      }}
     </div>
     <div class="grid-item align-right top-border bold">
-      {{ debtView.owedSum | number: "1.2-2":"de" }}
+      {{
+        debtView.owedSum + (debtView.startAmount < 0 ? debtView.startAmount : 0)
+          | number: "1.2-2":"de"
+      }}
     </div>
     <div class="grid-item align-right top-border bold">
-      {{ debtView.debtSum - debtView.owedSum | number: "1.2-2":"de" }}
+      {{
+        debtView.debtSum + debtView.owedSum + debtView.startAmount
+          | number: "1.2-2":"de"
+      }}
     </div>
   </div>
 </div>

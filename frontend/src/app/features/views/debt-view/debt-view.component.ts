@@ -77,7 +77,12 @@ export class DebtViewComponent implements OnInit, OnDestroy {
   }
 
   convertDebtorToTransactions(fromDate?: Date, toDate?: Date): void {
-    this.debtView = { owedSum: 0, debtSum: 0, transactions: [] };
+    this.debtView = {
+      startAmount: 0,
+      owedSum: 0,
+      debtSum: 0,
+      transactions: [],
+    };
     const dateFilter: boolean = !!fromDate && !!toDate;
     this.entity?.invoices?.forEach((invoice) => {
       if (
@@ -99,6 +104,8 @@ export class DebtViewComponent implements OnInit, OnDestroy {
           state: 0,
         });
         this.debtView.debtSum += invoice.grossAmount;
+      } else {
+        this.debtView.startAmount += invoice.grossAmount;
       }
     });
     this.entity?.incomes?.forEach((income) => {
@@ -122,7 +129,9 @@ export class DebtViewComponent implements OnInit, OnDestroy {
           owed: 0,
           state: 0,
         });
-        this.debtView.owedSum += income.amount;
+        this.debtView.owedSum -= income.amount;
+      } else {
+        this.debtView.startAmount -= income.amount;
       }
     });
     this.entity?.outcomes?.forEach((outcome) => {
@@ -143,6 +152,8 @@ export class DebtViewComponent implements OnInit, OnDestroy {
           state: 0,
         });
         this.debtView.debtSum += outcome.amount;
+      } else {
+        this.debtView.startAmount += outcome.amount;
       }
     });
     this.debtView.transactions = this.debtView.transactions.sort((a, b) => {
@@ -153,7 +164,8 @@ export class DebtViewComponent implements OnInit, OnDestroy {
       if (i === 0) {
         this.debtView.transactions[i].state =
           this.debtView.transactions[i].owed -
-          this.debtView.transactions[i].debt;
+          this.debtView.transactions[i].debt +
+          this.debtView.startAmount;
       } else {
         this.debtView.transactions[i].state =
           this.debtView.transactions[i - 1].state +
