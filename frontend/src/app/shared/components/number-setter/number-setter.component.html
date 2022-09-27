@@ -1,0 +1,6 @@
+<mat-form-field class="me-search-input-form-field">
+  <mat-label>{{ placeholder }}</mat-label>
+  <input type="text" matInput [formControl]="searchInput" class="value" />
+  <i-feather matPrefix name="plus" (click)="changeValue(1)"></i-feather>
+  <i-feather matSuffix name="minus" (click)="changeValue(-1)"></i-feather>
+</mat-form-field>
