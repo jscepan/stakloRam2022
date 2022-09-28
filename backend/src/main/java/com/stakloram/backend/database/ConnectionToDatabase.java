@@ -41,23 +41,15 @@ public class ConnectionToDatabase {
         return connection;
     }
 
-    public DataSource getDataSource() {
-        return DataSourceBuilder.create()
-                .driverClassName(DATABASE_DRIVER)
-                .url(URL + DATABASE_NAME)
-                .username(USERNAME)
-                .password(PASSWORD)
-                .build();
-    }
-
     // disconnect database
-    public void disconnect() {
+    public void disconnect() throws Exception {
         if (connection != null) {
             try {
                 connection.close();
                 connection = null;
             } catch (SQLException e) {
                 logger.error(e.toString());
+                throw new Exception("databaseConnectionIssue", e);
             }
         }
     }

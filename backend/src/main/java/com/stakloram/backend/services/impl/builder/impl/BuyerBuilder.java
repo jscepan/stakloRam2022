@@ -2,7 +2,6 @@ package com.stakloram.backend.services.impl.builder.impl;
 
 import com.stakloram.backend.database.objects.BuyerStore;
 import com.stakloram.backend.database.objects.CityStore;
-import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Buyer;
 import com.stakloram.backend.models.City;
 import com.stakloram.backend.models.Locator;
@@ -38,7 +37,7 @@ public class BuyerBuilder extends BaseBuilder {
             return buyer;
         } catch (SQLException ex) {
             super.logger.error(ex.toString());
-          throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 

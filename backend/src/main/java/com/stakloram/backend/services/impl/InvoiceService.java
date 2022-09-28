@@ -18,8 +18,6 @@ import com.stakloram.backend.services.impl.builder.impl.InvoiceBuilder;
 import com.stakloram.backend.util.DataChecker;
 import java.time.LocalDateTime;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.stereotype.Service;
 
 @Service

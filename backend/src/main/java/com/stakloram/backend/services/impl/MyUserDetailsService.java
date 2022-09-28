@@ -6,7 +6,6 @@ import com.stakloram.backend.models.MyUserDetails;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.User;
 import com.stakloram.backend.models.UserMessage;
-import com.stakloram.backend.services.ServiceModel;
 import com.stakloram.backend.services.impl.builder.impl.UserBuilder;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,12 +47,4 @@ public class MyUserDetailsService implements UserDetailsService {
         }
         throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
     }
-//
-//    public boolean changeUserPassword(User user, String newPassword) throws SException {
-//        try {
-//            return ((UserBuilder)new UserBuilder(this.locator)).changeUserPassword(user.getOid(), newPassword);
-//        } catch (SQLException ex) {
-//            throw new SException("xxxxxxxEXCEPTIONxxxxxxxxx" + ex);
-//        }
-//    }
 }

@@ -14,6 +14,9 @@ public class ViewsService {
     protected final Locator locator = new Locator(new ConnectionToDatabase().connect());
     private final ViewsBuilder viewsBuilder = new ViewsBuilder(locator);
 
+    public ViewsService() {
+    }
+
     public List<Debtor> getAllDebtors() throws SException {
         return viewsBuilder.getAllDebtors();
     }
