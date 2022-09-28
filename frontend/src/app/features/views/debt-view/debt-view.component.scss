@@ -19,8 +19,7 @@
   .grid-container {
     display: grid;
     grid-template-columns: auto auto auto auto auto;
-    max-height: calc(100% - 100px);
-    overflow-y: auto;
+    overflow-y: hidden;
 
     .grid-item {
       &.colspan2 {
