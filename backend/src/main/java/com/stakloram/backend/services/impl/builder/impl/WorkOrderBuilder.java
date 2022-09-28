@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class WorkOrderBuilder extends BaseBuilder {
 
@@ -195,10 +196,11 @@ public class WorkOrderBuilder extends BaseBuilder {
             ResultSet rs = this.getObjectStore().getAllObjectsFromDatabase(from, where);
             while (rs.next()) {
                 WorkOrder workOrder = (WorkOrder) this.getObjectStore().getObjectFromResultSet(rs);
-                Optional<WorkOrder> alreadyExists = objects.stream().filter(o -> o.getOid().equals(workOrder.getOid())).findFirst();
                 WorkOrderItem workOrderItem = (WorkOrderItem) WORK_ORDER_ITEM_STORE.getObjectFromResultSet(rs);
-                if (alreadyExists.isPresent()) {
-                    alreadyExists.get().getWorkOrderItems().add(workOrderItem);
+
+                List<WorkOrder> alreadyExists = objects.stream().filter(o -> o.getOid().equals(workOrder.getOid())).collect(Collectors.toList());
+                if (!alreadyExists.isEmpty()) {
+                    alreadyExists.get(0).getWorkOrderItems().add(workOrderItem);
                 } else {
                     workOrder.getWorkOrderItems().add(workOrderItem);
                     objects.add(workOrder);
