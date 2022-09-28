@@ -619,9 +619,11 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
 
   calculateWorkOrderSumOfGrinding(): void {
     this.sumOfGrinding = 0;
+    let sum = 0;
     this.sumForGrindingsItems.forEach((item) => {
-      if (item.isCalculated) this.sumOfGrinding += Number(item.value);
+      if (item.isCalculated) sum += Number(item.value);
     });
+    this.sumOfGrinding = sum / 1000;
   }
 
   calculateGrindingLengthForItem(index: number): void {
