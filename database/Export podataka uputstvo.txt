@@ -37,6 +37,7 @@ INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\user.csv'
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\r\n';
+----------------------------------------------------------------------------------------------
 COUNTRY - Ovo je novi entitet pa uneti samo Srbiju kao i sve one drzave koje se pojavljuju kod buyera
 ----------------------------------------------------------------------------------------------
 ZIP_CODE - sad je ovo CITY pa uneti i oznaku drzave kao i za sve one gradove koji se pojavljuju kod buyera
@@ -144,7 +145,7 @@ POTOM VRSIMO OBRADU IMPORTA sledecim redom otprilike:
 - note
 
 LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\invoice_item.csv' 
-INTO TABLE stakloram.invoice_item 
+INTO TABLE stakloram2022.invoice_item 
 FIELDS TERMINATED BY ',' 
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\r\n';

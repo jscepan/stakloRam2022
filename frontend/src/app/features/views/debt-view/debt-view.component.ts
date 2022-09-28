@@ -104,7 +104,7 @@ export class DebtViewComponent implements OnInit, OnDestroy {
           state: 0,
         });
         this.debtView.debtSum += invoice.grossAmount;
-      } else {
+      } else if (fromDate && fromDate > invoice.dateOfCreate) {
         this.debtView.startAmount += invoice.grossAmount;
       }
     });
@@ -130,7 +130,7 @@ export class DebtViewComponent implements OnInit, OnDestroy {
           state: 0,
         });
         this.debtView.owedSum -= income.amount;
-      } else {
+      } else if (fromDate && fromDate > income.date) {
         this.debtView.startAmount -= income.amount;
       }
     });
@@ -152,7 +152,7 @@ export class DebtViewComponent implements OnInit, OnDestroy {
           state: 0,
         });
         this.debtView.debtSum += outcome.amount;
-      } else {
+      } else if (fromDate && fromDate > outcome.date) {
         this.debtView.startAmount += outcome.amount;
       }
     });
