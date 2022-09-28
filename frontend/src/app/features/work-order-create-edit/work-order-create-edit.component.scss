@@ -21,6 +21,13 @@
       .row {
         display: flex;
 
+        .items-buttons {
+          display: flex;
+          .big-button {
+            margin-right: 20px;
+          }
+        }
+
         .bottom-padding {
           display: flex;
           align-items: center;
@@ -147,4 +154,8 @@
 
 .display-none {
   display: none;
+}
+
+.small-number-input {
+  width: 70px;
 }

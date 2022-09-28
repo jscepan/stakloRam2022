@@ -159,7 +159,12 @@
                 formControlName="description"
                 #trigger="matAutocompleteTrigger"
                 (keydown.enter)="trigger.closePanel()"
-                (keypress)="onKeypress($event, 'description', i)"
+                (keypress)="
+                  onKeypress($event, 'description', i);
+                  calculateGrindingLengthForItem(i);
+                  switchOnCalcBasedOnDescription(i)
+                "
+                (change)="switchOnCalcBasedOnDescription(i)"
                 [matAutocomplete]="auto"
               />
               <mat-autocomplete #auto="matAutocomplete">
@@ -180,7 +185,9 @@
               </mat-label>
               <mat-select
                 formControlName="uom"
-                (focusout)="calculateWorkOrderSum(i)"
+                (focusout)="
+                  calculateWorkOrderSum(i); calculateGrindingLengthForItem(i)
+                "
                 (openedChange)="openedToggleOnUomSelect($event, i)"
               >
                 <mat-option
@@ -204,7 +211,9 @@
                 matInput
                 formControlName="dimension1"
                 (keypress)="onKeypress($event, 'dimension1', i)"
-                (change)="calculateWorkOrderSum(i)"
+                (change)="
+                  calculateWorkOrderSum(i); calculateGrindingLengthForItem(i)
+                "
                 (focusout)="calculateWorkOrderSum(i)"
               />
             </mat-form-field>
@@ -221,7 +230,9 @@
                 matInput
                 formControlName="dimension2"
                 (keypress)="onKeypress($event, 'dimension2', i)"
-                (change)="calculateWorkOrderSum(i)"
+                (change)="
+                  calculateWorkOrderSum(i); calculateGrindingLengthForItem(i)
+                "
                 (focusout)="calculateWorkOrderSum(i)"
               />
             </mat-form-field>
@@ -238,7 +249,9 @@
                 matInput
                 formControlName="quantity"
                 (keypress)="onKeypress($event, 'quantity', i)"
-                (change)="calculateWorkOrderSum(i)"
+                (change)="
+                  calculateWorkOrderSum(i); calculateGrindingLengthForItem(i)
+                "
                 (focusout)="calculateWorkOrderSum(i)"
               />
             </mat-form-field>
@@ -285,17 +298,61 @@
               (change)="calculateWorkOrderSum(i, $event.checked)"
               >{{ "consMeas" | translate }}</mat-checkbox
             >
+            <ng-container *ngIf="getUOM(i)?.value === 'M2'">
+              <mat-checkbox
+                class="cons-measure-checkbox"
+                [color]="'primary'"
+                [(ngModel)]="sumForGrindingsItems[i].isCalculated"
+                [ngModelOptions]="{ standalone: true }"
+                (change)="
+                  calculateGrindingLengthForItem(i);
+                  calculateWorkOrderSumOfGrinding()
+                "
+                *ngIf="!sumForGrindingsItems[i].isCalculated"
+                >{{ "calcLength" | translate }}</mat-checkbox
+              >
+              <mat-form-field
+                class="small-number-input"
+                *ngIf="sumForGrindingsItems[i].isCalculated"
+              >
+                <mat-label
+                  [class.mark-required]="true"
+                  [class.mark-opt-required]="true"
+                >
+                  {{ "length" | translate }}
+                </mat-label>
+                <input
+                  type="text"
+                  matInput
+                  appDecimal
+                  [(ngModel)]="sumForGrindingsItems[i].value"
+                  (change)="calculateWorkOrderSumOfGrinding()"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </mat-form-field>
+            </ng-container>
           </div>
         </div>
       </div>
       <div class="row full-width bottom-margin">
-        <app-button
-          [iconName]="'plus'"
-          [text]="'addNewItem' | translate"
-          (clickEvent)="addNewItem()"
-          class="big-button"
-          [disabled]="!isBuyerSelected"
-        ></app-button>
+        <div class="items-buttons">
+          <app-button
+            [iconName]="'plus'"
+            [text]="'addNewItem' | translate"
+            (clickEvent)="addNewItem()"
+            class="big-button"
+            [disabled]="!isBuyerSelected"
+          ></app-button>
+          <app-button
+            [iconName]="'plus'"
+            [text]="('addGrinding' | translate) + ' (' + sumOfGrinding + ')'"
+            (clickEvent)="addSumOfGrindingItems()"
+            class="big-button"
+            [isTransparentMode]="true"
+            [disabled]="!isBuyerSelected"
+            *ngIf="sumOfGrinding > 0"
+          ></app-button>
+        </div>
         <div
           class="sum-info"
           *ngIf="sumMeter2 > 0 || sumMeter > 0 || sumPieces > 0 || sumHours > 0"

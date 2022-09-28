@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  Input,
   OnDestroy,
   OnInit,
   QueryList,
@@ -45,6 +46,7 @@ import { map, startWith } from 'rxjs/operators';
 import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 import { ImageWebService } from 'src/app/web-services/image.web-service';
 import { ImageModel } from 'src/app/shared/models/image.model';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-work-order-create-edit',
@@ -111,6 +113,9 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     fullUrl: string;
   }[] = [];
   @ViewChildren('fileCtrl') fileCtrls!: QueryList<ElementRef>;
+
+  sumOfGrinding: number = 0;
+  sumForGrindingsItems: { isCalculated: boolean; value: number }[] = [];
 
   constructor(
     private router: Router,
@@ -238,12 +243,21 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
       this.filteredOptions.push(filterOpt);
     });
     this.calculateSum();
+    this.sumForGrindingsItems.push({
+      isCalculated:
+        (workOrderItem?.uom === 'M2' &&
+          workOrderItem?.description.includes('kp obrad')) ||
+        false,
+      value: 0,
+    });
   }
 
   removeItem(index: number): void {
     this.workOrderItemsFormArr.removeAt(index);
     this.calculateSum();
     this.formGroup.markAsDirty();
+    this.sumForGrindingsItems.splice(index, 1);
+    this.calculateWorkOrderSumOfGrinding();
   }
 
   calculateWorkOrderSum(
@@ -585,6 +599,46 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
 
   uploadFile(index: number): void {
     this.fileCtrls.get(index)?.nativeElement.click();
+  }
+
+  addSumOfGrindingItems(): void {
+    this.addNewItem({
+      oid: '',
+      description: this.translateService.instant('grinding'),
+      uom: 'M',
+      dimension1: 0,
+      dimension2: 0,
+      dimension3: 0,
+      quantity: this.sumOfGrinding,
+      sumQuantity: this.sumOfGrinding,
+      note: '',
+      settled: false,
+    });
+    this.sumOfGrinding = 0;
+  }
+
+  calculateWorkOrderSumOfGrinding(): void {
+    this.sumOfGrinding = 0;
+    this.sumForGrindingsItems.forEach((item) => {
+      if (item.isCalculated) this.sumOfGrinding += Number(item.value);
+    });
+  }
+
+  calculateGrindingLengthForItem(index: number): void {
+    const length: number =
+      (this.getDimension1(index)?.value * 2 +
+        this.getDimension2(index)?.value * 2) *
+        this.getQuantity(index)?.value +
+      0;
+    this.sumForGrindingsItems[index].value = length;
+    this.calculateWorkOrderSumOfGrinding();
+  }
+
+  switchOnCalcBasedOnDescription(index: number): void {
+    const desc: string = this.getDescription(index)?.value;
+    if (desc.toLowerCase().includes('kp obrad')) {
+      this.sumForGrindingsItems[index].isCalculated = true;
+    }
   }
 
   ngOnDestroy(): void {
