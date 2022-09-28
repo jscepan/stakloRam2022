@@ -298,39 +298,38 @@
               (change)="calculateWorkOrderSum(i, $event.checked)"
               >{{ "consMeas" | translate }}</mat-checkbox
             >
-            <ng-container *ngIf="getUOM(i)?.value === 'M2'">
-              <mat-checkbox
-                class="cons-measure-checkbox"
-                [color]="'primary'"
-                [(ngModel)]="sumForGrindingsItems[i].isCalculated"
+            <mat-checkbox
+              class="cons-measure-checkbox"
+              [color]="'primary'"
+              [(ngModel)]="sumForGrindingsItems[i].isCalculated"
+              [ngModelOptions]="{ standalone: true }"
+              [disabled]="!(getUOM(i)?.value === 'M2')"
+              (change)="
+                calculateGrindingLengthForItem(i);
+                calculateWorkOrderSumOfGrinding()
+              "
+              *ngIf="!sumForGrindingsItems[i].isCalculated"
+              >{{ "calcLength" | translate }}</mat-checkbox
+            >
+            <mat-form-field
+              class="small-number-input"
+              *ngIf="sumForGrindingsItems[i].isCalculated"
+            >
+              <mat-label
+                [class.mark-required]="true"
+                [class.mark-opt-required]="true"
+              >
+                {{ "length" | translate }}
+              </mat-label>
+              <input
+                type="text"
+                matInput
+                appDecimal
+                [(ngModel)]="sumForGrindingsItems[i].value"
+                (change)="calculateWorkOrderSumOfGrinding()"
                 [ngModelOptions]="{ standalone: true }"
-                (change)="
-                  calculateGrindingLengthForItem(i);
-                  calculateWorkOrderSumOfGrinding()
-                "
-                *ngIf="!sumForGrindingsItems[i].isCalculated"
-                >{{ "calcLength" | translate }}</mat-checkbox
-              >
-              <mat-form-field
-                class="small-number-input"
-                *ngIf="sumForGrindingsItems[i].isCalculated"
-              >
-                <mat-label
-                  [class.mark-required]="true"
-                  [class.mark-opt-required]="true"
-                >
-                  {{ "length" | translate }}
-                </mat-label>
-                <input
-                  type="text"
-                  matInput
-                  appDecimal
-                  [(ngModel)]="sumForGrindingsItems[i].value"
-                  (change)="calculateWorkOrderSumOfGrinding()"
-                  [ngModelOptions]="{ standalone: true }"
-                />
-              </mat-form-field>
-            </ng-container>
+              />
+            </mat-form-field>
           </div>
         </div>
       </div>
