@@ -1,9 +1,5 @@
 <app-search-input (changeEvent)="inputSearchHandler($event)"></app-search-input>
-<mat-dialog-content
-  [componentLoading]="(isLoading | async) || false"
-  scrollToBottom
-  (bottomReached)="bottomReachedHandler()"
->
+<mat-dialog-content scrollToBottom (bottomReached)="bottomReachedHandler()">
   <ng-container *ngFor="let item of items">
     <app-invoice-selection-item
       class="item"

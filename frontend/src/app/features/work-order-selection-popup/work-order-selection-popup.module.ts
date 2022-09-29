@@ -7,7 +7,6 @@ import { SearchInputModule } from 'src/app/shared/components/search-input/search
 import { WorkOrderSelectionPopupComponent } from './work-order-selection-popup.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { ComponentLoadingModule } from 'src/app/shared/directives/component-loader/component-loader.module';
 import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom/scroll-to-bottom.module';
 import { WorkOrderSelectionItemModule } from './work-order-selection-item/work-order-selection-item.module';
 
@@ -21,7 +20,6 @@ import { WorkOrderSelectionItemModule } from './work-order-selection-item/work-o
     SearchInputModule,
     MatFormFieldModule,
     MatSelectModule,
-    ComponentLoadingModule,
     ScrollToBottomModule,
     WorkOrderSelectionItemModule,
   ],

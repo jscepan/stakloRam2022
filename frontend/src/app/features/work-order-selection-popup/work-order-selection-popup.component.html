@@ -1,8 +1,4 @@
-<mat-dialog-content
-  [componentLoading]="(isLoading | async) || false"
-  scrollToBottom
-  (bottomReached)="bottomReachedHandler()"
->
+<mat-dialog-content scrollToBottom (bottomReached)="bottomReachedHandler()">
   <ng-container *ngFor="let item of items">
     <app-work-order-selection-item
       class="item"

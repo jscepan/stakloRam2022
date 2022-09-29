@@ -8,7 +8,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { SearchInputModule } from 'src/app/shared/components/search-input/search-input.module';
 import { UserCreateEditModule } from '@features/user-create-edit/user-create-edit.module';
 import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom/scroll-to-bottom.module';
-import { ComponentLoadingModule } from 'src/app/shared/directives/component-loader/component-loader.module';
 import { PasswordResetModule } from '@features/password-reset/password-reset.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -22,7 +21,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatDialogModule,
     SearchInputModule,
     UserCreateEditModule,
-    ComponentLoadingModule,
     ScrollToBottomModule,
     PasswordResetModule,
     MatProgressSpinnerModule,

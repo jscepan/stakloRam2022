@@ -6,7 +6,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { SearchInputModule } from 'src/app/shared/components/search-input/search-input.module';
 import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom/scroll-to-bottom.module';
-import { ComponentLoadingModule } from 'src/app/shared/directives/component-loader/component-loader.module';
 import { IncomeCreateEditModule } from '@features/income-create-edit/income-create-edit.module';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -20,7 +19,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     TranslateModule,
     ButtonModule,
     SearchInputModule,
-    ComponentLoadingModule,
     ScrollToBottomModule,
     IncomeCreateEditModule,
     MatRadioModule,

@@ -34,8 +34,8 @@ snack-bar-container.mat-snack-bar-container {
 
 .spinner {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: calc(100% - 200px);
+  height: calc(100% - 200px);
   display: flex;
   justify-content: center;
   align-items: center;

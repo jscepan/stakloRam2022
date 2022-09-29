@@ -8,7 +8,6 @@ import { SearchInputModule } from 'src/app/shared/components/search-input/search
 import { InvoiceSelectionPopupComponent } from './invoice-selection-popup.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { ComponentLoadingModule } from 'src/app/shared/directives/component-loader/component-loader.module';
 import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom/scroll-to-bottom.module';
 
 @NgModule({
@@ -22,7 +21,6 @@ import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom
     SearchInputModule,
     MatFormFieldModule,
     MatSelectModule,
-    ComponentLoadingModule,
     ScrollToBottomModule,
   ],
   exports: [InvoiceSelectionPopupComponent],

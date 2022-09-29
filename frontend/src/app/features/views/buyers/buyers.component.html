@@ -13,12 +13,7 @@
     ></app-button>
   </div>
 
-  <div
-    class="buyers"
-    [componentLoading]="(isLoading | async) || false"
-    scrollToBottom
-    (bottomReached)="bottomReachedHandler()"
-  >
+  <div class="buyers" scrollToBottom (bottomReached)="bottomReachedHandler()">
     <div class="grid-container standard-grid-table">
       <div class="grid-item header sticky">{{ "type" | translate }}</div>
       <div class="grid-item header sticky">{{ "name" | translate }}</div>

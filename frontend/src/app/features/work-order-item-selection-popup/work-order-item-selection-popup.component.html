@@ -1,8 +1,4 @@
-<mat-dialog-content
-  [componentLoading]="(isLoading | async) || false"
-  scrollToBottom
-  (bottomReached)="bottomReachedHandler()"
->
+<mat-dialog-content scrollToBottom (bottomReached)="bottomReachedHandler()">
   <div class="content">
     <div class="item" *ngFor="let item of items">
       <div class="title">

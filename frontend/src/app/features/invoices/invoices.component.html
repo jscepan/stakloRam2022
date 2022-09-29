@@ -27,12 +27,7 @@
       [disabled]="!hasPrivilege('INVOICE_CREATE')"
     ></app-button>
   </div>
-  <div
-    class="invoices"
-    [componentLoading]="(isLoading | async) || false"
-    scrollToBottom
-    (bottomReached)="bottomReachedHandler()"
-  >
+  <div class="invoices" scrollToBottom (bottomReached)="bottomReachedHandler()">
     <div class="grid-container standard-grid-table">
       <div class="grid-item header sticky">
         {{ "buyerName" | translate }}

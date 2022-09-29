@@ -15,12 +15,7 @@
       (clickEvent)="incomes()"
     ></app-button>
   </div>
-  <div
-    class="outcomes"
-    [componentLoading]="(isLoading | async) || false"
-    scrollToBottom
-    (bottomReached)="bottomReachedHandler()"
-  >
+  <div class="outcomes" scrollToBottom (bottomReached)="bottomReachedHandler()">
     <div class="grid-container standard-grid-table">
       <div class="grid-item header sticky">
         {{ "buyerName" | translate }}
