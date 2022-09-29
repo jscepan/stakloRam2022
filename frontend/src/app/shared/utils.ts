@@ -144,6 +144,8 @@ export function getConstructionMeasure(
   let value = Math.round(input);
   if (value < input) {
     value++;
+  } else if (value === input) {
+    value++;
   }
   while (value % minConstructionMeasure !== 0) {
     value++;
