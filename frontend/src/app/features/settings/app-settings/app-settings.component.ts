@@ -44,7 +44,7 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
           ),
           companyWebsite: new FormControl(
             this.settingsStoreService.getSettings()?.companyWebsite || '',
-            [Validators.required]
+            []
           ),
           invoiceMethodOfPayment: new FormControl(
             this.settingsStoreService.getSettings()?.invoiceMethodOfPayment ||

@@ -20,15 +20,14 @@
         {{ "mail: " + settings?.companyEmail || "stakloramplus@hallsys.net" }}
       </div>
       <div class="title bold">
-        {{ settings?.companyWebsite || "www.stakloram.com" }}
+        {{ settings?.companyWebsite || "" }}
       </div>
     </div>
-    <div class="qr-code">
+    <div class="qr-code" *ngIf="settings?.qrCodeShowOnInvoice">
       <qrcode
         [qrdata]="getQrCodeDataForInvoice(invoice)"
         [width]="130"
         [errorCorrectionLevel]="'M'"
-        *ngIf="settings?.qrCodeShowOnInvoice"
       ></qrcode>
     </div>
   </div>
