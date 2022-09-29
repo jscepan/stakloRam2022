@@ -36,6 +36,8 @@ export class InvoicesComponent implements OnInit, OnDestroy {
 
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
   entities?: Observable<InvoiceModel[]> = this.listEntities.entities;
+  totalEntitiesLength?: Observable<number | undefined> =
+    this.listEntities.totalEntitiesLength;
   typesOptions: EnumValueModel[] = INVOICE_TYPES;
   getTYPEDisplayValue = getTYPEDisplayValue;
 

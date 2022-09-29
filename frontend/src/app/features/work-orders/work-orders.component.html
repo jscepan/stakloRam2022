@@ -45,6 +45,15 @@
       <div class="grid-item header sticky">
         {{ "delete" | translate }}
       </div>
+      <div
+        class="no-results"
+        *ngIf="(totalEntitiesLength | async) === 0 && !(isLoading | async)"
+      >
+        {{ "noResults" | translate }}
+      </div>
+      <div class="spinner" *ngIf="isLoading | async">
+        <mat-spinner></mat-spinner>
+      </div>
       <ng-container *ngFor="let workOrder of entities | async">
         <div class="grid-item">
           {{ workOrder.buyer.name }}

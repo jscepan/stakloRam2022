@@ -9,6 +9,7 @@ import { CountryCreateEditModule } from '../country-create-edit/country-create-e
 import { SearchInputModule } from 'src/app/shared/components/search-input/search-input.module';
 import { ComponentLoadingModule } from 'src/app/shared/directives/component-loader/component-loader.module';
 import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom/scroll-to-bottom.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [CountriesComponent],
@@ -21,6 +22,7 @@ import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom
     CountryCreateEditModule,
     SearchInputModule,
     ComponentLoadingModule,
+    MatProgressSpinnerModule,
     ScrollToBottomModule,
   ],
 })

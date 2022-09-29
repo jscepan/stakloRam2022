@@ -9,6 +9,7 @@ import { CityCreateEditModule } from '../city-create-edit-popup/city-create-edit
 import { SearchInputModule } from 'src/app/shared/components/search-input/search-input.module';
 import { ComponentLoadingModule } from 'src/app/shared/directives/component-loader/component-loader.module';
 import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom/scroll-to-bottom.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [CitiesComponent],
@@ -22,6 +23,7 @@ import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom
     SearchInputModule,
     ComponentLoadingModule,
     ScrollToBottomModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class CitiesModule {}

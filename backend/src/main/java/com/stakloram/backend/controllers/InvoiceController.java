@@ -6,6 +6,7 @@ import com.stakloram.backend.models.Invoice.InvoiceType;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.services.impl.InvoiceService;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.slf4j.Logger;

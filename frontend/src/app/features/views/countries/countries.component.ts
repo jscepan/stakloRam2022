@@ -19,6 +19,8 @@ export class CountriesComponent implements OnInit, OnDestroy {
 
   entities?: Observable<CountryModel[]> = this.listEntities.entities;
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
+  totalEntitiesLength?: Observable<number | undefined> =
+    this.listEntities.totalEntitiesLength;
 
   keyword: string = '';
 

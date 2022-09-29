@@ -31,3 +31,12 @@ snack-bar-container.mat-snack-bar-container {
 .mat-dialog-container {
   height: auto !important;
 }
+
+.spinner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -28,6 +28,8 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
   entities?: Observable<UserModel[]> = this.listEntities.entities;
+  totalEntitiesLength?: Observable<number | undefined> =
+    this.listEntities.totalEntitiesLength;
 
   keyword: string = '';
 

@@ -10,6 +10,7 @@ import { ComponentLoadingModule } from 'src/app/shared/directives/component-load
 import { IncomeCreateEditModule } from '@features/income-create-edit/income-create-edit.module';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [InvoicesComponent],
@@ -24,6 +25,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     IncomeCreateEditModule,
     MatRadioModule,
     MatTooltipModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class InvoicesModule {}

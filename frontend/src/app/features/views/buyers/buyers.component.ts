@@ -27,6 +27,8 @@ export class BuyersComponent implements OnInit, OnDestroy {
 
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
   entities?: Observable<BuyerModel[]> = this.listEntities.entities;
+  totalEntitiesLength?: Observable<number | undefined> =
+    this.listEntities.totalEntitiesLength;
 
   keyword: string = '';
 

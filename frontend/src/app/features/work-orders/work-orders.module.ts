@@ -9,6 +9,7 @@ import { SearchInputModule } from 'src/app/shared/components/search-input/search
 import { ComponentLoadingModule } from 'src/app/shared/directives/component-loader/component-loader.module';
 import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom/scroll-to-bottom.module';
 import { IncomeCreateEditModule } from '@features/income-create-edit/income-create-edit.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [WorkOrdersComponent],
@@ -22,6 +23,7 @@ import { IncomeCreateEditModule } from '@features/income-create-edit/income-crea
     ComponentLoadingModule,
     ScrollToBottomModule,
     IncomeCreateEditModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class WorkOrdersModule {}

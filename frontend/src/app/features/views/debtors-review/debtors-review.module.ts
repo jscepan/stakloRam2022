@@ -9,6 +9,7 @@ import { SearchInputModule } from 'src/app/shared/components/search-input/search
 import { ComponentLoadingModule } from 'src/app/shared/directives/component-loader/component-loader.module';
 import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom/scroll-to-bottom.module';
 import { DebtorsReviewRoutingModule } from './debtors-review-routing.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [DebtorsReviewComponent],
@@ -22,6 +23,7 @@ import { DebtorsReviewRoutingModule } from './debtors-review-routing.module';
     SearchInputModule,
     ComponentLoadingModule,
     ScrollToBottomModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class DebtorsReviewModule {}

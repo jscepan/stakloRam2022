@@ -30,6 +30,15 @@
         <div class="grid-item header sticky">
           {{ "resetPassword" | translate }}
         </div>
+        <div
+          class="no-results"
+          *ngIf="(totalEntitiesLength | async) === 0 && !(isLoading | async)"
+        >
+          {{ "noResults" | translate }}
+        </div>
+        <div class="spinner" *ngIf="isLoading | async">
+          <mat-spinner></mat-spinner>
+        </div>
         <ng-container *ngFor="let item of entities | async">
           <div class="grid-item">{{ item.username }}</div>
           <div class="grid-item">{{ item.fullName }}</div>

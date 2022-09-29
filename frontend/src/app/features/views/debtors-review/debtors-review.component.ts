@@ -34,12 +34,14 @@ export class DebtorsReviewComponent implements OnInit, OnDestroy {
   }
 
   inputSearchHandler(text: string): void {
+    this.isLoading = true;
     this.entities = [];
     this.allDebtors.forEach((debtor) => {
       if (searchInText(text, [debtor.buyer?.name || ''])) {
         this.entities.push(debtor);
       }
     });
+    this.isLoading = false;
   }
 
   ngOnDestroy(): void {

@@ -10,6 +10,7 @@ import { UserCreateEditModule } from '@features/user-create-edit/user-create-edi
 import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom/scroll-to-bottom.module';
 import { ComponentLoadingModule } from 'src/app/shared/directives/component-loader/component-loader.module';
 import { PasswordResetModule } from '@features/password-reset/password-reset.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [UsersComponent],
@@ -24,6 +25,7 @@ import { PasswordResetModule } from '@features/password-reset/password-reset.mod
     ComponentLoadingModule,
     ScrollToBottomModule,
     PasswordResetModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class UsersModule {}
