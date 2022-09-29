@@ -175,6 +175,7 @@
   "maticalNumber": "Matični broj",
   "maturityDate": "Rok plaćanja",
   "methodOfPayment": "Način plaćanja",
+  "methodOfPaymentForCashBill": "Način plaćanja za gotovinski račun",
   "mm2": "M/M2",
   "name": "Naziv",
   "netAmount": "Neto iznos",

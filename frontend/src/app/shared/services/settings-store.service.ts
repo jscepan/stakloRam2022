@@ -8,6 +8,7 @@ export class AppSettings {
   companyWebsite?: string;
 
   invoiceMethodOfPayment?: string;
+  invoiceMethodOfPaymentForCashBill?: string;
   invoicePlaceOfIssue?: string;
   invoiceCurrency?: string;
   invoiceCountry?: string;

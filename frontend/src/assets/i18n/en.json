@@ -175,6 +175,7 @@
   "maticalNumber": "Matical number",
   "maturityDate": "Date of maturity",
   "methodOfPayment": "Method of payment",
+  "methodOfPaymentForCashBill": "Method of payment for cash bill",
   "mm2": "M/M2",
   "name": "Name",
   "netAmount": "Net amount",

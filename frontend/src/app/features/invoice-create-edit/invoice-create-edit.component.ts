@@ -599,6 +599,9 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
           setTimeout(() => {
             this.setFocusOn('numberOfCashBill');
           });
+          this.formGroup
+            .get('methodOfPayment')
+            ?.setValue(this.settings?.invoiceMethodOfPaymentForCashBill);
           break;
         case 'FOREIGN':
           this.formGroup.get('currency')?.setValue('EUR');
@@ -608,6 +611,9 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
           this.settings?.invoiceForeignNotes?.forEach((note) => {
             this.addNote({ oid: '', name: note.key, description: note.value });
           });
+          this.formGroup
+            .get('methodOfPayment')
+            ?.setValue(this.settings?.invoiceMethodOfPayment);
           break;
         default:
           this.formGroup.removeControl('numberOfCashBill');
@@ -615,6 +621,9 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
             .get('currency')
             ?.setValue(this.settings?.invoiceCurrency);
           this.setFocusOn('currency');
+          this.formGroup
+            .get('methodOfPayment')
+            ?.setValue(this.settings?.invoiceMethodOfPayment);
       }
       if (!this.isEdit) {
         this.setInvoiceNumber();

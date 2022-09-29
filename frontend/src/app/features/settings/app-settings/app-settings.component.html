@@ -22,6 +22,16 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "methodOfPaymentForCashBill" | translate }}
+      </mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="invoiceMethodOfPaymentForCashBill"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
         {{ "placeOfIssue" | translate }}
       </mat-label>
       <input type="text" matInput formControlName="invoicePlaceOfIssue" />

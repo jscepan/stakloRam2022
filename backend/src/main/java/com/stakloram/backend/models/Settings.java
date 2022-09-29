@@ -6,10 +6,11 @@ import java.util.List;
 // These are settings for FRONTEND application
 public class Settings {
 
-    private String companyEmail = "stakloramplus@hallsys.net";
+    private String companyEmail = "staklorambp@gmail.com";
     private String companyWebsite = "www.stakloram.com";
 
     private String invoiceMethodOfPayment = "Virman";
+    private String invoiceMethodOfPaymentForCashBill = "Keš";
     private String invoicePlaceOfIssue = "Bačka Palanka";
     private String invoiceCurrency = "rsd";
     private String invoiceCountry = "Srbija";
@@ -228,6 +229,14 @@ public class Settings {
 
     public void setInvoiceMethodOfPayment(String invoiceMethodOfPayment) {
         this.invoiceMethodOfPayment = invoiceMethodOfPayment;
+    }
+
+    public String getInvoiceMethodOfPaymentForCashBill() {
+        return invoiceMethodOfPaymentForCashBill;
+    }
+
+    public void setInvoiceMethodOfPaymentForCashBill(String invoiceMethodOfPaymentForCashBill) {
+        this.invoiceMethodOfPaymentForCashBill = invoiceMethodOfPaymentForCashBill;
     }
 
     public String getCompanyWebsite() {
