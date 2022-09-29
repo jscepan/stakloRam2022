@@ -1,0 +1,1 @@
+robocopy D:\prethodna\putanja\do\foldera D:\novi\folder\putanja /E /XC /XN /XO

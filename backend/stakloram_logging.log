@@ -1,214 +1,98 @@
-2022-09-28 12:04:01.479 ERROR 19020 --- [http-nio-8081-exec-3] c.s.b.services.impl.builder.BaseBuilder  : com.mysql.cj.jdbc.exceptions.CommunicationsException: The last packet successfully received from the server was 92,495,226 milliseconds ago. The last packet sent successfully to the server was 92,495,226 milliseconds ago. is longer than the server configured value of 'wait_timeout'. You should consider either expiring and/or testing connection validity before use in your application, increasing the server configured values for client timeouts, or using the Connector/J connection property 'autoReconnect=true' to avoid this problem.
-2022-09-28 12:11:23.775  INFO 3476 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 1.8.0_341 on scepanjan-pc2 with PID 3476 (D:\StakloRam\stakloRam2022\backend\target\classes started by scepan.jankovic in D:\StakloRam\stakloRam2022\backend)
-2022-09-28 12:11:23.778 DEBUG 3476 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
-2022-09-28 12:11:23.779  INFO 3476 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
-2022-09-28 12:11:24.971  INFO 3476 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
-2022-09-28 12:11:24.983  INFO 3476 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2022-09-28 12:11:24.984  INFO 3476 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
-2022-09-28 12:11:25.129  INFO 3476 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2022-09-28 12:11:25.130  INFO 3476 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1307 ms
-2022-09-28 12:11:25.363 DEBUG 3476 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
-2022-09-28 12:11:25.768  INFO 3476 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
-2022-09-28 12:11:25.849  INFO 3476 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@31d6f3fe, org.springframework.security.web.context.SecurityContextPersistenceFilter@2bef09c0, org.springframework.security.web.header.HeaderWriterFilter@41b0ae4c, org.springframework.web.filter.CorsFilter@760cf594, org.springframework.security.web.authentication.logout.LogoutFilter@418c020b, com.stakloram.backend.auth.JwtRequestFilter@71391b3f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@58a63629, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@56ac5c80, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@aa149ed, org.springframework.security.web.session.SessionManagementFilter@2fc2a205, org.springframework.security.web.access.ExceptionTranslationFilter@40298285, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@11b377c5]
-2022-09-28 12:11:26.011  INFO 3476 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
-2022-09-28 12:11:26.019  INFO 3476 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 2.705 seconds (JVM running for 3.106)
-2022-09-28 12:11:31.006  INFO 3476 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2022-09-28 12:11:31.006  INFO 3476 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2022-09-28 12:11:31.008  INFO 3476 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-2022-09-28 12:15:23.259  INFO 25092 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 1.8.0_341 on scepanjan-pc2 with PID 25092 (D:\StakloRam\stakloRam2022\backend\target\classes started by scepan.jankovic in D:\StakloRam\stakloRam2022\backend)
-2022-09-28 12:15:23.262 DEBUG 25092 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
-2022-09-28 12:15:23.263  INFO 25092 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
-2022-09-28 12:15:24.493  INFO 25092 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
-2022-09-28 12:15:24.504  INFO 25092 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2022-09-28 12:15:24.504  INFO 25092 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
-2022-09-28 12:15:24.651  INFO 25092 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2022-09-28 12:15:24.651  INFO 25092 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1339 ms
-2022-09-28 12:15:24.870 DEBUG 25092 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
-2022-09-28 12:15:25.287  INFO 25092 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
-2022-09-28 12:15:25.350  INFO 25092 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@31d6f3fe, org.springframework.security.web.context.SecurityContextPersistenceFilter@2bef09c0, org.springframework.security.web.header.HeaderWriterFilter@41b0ae4c, org.springframework.web.filter.CorsFilter@760cf594, org.springframework.security.web.authentication.logout.LogoutFilter@418c020b, com.stakloram.backend.auth.JwtRequestFilter@71391b3f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@58a63629, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@56ac5c80, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@aa149ed, org.springframework.security.web.session.SessionManagementFilter@2fc2a205, org.springframework.security.web.access.ExceptionTranslationFilter@40298285, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@11b377c5]
-2022-09-28 12:15:25.474  INFO 25092 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
-2022-09-28 12:15:25.482  INFO 25092 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 2.704 seconds (JVM running for 3.097)
-2022-09-28 12:15:28.518  INFO 25092 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2022-09-28 12:15:28.518  INFO 25092 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2022-09-28 12:15:28.519  INFO 25092 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-2022-09-28 17:38:17.716  INFO 2304 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 1.8.0_341 on scepanjan-pc2 with PID 2304 (D:\StakloRam\stakloRam2022\backend\target\classes started by scepan.jankovic in D:\StakloRam\stakloRam2022\backend)
-2022-09-28 17:38:17.719 DEBUG 2304 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
-2022-09-28 17:38:17.719  INFO 2304 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
-2022-09-28 17:38:19.016  INFO 2304 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
-2022-09-28 17:38:19.028  INFO 2304 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2022-09-28 17:38:19.028  INFO 2304 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
-2022-09-28 17:38:19.178  INFO 2304 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2022-09-28 17:38:19.179  INFO 2304 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1409 ms
-2022-09-28 17:38:19.399 DEBUG 2304 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
-2022-09-28 17:38:19.820  INFO 2304 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
-2022-09-28 17:38:19.885  INFO 2304 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3e48d38, org.springframework.security.web.context.SecurityContextPersistenceFilter@41b0ae4c, org.springframework.security.web.header.HeaderWriterFilter@7495699f, org.springframework.web.filter.CorsFilter@7c2b58c0, org.springframework.security.web.authentication.logout.LogoutFilter@21f8e55f, com.stakloram.backend.auth.JwtRequestFilter@2b0b4d53, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6482eef, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5bcb04cb, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@11b377c5, org.springframework.security.web.session.SessionManagementFilter@40298285, org.springframework.security.web.access.ExceptionTranslationFilter@30501e60, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@46d63dbb]
-2022-09-28 17:38:20.020  INFO 2304 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
-2022-09-28 17:38:20.031  INFO 2304 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 2.772 seconds (JVM running for 3.173)
-2022-09-28 17:38:21.173  INFO 2304 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2022-09-28 17:38:21.174  INFO 2304 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2022-09-28 17:38:21.175  INFO 2304 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-2022-09-28 17:38:21.583 ERROR 2304 --- [http-nio-8081-exec-2] c.s.backend.auth.JwtRequestFilter        : org.springframework.web.util.NestedServletException: Request processing failed; nested exception is java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
-2022-09-28 17:39:17.606  INFO 16140 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 1.8.0_341 on scepanjan-pc2 with PID 16140 (D:\StakloRam\stakloRam2022\backend\target\classes started by scepan.jankovic in D:\StakloRam\stakloRam2022\backend)
-2022-09-28 17:39:17.609 DEBUG 16140 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
-2022-09-28 17:39:17.609  INFO 16140 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
-2022-09-28 17:39:18.751  INFO 16140 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
-2022-09-28 17:39:18.761  INFO 16140 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2022-09-28 17:39:18.761  INFO 16140 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
-2022-09-28 17:39:18.884  INFO 16140 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2022-09-28 17:39:18.885  INFO 16140 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1229 ms
-2022-09-28 17:39:19.093 DEBUG 16140 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
-2022-09-28 17:39:19.489  INFO 16140 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
-2022-09-28 17:39:19.559  INFO 16140 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@10fbbdb, org.springframework.security.web.context.SecurityContextPersistenceFilter@2fc2a205, org.springframework.security.web.header.HeaderWriterFilter@40298285, org.springframework.web.filter.CorsFilter@23f3dbf0, org.springframework.security.web.authentication.logout.LogoutFilter@70101687, com.stakloram.backend.auth.JwtRequestFilter@6fca2a8f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2bef09c0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2e1af49b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@31d6f3fe, org.springframework.security.web.session.SessionManagementFilter@5bcb04cb, org.springframework.security.web.access.ExceptionTranslationFilter@2dddc1b9, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3e48d38]
-2022-09-28 17:39:19.704  INFO 16140 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
-2022-09-28 17:39:19.715  INFO 16140 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 2.505 seconds (JVM running for 2.869)
-2022-09-28 17:39:28.899  INFO 16140 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2022-09-28 17:39:28.900  INFO 16140 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2022-09-28 17:39:28.901  INFO 16140 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-2022-09-28 17:53:00.820  INFO 21960 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 1.8.0_341 on scepanjan-pc2 with PID 21960 (D:\StakloRam\stakloRam2022\backend\target\classes started by scepan.jankovic in D:\StakloRam\stakloRam2022\backend)
-2022-09-28 17:53:00.822 DEBUG 21960 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
-2022-09-28 17:53:00.823  INFO 21960 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
-2022-09-28 17:53:01.967  INFO 21960 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
-2022-09-28 17:53:01.977  INFO 21960 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2022-09-28 17:53:01.977  INFO 21960 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
-2022-09-28 17:53:02.098  INFO 21960 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2022-09-28 17:53:02.098  INFO 21960 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1227 ms
-2022-09-28 17:53:02.301 DEBUG 21960 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
-2022-09-28 17:53:02.434  WARN 21960 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'viewsController': Unsatisfied dependency expressed through field 'viewsService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'viewsService' defined in file [D:\StakloRam\stakloRam2022\backend\target\classes\com\stakloram\backend\services\impl\ViewsService.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.stakloram.backend.services.impl.ViewsService]: Constructor threw exception; nested exception is java.lang.RuntimeException: Uncompilable code - unreported exception java.lang.Exception; must be caught or declared to be thrown
-2022-09-28 17:53:02.437  INFO 21960 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
-2022-09-28 17:53:02.447  INFO 21960 --- [main] ConditionEvaluationReportLoggingListener : 
-
-Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
-2022-09-28 17:53:02.468 ERROR 21960 --- [main] o.s.boot.SpringApplication               : Application run failed
-
-org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'viewsController': Unsatisfied dependency expressed through field 'viewsService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'viewsService' defined in file [D:\StakloRam\stakloRam2022\backend\target\classes\com\stakloram\backend\services\impl\ViewsService.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.stakloram.backend.services.impl.ViewsService]: Constructor threw exception; nested exception is java.lang.RuntimeException: Uncompilable code - unreported exception java.lang.Exception; must be caught or declared to be thrown
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:659) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:639) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:119) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1431) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:953) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:918) ~[spring-context-5.3.19.jar:5.3.19]
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583) ~[spring-context-5.3.19.jar:5.3.19]
-	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145) ~[spring-boot-2.6.7.jar:2.6.7]
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:740) [spring-boot-2.6.7.jar:2.6.7]
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:415) [spring-boot-2.6.7.jar:2.6.7]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:303) [spring-boot-2.6.7.jar:2.6.7]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1312) [spring-boot-2.6.7.jar:2.6.7]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1301) [spring-boot-2.6.7.jar:2.6.7]
-	at com.stakloram.backend.StakloRamBeApplication.main(StakloRamBeApplication.java:13) [classes/:na]
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'viewsService' defined in file [D:\StakloRam\stakloRam2022\backend\target\classes\com\stakloram\backend\services\impl\ViewsService.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.stakloram.backend.services.impl.ViewsService]: Constructor threw exception; nested exception is java.lang.RuntimeException: Uncompilable code - unreported exception java.lang.Exception; must be caught or declared to be thrown
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1334) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1232) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:582) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1389) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1309) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:656) ~[spring-beans-5.3.19.jar:5.3.19]
-	... 20 common frames omitted
-Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.stakloram.backend.services.impl.ViewsService]: Constructor threw exception; nested exception is java.lang.RuntimeException: Uncompilable code - unreported exception java.lang.Exception; must be caught or declared to be thrown
-	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:224) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:87) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1326) ~[spring-beans-5.3.19.jar:5.3.19]
-	... 31 common frames omitted
-Caused by: java.lang.RuntimeException: Uncompilable code - unreported exception java.lang.Exception; must be caught or declared to be thrown
-	at com.stakloram.backend.services.impl.ViewsService.<init>(ViewsService.java:1) ~[classes/:na]
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[na:1.8.0_341]
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62) ~[na:1.8.0_341]
-	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[na:1.8.0_341]
-	at java.lang.reflect.Constructor.newInstance(Constructor.java:423) ~[na:1.8.0_341]
-	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:211) ~[spring-beans-5.3.19.jar:5.3.19]
-	... 33 common frames omitted
-
-2022-09-28 17:54:22.520  INFO 528 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 1.8.0_341 on scepanjan-pc2 with PID 528 (D:\StakloRam\stakloRam2022\backend\target\classes started by scepan.jankovic in D:\StakloRam\stakloRam2022\backend)
-2022-09-28 17:54:22.523 DEBUG 528 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
-2022-09-28 17:54:22.523  INFO 528 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
-2022-09-28 17:54:23.658  INFO 528 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
-2022-09-28 17:54:23.668  INFO 528 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2022-09-28 17:54:23.668  INFO 528 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
-2022-09-28 17:54:23.786  INFO 528 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2022-09-28 17:54:23.786  INFO 528 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1220 ms
-2022-09-28 17:54:24.002 DEBUG 528 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
-2022-09-28 17:54:24.137  WARN 528 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'viewsController': Unsatisfied dependency expressed through field 'viewsService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'viewsService' defined in file [D:\StakloRam\stakloRam2022\backend\target\classes\com\stakloram\backend\services\impl\ViewsService.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.stakloram.backend.services.impl.ViewsService]: Constructor threw exception; nested exception is java.lang.RuntimeException: Uncompilable code - unreported exception java.lang.Exception; must be caught or declared to be thrown
-2022-09-28 17:54:24.141  INFO 528 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
-2022-09-28 17:54:24.151  INFO 528 --- [main] ConditionEvaluationReportLoggingListener : 
-
-Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
-2022-09-28 17:54:24.170 ERROR 528 --- [main] o.s.boot.SpringApplication               : Application run failed
-
-org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'viewsController': Unsatisfied dependency expressed through field 'viewsService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'viewsService' defined in file [D:\StakloRam\stakloRam2022\backend\target\classes\com\stakloram\backend\services\impl\ViewsService.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.stakloram.backend.services.impl.ViewsService]: Constructor threw exception; nested exception is java.lang.RuntimeException: Uncompilable code - unreported exception java.lang.Exception; must be caught or declared to be thrown
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:659) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:639) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:119) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1431) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:953) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:918) ~[spring-context-5.3.19.jar:5.3.19]
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583) ~[spring-context-5.3.19.jar:5.3.19]
-	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145) ~[spring-boot-2.6.7.jar:2.6.7]
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:740) [spring-boot-2.6.7.jar:2.6.7]
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:415) [spring-boot-2.6.7.jar:2.6.7]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:303) [spring-boot-2.6.7.jar:2.6.7]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1312) [spring-boot-2.6.7.jar:2.6.7]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1301) [spring-boot-2.6.7.jar:2.6.7]
-	at com.stakloram.backend.StakloRamBeApplication.main(StakloRamBeApplication.java:13) [classes/:na]
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'viewsService' defined in file [D:\StakloRam\stakloRam2022\backend\target\classes\com\stakloram\backend\services\impl\ViewsService.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.stakloram.backend.services.impl.ViewsService]: Constructor threw exception; nested exception is java.lang.RuntimeException: Uncompilable code - unreported exception java.lang.Exception; must be caught or declared to be thrown
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1334) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1232) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:582) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1389) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1309) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:656) ~[spring-beans-5.3.19.jar:5.3.19]
-	... 20 common frames omitted
-Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.stakloram.backend.services.impl.ViewsService]: Constructor threw exception; nested exception is java.lang.RuntimeException: Uncompilable code - unreported exception java.lang.Exception; must be caught or declared to be thrown
-	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:224) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:87) ~[spring-beans-5.3.19.jar:5.3.19]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1326) ~[spring-beans-5.3.19.jar:5.3.19]
-	... 31 common frames omitted
-Caused by: java.lang.RuntimeException: Uncompilable code - unreported exception java.lang.Exception; must be caught or declared to be thrown
-	at com.stakloram.backend.services.impl.ViewsService.<init>(ViewsService.java:1) ~[classes/:na]
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[na:1.8.0_341]
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62) ~[na:1.8.0_341]
-	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[na:1.8.0_341]
-	at java.lang.reflect.Constructor.newInstance(Constructor.java:423) ~[na:1.8.0_341]
-	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:211) ~[spring-beans-5.3.19.jar:5.3.19]
-	... 33 common frames omitted
-
-2022-09-28 17:55:58.570  INFO 12108 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 1.8.0_341 on scepanjan-pc2 with PID 12108 (D:\StakloRam\stakloRam2022\backend\target\classes started by scepan.jankovic in D:\StakloRam\stakloRam2022\backend)
-2022-09-28 17:55:58.572 DEBUG 12108 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
-2022-09-28 17:55:58.573  INFO 12108 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
-2022-09-28 17:55:59.728  INFO 12108 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
-2022-09-28 17:55:59.739  INFO 12108 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2022-09-28 17:55:59.739  INFO 12108 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
-2022-09-28 17:55:59.874  INFO 12108 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2022-09-28 17:55:59.874  INFO 12108 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1260 ms
-2022-09-28 17:56:00.092 DEBUG 12108 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
-2022-09-28 17:56:00.478  INFO 12108 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
-2022-09-28 17:56:00.557  INFO 12108 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@14d8444b, org.springframework.security.web.context.SecurityContextPersistenceFilter@7495699f, org.springframework.security.web.header.HeaderWriterFilter@6401d0a0, org.springframework.web.filter.CorsFilter@71466383, org.springframework.security.web.authentication.logout.LogoutFilter@3fd2322d, com.stakloram.backend.auth.JwtRequestFilter@7cedfa63, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4cb0a000, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2dddc1b9, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@46d63dbb, org.springframework.security.web.session.SessionManagementFilter@30501e60, org.springframework.security.web.access.ExceptionTranslationFilter@29528a22, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3d278b4d]
-2022-09-28 17:56:00.707  INFO 12108 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
-2022-09-28 17:56:00.716  INFO 12108 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 2.576 seconds (JVM running for 2.951)
-2022-09-28 17:56:15.263  INFO 12108 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2022-09-28 17:56:15.264  INFO 12108 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2022-09-28 17:56:15.265  INFO 12108 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-09-29 09:30:27.087  INFO 19068 --- [main] c.s.backend.StakloRamBeApplicationTests  : Starting StakloRamBeApplicationTests using Java 1.8.0_341 on scepanjan-pc2 with PID 19068 (started by scepan.jankovic in D:\StakloRam\stakloRam2022\backend)
+2022-09-29 09:30:27.091 DEBUG 19068 --- [main] c.s.backend.StakloRamBeApplicationTests  : Running with Spring Boot v2.6.7, Spring v5.3.19
+2022-09-29 09:30:27.092  INFO 19068 --- [main] c.s.backend.StakloRamBeApplicationTests  : No active profile set, falling back to 1 default profile: "default"
+2022-09-29 09:30:32.166 ERROR 19068 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 09:30:36.348 ERROR 19068 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 09:30:40.404 ERROR 19068 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 09:30:44.432 ERROR 19068 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 09:30:48.467 ERROR 19068 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 09:30:52.508 ERROR 19068 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 09:30:56.577 ERROR 19068 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 09:31:00.613 ERROR 19068 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 09:31:04.655 ERROR 19068 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 09:31:08.686 ERROR 19068 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 09:31:12.705 ERROR 19068 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 09:31:13.199  INFO 19068 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2022-09-29 09:31:13.427  INFO 19068 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@49ede9c7, org.springframework.security.web.context.SecurityContextPersistenceFilter@5b84f14, org.springframework.security.web.header.HeaderWriterFilter@61e7bf2f, org.springframework.web.filter.CorsFilter@6ecdbab8, org.springframework.security.web.authentication.logout.LogoutFilter@59c33386, com.stakloram.backend.auth.JwtRequestFilter@3dd4a6fa, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@68fe48d7, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@27a97e08, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@19f7222e, org.springframework.security.web.session.SessionManagementFilter@37ed010a, org.springframework.security.web.access.ExceptionTranslationFilter@7c129ef6, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@28cb3a25]
+2022-09-29 09:31:13.762  INFO 19068 --- [main] c.s.backend.StakloRamBeApplicationTests  : Started StakloRamBeApplicationTests in 46.958 seconds (JVM running for 47.998)
+2022-09-29 11:16:15.860  INFO 17572 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 1.8.0_341 on scepanjan-pc2 with PID 17572 (D:\StakloRam\stakloRam2022\backend\target\classes started by scepan.jankovic in D:\StakloRam\stakloRam2022\backend)
+2022-09-29 11:16:15.863 DEBUG 17572 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
+2022-09-29 11:16:15.864  INFO 17572 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
+2022-09-29 11:16:17.005  INFO 17572 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-09-29 11:16:17.017  INFO 17572 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-09-29 11:16:17.017  INFO 17572 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
+2022-09-29 11:16:17.155  INFO 17572 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-09-29 11:16:17.156  INFO 17572 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1249 ms
+2022-09-29 11:16:17.371 DEBUG 17572 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
+2022-09-29 11:16:17.783  INFO 17572 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2022-09-29 11:16:17.853  INFO 17572 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@31d6f3fe, org.springframework.security.web.context.SecurityContextPersistenceFilter@2bef09c0, org.springframework.security.web.header.HeaderWriterFilter@41b0ae4c, org.springframework.web.filter.CorsFilter@760cf594, org.springframework.security.web.authentication.logout.LogoutFilter@418c020b, com.stakloram.backend.auth.JwtRequestFilter@71391b3f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@58a63629, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@56ac5c80, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@aa149ed, org.springframework.security.web.session.SessionManagementFilter@2fc2a205, org.springframework.security.web.access.ExceptionTranslationFilter@40298285, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@11b377c5]
+2022-09-29 11:16:18.059  INFO 17572 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-09-29 11:16:18.068  INFO 17572 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 2.631 seconds (JVM running for 2.993)
+2022-09-29 11:17:31.514  INFO 17572 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-09-29 11:17:31.514  INFO 17572 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-09-29 11:17:31.516  INFO 17572 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2022-09-29 12:41:46.758  INFO 24488 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 1.8.0_341 on scepanjan-pc2 with PID 24488 (D:\StakloRam\stakloRam2022\backend\target\classes started by scepan.jankovic in D:\StakloRam\stakloRam2022\backend)
+2022-09-29 12:41:46.761 DEBUG 24488 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
+2022-09-29 12:41:46.761  INFO 24488 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
+2022-09-29 12:41:48.094  INFO 24488 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-09-29 12:41:48.115  INFO 24488 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-09-29 12:41:48.116  INFO 24488 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
+2022-09-29 12:41:48.287  INFO 24488 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-09-29 12:41:48.288  INFO 24488 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1477 ms
+2022-09-29 12:41:48.530 DEBUG 24488 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
+2022-09-29 12:41:48.951  INFO 24488 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2022-09-29 12:41:49.035  INFO 24488 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@23706db8, org.springframework.security.web.context.SecurityContextPersistenceFilter@2dddc1b9, org.springframework.security.web.header.HeaderWriterFilter@280e8a1a, org.springframework.web.filter.CorsFilter@205bed61, org.springframework.security.web.authentication.logout.LogoutFilter@474fae39, com.stakloram.backend.auth.JwtRequestFilter@3af356f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@40298285, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6482eef, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@129fed45, org.springframework.security.web.session.SessionManagementFilter@74abbb, org.springframework.security.web.access.ExceptionTranslationFilter@61f80d55, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@71d8cfe7]
+2022-09-29 12:41:49.186  INFO 24488 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-09-29 12:41:49.198  INFO 24488 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 2.913 seconds (JVM running for 3.318)
+2022-09-29 12:43:13.212  INFO 24488 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-09-29 12:43:13.213  INFO 24488 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-09-29 12:43:13.214  INFO 24488 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-09-29 12:58:45.894  INFO 11108 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 1.8.0_341 on scepanjan-pc2 with PID 11108 (D:\StakloRam\stakloRam2022\backend\target\classes started by scepan.jankovic in D:\StakloRam\stakloRam2022\backend)
+2022-09-29 12:58:45.896 DEBUG 11108 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
+2022-09-29 12:58:45.897  INFO 11108 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
+2022-09-29 12:58:47.158  INFO 11108 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-09-29 12:58:47.173  INFO 11108 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-09-29 12:58:47.173  INFO 11108 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
+2022-09-29 12:58:47.314  INFO 11108 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-09-29 12:58:47.315  INFO 11108 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1366 ms
+2022-09-29 12:58:47.576 DEBUG 11108 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
+2022-09-29 12:58:48.018  INFO 11108 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2022-09-29 12:58:48.121  INFO 11108 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@14d8444b, org.springframework.security.web.context.SecurityContextPersistenceFilter@7495699f, org.springframework.security.web.header.HeaderWriterFilter@6401d0a0, org.springframework.web.filter.CorsFilter@71466383, org.springframework.security.web.authentication.logout.LogoutFilter@3fd2322d, com.stakloram.backend.auth.JwtRequestFilter@7cedfa63, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4cb0a000, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2dddc1b9, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@46d63dbb, org.springframework.security.web.session.SessionManagementFilter@30501e60, org.springframework.security.web.access.ExceptionTranslationFilter@29528a22, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3d278b4d]
+2022-09-29 12:58:48.268  INFO 11108 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-09-29 12:58:48.278  INFO 11108 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 2.85 seconds (JVM running for 3.265)
+2022-09-29 12:58:49.916  INFO 11108 --- [http-nio-8081-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-09-29 12:58:49.916  INFO 11108 --- [http-nio-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-09-29 12:58:49.917  INFO 11108 --- [http-nio-8081-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-09-29 13:29:43.866  INFO 3068 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 1.8.0_341 on scepanjan-pc2 with PID 3068 (D:\StakloRam\stakloRam2022\backend\target\classes started by scepan.jankovic in D:\StakloRam\stakloRam2022\backend)
+2022-09-29 13:29:43.869 DEBUG 3068 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
+2022-09-29 13:29:43.869  INFO 3068 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
+2022-09-29 13:29:45.183  INFO 3068 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2022-09-29 13:29:45.200  INFO 3068 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-09-29 13:29:45.200  INFO 3068 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
+2022-09-29 13:29:45.351  INFO 3068 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-09-29 13:29:45.352  INFO 3068 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1432 ms
+2022-09-29 13:29:45.580 DEBUG 3068 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
+2022-09-29 13:29:45.986  INFO 3068 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2022-09-29 13:29:46.061  INFO 3068 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@31d6f3fe, org.springframework.security.web.context.SecurityContextPersistenceFilter@2bef09c0, org.springframework.security.web.header.HeaderWriterFilter@41b0ae4c, org.springframework.web.filter.CorsFilter@760cf594, org.springframework.security.web.authentication.logout.LogoutFilter@418c020b, com.stakloram.backend.auth.JwtRequestFilter@71391b3f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@58a63629, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@56ac5c80, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@aa149ed, org.springframework.security.web.session.SessionManagementFilter@2fc2a205, org.springframework.security.web.access.ExceptionTranslationFilter@40298285, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@11b377c5]
+2022-09-29 13:29:46.204  INFO 3068 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2022-09-29 13:29:46.214  INFO 3068 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 2.823 seconds (JVM running for 3.281)
+2022-09-29 13:30:13.846  INFO 3068 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-09-29 13:30:13.846  INFO 3068 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-09-29 13:30:13.847  INFO 3068 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-09-29 18:34:42.693  INFO 17580 --- [main] c.s.backend.StakloRamBeApplicationTests  : Starting StakloRamBeApplicationTests using Java 1.8.0_341 on scepanjan-pc2 with PID 17580 (started by scepan.jankovic in D:\StakloRam\stakloRam2022\backend)
+2022-09-29 18:34:42.693 DEBUG 17580 --- [main] c.s.backend.StakloRamBeApplicationTests  : Running with Spring Boot v2.6.7, Spring v5.3.19
+2022-09-29 18:34:42.694  INFO 17580 --- [main] c.s.backend.StakloRamBeApplicationTests  : No active profile set, falling back to 1 default profile: "default"
+2022-09-29 18:34:47.803 ERROR 17580 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 18:34:51.941 ERROR 17580 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 18:34:55.991 ERROR 17580 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 18:35:00.022 ERROR 17580 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 18:35:04.053 ERROR 17580 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 18:35:08.099 ERROR 17580 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 18:35:12.137 ERROR 17580 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 18:35:16.168 ERROR 17580 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 18:35:20.214 ERROR 17580 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 18:35:24.255 ERROR 17580 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 18:35:28.292 ERROR 17580 --- [main] c.s.b.database.ConnectionToDatabase      : java.sql.SQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2022-09-29 18:35:28.777  INFO 17580 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2022-09-29 18:35:28.925  INFO 17580 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2016f509, org.springframework.security.web.context.SecurityContextPersistenceFilter@4417af13, org.springframework.security.web.header.HeaderWriterFilter@b174a73, org.springframework.web.filter.CorsFilter@6f1a80fb, org.springframework.security.web.authentication.logout.LogoutFilter@3d8b319e, com.stakloram.backend.auth.JwtRequestFilter@5a237731, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@548d5ed3, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@42d73c61, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7d2998d8, org.springframework.security.web.session.SessionManagementFilter@68b58644, org.springframework.security.web.access.ExceptionTranslationFilter@74db12c2, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@17c2d509]
+2022-09-29 18:35:29.260  INFO 17580 --- [main] c.s.backend.StakloRamBeApplicationTests  : Started StakloRamBeApplicationTests in 46.838 seconds (JVM running for 47.858)
