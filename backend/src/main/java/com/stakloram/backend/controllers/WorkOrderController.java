@@ -22,8 +22,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -97,7 +95,6 @@ public class WorkOrderController {
         return (WorkOrder) this.workOrderService.createNewObject(object);
     }
 
-//    @PreAuthorize("hasAnyRole('admin','backoffice')")
     @RequestMapping(method = RequestMethod.PUT, value = "/workorders/{workOrderOid}")
     public WorkOrder modify(@PathVariable String workOrderOid, @RequestBody WorkOrder object) throws SException {
         return (WorkOrder) this.workOrderService.modifyObject(workOrderOid, object);
