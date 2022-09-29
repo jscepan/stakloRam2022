@@ -34,40 +34,40 @@
     (bottomReached)="bottomReachedHandler()"
   >
     <div class="grid-container standard-grid-table">
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "buyerName" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "invoiceType" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "invoiceNumber" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "dateOfCreate" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "dateOfMaturity" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "netAmount" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "vatAmount" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "grossAmount" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "create" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "view" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "edit" | translate }}
       </div>
-      <div class="grid-item header">{{ "delete" | translate }}</div>
+      <div class="grid-item header sticky">{{ "delete" | translate }}</div>
       <ng-container *ngFor="let invoice of entities | async">
         <div class="grid-item">
           {{ invoice.buyer.name }}

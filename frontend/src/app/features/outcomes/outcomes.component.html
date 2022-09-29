@@ -22,19 +22,19 @@
     (bottomReached)="bottomReachedHandler()"
   >
     <div class="grid-container standard-grid-table">
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "buyerName" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "date" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "amount" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "edit" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "delete" | translate }}
       </div>
       <ng-container *ngFor="let outcome of entities | async">

@@ -19,10 +19,10 @@
     scrollToBottom
     (bottomReached)="bottomReachedHandler()"
   >
-    <div class="grid-item header">{{ "zipCode" | translate }}</div>
-    <div class="grid-item header">{{ "name" | translate }}</div>
-    <div class="grid-item header">{{ "country" | translate }}</div>
-    <div class="grid-item header">{{ "edit" | translate }}</div>
+    <div class="grid-item header sticky">{{ "zipCode" | translate }}</div>
+    <div class="grid-item header sticky">{{ "name" | translate }}</div>
+    <div class="grid-item header sticky">{{ "country" | translate }}</div>
+    <div class="grid-item header sticky">{{ "edit" | translate }}</div>
     <ng-container *ngFor="let item of entities | async">
       <div class="grid-item">{{ item.zipCode }}</div>
       <div class="grid-item">{{ item.name }}</div>

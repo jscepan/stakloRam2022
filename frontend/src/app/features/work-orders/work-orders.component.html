@@ -18,31 +18,31 @@
     (bottomReached)="bottomReachedHandler()"
   >
     <div class="grid-container standard-grid-table">
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "buyerName" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "number" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "date" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "forPerson" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "description" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "note" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "view" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "edit" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "delete" | translate }}
       </div>
       <ng-container *ngFor="let workOrder of entities | async">

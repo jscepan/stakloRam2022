@@ -22,12 +22,14 @@
       (bottomReached)="bottomReachedHandler()"
     >
       <div class="grid-container standard-grid-table">
-        <div class="grid-item header">{{ "username" | translate }}</div>
-        <div class="grid-item header">{{ "fullName" | translate }}</div>
-        <div class="grid-item header">{{ "email" | translate }}</div>
-        <div class="grid-item header">{{ "enabled" | translate }}</div>
-        <div class="grid-item header">{{ "edit" | translate }}</div>
-        <div class="grid-item header">{{ "resetPassword" | translate }}</div>
+        <div class="grid-item header sticky">{{ "username" | translate }}</div>
+        <div class="grid-item header sticky">{{ "fullName" | translate }}</div>
+        <div class="grid-item header sticky">{{ "email" | translate }}</div>
+        <div class="grid-item header sticky">{{ "enabled" | translate }}</div>
+        <div class="grid-item header sticky">{{ "edit" | translate }}</div>
+        <div class="grid-item header sticky">
+          {{ "resetPassword" | translate }}
+        </div>
         <ng-container *ngFor="let item of entities | async">
           <div class="grid-item">{{ item.username }}</div>
           <div class="grid-item">{{ item.fullName }}</div>

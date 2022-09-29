@@ -22,25 +22,25 @@
     (bottomReached)="bottomReachedHandler()"
   >
     <div class="grid-container standard-grid-table">
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "buyerName" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "date" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "amount" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "bankStatementNumber" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "comment" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "edit" | translate }}
       </div>
-      <div class="grid-item header">
+      <div class="grid-item header sticky">
         {{ "delete" | translate }}
       </div>
       <ng-container *ngFor="let income of entities | async">
@@ -57,7 +57,7 @@
           {{ income.bankStatementNumber }}
         </div>
         <div class="grid-item">
-          {{ income.comment | number: "1.2-2":"de" }}
+          {{ income.comment }}
         </div>
         <div class="grid-item">
           <app-button

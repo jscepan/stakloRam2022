@@ -7,11 +7,11 @@
   </div>
 
   <div class="grid-container standard-grid-table">
-    <div class="grid-item header">{{ "buyer" | translate }}</div>
-    <div class="grid-item header">{{ "state" | translate }}</div>
-    <div class="grid-item header">{{ "owed" | translate }}</div>
-    <div class="grid-item header">{{ "debt" | translate }}</div>
-    <div class="grid-item header">{{ "view" | translate }}</div>
+    <div class="grid-item header sticky">{{ "buyer" | translate }}</div>
+    <div class="grid-item header sticky">{{ "state" | translate }}</div>
+    <div class="grid-item header sticky">{{ "owed" | translate }}</div>
+    <div class="grid-item header sticky">{{ "debt" | translate }}</div>
+    <div class="grid-item header sticky">{{ "view" | translate }}</div>
     <ng-container *ngFor="let item of entities">
       <div class="grid-item">{{ item.buyer?.name }}</div>
       <div class="grid-item">{{ item.debtSum | number: "1.2-2":"de" }}</div>
