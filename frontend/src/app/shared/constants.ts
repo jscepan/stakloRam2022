@@ -1,8 +1,8 @@
 import { EnumValueModel } from './enums/enum.model';
 
 // BASE_API_URL should have value 'http://localhost:8081' in DEVELOPMENT MODE, otherwise empty string ''
-// export const BASE_API_URL: string = '';
-export const BASE_API_URL: string = 'http://localhost:8081';
+export const BASE_API_URL: string = '';
+// export const BASE_API_URL: string = 'http://localhost:8081';
 
 export const DOMAIN_BUYERS: string = 'buyers';
 export const DOMAIN_COUNTRIES: string = 'countries';
