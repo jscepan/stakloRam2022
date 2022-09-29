@@ -25,7 +25,7 @@ export class DebtorsReviewComponent implements OnInit, OnDestroy {
     this.webService.getAllDebtors().subscribe((allDebtors) => {
       this.allDebtors = allDebtors;
       this.entities = allDebtors;
-      this.isLoading = true;
+      this.isLoading = false;
     });
   }
 
