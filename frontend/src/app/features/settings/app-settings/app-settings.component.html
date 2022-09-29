@@ -1,276 +1,463 @@
 <div class="container">
   <form [formGroup]="formGroup" *ngIf="formGroup" class="form">
-    <h1>{{ "companyData" | translate }}</h1>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "companyEmail" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="companyEmail" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "companyWebsite" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="companyWebsite" />
-    </mat-form-field>
-    <h1>{{ "invoice" | translate }}</h1>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "methodOfPayment" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="invoiceMethodOfPayment" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "methodOfPaymentForCashBill" | translate }}
-      </mat-label>
-      <input
-        type="text"
-        matInput
-        formControlName="invoiceMethodOfPaymentForCashBill"
-      />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "invoiceTaxFreeText" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="invoiceTaxFreeText" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "placeOfIssue" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="invoicePlaceOfIssue" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "currency" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="invoiceCurrency" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "country" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="invoiceCountry" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "invoiceVatRate" | translate }}
-      </mat-label>
-      <input type="text" appDecimal matInput formControlName="invoiceVatRate" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "companyName" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="invoiceCompanyName" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "companyStreet" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="invoiceCompanyStreet" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "zipCodeCity" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="invoiceZipCodeCity" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "contactsPhoneFax" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="invoiceContactsPhoneFax" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "companyDescription" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="invoiceCompanyDescription" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "bankAccounts" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="invoiceBankAccounts" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "complaints" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="invoiceComplaints" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "invoiceForeignNote" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="invoiceForeignNote" />
-    </mat-form-field>
-    <h2>{{ "invoiceForeignNote" | translate }}</h2>
-    <div formArrayName="invoiceForeignNotes" class="invoice-foreign-notes">
-      <div
-        *ngFor="let comp of invoiceForeignNotesFormArr.controls; let j = index"
-        class="invoice-foreign-note"
-      >
-        <div [formGroupName]="j" class="form-group">
-          <mat-form-field>
-            <mat-label
-              [class.mark-required]="true"
-              [class.mark-opt-required]="true"
-            >
-              {{ "key" | translate }}
-            </mat-label>
-            <input type="text" matInput formControlName="key" />
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label
-              [class.mark-required]="true"
-              [class.mark-opt-required]="true"
-            >
-              {{ "value" | translate }}
-            </mat-label>
-            <input type="text" matInput formControlName="value" />
-          </mat-form-field>
-          <app-button
-            [iconName]="'minus'"
-            (clickEvent)="removeNote(j)"
-            [isTransparentMode]="true"
-            class="additional-button"
-          ></app-button>
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{ "companyData" | translate }}</mat-panel-title>
+          <mat-panel-description>{{
+            "companyDataDescription" | translate
+          }}</mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "companyEmail" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="companyEmail" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "companyWebsite" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="companyWebsite" />
+        </mat-form-field>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{ "invoice" | translate }}</mat-panel-title>
+          <mat-panel-description>{{
+            "invoiceDataDescription" | translate
+          }}</mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "methodOfPayment" | translate }}
+          </mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="invoiceMethodOfPayment"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "methodOfPaymentForCashBill" | translate }}
+          </mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="invoiceMethodOfPaymentForCashBill"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "invoiceTaxFreeText" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="invoiceTaxFreeText" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "placeOfIssue" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="invoicePlaceOfIssue" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "currency" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="invoiceCurrency" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "country" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="invoiceCountry" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "invoiceVatRate" | translate }}
+          </mat-label>
+          <input
+            type="text"
+            appDecimal
+            matInput
+            formControlName="invoiceVatRate"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "companyName" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="invoiceCompanyName" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "companyStreet" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="invoiceCompanyStreet" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "zipCodeCity" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="invoiceZipCodeCity" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "contactsPhoneFax" | translate }}
+          </mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="invoiceContactsPhoneFax"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "companyDescription" | translate }}
+          </mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="invoiceCompanyDescription"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "bankAccounts" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="invoiceBankAccounts" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "complaints" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="invoiceComplaints" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "invoiceForeignNote" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="invoiceForeignNote" />
+        </mat-form-field>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{
+            "invoiceForeignNote" | translate
+          }}</mat-panel-title>
+          <mat-panel-description>{{
+            "invoiceForeignNoteDescription" | translate
+          }}</mat-panel-description>
+        </mat-expansion-panel-header>
+        <div formArrayName="invoiceForeignNotes" class="invoice-foreign-notes">
+          <div
+            *ngFor="
+              let comp of invoiceForeignNotesFormArr.controls;
+              let j = index
+            "
+            class="invoice-foreign-note"
+          >
+            <div [formGroupName]="j" class="form-group">
+              <div class="row">
+                <mat-form-field>
+                  <mat-label
+                    [class.mark-required]="true"
+                    [class.mark-opt-required]="true"
+                  >
+                    {{ "key" | translate }}
+                  </mat-label>
+                  <input type="text" matInput formControlName="key" />
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label
+                    [class.mark-required]="true"
+                    [class.mark-opt-required]="true"
+                  >
+                    {{ "value" | translate }}
+                  </mat-label>
+                  <input type="text" matInput formControlName="value" />
+                </mat-form-field>
+                <app-button
+                  [iconName]="'minus'"
+                  (clickEvent)="removeNote(j)"
+                  [isTransparentMode]="true"
+                  class="additional-button"
+                ></app-button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <h1>{{ "workOrder" | translate }}</h1>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "termoizolacGlassMinArea" | translate }}
-      </mat-label>
-      <input
-        type="text"
-        appDecimal
-        matInput
-        formControlName="termoizolacGlassMinArea"
-      />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "constructionMeasureCM" | translate }}
-      </mat-label>
-      <input
-        type="text"
-        appDecimal
-        matInput
-        formControlName="constructionMeasureCM"
-      />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ ("workOrder" | translate) + " - " + ("placeOfIssue" | translate) }}
-      </mat-label>
-      <input type="text" matInput formControlName="workOrderPlaceOfIssue" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{
-          ("workOrder" | translate) + " - " + ("companyDescription" | translate)
-        }}
-      </mat-label>
-      <input
-        type="text"
-        matInput
-        formControlName="workOrderCompanyDescription"
-      />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{
-          ("workOrder" | translate) + " - " + ("headingLine" | translate) + "1"
-        }}
-      </mat-label>
-      <input type="text" matInput formControlName="workOrderHeadingLine1" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{
-          ("workOrder" | translate) + " - " + ("headingLine" | translate) + "2"
-        }}
-      </mat-label>
-      <input type="text" matInput formControlName="workOrderHeadingLine2" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{
-          ("workOrder" | translate) + " - " + ("headingLine" | translate) + "3"
-        }}
-      </mat-label>
-      <input type="text" matInput formControlName="workOrderHeadingLine3" />
-    </mat-form-field>
-    <h1>{{ "qrCodeSettings" | translate }}</h1>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "qrCodeShowOnInvoice" | translate }}
-      </mat-label>
-      <mat-select matSelect formControlName="qrCodeShowOnInvoice">
-        <mat-option [value]="true">{{ "yes" | translate }}</mat-option>
-        <mat-option [value]="false">{{ "no" | translate }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "identCode" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="qrCodeIdentCode" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "version" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="qrCodeVersion" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "signSet" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="qrCodeSignSet" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "accountNumber" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="qrCodeAccountNumber" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "companyName" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="qrCodeCompanyName" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "currency" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="qrCodeCurrency" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "payingCodePerson" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="qrCodePayingCodePerson" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "payingCodeCompany" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="qrCodePayingCodeCompany" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "payingPurpose" | translate }}
-      </mat-label>
-      <input type="text" matInput formControlName="qrCodePayingPurpose" />
-    </mat-form-field>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{ "workOrder" | translate }}</mat-panel-title>
+          <mat-panel-description>{{
+            "workOrderDescription" | translate
+          }}</mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "termoizolacGlassMinArea" | translate }}
+          </mat-label>
+          <input
+            type="text"
+            appDecimal
+            matInput
+            formControlName="termoizolacGlassMinArea"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "constructionMeasureCM" | translate }}
+          </mat-label>
+          <input
+            type="text"
+            appDecimal
+            matInput
+            formControlName="constructionMeasureCM"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{
+              ("workOrder" | translate) + " - " + ("placeOfIssue" | translate)
+            }}
+          </mat-label>
+          <input type="text" matInput formControlName="workOrderPlaceOfIssue" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{
+              ("workOrder" | translate) +
+                " - " +
+                ("companyDescription" | translate)
+            }}
+          </mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="workOrderCompanyDescription"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{
+              ("workOrder" | translate) +
+                " - " +
+                ("headingLine" | translate) +
+                "1"
+            }}
+          </mat-label>
+          <input type="text" matInput formControlName="workOrderHeadingLine1" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{
+              ("workOrder" | translate) +
+                " - " +
+                ("headingLine" | translate) +
+                "2"
+            }}
+          </mat-label>
+          <input type="text" matInput formControlName="workOrderHeadingLine2" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{
+              ("workOrder" | translate) +
+                " - " +
+                ("headingLine" | translate) +
+                "3"
+            }}
+          </mat-label>
+          <input type="text" matInput formControlName="workOrderHeadingLine3" />
+        </mat-form-field>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{ "qrCodeSettings" | translate }}</mat-panel-title>
+          <mat-panel-description>{{
+            "qrCodeSettingsDescription" | translate
+          }}</mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "qrCodeShowOnInvoice" | translate }}
+          </mat-label>
+          <mat-select matSelect formControlName="qrCodeShowOnInvoice">
+            <mat-option [value]="true">{{ "yes" | translate }}</mat-option>
+            <mat-option [value]="false">{{ "no" | translate }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "identCode" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="qrCodeIdentCode" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "version" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="qrCodeVersion" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "signSet" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="qrCodeSignSet" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "accountNumber" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="qrCodeAccountNumber" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "companyName" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="qrCodeCompanyName" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "currency" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="qrCodeCurrency" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "payingCodePerson" | translate }}
+          </mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="qrCodePayingCodePerson"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "payingCodeCompany" | translate }}
+          </mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="qrCodePayingCodeCompany"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "payingPurpose" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="qrCodePayingPurpose" />
+        </mat-form-field>
+      </mat-expansion-panel>
+    </mat-accordion>
   </form>
   <div class="button-section">
     <app-button

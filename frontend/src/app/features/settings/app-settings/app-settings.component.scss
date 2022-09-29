@@ -17,3 +17,20 @@
     margin-top: 20px;
   }
 }
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+mat-form-field {
+  display: block;
+}
+
+.inline {
+  display: inline-block;
+}
+
+mat-panel-title {
+  font-weight: 800;
+}
