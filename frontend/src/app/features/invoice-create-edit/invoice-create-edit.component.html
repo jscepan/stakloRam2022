@@ -133,6 +133,14 @@
           *ngIf="!isEdit"
           [disabled]="!hasPrivilege('BUYER_CREATE')"
         ></app-button>
+        <mat-checkbox
+          class="create-buyer-button"
+          [color]="'primary'"
+          [(ngModel)]="isInvoiceTaxFree"
+          [ngModelOptions]="{ standalone: true }"
+          (change)="changeIsInvoiceTaxFree()"
+          >{{ "invoiceTaxFree" | translate }}</mat-checkbox
+        >
       </div>
 
       <div class="row">

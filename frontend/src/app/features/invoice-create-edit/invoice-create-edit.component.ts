@@ -79,6 +79,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   searchControl: FormControl = new FormControl();
   selectedBuyer?: BuyerModel;
   compareFn: (f1: BaseModel, f2: BaseModel) => boolean = compareByValue;
+  isInvoiceTaxFree: boolean = false;
 
   getUOMDisplayValue = getUOMDisplayValue;
 
@@ -323,7 +324,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
         vatRate: new FormControl(
           invoiceItem
             ? invoiceItem.vatRate
-            : this.settings?.invoiceVatRate || 0,
+            : (this.isInvoiceTaxFree ? 0 : this.settings?.invoiceVatRate) || 0,
           [Validators.required, Validators.min(0)]
         ),
         vatAmount: new FormControl(invoiceItem?.vatAmount || 0, [
@@ -656,6 +657,42 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
         this.listEntities.requestFirstPage();
       }
     });
+  }
+
+  changeIsInvoiceTaxFree(): void {
+    const commentCtrl = this.formGroup.get('comment');
+    const comment: string = commentCtrl?.value || '';
+    if (this.isInvoiceTaxFree) {
+      this.invoiceItemsFormArr.controls.forEach((control, index) => {
+        control.get('vatRate')?.setValue(0);
+        this.calculateInvoiceItemAmount(index, 'vatRate');
+      });
+      if (
+        !(
+          this.settings?.invoiceTaxFreeText &&
+          comment.includes(this.settings?.invoiceTaxFreeText)
+        )
+      ) {
+        commentCtrl?.setValue(
+          comment +
+            (comment.length > 0 ? ', ' : '') +
+            this.settings?.invoiceTaxFreeText
+        );
+      }
+    } else {
+      this.invoiceItemsFormArr.controls.forEach((control, index) => {
+        control.get('vatRate')?.setValue(this.settings?.invoiceVatRate);
+        this.calculateInvoiceItemAmount(index, 'vatRate');
+      });
+      if (
+        this.settings?.invoiceTaxFreeText &&
+        comment.includes(this.settings.invoiceTaxFreeText)
+      ) {
+        commentCtrl?.setValue(
+          comment.replace(this.settings.invoiceTaxFreeText, '')
+        );
+      }
+    }
   }
 
   calculateInvoiceItemAmount(index: number, formControlName: string): void {

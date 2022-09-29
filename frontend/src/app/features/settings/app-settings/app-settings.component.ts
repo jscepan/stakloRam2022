@@ -56,6 +56,10 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
               ?.invoiceMethodOfPaymentForCashBill || '',
             [Validators.required]
           ),
+          invoiceTaxFreeText: new FormControl(
+            this.settingsStoreService.getSettings()?.invoiceTaxFreeText || '',
+            [Validators.required]
+          ),
           invoicePlaceOfIssue: new FormControl(
             this.settingsStoreService.getSettings()?.invoicePlaceOfIssue || '',
             [Validators.required]

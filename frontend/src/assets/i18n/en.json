@@ -154,6 +154,8 @@
   "invoicePayingCompanyData": "Company data on invoice for paying information",
   "invoicePayingCompanyName": "Company name on invoice for paying information",
   "invoicePreNumberTitle": "Pre-invoice number",
+  "invoiceTaxFree": "Invoice VAT free",
+  "invoiceTaxFreeText": "Invoice VAT free text",
   "invoiceType": "Invoice type",
   "invoiceVatAmount": "VAT amount",
   "invoiceVatAmountAllCaps": "VAT AMOUNT",

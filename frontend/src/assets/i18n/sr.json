@@ -154,6 +154,8 @@
   "invoicePayingCompanyData": "Podaci firme na fakturi za informacije pri plaćanju",
   "invoicePayingCompanyName": "Naziv firme na fakturi za informacije pri plaćanju",
   "invoicePreNumberTitle": "Predračun br.",
+  "invoiceTaxFree": "Račun bez PDV-a",
+  "invoiceTaxFreeText": "Tekst za oslobođanje računa PDV-a",
   "invoiceType": "Vrsta fakture",
   "invoiceVatAmount": "Iznos PDV-a",
   "invoiceVatAmountAllCaps": "IZNOS PDV-a",

@@ -11,6 +11,7 @@ public class Settings {
 
     private String invoiceMethodOfPayment = "Virman";
     private String invoiceMethodOfPaymentForCashBill = "Keš";
+    private String invoiceTaxFreeText = "OSLOBOĐENO PLAĆANJA PDV-a PO ČLANU 10, STAV 2, TAČKA 3, ZAKONA O PDV-u";
     private String invoicePlaceOfIssue = "Bačka Palanka";
     private String invoiceCurrency = "rsd";
     private String invoiceCountry = "Srbija";
@@ -237,6 +238,14 @@ public class Settings {
 
     public void setInvoiceMethodOfPaymentForCashBill(String invoiceMethodOfPaymentForCashBill) {
         this.invoiceMethodOfPaymentForCashBill = invoiceMethodOfPaymentForCashBill;
+    }
+
+    public String getInvoiceTaxFreeText() {
+        return invoiceTaxFreeText;
+    }
+
+    public void setInvoiceTaxFreeText(String invoiceTaxFreeText) {
+        this.invoiceTaxFreeText = invoiceTaxFreeText;
     }
 
     public String getCompanyWebsite() {
