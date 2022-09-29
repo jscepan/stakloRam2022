@@ -18,8 +18,8 @@
       justify-content: center;
 
       img {
-        height: 108px;
-        width: 450px;
+        height: 78px;
+        width: 350px;
       }
     }
 
@@ -31,6 +31,11 @@
       font-size: 0.86em;
       text-align: center;
       line-height: 1.2;
+    }
+
+    .qr-code {
+      width: 130px;
+      margin-right: 20px;
     }
   }
 
@@ -44,6 +49,7 @@
     .heading {
       margin-top: 10px;
       display: flex;
+      justify-content: space-between;
 
       .column-container {
         .column-wrapper {
@@ -60,9 +66,10 @@
               width: 160px;
             }
             .column-value {
-              width: 100px;
+              width: 140px;
               font-weight: 600;
               border-bottom: 1px solid var(--color-black);
+              margin-left: 10px;
             }
           }
         }
@@ -86,11 +93,10 @@
       .column-container-buyer {
         display: flex;
         flex-direction: column;
-        // margin: 0 10px;
         font-size: 1em;
         text-align: center;
         font-weight: 600;
-        width: 315px;
+        width: 375px;
         border: 3px solid var(--color-black);
 
         .row {
@@ -113,10 +119,6 @@
           align-items: center;
           justify-content: center;
         }
-      }
-
-      .qr-code {
-        width: 130px;
       }
     }
 

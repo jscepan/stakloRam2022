@@ -23,6 +23,14 @@
         {{ settings?.companyWebsite || "www.stakloram.com" }}
       </div>
     </div>
+    <div class="qr-code">
+      <qrcode
+        [qrdata]="getQrCodeDataForInvoice(invoice)"
+        [width]="130"
+        [errorCorrectionLevel]="'M'"
+        *ngIf="settings?.qrCodeShowOnInvoice"
+      ></qrcode>
+    </div>
   </div>
   <div class="company-description">
     <span>{{
@@ -88,14 +96,6 @@
             {{ invoice.number }}
           </div>
         </div>
-      </div>
-      <div class="qr-code">
-        <qrcode
-          [qrdata]="getQrCodeDataForInvoice(invoice)"
-          [width]="130"
-          [errorCorrectionLevel]="'M'"
-          *ngIf="settings?.qrCodeShowOnInvoice"
-        ></qrcode>
       </div>
       <div class="column-container-buyer">
         <div class="row">
