@@ -68,7 +68,6 @@ public abstract class ObjectStore implements IObjectStore {
             whereClausule = "";
         }
         Statement st = this.conn.createStatement();
-//        System.out.println("SELECT * from " + this.getDefaultFromClausule() + " " + whereClausule);
         return st.executeQuery("SELECT * from " + this.getDefaultFromClausule() + " " + whereClausule);
     }
 

@@ -14,6 +14,7 @@ export const DOMAIN_IMAGES: string = 'images';
 export const DOMAIN_INVOICES: string = 'invoices';
 export const DOMAIN_ROLES: string = 'roles';
 export const DOMAIN_WORK_ORDERS: string = 'workorders';
+export const DOMAIN_HISTORY: string = 'histories';
 
 // Login form content type
 export const LOGIN_FORM_CONTENT_TYPE: { 'Content-Type': string } = {
@@ -51,4 +52,15 @@ export const UOM_TYPES: EnumValueModel[] = [
   { value: 'M', displayName: 'm' },
   { value: 'PCS', displayName: 'pieces' },
   { value: 'HOUR', displayName: 'hour' },
+];
+
+export const OBJECT_TYPES: EnumValueModel[] = [
+  { value: 'user', displayName: 'user' },
+  { value: 'workOrder', displayName: 'workOrder' },
+  { value: 'invoice', displayName: 'invoice' },
+  { value: 'income', displayName: 'income' },
+  { value: 'outcome', displayName: 'outcome' },
+  { value: 'buyer', displayName: 'buyer' },
+  { value: 'city', displayName: 'city' },
+  { value: 'country', displayName: 'country' },
 ];

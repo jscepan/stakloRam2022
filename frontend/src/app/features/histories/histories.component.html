@@ -1,0 +1,105 @@
+<div class="container">
+  <div class="search-bar">
+    <app-search-input
+      [placeholder]="'searchFor' | translate"
+      (changeEvent)="inputSearchHandler($event)"
+    ></app-search-input>
+    <div class="date-filter">
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "fromDate" | translate }}
+        </mat-label>
+        <input type="date" matInput (change)="dateChanged('from', $event)" />
+      </mat-form-field>
+    </div>
+    <div class="date-filter">
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "toDate" | translate }}
+        </mat-label>
+        <input type="date" matInput (change)="dateChanged('to', $event)" />
+      </mat-form-field>
+    </div>
+    <div class="type-filter">
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "objectType" | translate }}
+        </mat-label>
+        <mat-select (valueChange)="typeChange($event)">
+          <mat-option>{{ "all" | translate }}</mat-option>
+          <mat-option *ngFor="let item of typesOfObject" [value]="item">
+            {{ item.displayName | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div
+    class="histories"
+    scrollToBottom
+    (bottomReached)="bottomReachedHandler()"
+  >
+    <div class="grid-container standard-grid-table">
+      <div class="grid-item header sticky">
+        {{ "objectType" | translate }}
+      </div>
+      <div class="grid-item header sticky">
+        {{ "action" | translate }}
+      </div>
+      <div class="grid-item header sticky">
+        {{ "date" | translate }}
+      </div>
+      <div class="grid-item header sticky">
+        {{ "time" | translate }}
+      </div>
+      <div class="grid-item header sticky">
+        {{ "user" | translate }}
+      </div>
+      <div class="grid-item header sticky">
+        {{ "viewDetails" | translate }}
+      </div>
+      <div
+        class="no-results"
+        *ngIf="(totalEntitiesLength | async) === 0 && !(isLoading | async)"
+      >
+        {{ "noResults" | translate }}
+      </div>
+      <div class="spinner" *ngIf="isLoading | async">
+        <mat-spinner></mat-spinner>
+      </div>
+      <ng-container *ngFor="let history of entities | async">
+        <div class="grid-item">
+          {{ history.objectType | translate }}
+        </div>
+        <div class="grid-item">
+          {{ history.action | lowercase | translate }}
+        </div>
+        <div class="grid-item">
+          {{ history.time | date: "dd.MM.yyyy" }}
+        </div>
+        <div class="grid-item">
+          {{ history.time | date: "hh:ss" }}
+        </div>
+        <div class="grid-item">
+          {{ history.user.displayName }}
+        </div>
+        <div class="grid-item">
+          <app-button
+            [iconName]="'eye'"
+            [isTransparentMode]="true"
+            (clickEvent)="viewHistoryDetails(history.oid)"
+          ></app-button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

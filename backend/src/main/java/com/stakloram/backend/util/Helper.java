@@ -30,7 +30,7 @@ public class Helper {
     }
 
     public static LocalDateTime convertStringToLocalDateTime(String date) {
-        return LocalDateTime.parse(date);
+        return Timestamp.valueOf(date).toLocalDateTime();
     }
 
     public static java.sql.Date convertLocalDateToSqlDate(LocalDate date) {

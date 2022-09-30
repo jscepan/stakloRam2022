@@ -160,6 +160,8 @@ public class User extends BaseModel {
                     this.privileges.add(Privilege.USER_CREATE);
                     this.privileges.add(Privilege.SETTINGS_VIEW);
                     this.privileges.add(Privilege.SETTINGS_MODIFY);
+                    this.privileges.add(Privilege.HISTORIES_VIEW);
+                    this.privileges.add(Privilege.HISTORY_VIEW);
                     break;
                 case "worker":
                     this.privileges.add(Privilege.WORK_ORDERS_VIEW);
@@ -226,6 +228,7 @@ public class User extends BaseModel {
         COUNTRIES_VIEW, COUNTRY_CREATE, COUNTRY_DELETE,
         CITIES_VIEW, CITY_CREATE, CITY_DELETE,
         USERS_VIEW, USER_CREATE,
-        SETTINGS_VIEW, SETTINGS_MODIFY
+        SETTINGS_VIEW, SETTINGS_MODIFY,
+        HISTORIES_VIEW, HISTORY_VIEW,
     }
 }

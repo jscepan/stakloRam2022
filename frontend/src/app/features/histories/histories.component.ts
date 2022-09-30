@@ -1,0 +1,106 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { HistoryViewPopupService } from '@features/history-view/history-view-popup.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
+import { SweetAlertService } from 'src/app/shared/components/sweet-alert/sweet-alert.service';
+import { OBJECT_TYPES } from 'src/app/shared/constants';
+import { EnumValueModel } from 'src/app/shared/enums/enum.model';
+import { HistoryModel } from 'src/app/shared/models/history.model';
+import {
+  BettweenAttribute,
+  SearchModel,
+} from 'src/app/shared/models/search.model';
+import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
+import { GlobalService } from 'src/app/shared/services/global.service';
+import { ListEntities } from 'src/app/shared/services/list-entities';
+import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
+import { HistoryWebService } from 'src/app/web-services/history.web-service';
+
+@Component({
+  selector: 'app-histories',
+  templateUrl: './histories.component.html',
+  styleUrls: ['./histories.component.scss'],
+  providers: [
+    HistoryWebService,
+    SweetAlertService,
+    ListEntities,
+    HistoryViewPopupService,
+  ],
+})
+export class HistoriesComponent implements OnInit, OnDestroy {
+  public subs: SubscriptionManager = new SubscriptionManager();
+
+  typesOfObject: EnumValueModel[] = OBJECT_TYPES;
+  isLoading?: Observable<boolean> = this.listEntities.isLoading;
+  entities?: Observable<HistoryModel[]> = this.listEntities.entities;
+  totalEntitiesLength?: Observable<number | undefined> =
+    this.listEntities.totalEntitiesLength;
+
+  searchFilter: SearchModel = new SearchModel();
+
+  constructor(
+    private webService: HistoryWebService,
+    private listEntities: ListEntities<HistoryModel>,
+    private historyViewPopupService: HistoryViewPopupService
+  ) {}
+
+  ngOnInit(): void {
+    this.subs.sink = this.listEntities
+      .setWebService(this.webService)
+      .setOrdering('DESC')
+      .requestFirstPage();
+  }
+
+  typeChange(type: EnumValueModel): void {
+    if (type) {
+      this.searchFilter.attributes = [{ object_type: [type.value] }];
+      this.listEntities.setFilter(this.searchFilter);
+    } else {
+      this.searchFilter.attributes = [];
+      this.listEntities.setFilter(this.searchFilter);
+    }
+  }
+
+  // digital azut beograd
+  dateChanged(type: 'from' | 'to', date: any): void {
+    if (date.target?.value) {
+      const newBetweenAttribute: BettweenAttribute = {
+        attribute: type === 'from' ? 'from_date' : 'to_date',
+        attributeValue: date.target?.value,
+        attributeType: 'date',
+        type: type === 'from' ? 'GREATER' : 'SMALLER',
+      };
+
+      let prevAttrIndex = this.searchFilter.betweenAttributes.findIndex(
+        (x) => x.attribute === newBetweenAttribute.attribute
+      );
+      prevAttrIndex < 0
+        ? this.searchFilter.betweenAttributes.push(newBetweenAttribute)
+        : (this.searchFilter.betweenAttributes[prevAttrIndex] =
+            newBetweenAttribute);
+    } else {
+      this.searchFilter.betweenAttributes = [];
+    }
+    this.listEntities.setFilter(this.searchFilter);
+  }
+
+  inputSearchHandler(text: string): void {
+    this.searchFilter.criteriaQuick = text;
+    this.listEntities.setFilter(this.searchFilter);
+  }
+
+  viewHistoryDetails(historyOID: string): void {
+    this.subs.sink = this.historyViewPopupService
+      .openDialog(historyOID)
+      .subscribe(() => {});
+  }
+
+  bottomReachedHandler(): void {
+    this.listEntities.requestNextPage();
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
+}

@@ -8,6 +8,7 @@ public class SearchRequest {
 
     private String criteriaQuick;
     private List< Map<String, List<String>>> attributes = new ArrayList<>();
+    private List< AttributeObject> betweenAttributes = new ArrayList<>();
     private List< Map<String, List<String>>> objectsOIDS = new ArrayList<>();
     private Ordering ordering = Ordering.ASC;
 
@@ -46,7 +47,19 @@ public class SearchRequest {
         this.ordering = ordering;
     }
 
+    public List<AttributeObject> getBetweenAttributes() {
+        return betweenAttributes;
+    }
+
+    public void setBetweenAttributes(List<AttributeObject> betweenAttributes) {
+        this.betweenAttributes = betweenAttributes;
+    }
+
     public enum Ordering {
         ASC, DESC;
+    }
+
+    public enum TypeOfRatio {
+        GREATER, SMALLER, GREATER_OR_EQUAL, SMALLER_OR_EQUAL
     }
 }

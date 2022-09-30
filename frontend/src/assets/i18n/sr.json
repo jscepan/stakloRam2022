@@ -1,4 +1,9 @@
 {
+  "update": "Izmena",
+  "objectType": "Tip objekta",
+  "action": "Akcija",
+  "viewDetails": "Vidi detalje",
+  "time": "Vreme",
   "accountNumber": "Broj tekućeg računa (18 karaktera bez drugih znakova - samo cifre)",
   "activate": "Aktiviraj",
   "active": "Aktivan",
@@ -305,6 +310,7 @@
   "widthMM": "Širina (mm)",
   "woman": "Žensko",
   "workOrder": "Radni nalog",
+  "workorder": "Radni nalog",
   "workOrderDescription": "Podešavanja neophodna za kreiranje radnog naloga, ali takođe i za njegovo prezentovanje",
   "workOrderDeleted": "Radni nalog obrisan",
   "workOrderIsSuccessfullyUpdated": "Radni nalog je uspešno izmenjen",

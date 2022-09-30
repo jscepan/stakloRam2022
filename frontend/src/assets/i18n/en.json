@@ -1,4 +1,9 @@
 {
+  "update": "Update",
+  "objectType": "Object type",
+  "action": "Action",
+  "viewDetails": "View details",
+  "time": "Time",
   "accountNumber": "Account number (18 characters without any other signs - only numbers)",
   "activate": "Activate",
   "active": "Active",
@@ -305,6 +310,7 @@
   "widthMM": "Width (mm)",
   "woman": "Woman",
   "workOrder": "Work order",
+  "workorder": "Work order",
   "workOrderDescription": "Settings needed for work order creation but also and view generating",
   "workOrderDeleted": "Work order deleted",
   "workOrderIsSuccessfullyUpdated": "Work order is successfully updated",
