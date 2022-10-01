@@ -8,6 +8,7 @@ import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.AttributeObject;
+import com.stakloram.backend.models.AttributeObject.AttributeType;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.UserMessage;
 import java.sql.ResultSet;
@@ -335,7 +336,10 @@ public abstract class BaseBuilder implements IObjectBuilder {
                 betweenClausule += " AND ";
             }
             betweenClausule += "(";
-            betweenClausule += this.getObjectStore().getTableName() + "." + this.getObjectStore().getTableName() + "_" + tableName;
+            if (entity.getAttributeType().equals(AttributeType.DATE)) {
+                betweenClausule += "DATE";
+            }
+            betweenClausule += "(" + this.getObjectStore().getTableName() + "." + this.getObjectStore().getTableName() + "_" + tableName + ")";
             if (null != entity.getType()) {
                 switch (entity.getType()) {
                     case GREATER:
@@ -351,14 +355,15 @@ public abstract class BaseBuilder implements IObjectBuilder {
                         betweenClausule += "<=";
                         break;
                     default:
+                        betweenClausule += "=";
                         break;
                 }
             }
-            if (entity.getAttributeType().equals("date")) {
+            if (entity.getAttributeType().equals(AttributeType.DATE) || entity.getAttributeType().equals(AttributeType.STRING)) {
                 betweenClausule += "'";
             }
             betweenClausule += entity.getAttributeValue();
-            if (entity.getAttributeType().equals("date")) {
+            if (entity.getAttributeType().equals(AttributeType.DATE) || entity.getAttributeType().equals(AttributeType.STRING)) {
                 betweenClausule += "'";
             }
             betweenClausule += ")";

@@ -68,8 +68,8 @@ export class HistoriesComponent implements OnInit, OnDestroy {
       const newBetweenAttribute: BettweenAttribute = {
         attribute: type === 'from' ? 'from_date' : 'to_date',
         attributeValue: date.target?.value,
-        attributeType: 'date',
-        type: type === 'from' ? 'GREATER' : 'SMALLER',
+        attributeType: 'DATE',
+        type: type === 'from' ? 'GREATER_OR_EQUAL' : 'SMALLER_OR_EQUAL',
       };
 
       let prevAttrIndex = this.searchFilter.betweenAttributes.findIndex(

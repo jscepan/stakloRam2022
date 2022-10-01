@@ -9,6 +9,11 @@ export class SearchModel {
 export interface BettweenAttribute {
   attribute: string;
   attributeValue: string;
-  attributeType: 'number' | 'date';
-  type: 'GREATER' | 'SMALLER' | 'GREATER_OR_EQUAL' | 'SMALLER_OR_EQUAL';
+  attributeType: 'NUMBER' | 'DATE' | 'STRING';
+  type:
+    | 'GREATER'
+    | 'SMALLER'
+    | 'GREATER_OR_EQUAL'
+    | 'SMALLER_OR_EQUAL'
+    | 'EQUAL';
 }

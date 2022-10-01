@@ -3,14 +3,14 @@ package com.stakloram.backend.models;
 public class AttributeObject {
 
     private String attribute;
-    private String attributeType;
+    private AttributeType attributeType;
     private String attributeValue;
-    private SearchRequest.TypeOfRatio type;
+    private TypeOfRatio type;
 
     public AttributeObject() {
     }
 
-    public AttributeObject(String attribute, String attributeType, String attributeValue, SearchRequest.TypeOfRatio type) {
+    public AttributeObject(String attribute, AttributeType attributeType, String attributeValue, TypeOfRatio type) {
         this.attribute = attribute;
         this.attributeType = attributeType;
         this.attributeValue = attributeValue;
@@ -25,11 +25,11 @@ public class AttributeObject {
         this.attribute = attribute;
     }
 
-    public String getAttributeType() {
+    public AttributeType getAttributeType() {
         return attributeType;
     }
 
-    public void setAttributeType(String attributeType) {
+    public void setAttributeType(AttributeType attributeType) {
         this.attributeType = attributeType;
     }
 
@@ -41,11 +41,19 @@ public class AttributeObject {
         this.attributeValue = attributeValue;
     }
 
-    public SearchRequest.TypeOfRatio getType() {
+    public TypeOfRatio getType() {
         return type;
     }
 
-    public void setType(SearchRequest.TypeOfRatio type) {
+    public void setType(TypeOfRatio type) {
         this.type = type;
+    }
+
+    public enum AttributeType {
+        STRING, DATE, NUMBER
+    }
+
+    public enum TypeOfRatio {
+        GREATER, SMALLER, GREATER_OR_EQUAL, SMALLER_OR_EQUAL, EQUAL
     }
 }
