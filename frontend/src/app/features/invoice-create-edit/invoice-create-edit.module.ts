@@ -13,7 +13,6 @@ import { MatChipsModule } from '@angular/material/chips';
 import { IconsModule } from 'src/app/shared/modules/icons/icons.module';
 import { MatIconModule } from '@angular/material/icon';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { InvoiceSelectionPopupModule } from '@features/invoice-selection-popup/invoice-selection-popup.module';
 import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
 import { NumberDecimalModule } from 'src/app/shared/directives/number-decimal/number-decimal.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -33,7 +32,6 @@ import { WorkOrderItemSelectionPopupModule } from '@features/work-order-item-sel
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
-    InvoiceSelectionPopupModule,
     MatChipsModule,
     IconsModule,
     MatIconModule,

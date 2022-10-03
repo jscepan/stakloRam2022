@@ -90,10 +90,10 @@ public abstract class BaseBuilder implements IObjectBuilder {
     public ResponseWithCount searchObjects(String fromClausule, SearchRequest searchObject, Long skip, Long top) throws SException {
         try {
             String searchClausule = this.getQuickSearchClausule(this.getQuickSearchWords(searchObject));
-            String equalsClausule = this.getEqualsClausule(searchObject);
+//            String equalsClausule = this.getEqualsClausule(searchObject);
             String containsClausule = this.getContainsClausule(searchObject);
             String betweenClausule = this.getBetweenClausule(searchObject);
-            return this.objectStore.searchObjectsFromDatabase(fromClausule, this.generateWhereClausule("", searchClausule, equalsClausule, containsClausule, betweenClausule), skip, top, searchObject.getOrdering());
+            return this.objectStore.searchObjectsFromDatabase(fromClausule, this.generateWhereClausule("", searchClausule, containsClausule, betweenClausule), skip, top, searchObject.getOrdering());
         } catch (SQLException ex) {
             logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
@@ -104,10 +104,10 @@ public abstract class BaseBuilder implements IObjectBuilder {
     public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
         try {
             String searchClausule = this.getQuickSearchClausule(this.getQuickSearchWords(searchObject));
-            String equalsClausule = this.getEqualsClausule(searchObject);
+//            String equalsClausule = this.getEqualsClausule(searchObject);
             String containsClausule = this.getContainsClausule(searchObject);
             String betweenClausule = this.getBetweenClausule(searchObject);
-            ResponseWithCount rwc = this.objectStore.searchObjectsFromDatabase(this.generateWhereClausule("", searchClausule, equalsClausule, containsClausule, betweenClausule), skip, top, searchObject.getOrdering());
+            ResponseWithCount rwc = this.objectStore.searchObjectsFromDatabase(this.generateWhereClausule("", searchClausule, containsClausule, betweenClausule), skip, top, searchObject.getOrdering());
             return this.getArrayResponseFromResponseWithCount(rwc);
         } catch (SQLException ex) {
             logger.error(ex.toString());
@@ -225,18 +225,18 @@ public abstract class BaseBuilder implements IObjectBuilder {
         return searchClausule;
     }
 
-    public String generateWhereClausule(String whereClausule, String searchClausule, String equalsClausule, String containsClausule, String betweenClausule) {
+    public String generateWhereClausule(String whereClausule, String searchClausule, String containsClausule, String betweenClausule) {
         String where = "";
         if (whereClausule.trim().length() > 0 && searchClausule.length() > 0) {
             where = whereClausule + " AND " + searchClausule;
         } else {
             where = searchClausule;
         }
-        if (where.trim().length() > 0 && equalsClausule.trim().length() > 0) {
-            where = where + " AND " + equalsClausule;
-        } else {
-            where += equalsClausule;
-        }
+//        if (where.trim().length() > 0 && equalsClausule.trim().length() > 0) {
+//            where = where + " AND " + equalsClausule;
+//        } else {
+//            where += equalsClausule;
+//        }
         if (where.trim().length() > 0 && containsClausule.length() > 0) {
             where = where + " AND " + containsClausule;
         } else {
@@ -249,43 +249,43 @@ public abstract class BaseBuilder implements IObjectBuilder {
         }
         return where;
     }
-
-    public String getEqualsClausule(SearchRequest searchObject) {
-        if (this.databaseColumnsForAdvanceFilter.isEmpty()) {
-            return "";
-        }
-        String equalsClausule = "";
-        int i = 0;
-        for (Map<String, List<String>> entity : searchObject.getObjectsOIDS()) {
-            Map.Entry<String, List<String>> entry = entity.entrySet().iterator().next();
-            String tableName = this.databaseColumnsForAdvanceFilter.get(entry.getKey());
-            if (tableName == null || tableName.trim().length() == 0) {
-                continue;
-            }
-            if (entry.getValue().isEmpty()) {
-                break;
-            }
-            if (i > 0) {
-                equalsClausule += " AND ";
-            }
-            equalsClausule += "(";
-            for (int j = 0; j < entry.getValue().size(); j++) {
-                if (j > 0) {
-                    equalsClausule += " OR ";
-                }
-                if ("null".equals(entry.getValue().get(j))) {
-                    equalsClausule += tableName;
-                    equalsClausule += " IS NULL";
-                } else {
-                    equalsClausule += tableName + "=";
-                    equalsClausule += BaseModel.getIdFromOid(entry.getValue().get(j));
-                }
-            }
-            equalsClausule += ")";
-            i++;
-        }
-        return equalsClausule;
-    }
+//
+//    public String getEqualsClausule(SearchRequest searchObject) {
+//        if (this.databaseColumnsForAdvanceFilter.isEmpty()) {
+//            return "";
+//        }
+//        String equalsClausule = "";
+//        int i = 0;
+//        for (Map<String, List<String>> entity : searchObject.getObjectsOIDS()) {
+//            Map.Entry<String, List<String>> entry = entity.entrySet().iterator().next();
+//            String tableName = this.databaseColumnsForAdvanceFilter.get(entry.getKey());
+//            if (tableName == null || tableName.trim().length() == 0) {
+//                continue;
+//            }
+//            if (entry.getValue().isEmpty()) {
+//                break;
+//            }
+//            if (i > 0) {
+//                equalsClausule += " AND ";
+//            }
+//            equalsClausule += "(";
+//            for (int j = 0; j < entry.getValue().size(); j++) {
+//                if (j > 0) {
+//                    equalsClausule += " OR ";
+//                }
+//                if ("null".equals(entry.getValue().get(j))) {
+//                    equalsClausule += tableName;
+//                    equalsClausule += " IS NULL";
+//                } else {
+//                    equalsClausule += tableName + "=";
+//                    equalsClausule += BaseModel.getIdFromOid(entry.getValue().get(j));
+//                }
+//            }
+//            equalsClausule += ")";
+//            i++;
+//        }
+//        return equalsClausule;
+//    }
 
     public String getContainsClausule(SearchRequest searchObject) {
         if (this.databaseColumnsForAttributes.isEmpty()) {

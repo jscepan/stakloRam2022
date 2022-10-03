@@ -192,7 +192,7 @@ public class WorkOrderBuilder extends BaseBuilder {
         try {
             List<WorkOrder> objects = new ArrayList<>();
             String from = this.getSqlFromObjectStores(Arrays.asList(WORK_ORDER_ITEM_STORE, this.getObjectStore()));
-            String where = this.getObjectStore().getTableName() + "_buyer_buyer_id=" + BaseModel.getIdFromOid(buyerOID) + " AND " + WORK_ORDER_ITEM_STORE.getTableName() + "_settled=" + false;
+            String where = (buyerOID.isEmpty() ? ("") : ((this.getObjectStore().getTableName() + "_buyer_buyer_id=" + BaseModel.getIdFromOid(buyerOID) + " AND "))) + WORK_ORDER_ITEM_STORE.getTableName() + "_settled=" + false;
             ResultSet rs = this.getObjectStore().getAllObjectsFromDatabase(from, where);
             while (rs.next()) {
                 WorkOrder workOrder = (WorkOrder) this.getObjectStore().getObjectFromResultSet(rs);

@@ -26,6 +26,7 @@ public class WorkOrderService extends ServiceModel {
     }
 
     public List<WorkOrder> getAllUnsettledWorkOrder(String buyerOID) throws SException {
+        System.out.println("22222222");
         return ((WorkOrderBuilder) this.baseBuilder).getAllUnsettledWorkOrder(buyerOID);
     }
 
