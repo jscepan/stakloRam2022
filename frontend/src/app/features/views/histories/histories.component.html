@@ -42,6 +42,22 @@
         </mat-select>
       </mat-form-field>
     </div>
+    <div class="action-type-filter">
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "action" | translate }}
+        </mat-label>
+        <mat-select (valueChange)="actionTypeChange($event)">
+          <mat-option>{{ "all" | translate }}</mat-option>
+          <mat-option *ngFor="let item of actionTypesOfObject" [value]="item">
+            {{ item.displayName | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   </div>
   <div
     class="histories"

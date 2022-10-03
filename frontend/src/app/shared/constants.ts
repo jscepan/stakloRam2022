@@ -64,3 +64,9 @@ export const OBJECT_TYPES: EnumValueModel[] = [
   { value: 'city', displayName: 'city' },
   { value: 'country', displayName: 'country' },
 ];
+
+export const ACTION_OBJECT_TYPES: EnumValueModel[] = [
+  { value: 'CREATE', displayName: 'create' },
+  { value: 'UPDATE', displayName: 'update' },
+  { value: 'DELETE', displayName: 'delete' },
+];

@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HistoryViewPopupService } from '@features/history-view/history-view-popup.service';
+import { HistoryViewPopupService } from '@features/views/history-view/history-view-popup.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { SweetAlertService } from 'src/app/shared/components/sweet-alert/sweet-alert.service';
-import { OBJECT_TYPES } from 'src/app/shared/constants';
+import { ACTION_OBJECT_TYPES, OBJECT_TYPES } from 'src/app/shared/constants';
 import { EnumValueModel } from 'src/app/shared/enums/enum.model';
 import { HistoryModel } from 'src/app/shared/models/history.model';
 import {
@@ -32,6 +32,7 @@ export class HistoriesComponent implements OnInit, OnDestroy {
   public subs: SubscriptionManager = new SubscriptionManager();
 
   typesOfObject: EnumValueModel[] = OBJECT_TYPES;
+  actionTypesOfObject: EnumValueModel[] = ACTION_OBJECT_TYPES;
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
   entities?: Observable<HistoryModel[]> = this.listEntities.entities;
   totalEntitiesLength?: Observable<number | undefined> =
@@ -62,7 +63,34 @@ export class HistoriesComponent implements OnInit, OnDestroy {
     }
   }
 
-  // digital azut beograd
+  actionTypeChange(type: EnumValueModel): void {
+    if (type) {
+      const newBetweenAttribute: BettweenAttribute = {
+        attribute: 'action',
+        attributeValue: type.value,
+        attributeType: 'STRING',
+        type: 'EQUAL',
+      };
+
+      let prevAttrIndex = this.searchFilter.betweenAttributes.findIndex(
+        (x) => x.attribute === newBetweenAttribute.attribute
+      );
+      prevAttrIndex < 0
+        ? this.searchFilter.betweenAttributes.push(newBetweenAttribute)
+        : (this.searchFilter.betweenAttributes[prevAttrIndex] =
+            newBetweenAttribute);
+    } else {
+      let prevAttrIndex = this.searchFilter.betweenAttributes.findIndex(
+        (x) => x.attribute === 'action'
+      );
+
+      if (prevAttrIndex >= 0) {
+        this.searchFilter.betweenAttributes.splice(prevAttrIndex, 1);
+      }
+    }
+    this.listEntities.setFilter(this.searchFilter);
+  }
+
   dateChanged(type: 'from' | 'to', date: any): void {
     if (date.target?.value) {
       const newBetweenAttribute: BettweenAttribute = {

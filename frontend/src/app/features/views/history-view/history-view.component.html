@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="title">
+    <h3>
+      {{ "historyView" | translate }}
+    </h3>
+  </div>
+  <div class="content">
+    <div class="grid-container standard-grid-table">
+      <div class="grid-item header sticky">
+        {{ "buyerName" | translate }}
+      </div>
+      <div class="grid-item header sticky">
+        {{ "date" | translate }}
+      </div>
+      <div class="grid-item header sticky">
+        {{ "amount" | translate }}
+      </div>
+      <div class="grid-item header sticky">
+        {{ "bankStatementNumber" | translate }}
+      </div>
+      <div class="no-results" *ngIf="history && !isLoading">
+        {{ "noResults" | translate }}
+      </div>
+      <div class="spinner" *ngIf="isLoading">
+        <mat-spinner></mat-spinner>
+      </div>
+      <!-- <ng-container *ngFor="let attr of attributes | async">
+        <div class="grid-item">
+          {{ attr. }}
+        </div>
+        <div class="grid-item">
+          {{ attr. }}
+        </div>
+        <div class="grid-item align-right">
+          {{ attr.}}
+        </div>
+        <div class="grid-item">
+          {{ attr. }}
+        </div>
+        <div class="grid-item">
+          {{ attr. }}
+        </div>
+      </ng-container> -->
+    </div>
+  </div>
+  <div class="button-section">
+    <app-button
+      [text]="'cancel' | translate"
+      color="secondary"
+      (clickEvent)="exit()"
+      class="cancel"
+    ></app-button>
+  </div>
+</div>

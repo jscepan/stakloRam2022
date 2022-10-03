@@ -93,6 +93,13 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
             activated: false,
             hidden: !this.authStoreService.isAllowed('DEBTORS_VIEW'),
           },
+          {
+            id: 'views/histories',
+            title: this.translateService.instant('histories'),
+            icon: 'minus-circle',
+            activated: false,
+            hidden: !this.authStoreService.isAllowed('HISTORIES_VIEW'),
+          },
         ],
       },
       {

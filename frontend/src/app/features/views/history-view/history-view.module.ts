@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { NumberDecimalModule } from 'src/app/shared/directives/number-decimal/number-decimal.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [HistoryViewComponent],
@@ -26,6 +27,7 @@ import { NumberDecimalModule } from 'src/app/shared/directives/number-decimal/nu
     MatSelectInfiniteScrollModule,
     NgxMatSelectSearchModule,
     NumberDecimalModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class HistoryViewModule {}

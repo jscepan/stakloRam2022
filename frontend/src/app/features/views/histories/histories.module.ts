@@ -9,7 +9,7 @@ import { SearchInputModule } from 'src/app/shared/components/search-input/search
 import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom/scroll-to-bottom.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HistoryViewModule } from '@features/history-view/history-view.module';
+import { HistoryViewModule } from '@features/views/history-view/history-view.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';

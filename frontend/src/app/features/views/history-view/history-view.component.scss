@@ -1,25 +1,37 @@
 :host {
   display: flex;
-  height: calc(100%);
+  height: calc(80vh);
 }
 
 .container {
   height: calc(100%);
-  // width: 100%;
+  min-width: 50vw;
+  display: flex;
+  flex-direction: column;
 
   .title {
     display: flex;
+    flex-grow: 0;
     border-bottom: 2px dotted var(--color-main-light);
   }
 
-  .form {
+  .content {
     display: flex;
+    flex-grow: 1;
     flex-direction: column;
     margin-top: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: auto auto auto auto;
+    }
   }
 
   .button-section {
     display: flex;
+    flex-grow: 0;
     width: 100%;
     height: 100px;
     flex-direction: row;

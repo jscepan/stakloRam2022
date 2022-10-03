@@ -35,6 +35,7 @@ public class HistoryBuilder extends BaseBuilder {
     public void setColumnsForSearch() {
         this.databaseColumnsForQuickSearch = Arrays.asList("history_previous_value","history_new_value");
         this.databaseColumnsForAttributes.put("object_type", "object_type");
+        this.databaseColumnsForAttributes.put("action", "action");
         this.databaseColumnsForAttributes.put("from_date", "time");
         this.databaseColumnsForAttributes.put("to_date", "time");
     }

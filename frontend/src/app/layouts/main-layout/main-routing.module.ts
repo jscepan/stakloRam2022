@@ -60,7 +60,7 @@ const routes: Routes = [
   {
     path: 'histories',
     loadChildren: () =>
-      import('@features/histories/histories.module').then(
+      import('@features/views/histories/histories.module').then(
         (m) => m.HistoriesModule
       ),
   },

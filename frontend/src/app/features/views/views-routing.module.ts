@@ -31,6 +31,13 @@ const routes: Routes = [
         loadChildren: () =>
           import('../views/cities/cities.module').then((m) => m.CitiesModule),
       },
+      {
+        path: 'histories',
+        loadChildren: () =>
+          import('../views/histories/histories.module').then(
+            (m) => m.HistoriesModule
+          ),
+      },
     ],
   },
 ];
