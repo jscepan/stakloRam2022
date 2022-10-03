@@ -31,6 +31,12 @@ export class AuthStoreService {
   }
 
   isAllowed(action: string): boolean {
-    return this.user?.privileges.includes(action) || false;
+    let isAllowed = false;
+    this.user?.roles.forEach((role) => {
+      if (role.privileges.includes(action)) {
+        isAllowed = true;
+      }
+    });
+    return isAllowed;
   }
 }

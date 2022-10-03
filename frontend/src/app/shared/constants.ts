@@ -23,10 +23,42 @@ export const LOGIN_FORM_CONTENT_TYPE: { 'Content-Type': string } = {
 
 ////////////////////////////////////////////////////////////////////////
 
-// export const ROLE_TYPES: EnumValueModel[] = [
-//   { value: 'ADMIN', displayName: 'admin' },
-//   { value: 'SALES', displayName: 'sales' },
-// ];
+export const PRIVILEGES: EnumValueModel[] = [
+  { value: 'USER_ANY', displayName: 'userBasicPrivileges' },
+  { value: 'INVOICES_VIEW', displayName: 'invoicesViewPrivilege' },
+  { value: 'INVOICE_VIEW', displayName: 'invoiceViewPrivilege' },
+  { value: 'INVOICE_CREATE', displayName: 'invoiceCreateEditPrivilege' },
+  { value: 'INVOICE_DELETE', displayName: 'invoiceDeletePrivilege' },
+  { value: 'INCOMES_VIEW', displayName: 'incomesViewPrivilege' },
+  { value: 'INCOME_VIEW', displayName: 'incomeViewPrivilege' },
+  { value: 'INCOME_CREATE', displayName: 'incomeCreateEditPrivilege' },
+  { value: 'INCOME_DELETE', displayName: 'incomeDeletePrivilege' },
+  { value: 'OUTCOMES_VIEW', displayName: 'outcomesViewPrivilege' },
+  { value: 'OUTCOME_VIEW', displayName: 'outcomeViewPrivilege' },
+  { value: 'OUTCOME_CREATE', displayName: 'outcomeCreateEditPrivilege' },
+  { value: 'OUTCOME_DELETE', displayName: 'outcomeDeletePrivilege' },
+  { value: 'WORK_ORDERS_VIEW', displayName: 'workOrdersViewPrivilege' },
+  { value: 'WORK_ORDER_VIEW', displayName: 'workOrderViewPrivilege' },
+  { value: 'WORK_ORDER_CREATE', displayName: 'workOrderCreateEditPrivilege' },
+  { value: 'WORK_ORDER_DELETE', displayName: 'workOrderDeletePrivilege' },
+  { value: 'DEBTORS_VIEW', displayName: 'debtorsViewPrivilege' },
+  { value: 'DEBTOR_VIEW', displayName: 'debtorViewPrivilege' },
+  { value: 'BUYERS_VIEW', displayName: 'buyersViewPrivilege' },
+  { value: 'BUYER_CREATE', displayName: 'buyerCreateEditPrivilege' },
+  { value: 'BUYER_DELETE', displayName: 'buyerDeletePrivilege' },
+  { value: 'COUNTRIES_VIEW', displayName: 'countriesViewPrivilege' },
+  { value: 'COUNTRY_CREATE', displayName: 'countryCreateEditPrivilege' },
+  { value: 'COUNTRY_DELETE', displayName: 'countryDeletePrivilege' },
+  { value: 'CITIES_VIEW', displayName: 'citiesViewPrivilege' },
+  { value: 'CITY_CREATE', displayName: 'cityCreatePrivilege' },
+  { value: 'CITY_DELETE', displayName: 'cityDeletePrivilege' },
+  { value: 'USERS_VIEW', displayName: 'usersViewPrivilege' },
+  { value: 'USER_CREATE', displayName: 'userCreatePrivilege' },
+  { value: 'SETTINGS_VIEW', displayName: 'settingsViewPrivilege' },
+  { value: 'SETTINGS_MODIFY', displayName: 'settingsEditPrivilege' },
+  { value: 'HISTORIES_VIEW', displayName: 'historiesViewPrivilege' },
+  { value: 'HISTORY_VIEW', displayName: 'historyViewPrivilege' },
+];
 
 export const BUYER_TYPES: EnumValueModel[] = [
   { value: 'COMPANY', displayName: 'company' },

@@ -86,7 +86,11 @@
           [(ngModel)]="selected"
           [compareWith]="compareFn"
         >
-          <mat-option *ngFor="let item of roles | async" [value]="item">
+          <mat-option
+            *ngFor="let item of roles | async"
+            [value]="item"
+            [matTooltip]="(getTooltipDescriptionForRole(item) | async) || ''"
+          >
             {{ item.name | translate }}
           </mat-option>
         </mat-select>

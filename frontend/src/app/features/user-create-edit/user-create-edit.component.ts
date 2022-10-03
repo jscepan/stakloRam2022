@@ -14,6 +14,8 @@ import { Observable } from 'rxjs';
 import { BaseModel } from 'src/app/shared/models/base-model';
 import { compareByValue } from 'src/app/shared/utils';
 import { LanguageService } from 'src/app/language.service';
+import { X } from 'angular-feather/icons';
+import { PRIVILEGES } from 'src/app/shared/constants';
 
 export interface DialogData {
   oid: string;
@@ -38,6 +40,11 @@ export class UserCreateEditComponent implements OnInit, OnDestroy {
   selected?: RoleModel[] = [];
 
   languages = this.languageService.supportedLanguages;
+
+  privilegesGroupByRoles: {
+    roleName: string;
+    privileges: string[];
+  }[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<UserCreateEditComponent>,
@@ -150,6 +157,50 @@ export class UserCreateEditComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  getTooltipDescriptionForRole(role: RoleModel): Observable<string> {
+    const p = this.privilegesGroupByRoles.filter(
+      (x) => x.roleName === role.name
+    )[0];
+    if (p) {
+      return new Observable((subscriber) => {
+        subscriber.next(this.getMessageForPrivileges(p.privileges));
+        subscriber.complete();
+      });
+    }
+    return new Observable((subscriber) => {
+      this.subs.sink = this.roles.subscribe((roles: RoleModel[]) => {
+        if (roles.length) {
+          const r = roles.filter((r) => r.name === role.name);
+          if (r) {
+            this.privilegesGroupByRoles.push({
+              roleName: r[0].name,
+              privileges: r[0].privileges,
+            });
+            subscriber.next(this.getMessageForPrivileges(r[0].privileges));
+            subscriber.complete();
+          }
+        }
+      });
+    });
+  }
+
+  private getMessageForPrivileges(privileges: string[]): string {
+    let response = this.translateService.instant('privileges') + ': ' + '\n';
+    privileges
+      .sort((a, b) => {
+        return a.localeCompare(b);
+      })
+      .forEach((p) => {
+        response +=
+          this.translateService.instant(
+            PRIVILEGES.filter((priv) => priv.value === p)[0]?.displayName
+          ) +
+          ', ' +
+          '\n';
+      });
+    return response;
   }
 
   ngOnDestroy(): void {

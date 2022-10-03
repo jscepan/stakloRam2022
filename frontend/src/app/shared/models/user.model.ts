@@ -9,5 +9,4 @@ export class UserModel extends BaseModel {
   email: string = '';
   language: string = '';
   roles: RoleModel[] = [];
-  privileges: string[] = [];
 }

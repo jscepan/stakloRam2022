@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [UserCreateEditComponent],
@@ -20,6 +21,7 @@ import { ButtonModule } from 'src/app/shared/components/button/button.module';
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatTooltipModule,
   ],
   entryComponents: [UserCreateEditComponent],
 })

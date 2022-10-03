@@ -19,7 +19,7 @@ export class BasePermissionGuard {
     route: ActivatedRouteSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
     if (
-      this.authStoreService.user?.privileges &&
+      this.authStoreService.user?.roles &&
       this.authStoreService.isAllowed(route.data.permission)
     ) {
       return true;
