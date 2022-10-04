@@ -1,4 +1,8 @@
 {
+  "markWorkOrderItems": "Označi stavke radnog naloga",
+  "areYouSureYouWantToMarkAllWorkOrderItemsAsInvoiced": "Da li ste sigurni da želite da označite sve stavke radnog naloga kao fakturisane?",
+  "mark": "Označi",
+  "showOnlyUnsettled": "Prikaži samo nefakturisane",
   "privileges": "Privilegije",
   "userBasicPrivileges": "Korisnici - osnovne privilegije",
   "invoicesViewPrivilege": "Fakture - vidi listu",

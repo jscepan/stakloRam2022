@@ -1,4 +1,8 @@
 {
+  "markWorkOrderItems": "Mark all work order items",
+  "areYouSureYouWantToMarkAllWorkOrderItemsAsInvoiced": "Are You sure You want to mark all work order items as invoiced",
+  "mark": "Mark",
+  "showOnlyUnsettled": "Show only unsettled",
   "privileges": "Privileges",
   "userBasicPrivileges": "User - basic privileges",
   "invoicesViewPrivilege": "Invoices - view",

@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class WorkOrderBuilder extends BaseBuilder {
@@ -196,6 +198,7 @@ public class WorkOrderBuilder extends BaseBuilder {
             ResultSet rs = this.getObjectStore().getAllObjectsFromDatabase(from, where);
             while (rs.next()) {
                 WorkOrder workOrder = (WorkOrder) this.getObjectStore().getObjectFromResultSet(rs);
+                workOrder.setBuyer((Buyer) BUYER_STORE.getObjectByOid(workOrder.getBuyer().getOid()));
                 WorkOrderItem workOrderItem = (WorkOrderItem) WORK_ORDER_ITEM_STORE.getObjectFromResultSet(rs);
 
                 List<WorkOrder> alreadyExists = objects.stream().filter(o -> o.getOid().equals(workOrder.getOid())).collect(Collectors.toList());
@@ -211,6 +214,19 @@ public class WorkOrderBuilder extends BaseBuilder {
             super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
+    }
+
+    public boolean toggleSettledForWorkOrder(String workOrderOID, boolean settled) throws SException {
+        WorkOrder workOrder = (WorkOrder) this.getObjectByOid(workOrderOID);
+        for (WorkOrderItem woi : workOrder.getWorkOrderItems()) {
+            try {
+                WORK_ORDER_ITEM_STORE.setSettledForWorkOrderItem(woi.getOid(), settled);
+            } catch (SQLException ex) {
+                super.logger.error(ex.toString());
+                throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+            }
+        }
+        return true;
     }
 
     public long getNextWorkOrderNumber(int year) throws SException {

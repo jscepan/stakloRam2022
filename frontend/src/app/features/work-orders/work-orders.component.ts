@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
 import {
   SweetAlertI,
@@ -34,6 +35,11 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
 
   getWorkOrderNumber = getWorkOrderNumber;
 
+  showOnlyUnsettled: boolean = false;
+  isLoadingUnsettled?: boolean = true;
+  entitiesUnsettled?: WorkOrderModel[];
+  totalEntitiesLengthUnsettled?: number;
+
   constructor(
     private globalService: GlobalService,
     private translateService: TranslateService,
@@ -49,6 +55,23 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
       .setWebService(this.webService)
       .setOrdering('DESC')
       .requestFirstPage();
+  }
+
+  loadAllUnsettledWorkOrders(): void {
+    this.isLoadingUnsettled = true;
+    this.entitiesUnsettled = [];
+    this.totalEntitiesLengthUnsettled = 0;
+    this.subs.sink = this.webService
+      .getAllUnsettledWorkOrderForBuyer('')
+      .pipe(
+        finalize(() => {
+          this.isLoadingUnsettled = false;
+        })
+      )
+      .subscribe((workOrders: WorkOrderModel[]) => {
+        this.entitiesUnsettled = workOrders;
+        this.totalEntitiesLengthUnsettled = workOrders.length;
+      });
   }
 
   inputSearchHandler(text: string): void {
@@ -107,12 +130,62 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
     this.sweetAlertService.openMeSweetAlert(sweetAlertModel);
   }
 
+  markWorkOrderAsSettled(workOrder: WorkOrderModel): void {
+    this.subs.sink.$markWorkOrder = this.sweetAlertService
+      .getDataBackFromSweetAlert()
+      .subscribe((data) => {
+        if (data && data.confirmed) {
+          this.subs.sink = this.webService
+            .changeWorkOrderSettledStatus(workOrder.oid, true)
+            .subscribe((settled) => {
+              if (settled) {
+                this.globalService.showBasicAlert(
+                  MODE.success,
+                  this.translateService.instant('Successfully'),
+                  this.translateService.instant(
+                    'workOrderIsSuccessfullyUpdated'
+                  )
+                );
+                this.loadAllUnsettledWorkOrders();
+              }
+            });
+        }
+      });
+    const sweetAlertModel: SweetAlertI = {
+      mode: 'warning',
+      icon: 'alert-triangle',
+      type: {
+        name: SweetAlertTypeEnum.submit,
+        buttons: {
+          submit: this.translateService.instant('mark'),
+          cancel: this.translateService.instant('cancel'),
+        },
+      },
+      title: this.translateService.instant('markWorkOrderItems'),
+      message: this.translateService.instant(
+        'areYouSureYouWantToMarkAllWorkOrderItemsAsInvoiced'
+      ),
+    };
+    this.sweetAlertService.openMeSweetAlert(sweetAlertModel);
+  }
+
   bottomReachedHandler(): void {
     this.listEntities.requestNextPage();
   }
 
   hasPrivilege(privilege: string): boolean {
     return this.authStoreService.isAllowed(privilege);
+  }
+
+  viewUnsettled(): void {
+    if (this.showOnlyUnsettled) {
+      this.loadAllUnsettledWorkOrders();
+    } else {
+      this.subs.sink = this.listEntities
+        .setWebService(this.webService)
+        .setOrdering('DESC')
+        .requestFirstPage();
+    }
   }
 
   ngOnDestroy(): void {

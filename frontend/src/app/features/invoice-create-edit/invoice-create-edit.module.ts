@@ -42,7 +42,6 @@ import { WorkOrderItemSelectionPopupModule } from '@features/work-order-item-sel
     MatCheckboxModule,
     WorkOrderSelectionPopupModule,
     WorkOrderItemSelectionPopupModule,
-    MatCheckboxModule,
     FormsModule,
   ],
 })

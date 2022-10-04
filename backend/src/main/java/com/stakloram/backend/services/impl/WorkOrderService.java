@@ -26,8 +26,11 @@ public class WorkOrderService extends ServiceModel {
     }
 
     public List<WorkOrder> getAllUnsettledWorkOrder(String buyerOID) throws SException {
-        System.out.println("22222222");
         return ((WorkOrderBuilder) this.baseBuilder).getAllUnsettledWorkOrder(buyerOID);
+    }
+
+    public boolean toggleSettledForWorkOrder(String workOrderOID, boolean settled) throws SException {
+        return ((WorkOrderBuilder) this.baseBuilder).toggleSettledForWorkOrder(workOrderOID, settled);
     }
 
     @Override

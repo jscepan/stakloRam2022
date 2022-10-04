@@ -1,12 +1,27 @@
 <mat-dialog-content scrollToBottom (bottomReached)="bottomReachedHandler()">
-  <ng-container *ngFor="let item of items">
-    <app-work-order-selection-item
-      class="item"
-      [dataModel]="item.item"
-      (click)="handleItemClick(item.item)"
+  <ng-container *ngIf="this.buyerOID">
+    <div
+      class="no-results"
+      *ngIf="totalEntitiesLength === 0 && !(isLoading | async)"
     >
-    </app-work-order-selection-item>
+      {{ "noResults" | translate }}
+    </div>
+    <div class="spinner" *ngIf="isLoading | async">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <ng-container *ngFor="let item of items">
+      <app-work-order-selection-item
+        class="item"
+        [dataModel]="item.item"
+        (click)="handleItemClick(item.item)"
+      >
+      </app-work-order-selection-item>
+    </ng-container>
   </ng-container>
+  <ng-container *ngIf="!this.buyerOID">{{
+    "youDidntSelectAnyBuyer" | translate
+  }}</ng-container>
 </mat-dialog-content>
 <mat-dialog-actions>
   <app-button

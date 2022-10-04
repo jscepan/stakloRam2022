@@ -72,8 +72,12 @@ public class WorkOrderController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/workorders/unsettled")
     public List<WorkOrder> getAllUnsettled(@RequestParam String buyerOID) throws SException {
-        System.out.println("+++++++buyerOID+++++++++"+buyerOID);
         return workOrderService.getAllUnsettledWorkOrder(buyerOID);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/workorders/unsettled")
+    public boolean markWorkOrderAsUnsettled(@RequestParam String workOrderOID, @RequestParam boolean settled) throws SException {
+        return this.workOrderService.toggleSettledForWorkOrder(workOrderOID, settled);
     }
 
     @RequestMapping("/workorders/{workOrderOid}")

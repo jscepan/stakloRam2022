@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom/scroll-to-bottom.module';
 import { WorkOrderSelectionItemModule } from './work-order-selection-item/work-order-selection-item.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [WorkOrderSelectionPopupComponent],
@@ -22,6 +23,7 @@ import { WorkOrderSelectionItemModule } from './work-order-selection-item/work-o
     MatSelectModule,
     ScrollToBottomModule,
     WorkOrderSelectionItemModule,
+    MatProgressSpinnerModule,
   ],
   exports: [WorkOrderSelectionPopupComponent],
   entryComponents: [WorkOrderSelectionPopupComponent],

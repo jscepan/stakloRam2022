@@ -45,6 +45,7 @@ export class WorkOrderSelectionPopupComponent
     false
   );
   public isLoading: Observable<boolean> = this.isLoading$.asObservable();
+  totalEntitiesLength: number = 0;
   selection: string[] = [];
 
   items: { item: WorkOrderSelectionItem; object: WorkOrderModel }[] = [];
@@ -84,6 +85,7 @@ export class WorkOrderSelectionPopupComponent
             object: wo,
           };
         });
+        this.totalEntitiesLength = this.items.length;
       });
   }
 

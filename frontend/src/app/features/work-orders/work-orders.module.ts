@@ -9,6 +9,9 @@ import { SearchInputModule } from 'src/app/shared/components/search-input/search
 import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom/scroll-to-bottom.module';
 import { IncomeCreateEditModule } from '@features/income-create-edit/income-create-edit.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [WorkOrdersComponent],
@@ -22,6 +25,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ScrollToBottomModule,
     IncomeCreateEditModule,
     MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class WorkOrdersModule {}

@@ -27,17 +27,22 @@ export class WorkOrderWebService extends EntityBaseWebService<WorkOrderModel> {
     );
   }
 
-  public getAllUnsettledWorkOrder(): Observable<WorkOrderModel[]> {
-    return this.baseWebService.getRequest(
-      `${BASE_API_URL + '/' + this.domainName}/unsettled?buyerOID`
-    );
-  }
-
   public getAllUnsettledWorkOrderForBuyer(
     buyerOID: string
   ): Observable<WorkOrderModel[]> {
     return this.baseWebService.getRequest(
       `${BASE_API_URL + '/' + this.domainName}/unsettled?buyerOID=${buyerOID}`
+    );
+  }
+
+  public changeWorkOrderSettledStatus(
+    workOrderOID: string,
+    settled: boolean
+  ): Observable<WorkOrderModel[]> {
+    return this.baseWebService.postRequest(
+      `${
+        BASE_API_URL + '/' + this.domainName
+      }/unsettled?workOrderOID=${workOrderOID}&settled=${settled}`
     );
   }
 }
