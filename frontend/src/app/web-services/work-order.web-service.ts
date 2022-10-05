@@ -45,4 +45,15 @@ export class WorkOrderWebService extends EntityBaseWebService<WorkOrderModel> {
       }/unsettled?workOrderOID=${workOrderOID}&settled=${settled}`
     );
   }
+
+  public changeBuyer(
+    workOrderOID: string,
+    buyerOID: string
+  ): Observable<boolean> {
+    return this.baseWebService.postRequest(
+      `${
+        BASE_API_URL + '/' + this.domainName
+      }/change-buyer?workOrderOID=${workOrderOID}&buyerOID=${buyerOID}`
+    );
+  }
 }

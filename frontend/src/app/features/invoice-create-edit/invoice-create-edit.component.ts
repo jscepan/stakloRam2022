@@ -317,7 +317,6 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   selectBuyerOnChange(event: MatSelectChange): void {
     if (event && event.value) {
       this.selectedBuyerOnChange = event.value;
-      //
       this.subs.sink.$markWorkOrder = this.sweetAlertService
         .getDataBackFromSweetAlert()
         .subscribe((data) => {

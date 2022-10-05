@@ -47,6 +47,11 @@ import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 import { ImageWebService } from 'src/app/web-services/image.web-service';
 import { ImageModel } from 'src/app/shared/models/image.model';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { SweetAlertService } from 'src/app/shared/components/sweet-alert/sweet-alert.service';
+import {
+  SweetAlertI,
+  SweetAlertTypeEnum,
+} from 'src/app/shared/components/sweet-alert/sweet-alert.interface';
 
 @Component({
   selector: 'app-work-order-create-edit',
@@ -117,11 +122,18 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   sumOfGrinding: number = 0;
   sumForGrindingsItems: { isCalculated: boolean; value: number }[] = [];
 
+  allowChangeBuyer: boolean = false;
+  selectedBuyerOnChange?: BuyerModel;
+  buyersEntitiesOnChange: Observable<BuyerModel[]> = this.listEntities.entities;
+  isLoadingOnChange?: Observable<boolean> = this.listEntities.isLoading;
+  searchControlOnChange: FormControl = new FormControl();
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private globalService: GlobalService,
     private listEntities: ListEntities<BuyerModel>,
+    private listEntitiesOnChange: ListEntities<BuyerModel>,
     private buyerCreateEditPopupService: BuyerCreateEditPopupService,
     private buyerWebService: BuyerWebService,
     private translateService: TranslateService,
@@ -129,6 +141,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     private webService: WorkOrderWebService,
     private imageWebService: ImageWebService,
     private el: ElementRef,
+    private sweetAlertService: SweetAlertService,
     private authStoreService: AuthStoreService
   ) {}
 
@@ -384,9 +397,61 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     this.listEntities.requestNextPage();
   }
 
+  bottomReachedHandlerBuyersOnChange(): void {
+    this.listEntitiesOnChange.requestNextPage();
+  }
+
   selectBuyer(event: MatSelectChange): void {
     if (event && event.value) {
       this.selectedBuyer = event.value;
+    }
+  }
+
+  selectBuyerOnChange(event: MatSelectChange): void {
+    if (event && event.value) {
+      this.selectedBuyerOnChange = event.value;
+
+      this.subs.sink.$markWorkOrder = this.sweetAlertService
+        .getDataBackFromSweetAlert()
+        .subscribe((data) => {
+          if (
+            data &&
+            data.confirmed &&
+            this.workOrderOID &&
+            this.selectedBuyerOnChange?.oid
+          ) {
+            this.subs.sink = this.webService
+              .changeBuyer(this.workOrderOID, this.selectedBuyerOnChange?.oid)
+              .subscribe((changed) => {
+                if (changed) {
+                  this.globalService.showBasicAlert(
+                    MODE.success,
+                    this.translateService.instant('successfully'),
+                    this.translateService.instant(
+                      'workOrderIsSuccessfullyUpdated'
+                    )
+                  );
+                  window.location.reload();
+                }
+              });
+          }
+        });
+      const sweetAlertModel: SweetAlertI = {
+        mode: 'warning',
+        icon: 'alert-triangle',
+        type: {
+          name: SweetAlertTypeEnum.submit,
+          buttons: {
+            submit: this.translateService.instant('change'),
+            cancel: this.translateService.instant('cancel'),
+          },
+        },
+        title: this.translateService.instant('changeBuyer'),
+        message: this.translateService.instant(
+          'areYouSureYouWantToAllowChangeOfBuyerWithAllConsequencesWorkOrder'
+        ),
+      };
+      this.sweetAlertService.openMeSweetAlert(sweetAlertModel);
     }
   }
 
@@ -394,6 +459,12 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     let searchFilter: SearchModel = new SearchModel();
     searchFilter.criteriaQuick = text;
     this.listEntities.setFilter(searchFilter);
+  }
+
+  searchHandlerOnChange(text: any): void {
+    let searchFilter: SearchModel = new SearchModel();
+    searchFilter.criteriaQuick = text;
+    this.listEntitiesOnChange.setFilter(searchFilter);
   }
 
   createBuyer(): void {

@@ -1,4 +1,5 @@
 {
+  "areYouSureYouWantToAllowChangeOfBuyerWithAllConsequencesWorkOrder": "Are you sure you want to allow change of buyer with all consequences (some data like invoices, incomes, outcomes want be changed automatically - you need to do it manually)?",
   "outcomeDeleted": "Outcome deleted",
   "deleteOutcome": "Delete outcome",
   "areYouSureYouWantToDeleteTheOutcome": "Are You sure You want to delete the outcome?",

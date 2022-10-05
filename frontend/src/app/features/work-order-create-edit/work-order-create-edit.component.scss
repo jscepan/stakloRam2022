@@ -21,6 +21,10 @@
       .row {
         display: flex;
 
+        .create-buyer-button {
+          margin: 10px;
+        }
+
         .items-buttons {
           display: flex;
           .big-button {
