@@ -8,8 +8,6 @@ import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.services.impl.InvoiceService;
 import java.util.List;
 import java.util.Set;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
 public class InvoiceController {
-
-    Logger logger = LoggerFactory.getLogger(InvoiceController.class);
 
     @Autowired
     InvoiceService invoiceService;
@@ -44,6 +40,11 @@ public class InvoiceController {
     @RequestMapping("/invoices/number")
     public int getNextInvoiceNumber(@RequestParam InvoiceType invoiceType, @RequestParam int year) throws SException {
         return invoiceService.getNextInvoiceNumber(invoiceType, year);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/invoices/change-buyer")
+    public boolean changeBuyer(@RequestParam String invoiceOID, @RequestParam String buyerOID) throws SException {
+        return invoiceService.changeBuyer(invoiceOID, buyerOID);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/invoices")

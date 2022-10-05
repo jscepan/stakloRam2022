@@ -1,18 +1,17 @@
 package com.stakloram.backend.database;
 
+import com.stakloram.backend.models.UserMessage;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ConnectionToDatabase {
 
-    Logger logger = LoggerFactory.getLogger(ConnectionToDatabase.class);
+    static Logger logger = LoggerFactory.getLogger(ConnectionToDatabase.class);
 
     public static final String DATABASE_NAME = "stakloram2022";
     private static final String DATABASE_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -21,15 +20,15 @@ public class ConnectionToDatabase {
     private static final String URL = "jdbc:mysql://localhost:3306/";
 
     // init connection object
-    private Connection connection = null;
+    private static Connection connection = null;
 
     public ConnectionToDatabase() {
     }
 
     // connect database
-    public Connection connect() {
-        if (this.connection != null) {
-            return this.connection;
+    public static Connection connect() {
+        if (connection != null) {
+            return connection;
         }
         try {
             Class.forName(DATABASE_DRIVER);
@@ -49,7 +48,7 @@ public class ConnectionToDatabase {
                 connection = null;
             } catch (SQLException e) {
                 logger.error(e.toString());
-                throw new Exception("databaseConnectionIssue", e);
+                throw new Exception(UserMessage.getLocalizedMessage("databaseConnectionIssue"), e);
             }
         }
     }

@@ -26,4 +26,15 @@ export class InvoiceWebService extends EntityBaseWebService<InvoiceModel> {
       `${BASE_API_URL + '/' + this.domainName}/invoiceItemDescriptions`
     );
   }
+
+  public changeBuyer(
+    invoiceOID: string,
+    buyerOID: string
+  ): Observable<boolean> {
+    return this.baseWebService.postRequest(
+      `${
+        BASE_API_URL + '/' + this.domainName
+      }/change-buyer?invoiceOID=${invoiceOID}&buyerOID=${buyerOID}`
+    );
+  }
 }

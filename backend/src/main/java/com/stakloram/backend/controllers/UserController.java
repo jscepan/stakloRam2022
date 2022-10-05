@@ -6,8 +6,6 @@ import com.stakloram.backend.models.AuthPasswordReset;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.User;
 import com.stakloram.backend.services.impl.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
 public class UserController {
-
-    Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     UserService userService;

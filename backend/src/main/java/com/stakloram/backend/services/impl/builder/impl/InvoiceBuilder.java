@@ -7,6 +7,7 @@ import com.stakloram.backend.database.objects.InvoiceItemStore;
 import com.stakloram.backend.database.objects.InvoiceStore;
 import com.stakloram.backend.database.objects.NoteStore;
 import com.stakloram.backend.database.objects.WorkOrderItemStore;
+import com.stakloram.backend.database.objects.WorkOrderStore;
 import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Buyer;
@@ -18,6 +19,7 @@ import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.Note;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.UserMessage;
+import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.models.WorkOrderItem;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
 import com.stakloram.backend.util.Helper;
@@ -37,6 +39,7 @@ public class InvoiceBuilder extends BaseBuilder {
     private final CityStore CITY_STORE = new CityStore(this.getLocator());
     private final WorkOrderItemStore WORK_ORDER_ITEM_STORE = new WorkOrderItemStore(this.getLocator());
     private final NoteStore NOTE_STORE = new NoteStore(this.getLocator());
+    private final WorkOrderStore WORK_ORDER_STORE = new WorkOrderStore(this.getLocator());
 
     public InvoiceBuilder(Locator locator) {
         super(locator);
@@ -209,5 +212,70 @@ public class InvoiceBuilder extends BaseBuilder {
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
         return items;
+    }
+
+    public boolean changeBuyer(String invoiceOID, String buyerOID) throws SException {
+        try {
+            return ((InvoiceStore) this.objectStore).changeBuyer(invoiceOID, buyerOID);
+        } catch (SQLException ex) {
+            super.logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+        }
+//        try {
+//            if (!((InvoiceStore) this.objectStore).changeBuyer(invoiceOID, buyerOID)) {
+//                return false;
+//            }
+//        } catch (SQLException ex) {
+//            super.logger.error(ex.toString());
+//            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+//        }
+//        // find all associate workOrders
+//        Set<String> workOrderOIDSForChange = new HashSet<>();
+//        try {
+//            String from = this.getSqlFromObjectStores(Arrays.asList(WORK_ORDER_ITEM_STORE, WORK_ORDER_STORE));
+//            for (InvoiceItem ii : invoice.getInvoiceItems()) {
+//                String where = WORK_ORDER_ITEM_STORE.getTableName() + "_invoice_item_invoice_item_id=" + BaseModel.getIdFromOid(ii.getOid());
+//                ResultSet rs = this.getObjectStore().getAllObjectsFromDatabase(from, where);
+//                while (rs.next()) {
+//                    WorkOrder workOrder = WORK_ORDER_STORE.getObjectFromResultSet(rs);
+//                    workOrderOIDSForChange.add(workOrder.getOid());
+//                }
+//            }
+//        } catch (SQLException ex) {
+//            super.logger.error(ex.toString());
+//            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+//        }
+//
+//        for (String oid : workOrderOIDSForChange) {
+//            try {
+//                if (!WORK_ORDER_STORE.changeBuyer(oid, buyerOID)) {
+//                    return false;
+//                }
+//            } catch (SQLException ex) {
+//                super.logger.error(ex.toString());
+//                throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+//            }
+//        }
+//        return true;
+    }
+
+    public Set<String> getAllWorkOrdersForInvoice(Invoice invoice) throws SException {
+        // find all associate workOrders
+        Set<String> workOrderOIDSForChange = new HashSet<>();
+        try {
+            String from = this.getSqlFromObjectStores(Arrays.asList(WORK_ORDER_ITEM_STORE, WORK_ORDER_STORE));
+            for (InvoiceItem ii : invoice.getInvoiceItems()) {
+                String where = WORK_ORDER_ITEM_STORE.getTableName() + "_invoice_item_invoice_item_id=" + BaseModel.getIdFromOid(ii.getOid());
+                ResultSet rs = this.getObjectStore().getAllObjectsFromDatabase(from, where);
+                while (rs.next()) {
+                    WorkOrder workOrder = WORK_ORDER_STORE.getObjectFromResultSet(rs);
+                    workOrderOIDSForChange.add(workOrder.getOid());
+                }
+            }
+        } catch (SQLException ex) {
+            super.logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+        }
+        return workOrderOIDSForChange;
     }
 }

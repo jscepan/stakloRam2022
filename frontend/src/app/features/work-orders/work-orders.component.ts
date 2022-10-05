@@ -130,18 +130,18 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
     this.sweetAlertService.openMeSweetAlert(sweetAlertModel);
   }
 
-  markWorkOrderAsSettled(workOrder: WorkOrderModel): void {
+  toggleSettledForWorkOrder(workOrder: WorkOrderModel): void {
     this.subs.sink.$markWorkOrder = this.sweetAlertService
       .getDataBackFromSweetAlert()
       .subscribe((data) => {
         if (data && data.confirmed) {
           this.subs.sink = this.webService
-            .changeWorkOrderSettledStatus(workOrder.oid, true)
+            .changeWorkOrderSettledStatus(workOrder.oid, this.showOnlyUnsettled)
             .subscribe((settled) => {
               if (settled) {
                 this.globalService.showBasicAlert(
                   MODE.success,
-                  this.translateService.instant('Successfully'),
+                  this.translateService.instant('successfully'),
                   this.translateService.instant(
                     'workOrderIsSuccessfullyUpdated'
                   )
@@ -163,7 +163,9 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
       },
       title: this.translateService.instant('markWorkOrderItems'),
       message: this.translateService.instant(
-        'areYouSureYouWantToMarkAllWorkOrderItemsAsInvoiced'
+        this.showOnlyUnsettled
+          ? 'areYouSureYouWantToMarkAllWorkOrderItemsAsInvoiced'
+          : 'areYouSureYouWantToMarkAllWorkOrderItemsAsUninvoiced'
       ),
     };
     this.sweetAlertService.openMeSweetAlert(sweetAlertModel);

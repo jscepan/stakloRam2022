@@ -43,6 +43,11 @@ import { WorkOrderSelectionComponentService } from '@features/work-order-selecti
 import { WorkOrderItemSelectionComponentService } from '@features/work-order-item-selection-popup/work-order-item-selection-component.service';
 import { NoteModel } from 'src/app/shared/models/note.model';
 import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
+import { SweetAlertService } from 'src/app/shared/components/sweet-alert/sweet-alert.service';
+import {
+  SweetAlertI,
+  SweetAlertTypeEnum,
+} from 'src/app/shared/components/sweet-alert/sweet-alert.interface';
 
 @Component({
   selector: 'app-invoice-create-edit',
@@ -80,6 +85,12 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   selectedBuyer?: BuyerModel;
   compareFn: (f1: BaseModel, f2: BaseModel) => boolean = compareByValue;
   isInvoiceTaxFree: boolean = false;
+
+  allowChangeBuyer: boolean = false;
+  selectedBuyerOnChange?: BuyerModel;
+  buyersEntitiesOnChange: Observable<BuyerModel[]> = this.listEntities.entities;
+  isLoadingOnChange?: Observable<boolean> = this.listEntities.isLoading;
+  searchControlOnChange: FormControl = new FormControl();
 
   getUOMDisplayValue = getUOMDisplayValue;
 
@@ -136,9 +147,11 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     private settingsStoreService: SettingsStoreService,
     private translateService: TranslateService,
     private listEntities: ListEntities<BuyerModel>,
+    private listEntitiesOnChange: ListEntities<BuyerModel>,
     private el: ElementRef,
     private workOrderSelectionComponentService: WorkOrderSelectionComponentService,
     private workOrderItemSelectionComponentService: WorkOrderItemSelectionComponentService,
+    private sweetAlertService: SweetAlertService,
     private authStoreService: AuthStoreService
   ) {}
 
@@ -159,6 +172,12 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     this.subs.sink = this.listEntities
       .setWebService(this.buyerWebService)
       .requestFirstPage();
+
+    if (this.isEdit) {
+      this.subs.sink = this.listEntitiesOnChange
+        .setWebService(this.buyerWebService)
+        .requestFirstPage();
+    }
 
     this.subs.sink = this.settingsStoreService.dataLoaded$.subscribe(
       (dataLoaded) => {
@@ -292,6 +311,54 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   selectBuyer(event: MatSelectChange): void {
     if (event && event.value) {
       this.selectedBuyer = event.value;
+    }
+  }
+
+  selectBuyerOnChange(event: MatSelectChange): void {
+    if (event && event.value) {
+      this.selectedBuyerOnChange = event.value;
+      //
+      this.subs.sink.$markWorkOrder = this.sweetAlertService
+        .getDataBackFromSweetAlert()
+        .subscribe((data) => {
+          if (
+            data &&
+            data.confirmed &&
+            this.invoiceOID &&
+            this.selectedBuyerOnChange?.oid
+          ) {
+            this.subs.sink = this.webService
+              .changeBuyer(this.invoiceOID, this.selectedBuyerOnChange?.oid)
+              .subscribe((changed) => {
+                if (changed) {
+                  this.globalService.showBasicAlert(
+                    MODE.success,
+                    this.translateService.instant('successfully'),
+                    this.translateService.instant(
+                      'invoiceIsSuccessfullyUpdated'
+                    )
+                  );
+                  window.location.reload();
+                }
+              });
+          }
+        });
+      const sweetAlertModel: SweetAlertI = {
+        mode: 'warning',
+        icon: 'alert-triangle',
+        type: {
+          name: SweetAlertTypeEnum.submit,
+          buttons: {
+            submit: this.translateService.instant('change'),
+            cancel: this.translateService.instant('cancel'),
+          },
+        },
+        title: this.translateService.instant('changeBuyer'),
+        message: this.translateService.instant(
+          'areYouSureYouWantToAllowChangeOfBuyerWithAllConsequences'
+        ),
+      };
+      this.sweetAlertService.openMeSweetAlert(sweetAlertModel);
     }
   }
 
@@ -834,6 +901,12 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     this.listEntities.setFilter(searchFilter);
   }
 
+  searchHandlerOnChange(text: any): void {
+    let searchFilter: SearchModel = new SearchModel();
+    searchFilter.criteriaQuick = text;
+    this.listEntitiesOnChange.setFilter(searchFilter);
+  }
+
   importInvoiceFrom(
     type: 'advanceInvoice' | 'preInvoice',
     invoiceOID: string
@@ -872,6 +945,10 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
 
   bottomReachedHandlerBuyers(): void {
     this.listEntities.requestNextPage();
+  }
+
+  bottomReachedHandlerBuyersOnChange(): void {
+    this.listEntitiesOnChange.requestNextPage();
   }
 
   consolidateAllDates(): void {

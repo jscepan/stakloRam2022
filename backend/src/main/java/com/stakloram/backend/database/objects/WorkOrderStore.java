@@ -71,6 +71,16 @@ public class WorkOrderStore extends ObjectStore {
         return null;
     }
 
+    public boolean changeBuyer(String oid, String buyerOID) throws SQLException {
+        int i = 0;
+        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+                + this.getTableName() + "_buyer_buyer_id=? "
+                + " WHERE " + this.getPrimaryKey() + "=?");
+        st.setLong(++i, BaseModel.getIdFromOid(buyerOID));
+        st.setLong(++i, BaseModel.getIdFromOid(oid));
+        return st.executeUpdate() > 0;
+    }
+
     @Override
     public WorkOrder getObjectFromResultSet(ResultSet resultSet) throws SQLException {
         WorkOrder object = new WorkOrder(resultSet.getLong(this.getPrimaryKey()));

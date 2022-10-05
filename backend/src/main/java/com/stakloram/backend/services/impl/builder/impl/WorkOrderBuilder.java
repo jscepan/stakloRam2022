@@ -26,10 +26,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class WorkOrderBuilder extends BaseBuilder {
@@ -250,5 +247,14 @@ public class WorkOrderBuilder extends BaseBuilder {
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
         return items;
+    }
+
+    public boolean changeBuyer(String workOrderOID, String buyerOID) throws SException {
+        try {
+            return ((WorkOrderStore) this.objectStore).changeBuyer(workOrderOID, buyerOID);
+        } catch (SQLException ex) {
+            super.logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+        }
     }
 }

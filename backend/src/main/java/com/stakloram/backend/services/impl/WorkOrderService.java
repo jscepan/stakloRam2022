@@ -30,7 +30,14 @@ public class WorkOrderService extends ServiceModel {
     }
 
     public boolean toggleSettledForWorkOrder(String workOrderOID, boolean settled) throws SException {
-        return ((WorkOrderBuilder) this.baseBuilder).toggleSettledForWorkOrder(workOrderOID, settled);
+        this.startTransaction();
+        boolean isSettled = ((WorkOrderBuilder) this.baseBuilder).toggleSettledForWorkOrder(workOrderOID, settled);
+        if (isSettled) {
+            this.endTransaction();
+        } else {
+            this.rollback();
+        }
+        return isSettled;
     }
 
     @Override

@@ -136,6 +136,54 @@
         <mat-checkbox
           class="create-buyer-button"
           [color]="'primary'"
+          [(ngModel)]="allowChangeBuyer"
+          [ngModelOptions]="{ standalone: true }"
+          *ngIf="isEdit"
+          >{{ "changeBuyer" | translate }}</mat-checkbox
+        >
+        <mat-form-field *ngIf="isEdit && allowChangeBuyer">
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "buyer" | translate }}
+          </mat-label>
+          <mat-select
+            (infiniteScroll)="bottomReachedHandlerBuyersOnChange()"
+            msInfiniteScroll
+            [compareWith]="compareFn"
+            (selectionChange)="selectBuyerOnChange($event)"
+          >
+            <mat-option *ngIf="isEdit">
+              <ngx-mat-select-search
+                [formControl]="searchControlOnChange"
+                placeholderLabel="{{ 'searchFor' | translate }}"
+                noEntriesFoundLabel="{{ 'noResults' | translate }}"
+                (ngModelChange)="searchHandlerOnChange($event)"
+                [hideClearSearchButton]="true"
+                [clearSearchInput]="true"
+                [searching]="(isLoadingOnChange | async) || false"
+                [disableScrollToActiveOnOptionsChanged]="true"
+              ></ngx-mat-select-search>
+            </mat-option>
+            <mat-option
+              *ngIf="selectedBuyerOnChange"
+              [value]="selectedBuyerOnChange"
+              >{{ selectedBuyerOnChange.name }}</mat-option
+            >
+            <ng-container *ngFor="let buyer of buyersEntitiesOnChange | async">
+              <mat-option
+                [value]="buyer"
+                *ngIf="!(selectedBuyerOnChange?.oid === buyer.oid)"
+              >
+                {{ buyer.name }}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+        <mat-checkbox
+          class="create-buyer-button"
+          [color]="'primary'"
           [(ngModel)]="isInvoiceTaxFree"
           [ngModelOptions]="{ standalone: true }"
           (change)="changeIsInvoiceTaxFree()"

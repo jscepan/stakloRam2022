@@ -6,8 +6,6 @@ import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.services.impl.IncomeService;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
 public class IncomeController {
-
-    Logger logger = LoggerFactory.getLogger(IncomeController.class);
 
     @Autowired
     IncomeService incomeService;

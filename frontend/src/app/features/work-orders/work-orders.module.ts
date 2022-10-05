@@ -12,6 +12,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [WorkOrdersComponent],
@@ -29,6 +30,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatCheckboxModule,
     FormsModule,
     ReactiveFormsModule,
+    MatTooltipModule,
   ],
 })
 export class WorkOrdersModule {}

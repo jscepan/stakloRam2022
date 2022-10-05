@@ -29,7 +29,7 @@ public abstract class ServiceModel implements IService {
     public static final int SKIP = 50;
     public static final int TOP = 50;
 
-    protected final Locator locator = new Locator(new ConnectionToDatabase().connect());
+    protected final Locator locator = new Locator(ConnectionToDatabase.connect());
 
     public final HistoryBuilder history = new HistoryBuilder(locator);
 
