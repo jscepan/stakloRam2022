@@ -459,7 +459,7 @@
       </mat-expansion-panel>
     </mat-accordion>
   </form>
-  <div class="button-section">
+  <div class="button-section" *ngIf="formGroup">
     <app-button
       [text]="'cancel' | translate"
       color="secondary"
@@ -469,8 +469,8 @@
     <app-button
       [text]="'save' | translate"
       [disabled]="
-        !formGroup?.dirty ||
-        formGroup?.invalid ||
+        !formGroup.dirty ||
+        formGroup.invalid ||
         false ||
         !hasPrivilege('SETTINGS_MODIFY')
       "
