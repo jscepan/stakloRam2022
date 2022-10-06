@@ -17,7 +17,7 @@ public abstract class ObjectStore implements IObjectStore {
 
     protected String tableName;
     protected final String primaryKey;
-    public static final String DATABASE_NAME = ConnectionToDatabase.DATABASE_NAME;
+    public static final String DATABASE_NAME = ConnectionToDatabase.getDatabaseName();
     private final Connection conn;
 
     public ObjectStore(Locator locator) {
@@ -39,7 +39,7 @@ public abstract class ObjectStore implements IObjectStore {
     }
 
     public String getDefaultFromClausule() {
-        return ConnectionToDatabase.DATABASE_NAME + "." + this.tableName;
+        return ConnectionToDatabase.getDatabaseName() + "." + this.tableName;
     }
 
     @Override

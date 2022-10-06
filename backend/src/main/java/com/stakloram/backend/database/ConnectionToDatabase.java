@@ -20,7 +20,7 @@ public class ConnectionToDatabase {
 
     static Logger logger = LoggerFactory.getLogger(ConnectionToDatabase.class);
 
-    public static final String DATABASE_NAME = "stakloram2022";
+    private static String DATABASE_NAME;
     private static String DATABASE_DRIVER;
     private static String USERNAME;
     private static String PASSWORD;
@@ -30,6 +30,13 @@ public class ConnectionToDatabase {
     private static Connection connection = null;
 
     public ConnectionToDatabase() {
+    }
+
+    public static String getDatabaseName() {
+        if (DATABASE_NAME == null || DATABASE_NAME.isEmpty()) {
+            setParameters();
+        }
+        return DATABASE_NAME;
     }
 
     // connect database
@@ -67,6 +74,7 @@ public class ConnectionToDatabase {
             } catch (IOException ex1) {
             }
         }
+        DATABASE_NAME = databaseSettings.getDatabaseName();
         DATABASE_DRIVER = databaseSettings.getDatabaseDriver();
         USERNAME = databaseSettings.getUsername();
         PASSWORD = databaseSettings.getPassword();

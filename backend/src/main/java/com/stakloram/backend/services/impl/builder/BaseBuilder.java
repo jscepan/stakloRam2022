@@ -119,12 +119,12 @@ public abstract class BaseBuilder implements IObjectBuilder {
     @Override
     public String getSqlFromAppendObjectStores(List<ObjectStore> stores) {
         StringBuilder sb = new StringBuilder();
-        sb.append(" " + ConnectionToDatabase.DATABASE_NAME);
+        sb.append(" " + ConnectionToDatabase.getDatabaseName());
         sb.append(".");
         sb.append(this.getObjectStore().getTableName());
         for (int i = 0; i < stores.size(); i++) {
             sb.append(" JOIN ");
-            sb.append(ConnectionToDatabase.DATABASE_NAME);
+            sb.append(ConnectionToDatabase.getDatabaseName());
             sb.append(".");
             sb.append(stores.get(i).getTableName());
             sb.append(" ON ");
@@ -151,12 +151,12 @@ public abstract class BaseBuilder implements IObjectBuilder {
             return stores.get(0).getDefaultFromClausule();
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(" " + ConnectionToDatabase.DATABASE_NAME);
+        sb.append(" " + ConnectionToDatabase.getDatabaseName());
         sb.append(".");
         sb.append(stores.get(0).getTableName());
         for (int i = 1; i < stores.size(); i++) {
             sb.append(" JOIN ");
-            sb.append(ConnectionToDatabase.DATABASE_NAME);
+            sb.append(ConnectionToDatabase.getDatabaseName());
             sb.append(".");
             sb.append(stores.get(i).getTableName());
             sb.append(" ON ");
