@@ -137,7 +137,7 @@
             [iconName]="'check-square'"
             [isTransparentMode]="true"
             (clickEvent)="toggleSettledForWorkOrder(workOrder)"
-            [disabled]="!hasPrivilege('WORK_ORDER_CREATE')"
+            [disabled]="!hasPrivilege('INVOICE_CREATE')"
             [matTooltip]="
               (showOnlyUnsettled
                 ? 'markWorkOrderItemsAsSettled'
@@ -147,62 +147,6 @@
           ></app-button>
         </div>
       </ng-container>
-      <!--
-      <ng-container *ngIf="showOnlyUnsettled">
-        <div
-          class="no-results"
-          *ngIf="totalEntitiesLengthUnsettled === 0 && !isLoadingUnsettled"
-        >
-          {{ "noResults" | translate }}
-        </div>
-        <div class="spinner" *ngIf="isLoadingUnsettled">
-          <mat-spinner></mat-spinner>
-        </div>
-        <ng-container *ngFor="let workOrder of entitiesUnsettled">
-          <div class="grid-item">
-            {{ workOrder.buyer.name }}
-          </div>
-          <div class="grid-item">
-            {{ getWorkOrderNumber(workOrder) }}
-          </div>
-          <div class="grid-item">
-            {{ workOrder.dateOfCreate | date: "dd.MM.yyyy" }}
-          </div>
-          <div class="grid-item align-left">
-            {{ workOrder.forPerson }}
-          </div>
-          <div class="grid-item align-left">
-            {{ workOrder.description }}
-          </div>
-          <div class="grid-item align-left">
-            {{ workOrder.note }}
-          </div>
-          <div class="grid-item">
-            <app-button
-              [iconName]="'eye'"
-              [isTransparentMode]="true"
-              (clickEvent)="viewWorkOrder(workOrder.oid)"
-              [disabled]="!hasPrivilege('WORK_ORDER_VIEW')"
-            ></app-button>
-          </div>
-          <div class="grid-item">
-            <app-button
-              [iconName]="'edit'"
-              [isTransparentMode]="true"
-              (clickEvent)="editWorkOrder(workOrder.oid)"
-              [disabled]="!hasPrivilege('WORK_ORDER_CREATE')"
-            ></app-button>
-          </div>
-          <div class="grid-item">
-            <app-button
-              [iconName]="'check-square'"
-              [isTransparentMode]="true"
-              (clickEvent)="toggleSettledForWorkOrder(workOrder)"
-              [disabled]="!hasPrivilege('WORK_ORDER_CREATE')"
-            ></app-button>
-          </div>
-        </ng-container>
-      </ng-container> -->
     </div>
   </div>
 </div>

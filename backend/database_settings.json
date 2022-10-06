@@ -1,0 +1,7 @@
+{
+  "databaseName": "stakloram2022",
+  "databaseDriver": "com.mysql.cj.jdbc.Driver",
+  "databaseUrl": "jdbc:mysql://localhost:3306/",
+  "username": "root",
+  "password": "password"
+}

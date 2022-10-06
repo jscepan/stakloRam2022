@@ -104,6 +104,7 @@
             (clickEvent)="createInvoiceFromPreInvoice(invoice)"
             *ngIf="invoice.type === 'PRE_INVOICE'"
             [matTooltip]="'createInvoice' | translate"
+            [disabled]="!hasPrivilege('INVOICE_CREATE')"
           ></app-button>
           <app-button
             [iconName]="'credit-card'"
@@ -111,6 +112,7 @@
             (clickEvent)="createInvoiceFromAdvanceInvoice(invoice)"
             *ngIf="invoice.type === 'ADVANCE_INVOICE'"
             [matTooltip]="'createInvoice' | translate"
+            [disabled]="!hasPrivilege('INVOICE_CREATE')"
           ></app-button>
           <app-button
             [iconName]="'dollar-sign'"
