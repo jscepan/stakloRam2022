@@ -1,4 +1,5 @@
 import { BehaviorSubject, Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { ArrayResponseI } from 'src/app/core/interfaces/array-response.interface';
 import { EntityBaseWebService } from 'src/app/core/services/entity-base.web-service';
 import { BaseModel } from '../models/base-model';
@@ -62,6 +63,11 @@ export class ListEntities<T extends BaseModel> {
           this.entities$.getValue().length || 0,
           this.NUMBER_OF_ITEMS_ON_PAGE
         )
+        .pipe(
+          finalize(() => {
+            this.isLoading$.next(false);
+          })
+        )
         .subscribe((response: ArrayResponseI<T>) => {
           this.entities$.next(
             this.entities$.getValue().concat(response.entities)
@@ -69,7 +75,6 @@ export class ListEntities<T extends BaseModel> {
           const length = this.entities$.getValue().length || 0;
           this.bottomReached$.next(!(length < response.totalCount));
           this.totalEntitiesLength$.next(response.totalCount);
-          this.isLoading$.next(false);
         });
     }
   }
