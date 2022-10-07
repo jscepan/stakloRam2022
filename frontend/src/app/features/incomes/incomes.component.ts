@@ -11,7 +11,10 @@ import {
 } from 'src/app/shared/components/sweet-alert/sweet-alert.interface';
 import { SweetAlertService } from 'src/app/shared/components/sweet-alert/sweet-alert.service';
 import { IncomeModel } from 'src/app/shared/models/income.model';
-import { SearchModel } from 'src/app/shared/models/search.model';
+import {
+  BettweenAttribute,
+  SearchModel,
+} from 'src/app/shared/models/search.model';
 import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { ListEntities } from 'src/app/shared/services/list-entities';
@@ -38,6 +41,8 @@ export class IncomesComponent implements OnInit, OnDestroy {
 
   keyword: string = '';
 
+  searchFilter: SearchModel = new SearchModel();
+
   constructor(
     private globalService: GlobalService,
     private translateService: TranslateService,
@@ -50,8 +55,10 @@ export class IncomesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.searchFilter.ordering = 'DESC';
     this.subs.sink = this.listEntities
       .setWebService(this.webService)
+      .setOrdering('DESC')
       .requestFirstPage();
   }
 
@@ -60,9 +67,30 @@ export class IncomesComponent implements OnInit, OnDestroy {
   }
 
   inputSearchHandler(text: string): void {
-    const searchFilter: SearchModel = new SearchModel();
-    searchFilter.criteriaQuick = text;
-    this.listEntities.setFilter(searchFilter);
+    this.searchFilter.criteriaQuick = text;
+    this.listEntities.setFilter(this.searchFilter);
+  }
+
+  dateChanged(type: 'from' | 'to', date: any): void {
+    if (date.target?.value) {
+      const newBetweenAttribute: BettweenAttribute = {
+        attribute: type === 'from' ? 'from_date' : 'to_date',
+        attributeValue: date.target?.value,
+        attributeType: 'DATE',
+        type: type === 'from' ? 'GREATER_OR_EQUAL' : 'SMALLER_OR_EQUAL',
+      };
+
+      let prevAttrIndex = this.searchFilter.betweenAttributes.findIndex(
+        (x) => x.attribute === newBetweenAttribute.attribute
+      );
+      prevAttrIndex < 0
+        ? this.searchFilter.betweenAttributes.push(newBetweenAttribute)
+        : (this.searchFilter.betweenAttributes[prevAttrIndex] =
+            newBetweenAttribute);
+    } else {
+      this.searchFilter.betweenAttributes = [];
+    }
+    this.listEntities.setFilter(this.searchFilter);
   }
 
   outcomes(): void {

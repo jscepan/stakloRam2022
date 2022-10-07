@@ -55,6 +55,8 @@ public class InvoiceBuilder extends BaseBuilder {
         this.databaseColumnsForQuickSearch = Arrays.asList("buyer_name");
         this.databaseColumnsForAttributes.put("type", "type");
         this.databaseColumnsForAdvanceFilter.put("buyer", "invoice_buyer_buyer_id");
+        this.databaseColumnsForAttributes.put("from_date", "date_of_create");
+        this.databaseColumnsForAttributes.put("to_date", "date_of_create");
     }
 
     @Override

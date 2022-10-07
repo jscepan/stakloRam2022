@@ -6,6 +6,7 @@
       (changeEvent)="inputSearchHandler($event)"
     ></app-search-input>
     <app-button
+      [iconName]="'plus'"
       [text]="'createCity' | translate"
       (clickEvent)="createCity()"
       class="create-button"

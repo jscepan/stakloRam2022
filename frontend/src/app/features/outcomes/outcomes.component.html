@@ -6,13 +6,15 @@
       (changeEvent)="inputSearchHandler($event)"
     ></app-search-input>
     <app-button
+      [text]="'incomes' | translate"
+      (clickEvent)="incomes()"
+      [isTransparentMode]="true"
+    ></app-button>
+    <app-button
+      [iconName]="'plus'"
       [text]="'createOutcome' | translate"
       (clickEvent)="create()"
       [disabled]="!hasPrivilege('OUTCOME_CREATE')"
-    ></app-button>
-    <app-button
-      [text]="'incomes' | translate"
-      (clickEvent)="incomes()"
     ></app-button>
   </div>
   <div class="outcomes" scrollToBottom (bottomReached)="bottomReachedHandler()">

@@ -15,7 +15,20 @@
         >{{ "showOnlyUnsettled" | translate }}</mat-checkbox
       >
     </div>
+    <mat-form-field class="min-with">
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "fromDate" | translate }}
+      </mat-label>
+      <input type="date" matInput (change)="dateChanged('from', $event)" />
+    </mat-form-field>
+    <mat-form-field class="min-with">
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "toDate" | translate }}
+      </mat-label>
+      <input type="date" matInput (change)="dateChanged('to', $event)" />
+    </mat-form-field>
     <app-button
+      [iconName]="'plus'"
       [text]="'createWorkOrder' | translate"
       (clickEvent)="createWorkOrder()"
       [disabled]="!hasPrivilege('WORK_ORDER_CREATE')"

@@ -5,14 +5,28 @@
       [keyword]="keyword"
       (changeEvent)="inputSearchHandler($event)"
     ></app-search-input>
-    <app-button
-      [text]="'createIncome' | translate"
-      (clickEvent)="createIncome()"
-      [disabled]="!hasPrivilege('INCOME_CREATE')"
-    ></app-button>
+    <mat-form-field class="min-with">
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "fromDate" | translate }}
+      </mat-label>
+      <input type="date" matInput (change)="dateChanged('from', $event)" />
+    </mat-form-field>
+    <mat-form-field class="min-with">
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "toDate" | translate }}
+      </mat-label>
+      <input type="date" matInput (change)="dateChanged('to', $event)" />
+    </mat-form-field>
     <app-button
       [text]="'outcomes' | translate"
       (clickEvent)="outcomes()"
+      [isTransparentMode]="true"
+    ></app-button>
+    <app-button
+      [iconName]="'plus'"
+      [text]="'createIncome' | translate"
+      (clickEvent)="createIncome()"
+      [disabled]="!hasPrivilege('INCOME_CREATE')"
     ></app-button>
   </div>
   <div class="incomes" scrollToBottom (bottomReached)="bottomReachedHandler()">

@@ -4,6 +4,7 @@
 
   .container {
     height: calc(100%);
+    min-width: 500px;
 
     .search-bar {
       display: flex;

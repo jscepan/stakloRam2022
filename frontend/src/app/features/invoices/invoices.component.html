@@ -5,23 +5,31 @@
       [keyword]="keyword"
       (changeEvent)="inputSearchHandler($event)"
     ></app-search-input>
-    <div class="radio">
-      <mat-radio-group
-        aria-label="'invoiceType'|translate"
-        [color]="'primary'"
-        (change)="typeChanged($event)"
-      >
-        <mat-radio-button value="'all'" [checked]="true">{{
-          "all" | translate
-        }}</mat-radio-button>
-        <mat-radio-button
-          value="{{ type.value }}"
-          *ngFor="let type of typesOptions"
-          >{{ type.displayName | translate }}</mat-radio-button
-        >
-      </mat-radio-group>
-    </div>
+    <mat-form-field class="min-with">
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "fromDate" | translate }}
+      </mat-label>
+      <input type="date" matInput (change)="dateChanged('from', $event)" />
+    </mat-form-field>
+    <mat-form-field class="min-with">
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "toDate" | translate }}
+      </mat-label>
+      <input type="date" matInput (change)="dateChanged('to', $event)" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "objectType" | translate }}
+      </mat-label>
+      <mat-select (valueChange)="typeChanged($event)">
+        <mat-option value="'all'">{{ "all" | translate }}</mat-option>
+        <mat-option *ngFor="let type of typesOptions" [value]="type">
+          {{ type.displayName | translate }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
     <app-button
+      [iconName]="'plus'"
       [text]="'createInvoice' | translate"
       (clickEvent)="create()"
       [disabled]="!hasPrivilege('INVOICE_CREATE')"

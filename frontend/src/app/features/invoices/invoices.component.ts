@@ -12,7 +12,10 @@ import { SweetAlertService } from 'src/app/shared/components/sweet-alert/sweet-a
 import { INVOICE_TYPES } from 'src/app/shared/constants';
 import { EnumValueModel } from 'src/app/shared/enums/enum.model';
 import { InvoiceModel } from 'src/app/shared/models/invoice.model';
-import { SearchModel } from 'src/app/shared/models/search.model';
+import {
+  BettweenAttribute,
+  SearchModel,
+} from 'src/app/shared/models/search.model';
 import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { ListEntities } from 'src/app/shared/services/list-entities';
@@ -43,6 +46,8 @@ export class InvoicesComponent implements OnInit, OnDestroy {
 
   keyword: string = '';
 
+  searchFilter: SearchModel = new SearchModel();
+
   constructor(
     private router: Router,
     private globalService: GlobalService,
@@ -55,6 +60,7 @@ export class InvoicesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.searchFilter.ordering = 'DESC';
     this.subs.sink = this.listEntities
       .setWebService(this.webService)
       .setOrdering('DESC')
@@ -65,11 +71,35 @@ export class InvoicesComponent implements OnInit, OnDestroy {
     return this.authStoreService.isAllowed(privilege);
   }
 
+  dateChanged(type: 'from' | 'to', date: any): void {
+    if (date.target?.value) {
+      const newBetweenAttribute: BettweenAttribute = {
+        attribute: type === 'from' ? 'from_date' : 'to_date',
+        attributeValue: date.target?.value,
+        attributeType: 'DATE',
+        type: type === 'from' ? 'GREATER_OR_EQUAL' : 'SMALLER_OR_EQUAL',
+      };
+
+      let prevAttrIndex = this.searchFilter.betweenAttributes.findIndex(
+        (x) => x.attribute === newBetweenAttribute.attribute
+      );
+      prevAttrIndex < 0
+        ? this.searchFilter.betweenAttributes.push(newBetweenAttribute)
+        : (this.searchFilter.betweenAttributes[prevAttrIndex] =
+            newBetweenAttribute);
+    } else {
+      this.searchFilter.betweenAttributes = [];
+    }
+    this.listEntities.setFilter(this.searchFilter);
+  }
+
+  orderBy(order: 'ASC' | 'DESC'): void {
+    // TODO
+  }
+
   inputSearchHandler(text: string): void {
-    const searchFilter: SearchModel = new SearchModel();
-    searchFilter.criteriaQuick = text;
-    searchFilter.ordering = 'DESC';
-    this.listEntities.setFilter(searchFilter);
+    this.searchFilter.criteriaQuick = text;
+    this.listEntities.setFilter(this.searchFilter);
   }
 
   create(): void {
@@ -144,12 +174,12 @@ export class InvoicesComponent implements OnInit, OnDestroy {
   }
 
   typeChanged(event: any): void {
-    const searchFilter: SearchModel = new SearchModel();
     if (this.typesOptions.filter((el) => el.value === event.value).length) {
-      searchFilter.attributes = [{ type: [event.value] }];
-      searchFilter.ordering = 'DESC';
+      this.searchFilter.attributes = [{ type: [event.value] }];
+    } else {
+      this.searchFilter.attributes = [];
     }
-    this.listEntities.setFilter(searchFilter);
+    this.listEntities.setFilter(this.searchFilter);
   }
 
   ngOnDestroy(): void {

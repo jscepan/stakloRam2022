@@ -1,5 +1,6 @@
 .container {
   height: calc(100%);
+  min-width: 500px;
 
   .search-bar {
     display: flex;
@@ -10,8 +11,9 @@
   .grid-container {
     display: grid;
     grid-template-columns: auto auto;
-    max-height: calc(100% - 100px);
+    max-height: calc(100% - 120px);
     overflow-y: auto;
+    margin-top: 20px;
 
     .grid-item {
     }

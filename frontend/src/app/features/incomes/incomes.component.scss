@@ -5,11 +5,16 @@
 
 .container {
   height: calc(100%);
+  min-width: 500px;
 
   .search-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    ::ng-deep .mat-form-field-wrapper {
+      padding-bottom: 0;
+    }
   }
 
   .incomes {
@@ -27,4 +32,8 @@
       }
     }
   }
+}
+
+.min-with {
+  max-width: 130px;
 }

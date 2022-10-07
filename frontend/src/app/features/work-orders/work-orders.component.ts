@@ -9,7 +9,10 @@ import {
   SweetAlertTypeEnum,
 } from 'src/app/shared/components/sweet-alert/sweet-alert.interface';
 import { SweetAlertService } from 'src/app/shared/components/sweet-alert/sweet-alert.service';
-import { SearchModel } from 'src/app/shared/models/search.model';
+import {
+  BettweenAttribute,
+  SearchModel,
+} from 'src/app/shared/models/search.model';
 import { WorkOrderModel } from 'src/app/shared/models/work-order';
 import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 import { GlobalService } from 'src/app/shared/services/global.service';
@@ -40,6 +43,8 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
   entitiesUnsettled?: WorkOrderModel[];
   totalEntitiesLengthUnsettled?: number;
 
+  searchFilter: SearchModel = new SearchModel();
+
   constructor(
     private globalService: GlobalService,
     private translateService: TranslateService,
@@ -51,7 +56,9 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.subs.sink = this.listEntities
+    this.searchFilter.ordering = 'DESC';
+
+    this.listEntities
       .setWebService(this.webService)
       .setOrdering('DESC')
       .requestFirstPage();
@@ -75,10 +82,30 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
   }
 
   inputSearchHandler(text: string): void {
-    const searchFilter: SearchModel = new SearchModel();
-    searchFilter.criteriaQuick = text;
-    searchFilter.ordering = 'DESC';
-    this.listEntities.setFilter(searchFilter);
+    this.searchFilter.criteriaQuick = text;
+    this.listEntities.setFilter(this.searchFilter);
+  }
+
+  dateChanged(type: 'from' | 'to', date: any): void {
+    if (date.target?.value) {
+      const newBetweenAttribute: BettweenAttribute = {
+        attribute: type === 'from' ? 'from_date' : 'to_date',
+        attributeValue: date.target?.value,
+        attributeType: 'DATE',
+        type: type === 'from' ? 'GREATER_OR_EQUAL' : 'SMALLER_OR_EQUAL',
+      };
+
+      let prevAttrIndex = this.searchFilter.betweenAttributes.findIndex(
+        (x) => x.attribute === newBetweenAttribute.attribute
+      );
+      prevAttrIndex < 0
+        ? this.searchFilter.betweenAttributes.push(newBetweenAttribute)
+        : (this.searchFilter.betweenAttributes[prevAttrIndex] =
+            newBetweenAttribute);
+    } else {
+      this.searchFilter.betweenAttributes = [];
+    }
+    this.listEntities.setFilter(this.searchFilter);
   }
 
   createWorkOrder(): void {
@@ -183,10 +210,7 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
     if (this.showOnlyUnsettled) {
       this.loadAllUnsettledWorkOrders();
     } else {
-      this.subs.sink = this.listEntities
-        .setWebService(this.webService)
-        .setOrdering('DESC')
-        .requestFirstPage();
+      this.listEntities.requestFirstPage();
     }
   }
 

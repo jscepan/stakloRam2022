@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ArrayResponseI } from '../core/interfaces/array-response.interface';
 import { BaseWebService } from '../core/services/base.web-service';
 import { EntityBaseWebService } from '../core/services/entity-base.web-service';
 import { BASE_API_URL, DOMAIN_IMAGES } from '../shared/constants';
