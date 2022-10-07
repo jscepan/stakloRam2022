@@ -80,15 +80,11 @@ export class InvoicesComponent implements OnInit, OnDestroy {
         type: type === 'from' ? 'GREATER_OR_EQUAL' : 'SMALLER_OR_EQUAL',
       };
 
-      let prevAttrIndex = this.searchFilter.betweenAttributes.findIndex(
-        (x) => x.attribute === newBetweenAttribute.attribute
-      );
-      prevAttrIndex < 0
-        ? this.searchFilter.betweenAttributes.push(newBetweenAttribute)
-        : (this.searchFilter.betweenAttributes[prevAttrIndex] =
-            newBetweenAttribute);
-    } else {
-      this.searchFilter.betweenAttributes = [];
+      this.searchFilter.addBetweenAttribute(newBetweenAttribute);
+    } else if (type === 'from') {
+      this.searchFilter.removeBetweenAttribute('from_date');
+    } else if (type === 'to') {
+      this.searchFilter.removeBetweenAttribute('to_date');
     }
     this.listEntities.setFilter(this.searchFilter);
   }

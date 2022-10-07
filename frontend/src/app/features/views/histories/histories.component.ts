@@ -72,21 +72,9 @@ export class HistoriesComponent implements OnInit, OnDestroy {
         type: 'EQUAL',
       };
 
-      let prevAttrIndex = this.searchFilter.betweenAttributes.findIndex(
-        (x) => x.attribute === newBetweenAttribute.attribute
-      );
-      prevAttrIndex < 0
-        ? this.searchFilter.betweenAttributes.push(newBetweenAttribute)
-        : (this.searchFilter.betweenAttributes[prevAttrIndex] =
-            newBetweenAttribute);
+      this.searchFilter.addBetweenAttribute(newBetweenAttribute);
     } else {
-      let prevAttrIndex = this.searchFilter.betweenAttributes.findIndex(
-        (x) => x.attribute === 'action'
-      );
-
-      if (prevAttrIndex >= 0) {
-        this.searchFilter.betweenAttributes.splice(prevAttrIndex, 1);
-      }
+      this.searchFilter.removeBetweenAttribute('action');
     }
     this.listEntities.setFilter(this.searchFilter);
   }
@@ -100,15 +88,9 @@ export class HistoriesComponent implements OnInit, OnDestroy {
         type: type === 'from' ? 'GREATER_OR_EQUAL' : 'SMALLER_OR_EQUAL',
       };
 
-      let prevAttrIndex = this.searchFilter.betweenAttributes.findIndex(
-        (x) => x.attribute === newBetweenAttribute.attribute
-      );
-      prevAttrIndex < 0
-        ? this.searchFilter.betweenAttributes.push(newBetweenAttribute)
-        : (this.searchFilter.betweenAttributes[prevAttrIndex] =
-            newBetweenAttribute);
+      this.searchFilter.addBetweenAttribute(newBetweenAttribute);
     } else {
-      this.searchFilter.betweenAttributes = [];
+      this.searchFilter.clearAllBetweenAttributes();
     }
     this.listEntities.setFilter(this.searchFilter);
   }

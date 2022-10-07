@@ -95,15 +95,9 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
         type: type === 'from' ? 'GREATER_OR_EQUAL' : 'SMALLER_OR_EQUAL',
       };
 
-      let prevAttrIndex = this.searchFilter.betweenAttributes.findIndex(
-        (x) => x.attribute === newBetweenAttribute.attribute
-      );
-      prevAttrIndex < 0
-        ? this.searchFilter.betweenAttributes.push(newBetweenAttribute)
-        : (this.searchFilter.betweenAttributes[prevAttrIndex] =
-            newBetweenAttribute);
+      this.searchFilter.addBetweenAttribute(newBetweenAttribute);
     } else {
-      this.searchFilter.betweenAttributes = [];
+      this.searchFilter.clearAllBetweenAttributes();
     }
     this.listEntities.setFilter(this.searchFilter);
   }
