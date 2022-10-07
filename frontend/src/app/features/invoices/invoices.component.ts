@@ -90,7 +90,8 @@ export class InvoicesComponent implements OnInit, OnDestroy {
   }
 
   orderBy(order: 'ASC' | 'DESC'): void {
-    // TODO
+    this.searchFilter.ordering = order;
+    this.listEntities.setFilter(this.searchFilter);
   }
 
   inputSearchHandler(text: string): void {

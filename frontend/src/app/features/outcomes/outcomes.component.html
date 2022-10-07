@@ -5,6 +5,15 @@
       [keyword]="keyword"
       (changeEvent)="inputSearchHandler($event)"
     ></app-search-input>
+    <mat-form-field class="min-with">
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "sortBy" | translate }}
+      </mat-label>
+      <mat-select (valueChange)="orderBy($event)">
+        <mat-option value="ASC">{{ "asc" | translate }}</mat-option>
+        <mat-option value="DESC">{{ "desc" | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
     <app-button
       [text]="'incomes' | translate"
       (clickEvent)="incomes()"

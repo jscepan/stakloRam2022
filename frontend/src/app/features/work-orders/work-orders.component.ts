@@ -210,6 +210,11 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
     }
   }
 
+  orderBy(order: 'ASC' | 'DESC'): void {
+    this.searchFilter.ordering = order;
+    this.listEntities.setFilter(this.searchFilter);
+  }
+
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }

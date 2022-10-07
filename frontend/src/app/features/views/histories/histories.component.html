@@ -4,60 +4,49 @@
       [placeholder]="'searchFor' | translate"
       (changeEvent)="inputSearchHandler($event)"
     ></app-search-input>
-    <div class="date-filter">
-      <mat-form-field class="min-with">
-        <mat-label
-          [class.mark-required]="true"
-          [class.mark-opt-required]="true"
-        >
-          {{ "fromDate" | translate }}
-        </mat-label>
-        <input type="date" matInput (change)="dateChanged('from', $event)" />
-      </mat-form-field>
-    </div>
-    <div class="date-filter">
-      <mat-form-field class="min-with">
-        <mat-label
-          [class.mark-required]="true"
-          [class.mark-opt-required]="true"
-        >
-          {{ "toDate" | translate }}
-        </mat-label>
-        <input type="date" matInput (change)="dateChanged('to', $event)" />
-      </mat-form-field>
-    </div>
-    <div class="type-filter">
-      <mat-form-field>
-        <mat-label
-          [class.mark-required]="true"
-          [class.mark-opt-required]="true"
-        >
-          {{ "objectType" | translate }}
-        </mat-label>
-        <mat-select (valueChange)="typeChange($event)">
-          <mat-option>{{ "all" | translate }}</mat-option>
-          <mat-option *ngFor="let item of typesOfObject" [value]="item">
-            {{ item.displayName | translate }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="action-type-filter">
-      <mat-form-field>
-        <mat-label
-          [class.mark-required]="true"
-          [class.mark-opt-required]="true"
-        >
-          {{ "action" | translate }}
-        </mat-label>
-        <mat-select (valueChange)="actionTypeChange($event)">
-          <mat-option>{{ "all" | translate }}</mat-option>
-          <mat-option *ngFor="let item of actionTypesOfObject" [value]="item">
-            {{ item.displayName | translate }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+    <mat-form-field class="min-with">
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "fromDate" | translate }}
+      </mat-label>
+      <input type="date" matInput (change)="dateChanged('from', $event)" />
+    </mat-form-field>
+    <mat-form-field class="min-with">
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "toDate" | translate }}
+      </mat-label>
+      <input type="date" matInput (change)="dateChanged('to', $event)" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "objectType" | translate }}
+      </mat-label>
+      <mat-select (valueChange)="typeChange($event)">
+        <mat-option>{{ "all" | translate }}</mat-option>
+        <mat-option *ngFor="let item of typesOfObject" [value]="item">
+          {{ item.displayName | translate }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "action" | translate }}
+      </mat-label>
+      <mat-select (valueChange)="actionTypeChange($event)">
+        <mat-option>{{ "all" | translate }}</mat-option>
+        <mat-option *ngFor="let item of actionTypesOfObject" [value]="item">
+          {{ item.displayName | translate }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="min-with">
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "sortBy" | translate }}
+      </mat-label>
+      <mat-select (valueChange)="orderBy($event)">
+        <mat-option value="ASC">{{ "asc" | translate }}</mat-option>
+        <mat-option value="DESC">{{ "desc" | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
   <div
     class="histories"

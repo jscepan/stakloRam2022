@@ -117,6 +117,11 @@ export class HistoriesComponent implements OnInit, OnDestroy {
     this.listEntities.requestNextPage();
   }
 
+  orderBy(order: 'ASC' | 'DESC'): void {
+    this.searchFilter.ordering = order;
+    this.listEntities.setFilter(this.searchFilter);
+  }
+
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }

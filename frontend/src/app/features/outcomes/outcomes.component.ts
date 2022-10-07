@@ -37,6 +37,8 @@ export class OutcomesComponent implements OnInit, OnDestroy {
 
   keyword: string = '';
 
+  searchFilter: SearchModel = new SearchModel();
+
   constructor(
     private globalService: GlobalService,
     private translateService: TranslateService,
@@ -59,9 +61,8 @@ export class OutcomesComponent implements OnInit, OnDestroy {
   }
 
   inputSearchHandler(text: string): void {
-    const searchFilter: SearchModel = new SearchModel();
-    searchFilter.criteriaQuick = text;
-    this.listEntities.setFilter(searchFilter);
+    this.searchFilter.criteriaQuick = text;
+    this.listEntities.setFilter(this.searchFilter);
   }
 
   incomes(): void {
@@ -125,6 +126,11 @@ export class OutcomesComponent implements OnInit, OnDestroy {
 
   bottomReachedHandler(): void {
     this.listEntities.requestNextPage();
+  }
+
+  orderBy(order: 'ASC' | 'DESC'): void {
+    this.searchFilter.ordering = order;
+    this.listEntities.setFilter(this.searchFilter);
   }
 
   ngOnDestroy(): void {

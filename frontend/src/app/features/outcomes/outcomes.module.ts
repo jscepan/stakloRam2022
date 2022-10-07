@@ -9,6 +9,7 @@ import { SearchInputModule } from 'src/app/shared/components/search-input/search
 import { ScrollToBottomModule } from 'src/app/shared/directives/scroll-to-bottom/scroll-to-bottom.module';
 import { OutcomeCreateEditModule } from '@features/outcome-create-edit/outcome-create-edit.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [OutcomesComponent],
@@ -22,6 +23,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ScrollToBottomModule,
     OutcomeCreateEditModule,
     MatProgressSpinnerModule,
+    MatSelectModule,
   ],
 })
 export class OutcomesModule {}
