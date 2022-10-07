@@ -96,8 +96,10 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
       };
 
       this.searchFilter.addBetweenAttribute(newBetweenAttribute);
-    } else {
-      this.searchFilter.clearAllBetweenAttributes();
+    } else if (type === 'from') {
+      this.searchFilter.removeBetweenAttribute('from_date');
+    } else if (type === 'to') {
+      this.searchFilter.removeBetweenAttribute('to_date');
     }
     this.listEntities.setFilter(this.searchFilter);
   }

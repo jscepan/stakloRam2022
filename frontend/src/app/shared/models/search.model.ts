@@ -1,6 +1,5 @@
 export class SearchModel {
   criteriaQuick: string = '';
-  attributes: { [key: string]: string[] }[] = [];
   private betweenAttributes: BettweenAttribute[] = [];
   ordering: 'ASC' | 'DESC' = 'ASC';
 

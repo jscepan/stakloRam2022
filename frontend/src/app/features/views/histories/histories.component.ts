@@ -55,10 +55,15 @@ export class HistoriesComponent implements OnInit, OnDestroy {
 
   typeChange(type: EnumValueModel): void {
     if (type) {
-      this.searchFilter.attributes = [{ object_type: [type.value] }];
+      this.searchFilter.addBetweenAttribute({
+        attribute: 'object_type',
+        attributeType: 'STRING',
+        attributeValue: type.value,
+        type: 'EQUAL',
+      });
       this.listEntities.setFilter(this.searchFilter);
     } else {
-      this.searchFilter.attributes = [];
+      this.searchFilter.removeBetweenAttribute('object_type');
       this.listEntities.setFilter(this.searchFilter);
     }
   }
@@ -89,8 +94,10 @@ export class HistoriesComponent implements OnInit, OnDestroy {
       };
 
       this.searchFilter.addBetweenAttribute(newBetweenAttribute);
-    } else {
-      this.searchFilter.clearAllBetweenAttributes();
+    } else if (type === 'from') {
+      this.searchFilter.removeBetweenAttribute('from_date');
+    } else if (type === 'to') {
+      this.searchFilter.removeBetweenAttribute('to_date');
     }
     this.listEntities.setFilter(this.searchFilter);
   }

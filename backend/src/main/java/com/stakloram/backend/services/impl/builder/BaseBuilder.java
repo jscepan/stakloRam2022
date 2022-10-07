@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,10 +90,9 @@ public abstract class BaseBuilder implements IObjectBuilder {
     public ResponseWithCount searchObjects(String fromClausule, SearchRequest searchObject, Long skip, Long top) throws SException {
         try {
             String searchClausule = this.getQuickSearchClausule(this.getQuickSearchWords(searchObject));
-//            String equalsClausule = this.getEqualsClausule(searchObject);
-            String containsClausule = this.getContainsClausule(searchObject);
+//            String containsClausule = this.getContainsClausule(searchObject);
             String betweenClausule = this.getBetweenClausule(searchObject);
-            return this.objectStore.searchObjectsFromDatabase(fromClausule, this.generateWhereClausule("", searchClausule, containsClausule, betweenClausule), skip, top, searchObject.getOrdering());
+            return this.objectStore.searchObjectsFromDatabase(fromClausule, this.generateWhereClausule("", searchClausule, betweenClausule), skip, top, searchObject.getOrdering());
         } catch (SQLException ex) {
             logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
@@ -105,10 +103,9 @@ public abstract class BaseBuilder implements IObjectBuilder {
     public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
         try {
             String searchClausule = this.getQuickSearchClausule(this.getQuickSearchWords(searchObject));
-//            String equalsClausule = this.getEqualsClausule(searchObject);
-            String containsClausule = this.getContainsClausule(searchObject);
+//            String containsClausule = this.getContainsClausule(searchObject);
             String betweenClausule = this.getBetweenClausule(searchObject);
-            ResponseWithCount rwc = this.objectStore.searchObjectsFromDatabase(this.generateWhereClausule("", searchClausule, containsClausule, betweenClausule), skip, top, searchObject.getOrdering());
+            ResponseWithCount rwc = this.objectStore.searchObjectsFromDatabase(this.generateWhereClausule("", searchClausule, betweenClausule), skip, top, searchObject.getOrdering());
             return this.getArrayResponseFromResponseWithCount(rwc);
         } catch (SQLException ex) {
             logger.error(ex.toString());
@@ -226,7 +223,7 @@ public abstract class BaseBuilder implements IObjectBuilder {
         return searchClausule;
     }
 
-    public String generateWhereClausule(String whereClausule, String searchClausule, String containsClausule, String betweenClausule) {
+    public String generateWhereClausule(String whereClausule, String searchClausule, String betweenClausule) {
         String where = "";
         if (whereClausule.trim().length() > 0 && searchClausule.length() > 0) {
             where = whereClausule + " AND " + searchClausule;
@@ -238,11 +235,11 @@ public abstract class BaseBuilder implements IObjectBuilder {
 //        } else {
 //            where += equalsClausule;
 //        }
-        if (where.trim().length() > 0 && containsClausule.length() > 0) {
-            where = where + " AND " + containsClausule;
-        } else {
-            where += containsClausule;
-        }
+//        if (where.trim().length() > 0 && containsClausule.length() > 0) {
+//            where = where + " AND " + containsClausule;
+//        } else {
+//            where += containsClausule;
+//        }
         if (where.trim().length() > 0 && betweenClausule.length() > 0) {
             where = where + " AND " + betweenClausule;
         } else {
@@ -287,40 +284,40 @@ public abstract class BaseBuilder implements IObjectBuilder {
 //        }
 //        return equalsClausule;
 //    }
-
-    public String getContainsClausule(SearchRequest searchObject) {
-        if (this.databaseColumnsForAttributes.isEmpty()) {
-            return "";
-        }
-        String containsClausule = "";
-        int i = 0;
-        for (Map<String, List<String>> entity : searchObject.getAttributes()) {
-            Map.Entry<String, List<String>> entry = entity.entrySet().iterator().next();
-            String tableName = this.databaseColumnsForAttributes.get(entry.getKey());
-            if (entry.getValue().isEmpty()) {
-                break;
-            }
-            if (i > 0) {
-                containsClausule += " AND ";
-            }
-
-            containsClausule += "(";
-            for (int j = 0; j < entry.getValue().size(); j++) {
-                if (j > 0) {
-                    containsClausule += " OR ";
-                }
-                containsClausule += this.getObjectStore().getTableName() + "." + this.getObjectStore().getTableName() + "_" + tableName + "=";
-                if ("true".equals(entry.getValue().get(j)) || "false".equals(entry.getValue().get(j))) {
-                    containsClausule += entry.getValue().get(j);
-                } else {
-                    containsClausule += "'" + entry.getValue().get(j) + "'";
-                }
-            }
-            containsClausule += ")";
-            i++;
-        }
-        return containsClausule;
-    }
+//
+//    public String getContainsClausule(SearchRequest searchObject) {
+//        if (this.databaseColumnsForAttributes.isEmpty()) {
+//            return "";
+//        }
+//        String containsClausule = "";
+//        int i = 0;
+//        for (Map<String, List<String>> entity : searchObject.getAttributes()) {
+//            Map.Entry<String, List<String>> entry = entity.entrySet().iterator().next();
+//            String tableName = this.databaseColumnsForAttributes.get(entry.getKey());
+//            if (entry.getValue().isEmpty()) {
+//                break;
+//            }
+//            if (i > 0) {
+//                containsClausule += " AND ";
+//            }
+//
+//            containsClausule += "(";
+//            for (int j = 0; j < entry.getValue().size(); j++) {
+//                if (j > 0) {
+//                    containsClausule += " OR ";
+//                }
+//                containsClausule += this.getObjectStore().getTableName() + "." + this.getObjectStore().getTableName() + "_" + tableName + "=";
+//                if ("true".equals(entry.getValue().get(j)) || "false".equals(entry.getValue().get(j))) {
+//                    containsClausule += entry.getValue().get(j);
+//                } else {
+//                    containsClausule += "'" + entry.getValue().get(j) + "'";
+//                }
+//            }
+//            containsClausule += ")";
+//            i++;
+//        }
+//        return containsClausule;
+//    }
 
     private String getBetweenClausule(SearchRequest searchObject) {
         if (this.databaseColumnsForAttributes.isEmpty()) {

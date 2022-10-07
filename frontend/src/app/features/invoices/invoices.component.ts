@@ -171,9 +171,16 @@ export class InvoicesComponent implements OnInit, OnDestroy {
 
   typeChanged(event: any): void {
     if (this.typesOptions.filter((el) => el.value === event.value).length) {
-      this.searchFilter.attributes = [{ type: [event.value] }];
+      // this.searchFilter.attributes = [{ type: [event.value] }];
+      this.searchFilter.addBetweenAttribute({
+        attribute: 'type',
+        attributeType: 'STRING',
+        attributeValue: event.value,
+        type: 'EQUAL',
+      });
     } else {
-      this.searchFilter.attributes = [];
+      // this.searchFilter.attributes = [];
+      this.searchFilter.removeBetweenAttribute('type');
     }
     this.listEntities.setFilter(this.searchFilter);
   }
