@@ -12,7 +12,7 @@ public class StakloRamBeApplication {
     public static void main(String[] args) {
         SpringApplication.run(StakloRamBeApplication.class, args);
     }
-                
+
     // Remove comments if is develop mode to remove CORS errors...
 //    /*
     @Bean
