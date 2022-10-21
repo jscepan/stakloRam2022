@@ -39,12 +39,14 @@ export enum DataType {
   NUMBER_DEC = 'numberDecimal',
   OBJECT = 'object',
   BOOLEAN = 'boolean',
+  ARRAY = 'array',
 }
 
 export interface DataObject {
   type: DataType;
   propertyName: string;
   objectAttr?: string;
+  arrayElementMapFunction?: any;
 }
 
 @Component({
@@ -105,7 +107,6 @@ export class HistoryViewComponent implements OnInit, OnDestroy {
           value: this.translateService.instant('newValue'),
         });
       }
-
       this.tableRow = [];
       const prevValue = this.history.previousValue
         ? JSON.parse(this.history.previousValue)
@@ -113,6 +114,8 @@ export class HistoryViewComponent implements OnInit, OnDestroy {
       const newValue = this.history.newValue
         ? JSON.parse(this.history.newValue)
         : null;
+      console.log(prevValue);
+      console.log(newValue);
 
       let mapOfAttr: Map<string, DataObject> = new Map<string, DataObject>();
       switch (this.history.objectType) {
@@ -154,6 +157,20 @@ export class HistoryViewComponent implements OnInit, OnDestroy {
               dataType: DataType.STRING,
               value: prevValue[key][value.objectAttr],
             });
+          } else if (value.type === DataType.ARRAY) {
+            let elementDescription = '';
+            prevValue[key].forEach((element: any) => {
+              value.arrayElementMapFunction.forEach((el: any) => {
+                elementDescription += this.translateService.instant(el);
+                elementDescription += ': ';
+                elementDescription += element[el];
+                elementDescription += ', ';
+              });
+            });
+            row.push({
+              dataType: DataType.STRING,
+              value: elementDescription,
+            });
           } else {
             row.push({ dataType: value.type, value: prevValue[key] });
           }
@@ -163,6 +180,20 @@ export class HistoryViewComponent implements OnInit, OnDestroy {
             row.push({
               dataType: DataType.STRING,
               value: newValue[key][value.objectAttr],
+            });
+          } else if (value.type === DataType.ARRAY) {
+            let elementDescription = '';
+            newValue[key].forEach((element: any) => {
+              value.arrayElementMapFunction.forEach((el: any) => {
+                elementDescription += this.translateService.instant(el);
+                elementDescription += ': ';
+                elementDescription += element[el];
+                elementDescription += ', ';
+              });
+            });
+            row.push({
+              dataType: DataType.STRING,
+              value: elementDescription,
             });
           } else {
             row.push({ dataType: value.type, value: newValue[key] });

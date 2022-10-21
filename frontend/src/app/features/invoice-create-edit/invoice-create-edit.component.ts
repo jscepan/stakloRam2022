@@ -302,7 +302,8 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
       );
     }
     if (this.isEdit) {
-      this.invoice.invoiceItems.forEach((item, index) => this.addNewItem(item));
+      this.invoice.invoiceItems.forEach((item) => this.addNewItem(item));
+      this.invoice.notes.forEach((item) => this.addNote(item));
     } else {
       this.setInvoiceNumber();
     }

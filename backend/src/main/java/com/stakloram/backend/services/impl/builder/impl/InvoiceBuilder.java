@@ -85,6 +85,14 @@ public class InvoiceBuilder extends BaseBuilder {
                     invoiceItems.add(invoiceItem);
                 }
                 invoice.setInvoiceItems(invoiceItems);
+
+                List<Note> notes = new ArrayList<>();
+                ResultSet rsNotes = NOTE_STORE.getAllObjectsFromDatabase(NOTE_STORE.getTableName() + "_invoice_invoice_id=" + invoice.getId());
+                while (rsNotes.next()) {
+                    Note note = NOTE_STORE.getObjectFromResultSet(rsNotes);
+                    notes.add(note);
+                }
+                invoice.setNotes(notes);
                 return invoice;
             } else {
                 throw new SException(UserMessage.getLocalizedMessage("objectNotFound"));
@@ -150,6 +158,22 @@ public class InvoiceBuilder extends BaseBuilder {
                 WORK_ORDER_ITEM_STORE.removeInvoiceItemForWorkOrderItem(inv.getOid());
                 INVOICE_ITEM_STORE.deleteObjectByOid(inv.getOid());
             }
+
+            List<Note> oldNotes = new ArrayList<>();
+            ResultSet resultSetNotes = NOTE_STORE.getAllObjectsFromDatabase(NOTE_STORE.getTableName() + "_invoice_invoice_id=" + invoice.getId());
+            while (resultSetNotes.next()) {
+                oldNotes.add(NOTE_STORE.getObjectFromResultSet(resultSetNotes));
+            }
+            Map<Helper.Action, List<? extends BaseModel>> mapOfDifferencesNotes = Helper.findDifferenceBetweenLists(invoice.getNotes(), oldNotes);
+            for (BaseModel inv : mapOfDifferencesNotes.get(Helper.Action.FOR_CREATE)) {
+                NOTE_STORE.createNewObjectToDatabase(inv);
+            }
+            for (BaseModel inv : mapOfDifferencesNotes.get(Helper.Action.FOR_UPDATE)) {
+                NOTE_STORE.modifyObject(inv.getOid(), inv);
+            }
+            for (BaseModel inv : mapOfDifferencesNotes.get(Helper.Action.FOR_DELETE)) {
+                NOTE_STORE.deleteObjectByOid(inv.getOid());
+            }
             return invoice;
         } catch (SQLException ex) {
             super.logger.error(ex.toString());
@@ -184,6 +208,14 @@ public class InvoiceBuilder extends BaseBuilder {
                     WORK_ORDER_ITEM_STORE.removeInvoiceItemForWorkOrderItem(woi.getOid());
                 }
                 INVOICE_ITEM_STORE.deleteObjectByOid(item.getOid());
+            } catch (SQLException ex) {
+                super.logger.error(ex.toString());
+                throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+            }
+        }
+        for (Note note : invoice.getNotes()) {
+            try {
+                NOTE_STORE.deleteObjectByOid(note.getOid());
             } catch (SQLException ex) {
                 super.logger.error(ex.toString());
                 throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));

@@ -1,3 +1,4 @@
+import { InvoiceItemModel } from 'src/app/shared/models/invoice-item.model';
 import { DataObject, DataType } from './history-view.component';
 
 export function mapInvoiceToTable(): Map<
@@ -55,9 +56,36 @@ export function mapInvoiceToTable(): Map<
     type: DataType.NUMBER_DEC,
     propertyName: 'advancePayAmount',
   });
-  // TODO
-  // napravi za invoice items array
-  // napravi za notes array
+  map.set('invoiceItems', {
+    type: DataType.ARRAY,
+    propertyName: 'items',
+    arrayElementMapFunction: mapInvoiceItemToString(),
+  });
+  map.set('notes', {
+    type: DataType.ARRAY,
+    propertyName: 'notes',
+    arrayElementMapFunction: mapInvoiceNotesToString(),
+  });
+  return map;
+}
+
+export function mapInvoiceItemToString(): Map<string, string> {
+  const map: Map<string, string> = new Map<string, string>();
+  map.set('description', 'description');
+  map.set('uom', 'uom');
+  map.set('pricePerUnit', 'pricePerUnit');
+  map.set('quantity', 'quantity');
+  map.set('netPrice', 'netPrice');
+  map.set('vatAmount', 'vatAmount');
+  map.set('vatRate', 'vatRate');
+  map.set('grossPrice', 'grossPrice');
+  return map;
+}
+
+export function mapInvoiceNotesToString(): Map<string, string> {
+  const map: Map<string, string> = new Map<string, string>();
+  map.set('name', 'name');
+  map.set('description', 'description');
   return map;
 }
 
