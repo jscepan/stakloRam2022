@@ -4,43 +4,85 @@
       {{ "historyView" | translate }}
     </h3>
   </div>
+  <div>{{ "madeBy" | translate }}: {{ history?.user?.displayName }}</div>
+  <div>
+    {{ "type" | translate }}:
+    {{ history?.action || "" | lowercase | translate }}
+  </div>
+  <div>{{ "date" | translate }}: {{ history?.time | date: "dd.MM.yyyy" }}</div>
+  <div>{{ "time" | translate }}: {{ history?.time | date: "hh:ss" }}</div>
   <div class="content">
-    <div class="grid-container standard-grid-table">
-      <div class="grid-item header sticky">
-        {{ "buyerName" | translate }}
-      </div>
-      <div class="grid-item header sticky">
-        {{ "date" | translate }}
-      </div>
-      <div class="grid-item header sticky">
-        {{ "amount" | translate }}
-      </div>
-      <div class="grid-item header sticky">
-        {{ "bankStatementNumber" | translate }}
-      </div>
-      <div class="no-results" *ngIf="history && !isLoading">
-        {{ "noResults" | translate }}
-      </div>
-      <div class="spinner" *ngIf="isLoading">
-        <mat-spinner></mat-spinner>
-      </div>
-      <!-- <ng-container *ngFor="let attr of attributes | async">
-        <div class="grid-item">
-          {{ attr. }}
-        </div>
-        <div class="grid-item">
-          {{ attr. }}
-        </div>
-        <div class="grid-item align-right">
-          {{ attr.}}
-        </div>
-        <div class="grid-item">
-          {{ attr. }}
-        </div>
-        <div class="grid-item">
-          {{ attr. }}
-        </div>
-      </ng-container> -->
+    <div class="table">
+      <table>
+        <tr>
+          <th *ngFor="let header of tableHeader">{{ header.value }}</th>
+        </tr>
+        <tr *ngFor="let row of tableRow">
+          <ng-container *ngFor="let field of row.fields; let i = index">
+            <ng-container [ngSwitch]="field.dataType">
+              <td
+                *ngSwitchCase="'string'"
+                [ngClass]="{
+                  different:
+                    i > 1 && row.fields[i - 1].value != row.fields[i].value
+                }"
+              >
+                {{ field.value }}
+              </td>
+              <td
+                *ngSwitchCase="'date'"
+                [ngClass]="{
+                  different:
+                    i > 1 && row.fields[i - 1].value != row.fields[i].value
+                }"
+              >
+                {{ field.value | date: "dd.MM.yyyy" }}
+              </td>
+              <td
+                *ngSwitchCase="'time'"
+                [ngClass]="{
+                  different:
+                    i > 1 && row.fields[i - 1].value != row.fields[i].value
+                }"
+              >
+                {{ field.value | date: "hh:ss" }}
+              </td>
+              <td
+                *ngSwitchCase="'number'"
+                [ngClass]="{
+                  different:
+                    i > 1 && row.fields[i - 1].value != row.fields[i].value
+                }"
+              >
+                {{ field.value }}
+              </td>
+              <td
+                *ngSwitchCase="'numberDecimal'"
+                [ngClass]="{
+                  different: i > 1 && row.fields[i - 1].value !== field.value
+                }"
+              >
+                {{ field.value | number: "1.2-2":"de" }}
+              </td>
+              <td
+                *ngSwitchCase="'boolean'"
+                [ngClass]="{
+                  different: i > 1 && row.fields[i - 1].value !== field.value
+                }"
+              >
+                {{ (field.value ? "yes" : "no") | translate }}
+              </td>
+              <td *ngSwitchDefault></td>
+            </ng-container>
+          </ng-container>
+        </tr>
+      </table>
+    </div>
+    <div class="no-results" *ngIf="!history && !isLoading">
+      {{ "noResults" | translate }}
+    </div>
+    <div class="spinner" *ngIf="isLoading">
+      <mat-spinner></mat-spinner>
     </div>
   </div>
   <div class="button-section">

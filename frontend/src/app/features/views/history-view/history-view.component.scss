@@ -23,9 +23,19 @@
     overflow-y: auto;
     overflow-x: hidden;
 
-    .grid-container {
-      display: grid;
-      grid-template-columns: auto auto auto auto;
+    .table {
+      border-collapse: collapse;
+      width: 100%;
+
+      table {
+        tr {
+          th,
+          td {
+            // border: 1px solid red;
+            padding: 0 8px;
+          }
+        }
+      }
     }
   }
 
@@ -39,4 +49,10 @@
     justify-content: space-between;
     border-top: 2px dotted var(--color-main-light);
   }
+}
+
+.different {
+  background-color: red;
+  font-weight: 600;
+  color: white;
 }

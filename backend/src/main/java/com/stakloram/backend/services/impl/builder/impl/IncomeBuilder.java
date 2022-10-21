@@ -33,6 +33,8 @@ public class IncomeBuilder extends BaseBuilder {
     @Override
     public void setColumnsForSearch() {
         this.databaseColumnsForQuickSearch = Arrays.asList("buyer_name");
+        this.databaseColumnsForAttributes.put("from_date", "date");
+        this.databaseColumnsForAttributes.put("to_date", "date");
     }
 
     @Override

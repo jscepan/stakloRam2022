@@ -7,9 +7,44 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HistoryWebService } from 'src/app/web-services/history.web-service';
 import { HistoryModel } from 'src/app/shared/models/history.model';
 import { finalize } from 'rxjs/operators';
+import { IncomeModel } from 'src/app/shared/models/income.model';
+import { InvoiceModel } from 'src/app/shared/models/invoice.model';
+import {
+  mapBuyerToTable,
+  mapCityToTable,
+  mapCountryToTable,
+  mapIncomeToTable,
+  mapInvoiceToTable,
+  mapOutcomeToTable,
+  mapUserToTable,
+  mapWorkOrderToTable,
+} from './map-object-to-table.service';
 
 export interface DialogData {
   oid: string;
+}
+export interface TableRow {
+  fields: TableField[];
+}
+export interface TableField {
+  dataType: DataType;
+  value: any;
+}
+
+export enum DataType {
+  STRING = 'string',
+  DATE = 'date',
+  TIME = 'time',
+  NUMBER = 'number',
+  NUMBER_DEC = 'numberDecimal',
+  OBJECT = 'object',
+  BOOLEAN = 'boolean',
+}
+
+export interface DataObject {
+  type: DataType;
+  propertyName: string;
+  objectAttr?: string;
 }
 
 @Component({
@@ -22,7 +57,10 @@ export class HistoryViewComponent implements OnInit, OnDestroy {
   public subs: SubscriptionManager = new SubscriptionManager();
 
   isLoading?: boolean = true;
-  history!: HistoryModel;
+  history?: HistoryModel;
+
+  tableHeader: { value: string }[] = [];
+  tableRow: TableRow[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<HistoryViewComponent>,
@@ -42,7 +80,99 @@ export class HistoryViewComponent implements OnInit, OnDestroy {
       )
       .subscribe((history) => {
         this.history = history;
+        this.convertHistoryToTable();
       });
+  }
+
+  convertHistoryToTable(): void {
+    if (this.history) {
+      this.tableHeader = [
+        { value: this.translateService.instant('attribute') },
+      ];
+      if (
+        this.history.action === 'UPDATE' ||
+        this.history.action === 'DELETE'
+      ) {
+        this.tableHeader.push({
+          value: this.translateService.instant('previousValue'),
+        });
+      }
+      if (
+        this.history.action === 'UPDATE' ||
+        this.history.action === 'CREATE'
+      ) {
+        this.tableHeader.push({
+          value: this.translateService.instant('newValue'),
+        });
+      }
+
+      this.tableRow = [];
+      const prevValue = this.history.previousValue
+        ? JSON.parse(this.history.previousValue)
+        : null;
+      const newValue = this.history.newValue
+        ? JSON.parse(this.history.newValue)
+        : null;
+
+      let mapOfAttr: Map<string, DataObject> = new Map<string, DataObject>();
+      switch (this.history.objectType) {
+        case 'user':
+          mapOfAttr = mapUserToTable();
+          break;
+        case 'workorder':
+          mapOfAttr = mapWorkOrderToTable();
+          break;
+        case 'invoice':
+          mapOfAttr = mapInvoiceToTable();
+          break;
+        case 'income':
+          mapOfAttr = mapIncomeToTable();
+          break;
+        case 'outcome':
+          mapOfAttr = mapOutcomeToTable();
+          break;
+        case 'buyer':
+          mapOfAttr = mapBuyerToTable();
+          break;
+        case 'city':
+          mapOfAttr = mapCityToTable();
+          break;
+        case 'country':
+          mapOfAttr = mapCountryToTable();
+          break;
+      }
+      for (var [key, value] of mapOfAttr) {
+        const row: TableField[] = [
+          {
+            dataType: DataType.STRING,
+            value: this.translateService.instant(value.propertyName),
+          },
+        ];
+        if (prevValue) {
+          if (value.type === DataType.OBJECT && value.objectAttr) {
+            row.push({
+              dataType: DataType.STRING,
+              value: prevValue[key][value.objectAttr],
+            });
+          } else {
+            row.push({ dataType: value.type, value: prevValue[key] });
+          }
+        }
+        if (newValue) {
+          if (value.type === DataType.OBJECT && value.objectAttr) {
+            row.push({
+              dataType: DataType.STRING,
+              value: newValue[key][value.objectAttr],
+            });
+          } else {
+            row.push({ dataType: value.type, value: newValue[key] });
+          }
+        }
+        this.tableRow.push({
+          fields: row,
+        });
+      }
+    }
   }
 
   exit(): void {

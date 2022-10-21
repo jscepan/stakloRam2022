@@ -47,6 +47,7 @@ export class HistoriesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.searchFilter.ordering = 'DESC';
     this.subs.sink = this.listEntities
       .setWebService(this.webService)
       .setOrdering('DESC')
