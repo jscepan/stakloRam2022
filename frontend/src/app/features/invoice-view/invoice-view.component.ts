@@ -106,6 +106,15 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     return value;
   }
 
+  isForeignCountry(country?: string): boolean {
+    console.log(
+      'this.settings?.invoiceCountry: ' + this.settings?.invoiceCountry
+    );
+    return (
+      this.settings?.invoiceCountry?.toLowerCase() !== country?.toLowerCase()
+    );
+  }
+
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }

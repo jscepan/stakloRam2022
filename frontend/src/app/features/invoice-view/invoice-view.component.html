@@ -104,6 +104,12 @@
             <div class="line">
               {{ invoice.buyer.city?.zipCode + " " + invoice.buyer.city?.name }}
             </div>
+            <div
+              class="line"
+              *ngIf="isForeignCountry(invoice.buyer.city?.country?.description)"
+            >
+              {{ invoice.buyer.city?.country?.description }}
+            </div>
           </div>
         </div>
         <div class="pib">
@@ -197,6 +203,10 @@
             border-top-style: double;
           "
         >
+          <ng-container
+            *ngIf="invoice.type === 'FOREIGN' && invoice.currency"
+            >{{ invoice.currency }}</ng-container
+          >
           {{ invoice.grossAmount | number: "1.2-2":"de" }}
         </td>
       </tr>
@@ -231,6 +241,14 @@
     <div class="note">
       <div class="title">{{ "note" | translate }}: {{ invoice.comment }}</div>
       <div class="description"></div>
+    </div>
+    <div class="notes">
+      <div class="grid-container">
+        <ng-container *ngFor="let note of invoice.notes">
+          <div class="grid-item bold align-right">{{ note.name }}</div>
+          <div class="grid-item bold">{{ note.description }}</div>
+        </ng-container>
+      </div>
     </div>
     <div class="signature">
       <div class="signature-container">
