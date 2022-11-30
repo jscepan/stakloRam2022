@@ -227,7 +227,7 @@ CREATE TABLE IF NOT EXISTS `stakloram2022`.`invoice_item` (
   `invoice_item_uom` VARCHAR(45) NULL,
   `invoice_item_quantity` DECIMAL(19,10) NULL,
   `invoice_item_price_per_unit` DECIMAL(19,10) NULL,
-  `invoice_item_net_price` DECIMAL(20,2) NULL DEFAULT NULL,
+  `invoice_item_net_price` DECIMAL(19,10) NULL DEFAULT NULL,
   `invoice_item_vat_rate` DECIMAL(6,2) NULL DEFAULT NULL,
   `invoice_item_vat_amount` DECIMAL(20,2) NULL DEFAULT NULL,
   `invoice_item_gross_price` DECIMAL(20,2) NULL DEFAULT NULL,
