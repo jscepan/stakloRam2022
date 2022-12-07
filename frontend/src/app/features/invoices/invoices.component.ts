@@ -186,6 +186,34 @@ export class InvoicesComponent implements OnInit, OnDestroy {
     this.listEntities.setFilter(this.searchFilter);
   }
 
+  getSumFor(
+    _invoices: InvoiceModel[] | null,
+    _columnName: 'netPrice' | 'vatAmount' | 'grossAmount'
+  ): number {
+    if (_invoices === null) {
+      return 0;
+    }
+    let sum: number = 0;
+    switch (_columnName) {
+      case 'netPrice':
+        _invoices.forEach((i) => {
+          sum += i.netAmount;
+        });
+        break;
+      case 'vatAmount':
+        _invoices.forEach((i) => {
+          sum += i.vatAmount;
+        });
+        break;
+      case 'grossAmount':
+        _invoices.forEach((i) => {
+          sum += i.grossAmount;
+        });
+        break;
+    }
+    return sum;
+  }
+
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }

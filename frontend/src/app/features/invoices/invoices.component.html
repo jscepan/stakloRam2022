@@ -100,19 +100,19 @@
           {{ invoice.number }}
         </div>
         <div class="grid-item">
-          {{ invoice.dateOfCreate | date: "dd.MM.yyyy" }}
+          {{ invoice.dateOfCreate | date : "dd.MM.yyyy" }}
         </div>
         <div class="grid-item">
-          {{ invoice.dateOfMaturity | date: "dd.MM.yyyy" }}
+          {{ invoice.dateOfMaturity | date : "dd.MM.yyyy" }}
         </div>
         <div class="grid-item align-right">
-          {{ invoice.netAmount | number: "1.2-2":"de" }}
+          {{ invoice.netAmount | number : "1.2-2" : "de" }}
         </div>
         <div class="grid-item align-right">
-          {{ invoice.vatAmount | number: "1.2-2":"de" }}
+          {{ invoice.vatAmount | number : "1.2-2" : "de" }}
         </div>
         <div class="grid-item align-right">
-          {{ invoice.grossAmount | number: "1.2-2":"de" }}
+          {{ invoice.grossAmount | number : "1.2-2" : "de" }}
         </div>
         <div class="grid-item">
           <app-button
@@ -168,6 +168,26 @@
           ></app-button>
         </div>
       </ng-container>
+      <div class="grid-item">{{ "sum" | translate }}</div>
+      <div class="grid-item">{{ "-" }}</div>
+      <div class="grid-item">{{ "-" }}</div>
+      <div class="grid-item">{{ "-" }}</div>
+      <div class="grid-item">{{ "-" }}</div>
+      <div class="grid-item align-right">
+        {{ getSumFor(entities | async, "netPrice") | number : "1.2-2" : "de" }}
+      </div>
+      <div class="grid-item align-right">
+        {{ getSumFor(entities | async, "vatAmount") | number : "1.2-2" : "de" }}
+      </div>
+      <div class="grid-item align-right">
+        {{
+          getSumFor(entities | async, "grossAmount") | number : "1.2-2" : "de"
+        }}
+      </div>
+      <div class="grid-item">{{ "-" }}</div>
+      <div class="grid-item">{{ "-" }}</div>
+      <div class="grid-item">{{ "-" }}</div>
+      <div class="grid-item">{{ "-" }}</div>
     </div>
   </div>
 </div>
