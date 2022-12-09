@@ -610,6 +610,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   removeItem(index: number): void {
     this.invoiceItemsFormArr.removeAt(index);
     this.calculateInvoiceAmount();
+    this.formGroup.markAsDirty();
   }
 
   cancel(): void {
