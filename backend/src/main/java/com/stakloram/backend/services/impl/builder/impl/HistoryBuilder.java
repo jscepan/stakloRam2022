@@ -45,7 +45,6 @@ public class HistoryBuilder extends BaseBuilder {
             this.objectStore.createNewObjectToDatabase(object);
         } catch (SQLException ex) {
             logger.error(ex.toString());
-            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 

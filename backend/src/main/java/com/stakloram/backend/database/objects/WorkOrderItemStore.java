@@ -9,7 +9,6 @@ import com.stakloram.backend.models.WorkOrderItem.UOM;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class WorkOrderItemStore extends ObjectStore {
 
@@ -112,6 +111,16 @@ public class WorkOrderItemStore extends ObjectStore {
                 + this.getTableName() + "_settled=false"
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setLong(++i, BaseModel.getIdFromOid(workOrderItemOid));
+        return st.executeUpdate() > 0;
+    }
+
+    public boolean removeWorkOrdersItemForInvoiceItemOid(String invoiceItemOid) throws SQLException {
+        int i = 0;
+        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+                + this.getTableName() + "_invoice_item_invoice_item_id=null, "
+                + this.getTableName() + "_settled=false"
+                + " WHERE " + this.getTableName() + "_invoice_item_invoice_item_id" + "=?");
+        st.setLong(++i, BaseModel.getIdFromOid(invoiceItemOid));
         return st.executeUpdate() > 0;
     }
 
