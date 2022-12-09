@@ -17,6 +17,7 @@ import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NumberDecimalModule } from 'src/app/shared/directives/number-decimal/number-decimal.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [WorkOrderCreateEditComponent],
@@ -39,6 +40,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatCheckboxModule,
     NumberDecimalModule,
     MatAutocompleteModule,
+    MatTooltipModule,
   ],
 })
 export class WorkOrderCreateEditModule {}

@@ -100,6 +100,7 @@
             (infiniteScroll)="bottomReachedHandlerBuyers()"
             msInfiniteScroll
             (selectionChange)="selectBuyer($event)"
+            [matTooltip]="selectedBuyer?.name || ''"
           >
             <mat-option>
               <ngx-mat-select-search
@@ -306,6 +307,7 @@
                 (keydown.enter)="trigger.closePanel()"
                 [matAutocomplete]="auto"
                 (keypress)="onKeypress($event, 'description', i)"
+                [matTooltip]="getDescription(i)?.value"
               />
               <mat-autocomplete #auto="matAutocomplete">
                 <mat-option
@@ -326,6 +328,7 @@
               <mat-select
                 formControlName="uom"
                 (openedChange)="openedToggleOnUomSelect($event, i)"
+                class="color-black"
               >
                 <mat-option
                   *ngFor="let item of uomOptions"

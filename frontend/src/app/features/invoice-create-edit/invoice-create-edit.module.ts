@@ -19,6 +19,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { WorkOrderSelectionPopupModule } from '@features/work-order-selection-popup/work-order-selection-popup.module';
 import { WorkOrderItemSelectionPopupModule } from '@features/work-order-item-selection-popup/work-order-item-selection-popup.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [InvoiceCreateEditComponent],
@@ -36,6 +37,7 @@ import { WorkOrderItemSelectionPopupModule } from '@features/work-order-item-sel
     IconsModule,
     MatIconModule,
     NgxMatSelectSearchModule,
+    MatTooltipModule,
     MatSelectInfiniteScrollModule,
     NumberDecimalModule,
     MatAutocompleteModule,

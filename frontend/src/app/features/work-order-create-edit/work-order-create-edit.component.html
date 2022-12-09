@@ -45,6 +45,7 @@
             msInfiniteScroll
             (selectionChange)="selectBuyer($event)"
             [disabled]="isEdit"
+            [matTooltip]="selectedBuyer?.name || ''"
           >
             <mat-option>
               <ngx-mat-select-search
@@ -215,6 +216,7 @@
                 "
                 (change)="switchOnCalcBasedOnDescription(i)"
                 [matAutocomplete]="auto"
+                [matTooltip]="getDescription(i)?.value"
               />
               <mat-autocomplete #auto="matAutocomplete">
                 <mat-option
@@ -238,6 +240,7 @@
                   calculateWorkOrderSum(i); calculateGrindingLengthForItem(i)
                 "
                 (openedChange)="openedToggleOnUomSelect($event, i)"
+                class="color-black"
               >
                 <mat-option
                   *ngFor="let item of uomOptions"
@@ -410,9 +413,9 @@
             <div class="value2">{{ "quantity" | translate }}</div>
           </div>
           <div class="value" *ngIf="sumMeter2 > 0">
-            <div class="value1">{{ sumMeter2 | number: "1.2-2":"de" }}</div>
+            <div class="value1">{{ sumMeter2 | number : "1.2-2" : "de" }}</div>
             <div class="value2">
-              {{ sumMeter2Quantity | number: "1.2-2":"de" }}
+              {{ sumMeter2Quantity | number : "1.2-2" : "de" }}
             </div>
           </div>
           <div class="key" *ngIf="sumMeter > 0">
@@ -420,22 +423,22 @@
             <div class="value2">{{ "quantity" | translate }}</div>
           </div>
           <div class="value" *ngIf="sumMeter > 0">
-            <div class="value1">{{ sumMeter | number: "1.2-2":"de" }}</div>
+            <div class="value1">{{ sumMeter | number : "1.2-2" : "de" }}</div>
             <div class="value2">
-              {{ sumMeterQuantity | number: "1.2-2":"de" }}
+              {{ sumMeterQuantity | number : "1.2-2" : "de" }}
             </div>
           </div>
           <div class="key" *ngIf="sumPieces > 0">
             {{ "sumPieces" | translate }}
           </div>
           <div class="value" *ngIf="sumPieces > 0">
-            {{ sumPieces | number: "1.2-2":"de" }}
+            {{ sumPieces | number : "1.2-2" : "de" }}
           </div>
           <div class="key" *ngIf="sumHours > 0">
             {{ "sumHours" | translate }}
           </div>
           <div class="value" *ngIf="sumHours > 0">
-            {{ sumHours | number: "1.2-2":"de" }}
+            {{ sumHours | number : "1.2-2" : "de" }}
           </div>
         </div>
       </div>

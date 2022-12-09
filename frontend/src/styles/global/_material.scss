@@ -40,3 +40,11 @@ snack-bar-container.mat-snack-bar-container {
   justify-content: center;
   align-items: center;
 }
+
+.color-black {
+  .mat-select-trigger {
+    .mat-select-value {
+      color: var(--color-black);
+    }
+  }
+}
