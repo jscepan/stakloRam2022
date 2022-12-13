@@ -251,6 +251,7 @@
   "num": "Num.",
   "number": "Number",
   "numberOfCashBill": "Number of cash bill",
+  "numberOfVatBill": "Number of cash bill",
   "numberOfWorkOrder": "Number of work order",
   "objectType": "Object type",
   "oldPassword": "Old password",

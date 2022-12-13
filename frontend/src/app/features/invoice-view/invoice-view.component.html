@@ -52,7 +52,7 @@
           <div class="row">
             <div class="column-key">{{ "dateOfInvoice" | translate }}:</div>
             <div class="column-value">
-              {{ invoice.dateOfCreate | date: "dd.MM.yyyy" }}
+              {{ invoice.dateOfCreate | date : "dd.MM.yyyy" }}
             </div>
           </div>
           <div class="row">
@@ -62,7 +62,7 @@
           <div class="row">
             <div class="column-key">{{ "maturityDate" | translate }}:</div>
             <div class="column-value">
-              {{ invoice.dateOfMaturity | date: "dd.MM.yyyy" }}
+              {{ invoice.dateOfMaturity | date : "dd.MM.yyyy" }}
             </div>
           </div>
           <div class="row">
@@ -70,7 +70,7 @@
               {{ "dateOfTurnoverGoods" | translate }}:
             </div>
             <div class="column-value">
-              {{ invoice.dateOfTurnover | date: "dd.MM.yyyy" }}
+              {{ invoice.dateOfTurnover | date : "dd.MM.yyyy" }}
             </div>
           </div>
         </div>
@@ -139,20 +139,20 @@
           {{ getUOMDisplayValue(item.uom) | translate }}
         </td>
         <td class="quantity right">
-          {{ item.quantity | number: "1.2-2":"de" }}
+          {{ item.quantity | number : "1.2-2" : "de" }}
         </td>
         <td class="unitPrice right">
-          {{ item.pricePerUnit | number: "1.2-2":"de" }}
+          {{ item.pricePerUnit | number : "1.2-2" : "de" }}
         </td>
         <td class="netPrice right">
-          {{ item.netPrice | number: "1.2-2":"de" }}
+          {{ item.netPrice | number : "1.2-2" : "de" }}
         </td>
         <td class="vatRate center">{{ item.vatRate }}%</td>
         <td class="vatAmount right">
-          {{ item.vatAmount | number: "1.2-2":"de" }}
+          {{ item.vatAmount | number : "1.2-2" : "de" }}
         </td>
         <td class="grossPrice right">
-          {{ item.grossPrice | number: "1.2-2":"de" }}
+          {{ item.grossPrice | number : "1.2-2" : "de" }}
         </td>
       </tr>
       <tr>
@@ -160,7 +160,7 @@
           {{ "invoiceNetPriceAllCaps" | translate }}:
         </td>
         <td colspan="2" class="right" style="border-left: none">
-          {{ invoice.netAmount | number: "1.2-2":"de" }}
+          {{ invoice.netAmount | number : "1.2-2" : "de" }}
         </td>
       </tr>
       <tr>
@@ -176,7 +176,7 @@
           {{ "invoiceVatAmountAllCaps" | translate }}:
         </td>
         <td colspan="2" class="right" style="border: none">
-          {{ invoice.vatAmount | number: "1.2-2":"de" }}
+          {{ invoice.vatAmount | number : "1.2-2" : "de" }}
         </td>
       </tr>
       <tr>
@@ -207,7 +207,7 @@
             *ngIf="invoice.type === 'FOREIGN' && invoice.currency"
             >{{ invoice.currency }}</ng-container
           >
-          {{ invoice.grossAmount | number: "1.2-2":"de" }}
+          {{ invoice.grossAmount | number : "1.2-2" : "de" }}
         </td>
       </tr>
       <ng-container *ngIf="invoice.advanceInvoiceOid">
@@ -216,7 +216,7 @@
             {{ "advancePayment" | translate }}:
           </td>
           <td colspan="2" class="bold right" style="border-left: none">
-            {{ invoice.advancePayAmount | number: "1.2-2":"de" }}
+            {{ invoice.advancePayAmount | number : "1.2-2" : "de" }}
           </td>
         </tr>
         <tr>
@@ -226,7 +226,7 @@
           <td colspan="2" class="bold right" style="border-left: none">
             {{
               invoice.grossAmount - invoice.advancePayAmount
-                | number: "1.2-2":"de"
+                | number : "1.2-2" : "de"
             }}
           </td>
         </tr>
@@ -238,7 +238,10 @@
           "Reklamacije se uvažavaju u roku od 8 dana od dana prijema robe. Za eventualne sporove nadležan je privredni Sud u Novom Sadu."
       }}
     </div>
-    <div class="note">
+    <div class="cash-number" *ngIf="invoice.numberOfCashBill">
+      {{ "numberOfVatBill" | translate }}: {{ invoice.numberOfCashBill }}
+    </div>
+    <div class="note" *ngIf="invoice.comment">
       <div class="title">{{ "note" | translate }}: {{ invoice.comment }}</div>
       <div class="description"></div>
     </div>
