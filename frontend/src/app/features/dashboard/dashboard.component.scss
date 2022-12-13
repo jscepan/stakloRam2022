@@ -11,5 +11,46 @@
     img {
       width: 100%;
     }
+
+    .company-content {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+
+      .upper {
+        display: flex;
+        font-size: 130px;
+        color: rgb(90, 187, 243);
+        align-self: flex-end;
+        align-items: flex-end;
+        position: absolute;
+        top: -70px;
+      }
+
+      .company-name {
+        display: flex;
+        font-weight: 600;
+        align-items: flex-end;
+
+        .first {
+          font-size: 200px;
+          color: rgb(20, 20, 168);
+        }
+
+        .second {
+          font-size: 170px;
+          color: rgb(90, 187, 243);
+        }
+      }
+
+      .under {
+        font-weight: 600;
+        font-style: italic;
+        font-size: 40px;
+        color: rgb(255, 255, 255);
+        background-color: rgb(20, 20, 168);
+        padding: 10px;
+      }
+    }
   }
 }
