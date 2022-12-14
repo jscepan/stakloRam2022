@@ -34,6 +34,12 @@
 
     <app-button
       class="view-button no-print"
+      [text]="'createIncome' | translate"
+      (clickEvent)="createIncome()"
+    ></app-button>
+
+    <app-button
+      class="view-button no-print"
       [text]="'view' | translate"
       (clickEvent)="viewDebtor()"
       [disabled]="!(formGroup.dirty && formGroup.valid)"
@@ -50,30 +56,30 @@
     <div class="grid-item align-right">
       {{
         (debtView.startAmount >= 0 ? debtView.startAmount : 0)
-          | number: "1.2-2":"de"
+          | number : "1.2-2" : "de"
       }}
     </div>
     <div class="grid-item align-right">
       {{
         (debtView.startAmount < 0 ? debtView.startAmount : 0)
-          | number: "1.2-2":"de"
+          | number : "1.2-2" : "de"
       }}
     </div>
     <div class="grid-item align-right">
-      {{ debtView.startAmount | number: "1.2-2":"de" }}
+      {{ debtView.startAmount | number : "1.2-2" : "de" }}
     </div>
 
     <ng-container *ngFor="let t of debtView.transactions">
-      <div class="grid-item">{{ t.date | date: "dd.MM.yyyy" }}</div>
+      <div class="grid-item">{{ t.date | date : "dd.MM.yyyy" }}</div>
       <div class="grid-item">{{ t.description }}</div>
       <div class="grid-item align-right">
-        {{ t.owed | number: "1.2-2":"de" }}
+        {{ t.owed | number : "1.2-2" : "de" }}
       </div>
       <div class="grid-item align-right">
-        {{ t.debt | number: "1.2-2":"de" }}
+        {{ t.debt | number : "1.2-2" : "de" }}
       </div>
       <div class="grid-item align-right">
-        {{ t.state | number: "1.2-2":"de" }}
+        {{ t.state | number : "1.2-2" : "de" }}
       </div>
     </ng-container>
     <div class="grid-item colspan2 top-border bold">
@@ -82,19 +88,19 @@
     <div class="grid-item align-right top-border bold">
       {{
         debtView.debtSum + (debtView.startAmount > 0 ? debtView.startAmount : 0)
-          | number: "1.2-2":"de"
+          | number : "1.2-2" : "de"
       }}
     </div>
     <div class="grid-item align-right top-border bold">
       {{
         debtView.owedSum + (debtView.startAmount < 0 ? debtView.startAmount : 0)
-          | number: "1.2-2":"de"
+          | number : "1.2-2" : "de"
       }}
     </div>
     <div class="grid-item align-right top-border bold">
       {{
         debtView.debtSum + debtView.owedSum + debtView.startAmount
-          | number: "1.2-2":"de"
+          | number : "1.2-2" : "de"
       }}
     </div>
   </div>

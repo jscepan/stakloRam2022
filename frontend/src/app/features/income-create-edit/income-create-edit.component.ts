@@ -23,7 +23,7 @@ import { MatSelectChange } from '@angular/material/select';
 
 export interface DialogData {
   oid: string;
-  buyer: BuyerModel;
+  buyerOID: string;
   amount: number;
 }
 
@@ -67,25 +67,29 @@ export class IncomeCreateEditComponent implements OnInit, OnDestroy {
 
     this.isEdit
       ? this.initializeEdit()
-      : this.initializeCreate(this.data.buyer, this.data.amount);
+      : this.initializeCreate(this.data.buyerOID, this.data.amount);
   }
 
-  initializeCreate(buyer: BuyerModel, amount: number): void {
-    if (buyer) {
-      this.selectedBuyer = buyer;
-    }
-    this.formGroup = new FormGroup({
-      date: new FormControl(new Date().toISOString().substring(0, 10), [
-        Validators.required,
-      ]),
-      bankStatementNumber: new FormControl(''),
-      amount: new FormControl(amount || 0, [
-        Validators.required,
-        Validators.min(0),
-      ]),
-      comment: new FormControl('', []),
-      buyer: new FormControl(this.selectedBuyer, Validators.required),
-    });
+  initializeCreate(buyerOID: string, amount: number): void {
+    this.subs.sink = this.buyerWebService
+      .getEntityByOid(buyerOID)
+      .subscribe((buyer) => {
+        if (buyerOID) {
+          this.selectedBuyer = buyer;
+        }
+        this.formGroup = new FormGroup({
+          date: new FormControl(new Date().toISOString().substring(0, 10), [
+            Validators.required,
+          ]),
+          bankStatementNumber: new FormControl(''),
+          amount: new FormControl(amount || 0, [
+            Validators.required,
+            Validators.min(0),
+          ]),
+          comment: new FormControl('', []),
+          buyer: new FormControl(this.selectedBuyer, Validators.required),
+        });
+      });
   }
 
   initializeEdit(): void {

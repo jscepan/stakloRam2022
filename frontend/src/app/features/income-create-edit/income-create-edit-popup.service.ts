@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Observable, Subscriber } from 'rxjs';
-import { BuyerModel } from 'src/app/shared/models/buyer.model';
 import { IncomeModel } from 'src/app/shared/models/income.model';
 import { IncomeCreateEditComponent } from './income-create-edit.component';
 
@@ -11,7 +10,7 @@ export class IncomeCreateEditPopupService {
 
   openDialog(
     oid: string = '',
-    buyer?: BuyerModel,
+    buyerOID?: string,
     amount: number = 0
   ): Observable<IncomeModel> {
     return new Observable((observer: Subscriber<IncomeModel>) => {
@@ -19,7 +18,7 @@ export class IncomeCreateEditPopupService {
 
       config.data = {
         oid,
-        buyer,
+        buyerOID,
         amount,
       };
 

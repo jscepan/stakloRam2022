@@ -146,7 +146,7 @@ export class InvoicesComponent implements OnInit, OnDestroy {
 
   createIncome(invoice: InvoiceModel): void {
     this.incomeCreateEditPopupService
-      .openDialog(undefined, invoice.buyer, invoice.grossAmount)
+      .openDialog(undefined, invoice.buyer.oid, invoice.grossAmount)
       .subscribe(() => {});
   }
 

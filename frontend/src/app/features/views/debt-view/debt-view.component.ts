@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { IncomeCreateEditPopupService } from '@features/income-create-edit/income-create-edit-popup.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DebtorModel } from 'src/app/shared/models/debtor.model';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
@@ -13,7 +14,7 @@ import { DebtView } from './debt-view.interface';
   selector: 'app-debt-view',
   templateUrl: './debt-view.component.html',
   styleUrls: ['./debt-view.component.scss'],
-  providers: [CountryWebService, ViewsWebService],
+  providers: [CountryWebService, ViewsWebService, IncomeCreateEditPopupService],
 })
 export class DebtViewComponent implements OnInit, OnDestroy {
   private subs: SubscriptionManager = new SubscriptionManager();
@@ -30,11 +31,16 @@ export class DebtViewComponent implements OnInit, OnDestroy {
   constructor(
     private webService: ViewsWebService,
     private route: ActivatedRoute,
+    private incomeCreateEditPopupService: IncomeCreateEditPopupService,
     private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
     this.buyerOID = this.route.snapshot.paramMap.get('buyerOID');
+    this.refreshData();
+  }
+
+  refreshData(): void {
     if (this.buyerOID) {
       this.subs.sink = this.webService
         .getDebtor(this.buyerOID)
@@ -173,6 +179,16 @@ export class DebtViewComponent implements OnInit, OnDestroy {
           this.debtView.transactions[i].debt;
       }
     }
+  }
+
+  createIncome(): void {
+    this.subs.sink = this.incomeCreateEditPopupService
+      .openDialog('', this.buyerOID || undefined)
+      .subscribe((income) => {
+        if (income) {
+          this.refreshData();
+        }
+      });
   }
 
   ngOnDestroy(): void {
