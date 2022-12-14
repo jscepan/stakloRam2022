@@ -1,0 +1,147 @@
+PRVO KREIRAMO BAZU SA script4.SQL od 23.09.2022 od 11:16AM
+
+ROLE:
+insert into stakloram2022.role values (null, 'admin');
+insert into stakloram2022.role values (null, 'worker');
+insert into stakloram2022.role values (null, 'worker_chief');
+insert into stakloram2022.role values (null, 'backoffice');
+
+COUNTRY:
+INSERT INTO stakloram2022.country values (1,'Srbija');
+INSERT INTO stakloram2022.country values (2,'Italy');
+INSERT INTO stakloram2022.country values (3,'Hrvatska');
+
+Izvoz iz stare baze user-a
+SELECT * FROM stakloram.user
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\userxxx.csv'
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+
+na GDRIVE u fajlu userxxx su obradjeni svi podaci iz baze i njih kopiramo negde da ih uvezemo sa:
+LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\userxxx.csv' 
+INTO TABLE stakloram2022.user 
+FIELDS TERMINATED BY ',' 
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+
+Onda uvezemo usere i njihove role:
+INSERT INTO stakloram2022.user_has_role values (1,1);
+INSERT INTO stakloram2022.user_has_role values (3,3);
+INSERT INTO stakloram2022.user_has_role values (4,3);
+INSERT INTO stakloram2022.user_has_role values (5,1);
+
+Pa slike:
+INSERT INTO stakloram2022.image values (3, 'workOrder_16_Ii9VyqEPIk0QO9B.jpg','',23);
+INSERT INTO stakloram2022.image values (4, 'workOrder_346_Km1fvg2alwDOSIw.jpg','',359);
+
+Pa povratak obradjenih u CITY
+LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\zipCodexxx - zipCodexxx.csv' 
+INTO TABLE stakloram2022.city 
+FIELDS TERMINATED BY ',' 
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+
+Pa onda dodati i:
+INSERT INTO stakloram2022.city values (null, '15076','Ovada',2);
+INSERT INTO stakloram2022.city values (null, '31000','Osijek',3);
+
+Pa onda izvesti i kupce i obraditi ih:
+SELECT * FROM stakloram.buyer
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\buyerxxx.csv'
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+
+Pa onda uvesti i kupce:
+LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\buyerxxx - buyerxxx.csv' 
+INTO TABLE stakloram2022.buyer 
+FIELDS TERMINATED BY ',' 
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+
+Pa uvesti i drugu polovinu kupaca kojima treba prepraviti samo naziv OBAVEZNO
+LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\buyerxxx - buyerxxx.csv' 
+INTO TABLE stakloram2022.buyer 
+FIELDS TERMINATED BY ',' 
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+
+Pa onda i trecu
+LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\buyerxxx - buyerxxx (1).csv' 
+INTO TABLE stakloram2022.buyer 
+FIELDS TERMINATED BY ',' 
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+
+promeniti nazive kupcima:
+UPDATE stakloram2022.buyer set buyer_name='NARODNA BIBLIOTEKA "VELJKO PETROVIĆ"' WHERE buyer_id=45;
+UPDATE stakloram2022.buyer set buyer_name='FUDBALSKI KLUB "TSC"' WHERE buyer_id=60;
+UPDATE stakloram2022.buyer set buyer_name='TEHNIČKA ŠKOLA "9. MAJ"' WHERE buyer_id=82;
+UPDATE stakloram2022.buyer set buyer_name='GIMNAZIJA "20. OKTOBAR"' WHERE buyer_id=103;
+UPDATE stakloram2022.buyer set buyer_name='OSNOVNA ŠKOLA "VUK KARADŽIĆ"' WHERE buyer_id=110;
+UPDATE stakloram2022.buyer set buyer_name='MESNA ZAJEDNICA "DUNAV"' WHERE buyer_id=120;
+UPDATE stakloram2022.buyer set buyer_name='CENTAR ZA RAZVOJ CIRKUSKIH UMETNOSTI "LUDIFICO"' WHERE buyer_id=161;
+UPDATE stakloram2022.buyer set buyer_name='OMLADINSKI FUDBALSKI KLUB "BAČKA"' WHERE buyer_id=163;
+UPDATE stakloram2022.buyer set buyer_name='STAMBENA ZAJEDNICA "MARKA OREŠKOVIĆA 1-1A"' WHERE buyer_id=168;
+UPDATE stakloram2022.buyer set buyer_name='STAMBENA ZAJEDNICA "MILENTIJA POPOVIĆA Br. 2, 4, 6"' WHERE buyer_id=169;
+UPDATE stakloram2022.buyer set buyer_name='MESNA ZAJEDNICA "NOVA GAJDOBRA"' WHERE buyer_id=172;
+UPDATE stakloram2022.buyer set buyer_name='STAMBENA ZAJEDNICA "BANATSKA 17"' WHERE buyer_id=177;
+UPDATE stakloram2022.buyer set buyer_name='UDRUŽENJE GRAĐANA "STAV"' WHERE buyer_id=189;
+UPDATE stakloram2022.buyer set buyer_name='OSNOVNA ŠKOLA "MOŠA PIJADE"' WHERE buyer_id=254;
+UPDATE stakloram2022.buyer set buyer_name='OSNOVNA ŠKOLA "ZDRAVKO ČELAR"' WHERE buyer_id=294;
+UPDATE stakloram2022.buyer set buyer_name='Božinović Nataša' WHERE buyer_id=300;
+UPDATE stakloram2022.buyer set buyer_name='DIV-POLYMER D.O.O.' WHERE buyer_id=301;
+UPDATE stakloram2022.buyer set buyer_name='ŽAK PROFIL' WHERE buyer_id=302;
+UPDATE stakloram2022.buyer set buyer_name='VINARIJA TRI MEĐE I OBLAK' WHERE buyer_id=303;
+UPDATE stakloram2022.buyer set buyer_name='DOM ZDRAVLJA BAČ' WHERE buyer_id=304;
+UPDATE stakloram2022.buyer set buyer_name='LOVAČKI SAVEZ VOJVODINE' WHERE buyer_id=305;
+UPDATE stakloram2022.buyer set buyer_name='PECIC DD INŽENJERING D.O.O.' WHERE buyer_id=306;
+
+INCOME se onda uveze
+LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\incomexxx - incomexxx.csv' 
+INTO TABLE stakloram2022.income 
+FIELDS TERMINATED BY ',' 
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+
+Pa se uveze i work order
+LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\work_orderxxx - work_orderxxx.csv' 
+INTO TABLE stakloram2022.work_order 
+FIELDS TERMINATED BY ',' 
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+
+Pa onda Invoice
+LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\invoicexxx - invoicexxx.csv' 
+INTO TABLE stakloram2022.invoice 
+FIELDS TERMINATED BY ',' 
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+
+Pa onda Invoice item
+LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\invoice_itemxxx - invoice_itemxxx.csv' 
+INTO TABLE stakloram2022.invoice_item
+FIELDS TERMINATED BY ',' 
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n';
+
+Pa tek onda Work order item:
+ali ovo ispocetka...
+
+
+UPDATE stakloram2022.invoice SET invoice.invoice_type='DOMESTIC' WHERE invoice.invoice_type='InvoiceDomestic' AND invoice.invoice_id>0;
+UPDATE stakloram2022.invoice SET invoice.invoice_type='CASH' WHERE invoice.invoice_type='InvoiceDomesticCash' AND invoice.invoice_id>0;
+UPDATE stakloram2022.invoice SET invoice.invoice_type='PRE_INVOICE' WHERE invoice.invoice_type='InvoiceDomesticPre' AND invoice.invoice_id>0;
+UPDATE stakloram2022.invoice SET invoice.invoice_type='FOREIGN' WHERE invoice.invoice_type='InvoiceForeign' AND invoice.invoice_id>0;
+
+UPDATE stakloram2022.invoice_item SET invoice_item.invoice_item_uom='M2' WHERE invoice_item.invoice_item_uom='m2' AND invoice_item.invoice_item_id>0;
+UPDATE stakloram2022.invoice_item SET invoice_item.invoice_item_uom='M' WHERE invoice_item.invoice_item_uom='m' AND invoice_item.invoice_item_id>0;
+UPDATE stakloram2022.invoice_item SET invoice_item.invoice_item_uom='PCS' WHERE invoice_item.invoice_item_uom='kom' AND invoice_item.invoice_item_id>0;
+UPDATE stakloram2022.invoice_item SET invoice_item.invoice_item_uom='HOUR' WHERE invoice_item.invoice_item_uom='cas' AND invoice_item.invoice_item_id>0;
+
+UPDATE stakloram2022.work_order_item SET work_order_item.work_order_item_uom='M2' WHERE work_order_item.work_order_item_uom='m2' AND work_order_item.work_order_item_id>0;
+UPDATE stakloram2022.work_order_item SET work_order_item.work_order_item_uom='M' WHERE work_order_item.work_order_item_uom='m' AND work_order_item.work_order_item_id>0;
+UPDATE stakloram2022.work_order_item SET work_order_item.work_order_item_uom='PCS' WHERE work_order_item.work_order_item_uom='kom' AND work_order_item.work_order_item_id>0;
+UPDATE stakloram2022.work_order_item SET work_order_item.work_order_item_uom='HOUR' WHERE work_order_item.work_order_item_uom='cas' AND work_order_item.work_order_item_id>0;
+
