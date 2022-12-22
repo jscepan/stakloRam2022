@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'src/app/language.service';
+import { SettingsStoreService } from 'src/app/shared/services/settings-store.service';
 
 @Component({
   selector: 'app-auth-layout',
@@ -10,10 +11,8 @@ import { LanguageService } from 'src/app/language.service';
 })
 export class AuthLayoutComponent implements OnInit {
   imageUrl: string = '/src/assets/images/site_logo.png';
-  constructor(
-    private translateService: TranslateService,
-    private languageService: LanguageService
-  ) {}
+
+  constructor() {}
 
   ngOnInit(): void {}
 }
