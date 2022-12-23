@@ -68,7 +68,6 @@
               [formControl]="searchControlCity"
               placeholderLabel="{{ 'searchFor' | translate }}"
               noEntriesFoundLabel="{{ 'noResults' | translate }}"
-              (ngModelChange)="searchHandler($event)"
               [hideClearSearchButton]="true"
               [clearSearchInput]="false"
               [searching]="(isLoading | async) || false"

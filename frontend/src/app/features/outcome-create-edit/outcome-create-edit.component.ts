@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
@@ -6,7 +6,7 @@ import { GlobalService } from 'src/app/shared/services/global.service';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 import { BuyerWebService } from 'src/app/web-services/buyer.web-service';
 import { compareByValue } from 'src/app/shared/utils';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ListEntities } from 'src/app/shared/services/list-entities';
 import { BuyerModel } from 'src/app/shared/models/buyer.model';
 import { SearchModel } from 'src/app/shared/models/search.model';
@@ -14,6 +14,7 @@ import { BaseModel } from 'src/app/shared/models/base-model';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { OutcomeWebService } from 'src/app/web-services/outcome.web-service';
 import { MatSelectChange } from '@angular/material/select';
+import { debounceTime } from 'rxjs/operators';
 
 export interface DialogData {
   oid: string;
@@ -38,6 +39,9 @@ export class OutcomeCreateEditComponent implements OnInit, OnDestroy {
   selectedBuyer?: BuyerModel;
   compareFn: (f1: BaseModel, f2: BaseModel) => boolean = compareByValue;
 
+  private inputSearchControlSubscription!: Subscription;
+  @Input() debounceTime: number = 500;
+
   constructor(
     private dialogRef: MatDialogRef<OutcomeCreateEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -57,6 +61,12 @@ export class OutcomeCreateEditComponent implements OnInit, OnDestroy {
       .requestFirstPage();
 
     this.isEdit ? this.initializeEdit() : this.initializeCreate();
+
+    this.inputSearchControlSubscription = this.searchControl.valueChanges
+      .pipe(debounceTime(this.debounceTime))
+      .subscribe(() => {
+        this.searchHandler(this.searchControl.value);
+      });
   }
 
   initializeCreate(): void {
@@ -140,6 +150,7 @@ export class OutcomeCreateEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.inputSearchControlSubscription.unsubscribe();
     this.subs.unsubscribe();
   }
 }

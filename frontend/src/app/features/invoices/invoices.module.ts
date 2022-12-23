@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [InvoicesComponent],
@@ -31,6 +32,7 @@ import { MatSelectModule } from '@angular/material/select';
     FormsModule,
     MatInputModule,
     MatSelectModule,
+    MatCheckboxModule,
   ],
 })
 export class InvoicesModule {}

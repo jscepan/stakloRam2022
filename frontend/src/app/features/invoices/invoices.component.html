@@ -5,6 +5,26 @@
       [keyword]="keyword"
       (changeEvent)="inputSearchHandler($event)"
     ></app-search-input>
+    <mat-checkbox
+      class="create-buyer-button"
+      [color]="'primary'"
+      [(ngModel)]="showAllInvoices"
+      [ngModelOptions]="{ standalone: true }"
+      (change)="showAllChanged()"
+      >{{ "showAll" | translate }}</mat-checkbox
+    >
+    <mat-form-field class="min-with">
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "showMatured" | translate }}
+      </mat-label>
+      <mat-select (valueChange)="showMaturedChanged($event)">
+        <mat-option value="all">{{ "all" | translate }}</mat-option>
+        <mat-option value="matured">{{ "matured" | translate }}</mat-option>
+        <mat-option value="notMatured">{{
+          "notMatured" | translate
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
     <mat-form-field class="min-with">
       <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
         {{ "fromDate" | translate }}

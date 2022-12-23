@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -31,11 +31,11 @@ import {
 } from 'src/app/shared/utils';
 import { BuyerModel } from 'src/app/shared/models/buyer.model';
 import { ListEntities } from 'src/app/shared/services/list-entities';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { SearchModel } from 'src/app/shared/models/search.model';
 import { BaseModel } from 'src/app/shared/models/base-model';
 import { MatSelectChange } from '@angular/material/select';
-import { map, startWith } from 'rxjs/operators';
+import { debounceTime, map, startWith } from 'rxjs/operators';
 import { WorkOrderWebService } from 'src/app/web-services/work-order.web-service';
 import { WorkOrderModel } from 'src/app/shared/models/work-order';
 import { WorkOrderItemModel } from 'src/app/shared/models/work-order-item';
@@ -91,6 +91,10 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   buyersEntitiesOnChange: Observable<BuyerModel[]> = this.listEntities.entities;
   isLoadingOnChange?: Observable<boolean> = this.listEntities.isLoading;
   searchControlOnChange: FormControl = new FormControl();
+
+  private inputSearchControlSubscription!: Subscription;
+  private inputSearchControlOnChangeSubscription!: Subscription;
+  @Input() debounceTime: number = 500;
 
   getUOMDisplayValue = getUOMDisplayValue;
 
@@ -225,6 +229,19 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
         }
       }
     );
+
+    this.inputSearchControlSubscription = this.searchControl.valueChanges
+      .pipe(debounceTime(this.debounceTime))
+      .subscribe(() => {
+        this.searchHandler(this.searchControl.value);
+      });
+
+    this.inputSearchControlOnChangeSubscription =
+      this.searchControlOnChange.valueChanges
+        .pipe(debounceTime(this.debounceTime))
+        .subscribe(() => {
+          this.searchHandlerOnChange(this.searchControlOnChange.value);
+        });
   }
 
   hasPrivilege(privilege: string): boolean {
@@ -1070,6 +1087,8 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.inputSearchControlSubscription.unsubscribe();
+    this.inputSearchControlOnChangeSubscription.unsubscribe();
     this.subs.unsubscribe();
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -8,7 +8,8 @@ import {
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
 import { BaseModel } from 'src/app/shared/models/base-model';
 import { CountryModel } from 'src/app/shared/models/country.model';
@@ -49,6 +50,8 @@ export class CityCreateEditComponent implements OnInit, OnDestroy {
   compareFn: (f1: BaseModel, f2: BaseModel) => boolean = compareByValue;
   selectedCountry?: CountryModel;
   searchControl: FormControl = new FormControl();
+  private inputSearchControlSubscription!: Subscription;
+  debounceTime: number = 500;
 
   get countryControl(): AbstractControl | null {
     return this.formGroup.get('country');
@@ -75,6 +78,12 @@ export class CityCreateEditComponent implements OnInit, OnDestroy {
       .requestFirstPage();
 
     this.isEdit ? this.initializeEdit() : this.initializeCreate();
+
+    this.inputSearchControlSubscription = this.searchControl.valueChanges
+      .pipe(debounceTime(this.debounceTime))
+      .subscribe(() => {
+        this.searchHandler(this.searchControl.value);
+      });
   }
 
   hasPrivilege(privilege: string): boolean {
@@ -159,6 +168,7 @@ export class CityCreateEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.inputSearchControlSubscription.unsubscribe();
     this.subs.unsubscribe();
   }
 }

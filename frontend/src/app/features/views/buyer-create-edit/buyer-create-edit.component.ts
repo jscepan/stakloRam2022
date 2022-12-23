@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -14,7 +14,7 @@ import { SubscriptionManager } from 'src/app/shared/services/subscription.manage
 import { BuyerWebService } from 'src/app/web-services/buyer.web-service';
 import { BUYER_TYPES, GENDER_TYPES } from 'src/app/shared/constants';
 import { CityWebService } from 'src/app/web-services/city.web-service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { CityCreateEditPopupService } from '../city-create-edit-popup/city-create-edit-popup.service';
 import { CityModel } from 'src/app/shared/models/city.model';
 import { ListEntities } from 'src/app/shared/services/list-entities';
@@ -23,6 +23,7 @@ import { BaseModel } from 'src/app/shared/models/base-model';
 import { compareByValue } from 'src/app/shared/utils';
 import { MatSelectChange } from '@angular/material/select';
 import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
+import { debounceTime } from 'rxjs/operators';
 
 export interface DialogData {
   oid: string;
@@ -54,6 +55,9 @@ export class BuyerCreateEditComponent implements OnInit, OnDestroy {
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
   searchControlCity: FormControl = new FormControl();
   compareFn: (f1: BaseModel, f2: BaseModel) => boolean = compareByValue;
+
+  private inputSearchControlCitySubscription!: Subscription;
+  @Input() debounceTime: number = 500;
 
   get genderControl(): AbstractControl | null {
     return this.formGroup.get('gender');
@@ -88,6 +92,13 @@ export class BuyerCreateEditComponent implements OnInit, OnDestroy {
       .setWebService(this.cityWebService)
       .requestFirstPage();
     this.isEdit ? this.initializeEdit() : this.initializeCreate();
+
+    this.inputSearchControlCitySubscription =
+      this.searchControlCity.valueChanges
+        .pipe(debounceTime(this.debounceTime))
+        .subscribe(() => {
+          this.searchHandler(this.searchControlCity.value);
+        });
   }
 
   hasPrivilege(privilege: string): boolean {
@@ -230,6 +241,7 @@ export class BuyerCreateEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.inputSearchControlCitySubscription.unsubscribe();
     this.subs.unsubscribe();
   }
 }

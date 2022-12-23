@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   Inject,
+  Input,
   OnDestroy,
   OnInit,
 } from '@angular/core';
@@ -13,13 +14,14 @@ import { SubscriptionManager } from 'src/app/shared/services/subscription.manage
 import { BuyerWebService } from 'src/app/web-services/buyer.web-service';
 import { IncomeWebService } from 'src/app/web-services/income.web-service';
 import { compareByValue } from 'src/app/shared/utils';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { ListEntities } from 'src/app/shared/services/list-entities';
 import { BuyerModel } from 'src/app/shared/models/buyer.model';
 import { SearchModel } from 'src/app/shared/models/search.model';
 import { BaseModel } from 'src/app/shared/models/base-model';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
+import { debounceTime } from 'rxjs/operators';
 
 export interface DialogData {
   oid: string;
@@ -46,6 +48,9 @@ export class IncomeCreateEditComponent implements OnInit, OnDestroy {
   selectedBuyer?: BuyerModel;
   compareFn: (f1: BaseModel, f2: BaseModel) => boolean = compareByValue;
 
+  private inputSearchControlSubscription!: Subscription;
+  @Input() debounceTime: number = 500;
+
   constructor(
     private dialogRef: MatDialogRef<IncomeCreateEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -68,6 +73,12 @@ export class IncomeCreateEditComponent implements OnInit, OnDestroy {
     this.isEdit
       ? this.initializeEdit()
       : this.initializeCreate(this.data.buyerOID, this.data.amount);
+
+    this.inputSearchControlSubscription = this.searchControl.valueChanges
+      .pipe(debounceTime(this.debounceTime))
+      .subscribe(() => {
+        this.searchHandler(this.searchControl.value);
+      });
   }
 
   initializeCreate(buyerOID: string, amount: number): void {
@@ -175,6 +186,7 @@ export class IncomeCreateEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.inputSearchControlSubscription.unsubscribe();
     this.subs.unsubscribe();
   }
 }

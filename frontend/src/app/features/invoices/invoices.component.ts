@@ -48,6 +48,8 @@ export class InvoicesComponent implements OnInit, OnDestroy {
 
   searchFilter: SearchModel = new SearchModel();
 
+  showAllInvoices: boolean = false;
+
   constructor(
     private router: Router,
     private globalService: GlobalService,
@@ -91,6 +93,24 @@ export class InvoicesComponent implements OnInit, OnDestroy {
 
   orderBy(order: 'ASC' | 'DESC'): void {
     this.searchFilter.ordering = order;
+    this.listEntities.setFilter(this.searchFilter);
+  }
+
+  showMaturedChanged(_value: 'all' | 'matured' | 'notMatured'): void {
+    this.searchFilter.removeBetweenAttribute('from_matured_date');
+    this.searchFilter.removeBetweenAttribute('to_matured_date');
+    if (_value !== 'all') {
+      const curDate = new Date().toISOString().substring(0, 10);
+      const newBetweenAttribute: BettweenAttribute = {
+        attribute:
+          _value === 'notMatured' ? 'from_matured_date' : 'to_matured_date',
+        attributeValue: curDate,
+        attributeType: 'DATE',
+        type: _value === 'notMatured' ? 'GREATER' : 'SMALLER_OR_EQUAL',
+      };
+
+      this.searchFilter.addBetweenAttribute(newBetweenAttribute);
+    }
     this.listEntities.setFilter(this.searchFilter);
   }
 
@@ -212,6 +232,12 @@ export class InvoicesComponent implements OnInit, OnDestroy {
         break;
     }
     return sum;
+  }
+
+  showAllChanged(): void {
+    this.showAllInvoices
+      ? (this.listEntities.numberOfItemsOnPage = 10000)
+      : this.listEntities.resetNumberOfItemsOnPage();
   }
 
   ngOnDestroy(): void {

@@ -18,7 +18,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BuyerCreateEditPopupService } from '@features/views/buyer-create-edit/buyer-create-edit-popup.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
 import { UOM_TYPES } from 'src/app/shared/constants';
 import { EnumValueModel } from 'src/app/shared/enums/enum.model';
@@ -42,7 +42,7 @@ import {
 } from 'src/app/shared/utils';
 import { BuyerWebService } from 'src/app/web-services/buyer.web-service';
 import { WorkOrderWebService } from 'src/app/web-services/work-order.web-service';
-import { map, startWith } from 'rxjs/operators';
+import { debounceTime, map, startWith } from 'rxjs/operators';
 import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 import { ImageWebService } from 'src/app/web-services/image.web-service';
 import { ImageModel } from 'src/app/shared/models/image.model';
@@ -128,6 +128,10 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   isLoadingOnChange?: Observable<boolean> = this.listEntities.isLoading;
   searchControlOnChange: FormControl = new FormControl();
 
+  private inputSearchControlSubscription!: Subscription;
+  private inputSearchControlOnChangeSubscription!: Subscription;
+  @Input() debounceTime: number = 500;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -176,6 +180,19 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
         }
       }
     );
+
+    this.inputSearchControlSubscription = this.searchControl.valueChanges
+      .pipe(debounceTime(this.debounceTime))
+      .subscribe(() => {
+        this.searchHandler(this.searchControl.value);
+      });
+
+    this.inputSearchControlOnChangeSubscription =
+      this.searchControlOnChange.valueChanges
+        .pipe(debounceTime(this.debounceTime))
+        .subscribe(() => {
+          this.searchHandlerOnChange(this.searchControlOnChange.value);
+        });
   }
 
   hasPrivilege(privilege: string): boolean {
@@ -715,6 +732,8 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.inputSearchControlSubscription.unsubscribe();
+    this.inputSearchControlOnChangeSubscription.unsubscribe();
     this.subs.unsubscribe();
   }
 }

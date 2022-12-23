@@ -60,6 +60,8 @@ public class InvoiceBuilder extends BaseBuilder {
         this.databaseColumnsForAdvanceFilter.put("buyer", "invoice_buyer_buyer_id");
         this.databaseColumnsForAttributes.put("from_date", "date_of_create");
         this.databaseColumnsForAttributes.put("to_date", "date_of_create");
+        this.databaseColumnsForAttributes.put("from_matured_date", "date_of_maturity");
+        this.databaseColumnsForAttributes.put("to_matured_date", "date_of_maturity");
     }
 
     @Override

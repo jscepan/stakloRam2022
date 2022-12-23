@@ -30,6 +30,16 @@ export class ListEntities<T extends BaseModel> {
     return this.NUMBER_OF_ITEMS_ON_PAGE;
   }
 
+  set numberOfItemsOnPage(value: number) {
+    this.NUMBER_OF_ITEMS_ON_PAGE = value;
+    this.requestFirstPage();
+  }
+
+  public resetNumberOfItemsOnPage(): void {
+    this.NUMBER_OF_ITEMS_ON_PAGE = 50;
+    this.requestFirstPage();
+  }
+
   public constructor() {}
 
   public setWebService(webService: EntityBaseWebService<T>): ListEntities<T> {
