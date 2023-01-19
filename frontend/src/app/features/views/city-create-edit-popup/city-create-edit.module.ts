@@ -13,20 +13,19 @@ import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
-  declarations: [CityCreateEditComponent],
-  imports: [
-    CommonModule,
-    TranslateModule,
-    IconsModule,
-    ButtonModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
-    MatSelectModule,
-    MatSelectInfiniteScrollModule,
-    NgxMatSelectSearchModule,
-  ],
-  entryComponents: [CityCreateEditComponent],
+    declarations: [CityCreateEditComponent],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        IconsModule,
+        ButtonModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatAutocompleteModule,
+        MatSelectModule,
+        MatSelectInfiniteScrollModule,
+        NgxMatSelectSearchModule,
+    ]
 })
 export class CityCreateEditModule {}

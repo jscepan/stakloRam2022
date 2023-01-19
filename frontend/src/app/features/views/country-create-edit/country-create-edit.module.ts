@@ -10,17 +10,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
 
 @NgModule({
-  declarations: [CountryCreateEditComponent],
-  imports: [
-    CommonModule,
-    TranslateModule,
-    IconsModule,
-    ButtonModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatSelectModule,
-  ],
-  entryComponents: [CountryCreateEditComponent],
+    declarations: [CountryCreateEditComponent],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        IconsModule,
+        ButtonModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatSelectModule,
+    ]
 })
 export class CountryCreateEditModule {}

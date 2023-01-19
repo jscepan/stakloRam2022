@@ -15,22 +15,21 @@ import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
-  declarations: [BuyerCreateEditComponent],
-  imports: [
-    CommonModule,
-    TranslateModule,
-    IconsModule,
-    ButtonModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatDialogModule,
-    MatAutocompleteModule,
-    ScrollToBottomModule,
-    MatSelectInfiniteScrollModule,
-    NgxMatSelectSearchModule,
-  ],
-  entryComponents: [BuyerCreateEditComponent],
+    declarations: [BuyerCreateEditComponent],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        IconsModule,
+        ButtonModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatDialogModule,
+        MatAutocompleteModule,
+        ScrollToBottomModule,
+        MatSelectInfiniteScrollModule,
+        NgxMatSelectSearchModule,
+    ]
 })
 export class BuyerCreateEditModule {}

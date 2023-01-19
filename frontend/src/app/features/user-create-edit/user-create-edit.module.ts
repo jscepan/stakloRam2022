@@ -11,18 +11,17 @@ import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
-  declarations: [UserCreateEditComponent],
-  imports: [
-    CommonModule,
-    TranslateModule,
-    IconsModule,
-    ButtonModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatTooltipModule,
-  ],
-  entryComponents: [UserCreateEditComponent],
+    declarations: [UserCreateEditComponent],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        IconsModule,
+        ButtonModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatTooltipModule,
+    ]
 })
 export class UserCreateEditModule {}

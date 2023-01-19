@@ -12,20 +12,19 @@ import { WorkOrderSelectionItemModule } from './work-order-selection-item/work-o
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
-  declarations: [WorkOrderSelectionPopupComponent],
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    ButtonModule,
-    TranslateModule,
-    SearchInputModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    ScrollToBottomModule,
-    WorkOrderSelectionItemModule,
-    MatProgressSpinnerModule,
-  ],
-  exports: [WorkOrderSelectionPopupComponent],
-  entryComponents: [WorkOrderSelectionPopupComponent],
+    declarations: [WorkOrderSelectionPopupComponent],
+    imports: [
+        CommonModule,
+        MatDialogModule,
+        ButtonModule,
+        TranslateModule,
+        SearchInputModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        ScrollToBottomModule,
+        WorkOrderSelectionItemModule,
+        MatProgressSpinnerModule,
+    ],
+    exports: [WorkOrderSelectionPopupComponent]
 })
 export class WorkOrderSelectionPopupModule {}

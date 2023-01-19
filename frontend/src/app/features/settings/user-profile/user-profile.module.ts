@@ -11,18 +11,17 @@ import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { UserProfileRoutingModule } from './user-profile-routing.module';
 
 @NgModule({
-  declarations: [UserProfileComponent],
-  imports: [
-    CommonModule,
-    UserProfileRoutingModule,
-    TranslateModule,
-    IconsModule,
-    ButtonModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatSelectModule,
-  ],
-  entryComponents: [UserProfileComponent],
+    declarations: [UserProfileComponent],
+    imports: [
+        CommonModule,
+        UserProfileRoutingModule,
+        TranslateModule,
+        IconsModule,
+        ButtonModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatSelectModule,
+    ]
 })
 export class UserProfileModule {}

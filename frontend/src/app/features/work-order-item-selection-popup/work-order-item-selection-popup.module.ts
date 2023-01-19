@@ -13,21 +13,20 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [WorkOrderItemSelectionPopupComponent],
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    ButtonModule,
-    TranslateModule,
-    SearchInputModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    ScrollToBottomModule,
-    IconsModule,
-    MatCheckboxModule,
-    FormsModule,
-  ],
-  exports: [WorkOrderItemSelectionPopupComponent],
-  entryComponents: [WorkOrderItemSelectionPopupComponent],
+    declarations: [WorkOrderItemSelectionPopupComponent],
+    imports: [
+        CommonModule,
+        MatDialogModule,
+        ButtonModule,
+        TranslateModule,
+        SearchInputModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        ScrollToBottomModule,
+        IconsModule,
+        MatCheckboxModule,
+        FormsModule,
+    ],
+    exports: [WorkOrderItemSelectionPopupComponent]
 })
 export class WorkOrderItemSelectionPopupModule {}

@@ -11,18 +11,17 @@ import { PasswordChangeComponent } from './password-change.component';
 import { PasswordChangeRoutingModule } from './password-change-routing.module';
 
 @NgModule({
-  declarations: [PasswordChangeComponent],
-  imports: [
-    CommonModule,
-    PasswordChangeRoutingModule,
-    TranslateModule,
-    IconsModule,
-    ButtonModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatSelectModule,
-  ],
-  entryComponents: [PasswordChangeComponent],
+    declarations: [PasswordChangeComponent],
+    imports: [
+        CommonModule,
+        PasswordChangeRoutingModule,
+        TranslateModule,
+        IconsModule,
+        ButtonModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatSelectModule,
+    ]
 })
 export class PasswordChangeModule {}
