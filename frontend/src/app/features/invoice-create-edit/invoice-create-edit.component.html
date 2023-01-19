@@ -627,6 +627,12 @@
       class="cancel"
     ></app-button>
     <app-button
+      [text]="'generateXMLFile' | translate"
+      [disabled]="formGroup.invalid"
+      class="update"
+      (clickEvent)="generateXMLFile()"
+    ></app-button>
+    <app-button
       [text]="'save' | translate"
       [disabled]="!formGroup.dirty || formGroup.invalid"
       class="update"

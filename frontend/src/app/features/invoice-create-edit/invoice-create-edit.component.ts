@@ -48,6 +48,7 @@ import {
   SweetAlertI,
   SweetAlertTypeEnum,
 } from 'src/app/shared/components/sweet-alert/sweet-alert.interface';
+import { EInvoiceService } from 'src/app/shared/services/e-invoice.service';
 
 @Component({
   selector: 'app-invoice-create-edit',
@@ -156,7 +157,8 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     private workOrderSelectionComponentService: WorkOrderSelectionComponentService,
     private workOrderItemSelectionComponentService: WorkOrderItemSelectionComponentService,
     private sweetAlertService: SweetAlertService,
-    private authStoreService: AuthStoreService
+    private authStoreService: AuthStoreService,
+    private eInvoiceService: EInvoiceService
   ) {}
 
   ngOnInit(): void {
@@ -1084,6 +1086,41 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
 
   removeNote(index: number): void {
     this.notesFormArr.removeAt(index);
+  }
+
+  generateXMLFile(): void {
+    const xmlInvoice: string = this.eInvoiceService.generateXMLForInvoice(
+      this.formGroup.value
+    );
+
+    this.saveTextAsFile(
+      xmlInvoice,
+      'XML_' +
+        this.translateService.instant('invoiceNumber') +
+        '_' +
+        this.formGroup.get('number')?.value || ''
+    );
+  }
+
+  saveTextAsFile(data: string, filename: string) {
+    if (!data) {
+      console.error('Console.save: No data');
+      return;
+    }
+
+    if (!filename) filename = 'console.json';
+
+    var blob = new Blob([data], { type: 'text/plain' }),
+      e = document.createEvent('MouseEvents'),
+      a = document.createElement('a');
+    var e = document.createEvent('MouseEvents'),
+      a = document.createElement('a');
+
+    a.download = filename;
+    a.href = window.URL.createObjectURL(blob);
+    a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
+    e.initEvent('click', true, false);
+    a.dispatchEvent(e);
   }
 
   ngOnDestroy(): void {

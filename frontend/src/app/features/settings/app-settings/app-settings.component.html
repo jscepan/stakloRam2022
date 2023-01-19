@@ -457,6 +457,38 @@
           <input type="text" matInput formControlName="qrCodePayingPurpose" />
         </mat-form-field>
       </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ "eInvoiceSettings" | translate }}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ "eInvoiceSettingsDescription" | translate }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "xxxx" | translate }}
+          </mat-label>
+          <mat-select matSelect formControlName="xxxx">
+            <mat-option [value]="true">{{ "yes" | translate }}</mat-option>
+            <mat-option [value]="false">{{ "no" | translate }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "yyyy" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="yyyy" />
+        </mat-form-field>
+      </mat-expansion-panel>
     </mat-accordion>
   </form>
   <div class="button-section" *ngIf="formGroup">
