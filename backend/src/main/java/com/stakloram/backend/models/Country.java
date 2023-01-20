@@ -3,6 +3,7 @@ package com.stakloram.backend.models;
 public class Country extends BaseModel {
 
     private String description;
+    private String identificationCode;
 
     public Country() {
     }
@@ -15,9 +16,21 @@ public class Country extends BaseModel {
         super(id);
     }
 
-    public Country(String description, String oid) {
+    public Country(String description, String identificationCode) {
+        this.description = description;
+        this.identificationCode = identificationCode;
+    }
+
+    public Country(String description, String identificationCode, String oid) {
         super(oid);
         this.description = description;
+        this.identificationCode = identificationCode;
+    }
+
+    public Country(String description, String identificationCode, Long id) {
+        super(id);
+        this.description = description;
+        this.identificationCode = identificationCode;
     }
 
     public String getDescription() {
@@ -28,8 +41,16 @@ public class Country extends BaseModel {
         this.description = description;
     }
 
+    public String getIdentificationCode() {
+        return identificationCode;
+    }
+
+    public void setIdentificationCode(String identificationCode) {
+        this.identificationCode = identificationCode;
+    }
+
     @Override
     public String toString() {
-        return "Country{" + "description=" + description + '}';
+        return "Country{" + "description=" + description + ", identificationCode=" + identificationCode + '}';
     }
 }

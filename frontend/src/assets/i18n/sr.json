@@ -141,6 +141,7 @@
   "fromDate": "Od datuma",
   "fullName": "Puno ime",
   "gender": "Pol",
+  "generateXMLFile":"Generiši XML file",
   "goodsGiveBy": "Robu izdao",
   "goodsInvoiceGiveBy": "Robu i račun izdao",
   "goodsTakenBy": "Robu primio",

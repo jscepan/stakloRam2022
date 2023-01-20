@@ -21,7 +21,10 @@ public class CountryService extends ServiceModel {
     public void checkRequestDataForCreate(BaseModel baseModel) throws SException {
         Country object = (Country) baseModel;
         if (DataChecker.isNull(object.getDescription()) || object.getDescription().trim().isEmpty()) {
-            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData")+" - "+UserMessage.getLocalizedMessage("description"));
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("description"));
+        }
+        if (DataChecker.isNull(object.getIdentificationCode()) || object.getIdentificationCode().trim().isEmpty()) {
+            throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("identificationCode"));
         }
     }
 }

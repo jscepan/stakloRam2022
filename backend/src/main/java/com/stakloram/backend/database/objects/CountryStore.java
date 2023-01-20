@@ -23,8 +23,9 @@ public class CountryStore extends ObjectStore {
     public Country createNewObjectToDatabase(BaseModel model) throws SQLException {
         Country object = (Country) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getDescription());
+        st.setString(++i, object.getIdentificationCode());
 
         if (st.executeUpdate() > 0) {
             ResultSet rs = st.getGeneratedKeys();
@@ -40,7 +41,8 @@ public class CountryStore extends ObjectStore {
         Country object = (Country) model;
         int i = 0;
         PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
-                + this.getTableName() + "_description=?"
+                + this.getTableName() + "_description=?, "
+                + this.getTableName() + "_identification_code=?"
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setString(++i, object.getDescription());
         st.setLong(++i, BaseModel.getIdFromOid(oid));
@@ -54,6 +56,7 @@ public class CountryStore extends ObjectStore {
     public Country getObjectFromResultSet(ResultSet resultSet) throws SQLException {
         Country object = new Country(resultSet.getLong(this.getPrimaryKey()));
         object.setDescription(resultSet.getString(this.getTableName() + "_description"));
+        object.setIdentificationCode(resultSet.getString(this.getTableName() + "_identification_code"));
         return object;
     }
 }

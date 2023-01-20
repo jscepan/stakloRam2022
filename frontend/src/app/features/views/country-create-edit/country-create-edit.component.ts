@@ -32,6 +32,9 @@ export class CountryCreateEditComponent implements OnInit, OnDestroy {
   get descriptionControl(): AbstractControl | null {
     return this.formGroup.get('description');
   }
+  get identificationCodeControl(): AbstractControl | null {
+    return this.formGroup.get('identificationCode');
+  }
 
   constructor(
     private dialogRef: MatDialogRef<CountryCreateEditComponent>,
@@ -50,6 +53,7 @@ export class CountryCreateEditComponent implements OnInit, OnDestroy {
   initializeCreate(): void {
     this.formGroup = new FormGroup({
       description: new FormControl('', [Validators.required]),
+      identificationCode: new FormControl('', [Validators.required]),
     });
   }
 
@@ -58,6 +62,9 @@ export class CountryCreateEditComponent implements OnInit, OnDestroy {
       if (country) {
         this.formGroup = new FormGroup({
           description: new FormControl(country.description, [
+            Validators.required,
+          ]),
+          identificationCode: new FormControl(country.identificationCode, [
             Validators.required,
           ]),
         });

@@ -141,6 +141,7 @@
   "fromDate": "From date",
   "fullName": "Full name",
   "gender": "Gender",
+  "generateXMLFile": "Generate XML file",
   "goodsGiveBy": "Goods give by",
   "goodsInvoiceGiveBy": "Goods and invoice give by",
   "goodsTakenBy": "Goods taken by",

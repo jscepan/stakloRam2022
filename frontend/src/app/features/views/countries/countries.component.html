@@ -20,6 +20,9 @@
     (bottomReached)="bottomReachedHandler()"
   >
     <div class="grid-item header sticky">{{ "description" | translate }}</div>
+    <div class="grid-item header sticky">
+      {{ "identCode" | translate }}
+    </div>
     <div class="grid-item header sticky">{{ "edit" | translate }}</div>
     <div
       class="no-results"
@@ -32,6 +35,7 @@
     </div>
     <ng-container *ngFor="let item of entities | async">
       <div class="grid-item">{{ item.description }}</div>
+      <div class="grid-item">{{ item.identificationCode }}</div>
       <div class="grid-item">
         <app-button
           [text]="'edit' | translate"

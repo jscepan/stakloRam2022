@@ -11,6 +11,12 @@
       </mat-label>
       <input matInput formControlName="description" />
     </mat-form-field>
+    <mat-form-field>
+      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
+        {{ "identCode" | translate }}
+      </mat-label>
+      <input matInput formControlName="identificationCode" />
+    </mat-form-field>
 
     <div class="button-section">
       <app-button
