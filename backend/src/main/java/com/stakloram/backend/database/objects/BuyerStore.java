@@ -25,7 +25,7 @@ public class BuyerStore extends ObjectStore {
     public Buyer createNewObjectToDatabase(BaseModel model) throws SQLException {
         Buyer object = (Buyer) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getType().name());
         st.setString(++i, object.getName());
         st.setString(++i, object.getAddress());
@@ -38,6 +38,7 @@ public class BuyerStore extends ObjectStore {
         st.setString(++i, object.getGender() == null ? null : object.getGender().name());
         st.setLong(++i, object.getCity().getId());
         st.setString(++i, object.getJbkjs());
+        st.setString(++i, object.getAccount());
 
         if (st.executeUpdate() > 0) {
             ResultSet rs = st.getGeneratedKeys();
@@ -64,7 +65,8 @@ public class BuyerStore extends ObjectStore {
                 + this.getTableName() + "_email=?,"
                 + this.getTableName() + "_gender=?,"
                 + this.getTableName() + "_city_city_id=?,"
-                + this.getTableName() + "_jbkjs=?"
+                + this.getTableName() + "_jbkjs=?,"
+                + this.getTableName() + "_account=?"
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setString(++i, object.getType().name());
         st.setString(++i, object.getName());
@@ -78,6 +80,7 @@ public class BuyerStore extends ObjectStore {
         st.setString(++i, object.getGender() == null ? null : object.getGender().name());
         st.setLong(++i, object.getCity().getId());
         st.setString(++i, object.getJbkjs());
+        st.setString(++i, object.getAccount());
         st.setLong(++i, BaseModel.getIdFromOid(oid));
         if (st.executeUpdate() > 0) {
             return object;
@@ -100,6 +103,7 @@ public class BuyerStore extends ObjectStore {
         object.setGender(resultSet.getString(this.getTableName() + "_gender") == null ? null : Buyer.GenderType.valueOf(resultSet.getString(this.getTableName() + "_gender")));
         object.setCity(new City(resultSet.getLong(this.getTableName() + "_city_city_id")));
         object.setJbkjs(resultSet.getString(this.getTableName() + "_jbkjs"));
+        object.setAccount(resultSet.getString(this.getTableName() + "_account"));
         return object;
     }
 }

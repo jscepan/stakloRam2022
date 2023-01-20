@@ -45,6 +45,7 @@ public class CountryStore extends ObjectStore {
                 + this.getTableName() + "_identification_code=?"
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setString(++i, object.getDescription());
+        st.setString(++i, object.getIdentificationCode());
         st.setLong(++i, BaseModel.getIdFromOid(oid));
         if (st.executeUpdate() > 0) {
             return object;

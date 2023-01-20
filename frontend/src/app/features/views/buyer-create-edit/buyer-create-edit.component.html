@@ -126,6 +126,17 @@
           [class.mark-required]="true"
           [class.mark-opt-required]="true"
         >
+          {{ "account" | translate }}
+        </mat-label>
+        <input matInput formControlName="account" />
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
           {{ "email" | translate }}
         </mat-label>
         <input matInput formControlName="email" />
@@ -149,7 +160,6 @@
         <input matInput formControlName="contactPerson" />
       </mat-form-field>
     </div>
-
     <div class="row">
       <mat-form-field>
         <mat-label

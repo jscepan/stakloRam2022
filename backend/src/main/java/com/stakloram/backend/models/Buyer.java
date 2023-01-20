@@ -17,6 +17,7 @@ public class Buyer extends BaseModel {
     private GenderType gender;
     private City city;
     private String jbkjs;
+    private String account;
 
     public Buyer() {
     }
@@ -29,7 +30,7 @@ public class Buyer extends BaseModel {
         super(id);
     }
 
-    public Buyer(BuyerType type, String name, String address, String maticalNumber, String pib, String contactPerson, String phoneNumberFix, String phoneNumberMobile, String email, GenderType gender, City city, String jbkjs, String oid) {
+    public Buyer(BuyerType type, String name, String address, String maticalNumber, String pib, String contactPerson, String phoneNumberFix, String phoneNumberMobile, String email, GenderType gender, City city, String jbkjs, String account, String oid) {
         super(oid);
         this.type = type;
         this.name = name;
@@ -43,9 +44,10 @@ public class Buyer extends BaseModel {
         this.gender = gender;
         this.city = city;
         this.jbkjs = jbkjs;
+        this.account = account;
     }
 
-    public Buyer(BuyerType type, String name, String address, String maticalNumber, String pib, String contactPerson, String phoneNumberFix, String phoneNumberMobile, String email, GenderType gender, City city, String jbkjs, Long id) {
+    public Buyer(BuyerType type, String name, String address, String maticalNumber, String pib, String contactPerson, String phoneNumberFix, String phoneNumberMobile, String email, GenderType gender, City city, String jbkjs, String account, Long id) {
         super(id);
         this.type = type;
         this.name = name;
@@ -59,6 +61,7 @@ public class Buyer extends BaseModel {
         this.gender = gender;
         this.city = city;
         this.jbkjs = jbkjs;
+        this.account = account;
     }
 
     public BuyerType getType() {
@@ -157,9 +160,17 @@ public class Buyer extends BaseModel {
         this.jbkjs = jbkjs;
     }
 
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
     @Override
     public String toString() {
-        return "Buyer{" + "type=" + type + ", name=" + name + ", address=" + address + ", maticalNumber=" + maticalNumber + ", pib=" + pib + ", contactPerson=" + contactPerson + ", phoneNumberFix=" + phoneNumberFix + ", phoneNumberMobile=" + phoneNumberMobile + ", email=" + email + ", gender=" + gender + ", city=" + city + ", jbkjs=" + jbkjs + '}';
+        return "Buyer{" + "type=" + type + ", name=" + name + ", address=" + address + ", maticalNumber=" + maticalNumber + ", pib=" + pib + ", contactPerson=" + contactPerson + ", phoneNumberFix=" + phoneNumberFix + ", phoneNumberMobile=" + phoneNumberMobile + ", email=" + email + ", gender=" + gender + ", city=" + city + ", jbkjs=" + jbkjs + ", account=" + account + '}';
     }
 
     public enum BuyerType {

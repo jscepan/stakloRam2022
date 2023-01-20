@@ -18,7 +18,7 @@
     <div class="grid-container standard-grid-table">
       <div class="grid-item header sticky">{{ "type" | translate }}</div>
       <div class="grid-item header sticky">{{ "name" | translate }}</div>
-      <div class="grid-item header sticky">{{ "address" | translate }}</div>
+      <div class="grid-item header sticky">{{ "account" | translate }}</div>
       <div class="grid-item header sticky">
         {{ "maticalNumber" | translate }}
       </div>
@@ -40,7 +40,7 @@
           {{ item.type || "" | lowercase | translate }}
         </div>
         <div class="grid-item center">{{ item.name }}</div>
-        <div class="grid-item center">{{ item.address }}</div>
+        <div class="grid-item center">{{ item.account }}</div>
         <div class="grid-item">{{ item.maticalNumber }}</div>
         <div class="grid-item">{{ item.pib }}</div>
         <div class="grid-item">{{ item.email }}</div>

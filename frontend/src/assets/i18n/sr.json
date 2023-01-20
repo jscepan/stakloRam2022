@@ -1,5 +1,6 @@
 {
   "accessDenied": "Nedozvoljeno",
+  "account": "Broj tekućeg računa",
   "accountNumber": "Broj tekućeg računa (18 karaktera bez drugih znakova - samo cifre)",
   "action": "Akcija",
   "activate": "Aktiviraj",
@@ -141,7 +142,7 @@
   "fromDate": "Od datuma",
   "fullName": "Puno ime",
   "gender": "Pol",
-  "generateXMLFile":"Generiši XML file",
+  "generateXMLFile": "Generiši XML file",
   "goodsGiveBy": "Robu izdao",
   "goodsInvoiceGiveBy": "Robu i račun izdao",
   "goodsTakenBy": "Robu primio",
@@ -157,6 +158,7 @@
   "historyViewPrivilege": "Istorijat - vidi",
   "hour": "Sat",
   "identCode": "Identifikacioni kod",
+  "identificationCode": "Identifikacioni kod",
   "import": "Uvezi",
   "importFromAdvanceInvoice": "Uvezi sa avansnog računa",
   "importFromPreInvoice": "Uvezi sa predračuna",

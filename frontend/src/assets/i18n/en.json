@@ -1,5 +1,6 @@
 {
   "accessDenied": "Access denied",
+  "account": "Account number",
   "accountNumber": "Account number (18 characters without any other signs - only numbers)",
   "action": "Action",
   "activate": "Activate",
@@ -157,6 +158,7 @@
   "historyViewPrivilege": "History - view",
   "hour": "Hour",
   "identCode": "Identification code",
+  "identificationCode": "Identification code",
   "import": "Import",
   "importFromAdvanceInvoice": "Import from advance invoice",
   "importFromPreInvoice": "Import from pre-invoice",

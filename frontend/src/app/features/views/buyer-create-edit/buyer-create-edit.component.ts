@@ -119,6 +119,7 @@ export class BuyerCreateEditComponent implements OnInit, OnDestroy {
       email: new FormControl('', [Validators.email]),
       city: new FormControl('', [Validators.required]),
       jbkjs: new FormControl('', []),
+      account: new FormControl('', []),
     });
     this.typeChangeHandler(this.formGroup.get('type')?.value);
   }
@@ -138,6 +139,7 @@ export class BuyerCreateEditComponent implements OnInit, OnDestroy {
             email: new FormControl(buyer.email, [Validators.email]),
             city: new FormControl(buyer.city, [Validators.required]),
             jbkjs: new FormControl(buyer.jbkjs, []),
+            account: new FormControl(buyer.account, []),
           });
           this.selectedCity = buyer.city;
           this.typeChangeHandler(

@@ -16,4 +16,5 @@ export class BuyerModel extends BaseModel {
   @Type(() => CityModel)
   city?: CityModel;
   jbkjs?: string;
+  account?: string;
 }

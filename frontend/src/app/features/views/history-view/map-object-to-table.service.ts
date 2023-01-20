@@ -207,6 +207,7 @@ export function mapBuyerToTable(): Map<
     propertyName: 'phoneNumberMobile',
   });
   map.set('jbkjs', { type: DataType.STRING, propertyName: 'jbkjs' });
+  map.set('account', { type: DataType.STRING, propertyName: 'account' });
   return map;
 }
 
@@ -233,6 +234,10 @@ export function mapCountryToTable(): Map<
   map.set('description', {
     type: DataType.STRING,
     propertyName: 'description',
+  });
+  map.set('identificationCode', {
+    type: DataType.STRING,
+    propertyName: 'identificationCode',
   });
   return map;
 }
