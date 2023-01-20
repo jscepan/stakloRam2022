@@ -15,6 +15,8 @@ export class EInvoiceService {
       case 'DOMESTIC':
         // regular invoice
         const object: InvoiceXML = this.generateXMLForRegularInvoice(invoice);
+        console.log('object');
+        console.log(object);
         // invoice without VAT
         // invoice for public procurement
         // final invoice
@@ -27,7 +29,6 @@ export class EInvoiceService {
   }
 
   private generateXMLForRegularInvoice(invoice: InvoiceModel): InvoiceXML {
-    let xmlText: string = '';
     // TODO
     let invoiceXML: InvoiceXML = new InvoiceXML();
     invoiceXML.ID = invoice.number;
@@ -127,7 +128,7 @@ export class EInvoiceService {
         },
       });
     });
-    return xmlText;
+    return invoiceXML;
   }
 
   private generateXMLForAdvanceInvoice(invoice: InvoiceModel): string {
