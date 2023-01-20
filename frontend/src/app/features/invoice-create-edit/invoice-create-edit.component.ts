@@ -63,6 +63,7 @@ import { EInvoiceService } from 'src/app/shared/services/e-invoice.service';
     WorkOrderWebService,
     WorkOrderSelectionComponentService,
     WorkOrderItemSelectionComponentService,
+    EInvoiceService,
   ],
 })
 export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
@@ -1089,17 +1090,16 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   }
 
   generateXMLFile(): void {
-    const xmlInvoice: string = this.eInvoiceService.generateXMLForInvoice(
+    const xmlInvoice: string = this.eInvoiceService.getXMLForInvoice(
       this.formGroup.value
     );
-
-    this.saveTextAsFile(
-      xmlInvoice,
+    const fileName: string =
       'XML_' +
         this.translateService.instant('invoiceNumber') +
         '_' +
-        this.formGroup.get('number')?.value || ''
-    );
+        this.formGroup.get('number')?.value || '';
+
+    this.saveTextAsFile(xmlInvoice, fileName);
   }
 
   saveTextAsFile(data: string, filename: string) {
