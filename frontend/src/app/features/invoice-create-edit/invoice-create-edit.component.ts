@@ -1090,38 +1090,46 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   }
 
   generateXMLFile(): void {
-    const xmlInvoice: string = this.eInvoiceService.getXMLForInvoice(
-      this.formGroup.value
-    );
-    const fileName: string =
-      'XML_' +
-        this.translateService.instant('invoiceNumber') +
-        '_' +
-        this.formGroup.get('number')?.value || '';
-
-    this.saveTextAsFile(xmlInvoice, fileName);
-  }
-
-  saveTextAsFile(data: string, filename: string) {
-    if (!data) {
-      console.error('Console.save: No data');
-      return;
+    if (this.invoiceOID) {
+      this.subs.sink = this.webService
+        .getXMLForInvoice(this.invoiceOID)
+        .subscribe((invoiceXML) => {
+          console.log('invoiceXML');
+          console.log(invoiceXML);
+        });
     }
+    // const xmlInvoice: string = this.eInvoiceService.getXMLForInvoice(
+    //   this.formGroup.value
+    // );
+    // const fileName: string =
+    //   'XML_' +
+    //     this.translateService.instant('invoiceNumber') +
+    //     '_' +
+    //     this.formGroup.get('number')?.value || '';
 
-    if (!filename) filename = 'console.json';
-
-    var blob = new Blob([data], { type: 'text/plain' }),
-      e = document.createEvent('MouseEvents'),
-      a = document.createElement('a');
-    var e = document.createEvent('MouseEvents'),
-      a = document.createElement('a');
-
-    a.download = filename;
-    a.href = window.URL.createObjectURL(blob);
-    a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
-    e.initEvent('click', true, false);
-    a.dispatchEvent(e);
+    // this.saveTextAsFile(xmlInvoice, fileName);
   }
+
+  // saveTextAsFile(data: string, filename: string) {
+  //   if (!data) {
+  //     console.error('Console.save: No data');
+  //     return;
+  //   }
+
+  //   if (!filename) filename = 'console.json';
+
+  //   var blob = new Blob([data], { type: 'text/plain' }),
+  //     e = document.createEvent('MouseEvents'),
+  //     a = document.createElement('a');
+  //   var e = document.createEvent('MouseEvents'),
+  //     a = document.createElement('a');
+
+  //   a.download = filename;
+  //   a.href = window.URL.createObjectURL(blob);
+  //   a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
+  //   e.initEvent('click', true, false);
+  //   a.dispatchEvent(e);
+  // }
 
   ngOnDestroy(): void {
     this.inputSearchControlSubscription.unsubscribe();

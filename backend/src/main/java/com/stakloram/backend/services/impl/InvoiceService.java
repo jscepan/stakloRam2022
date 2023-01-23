@@ -164,4 +164,9 @@ public class InvoiceService extends ServiceModel {
             throw new SException(UserMessage.getLocalizedMessage("wrongAmountOfAdvancePayAmount") + " - " + UserMessage.getLocalizedMessage("amount"));
         }
     }
+
+    public String getXMLForInvoice(String invoiceOID) throws SException {
+        return ((InvoiceBuilder) this.baseBuilder).getXMLForInvoice(invoiceOID);
+    }
+
 }

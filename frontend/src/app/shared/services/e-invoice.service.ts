@@ -33,7 +33,7 @@ export class EInvoiceService {
     let invoiceXML: InvoiceXML = new InvoiceXML();
     invoiceXML.ID = invoice.number;
     invoiceXML.IssueDate = invoice.dateOfCreate + '';
-    invoiceXML.IssueDate = invoice.dateOfMaturity + '';
+    invoiceXML.DueDate = invoice.dateOfMaturity + '';
     invoiceXML.InvoiceTypeCode = '380';
     invoiceXML.DocumentCurrencyCode = invoice.currency;
     invoiceXML.InvoicePeriod = { DescriptionCode: '35' };

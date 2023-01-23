@@ -37,4 +37,10 @@ export class InvoiceWebService extends EntityBaseWebService<InvoiceModel> {
       }/change-buyer?invoiceOID=${invoiceOID}&buyerOID=${buyerOID}`
     );
   }
+
+  public getXMLForInvoice(invoiceOID: string): Observable<string> {
+    return this.baseWebService.getRequest(
+      `${BASE_API_URL + '/' + this.domainName}/getXML/` + invoiceOID
+    );
+  }
 }

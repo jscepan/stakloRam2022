@@ -61,4 +61,9 @@ public class InvoiceController {
     public boolean delete(@RequestBody List<Invoice> objects) throws SException {
         return invoiceService.deleteObjects(objects);
     }
+
+    @RequestMapping("/invoices/getXML/{invoiceOid}")
+    public String getXMLForInvoice(@PathVariable String invoiceOid) throws SException {
+        return invoiceService.getXMLForInvoice(invoiceOid);
+    }
 }
