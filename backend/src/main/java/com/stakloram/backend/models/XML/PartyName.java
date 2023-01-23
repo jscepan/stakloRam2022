@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PartyName {
 
-    @XmlElement(name = "Name")
+    @XmlElement(name = "Name", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private String name;
 
     public PartyName(String name) {

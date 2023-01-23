@@ -7,11 +7,11 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PostalAddress {
 
-    @XmlElement(name = "CityName")
+    @XmlElement(name = "CityName", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private String cityName;
-    @XmlElement(name = "StreetName")
+    @XmlElement(name = "StreetName", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private String streetName;
-    @XmlElement(name = "Country")
+    @XmlElement(name = "Country", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private CountryXML country;
 
     public PostalAddress() {

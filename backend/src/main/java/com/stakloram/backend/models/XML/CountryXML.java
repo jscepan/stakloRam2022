@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CountryXML {
 
-    @XmlElement(name = "IdentificationCode")
+    @XmlElement(name = "IdentificationCode", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private String identificationCode;
 
     public CountryXML(String identificationCode) {

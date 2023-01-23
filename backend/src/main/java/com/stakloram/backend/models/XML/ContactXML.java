@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ContactXML {
 
-    @XmlElement(name = "ElectronicMail")
+    @XmlElement(name = "ElectronicMail", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private String electronicMail;
 
     public ContactXML(String electronicMail) {

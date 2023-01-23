@@ -48,8 +48,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -349,6 +347,7 @@ public class InvoiceBuilder extends BaseBuilder {
         String customizationID = "urn:cen.eu:en16931:2017#compliant#urn:mfin.gov.rs:srbdt:2021";// settings.getCustomizationID();
         String invoiceTypeCode = "380";// settings.getInvoiceTypeCode(invoice.getType());
         String documentCurrencyCode = "RSD";// settings.getDocumentCurrencyCode();
+        // Za avansne racune to je datum placanja, a za ostale pogledaj tutorial...
         InvoicePeriodXML invoicePeriod = new InvoicePeriodXML("35");// settings.getInvoicePeriodDescription();
         String schemeID = "9948";// settings.getSchemeID();
 
@@ -416,6 +415,7 @@ public class InvoiceBuilder extends BaseBuilder {
             JAXBContext context = JAXBContext.newInstance(InvoiceXML.class);
             Marshaller m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE); // To format XML
+
             StringWriter sw = new StringWriter();
             m.marshal(invoice, sw);
             xmlString = sw.toString();
@@ -424,5 +424,4 @@ public class InvoiceBuilder extends BaseBuilder {
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
-
 }

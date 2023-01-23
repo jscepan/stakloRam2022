@@ -628,7 +628,7 @@
     ></app-button>
     <app-button
       [text]="'generateXMLFile' | translate"
-      [disabled]="formGroup.invalid"
+      [disabled]="formGroup.invalid || !isEdit"
       class="update"
       (clickEvent)="generateXMLFile()"
     ></app-button>

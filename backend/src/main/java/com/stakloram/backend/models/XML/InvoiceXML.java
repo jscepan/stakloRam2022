@@ -6,44 +6,29 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "Invoice")
+//@XmlType(namespace = "http://www.example.org/type")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class InvoiceXML {
 
-    @XmlElement(name = "CustomizationID")
+    @XmlElement(name = "CustomizationID", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private String customizationID;
-    @XmlElement(name = "ID")
+    @XmlElement(name = "ID", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private String number;
-    @XmlElement(name = "IssueDate")
+    @XmlElement(name = "IssueDate", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private String dateOfCreate;
-    @XmlElement(name = "DueDate")
+    @XmlElement(name = "DueDate", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private String dateOfMaturity;
-    @XmlElement(name = "InvoiceTypeCode")
+    @XmlElement(name = "InvoiceTypeCode", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private String invoiceTypeCode;
-    @XmlElement(name = "DocumentCurrencyCode")
+    @XmlElement(name = "DocumentCurrencyCode", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private String documentCurrencyCode;
-    @XmlElement(name = "InvoicePeriod")
+    @XmlElement(name = "InvoicePeriod", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private InvoicePeriodXML invoicePeriod;
-    @XmlElement(name = "AccountingSupplierParty")
+    @XmlElement(name = "AccountingSupplierParty", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private InvoiceSellerWrapperXML invoiceSellerWrapper;
-    @XmlElement(name = "AccountingCustomerParty")
+    @XmlElement(name = "AccountingCustomerParty", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private InvoiceBuyerWrapperXML invoiceBuyerWrapperXML;
 
-//    private String placeOfIssue;
-//    private String methodOfPayment;
-//    private String comment;
-//    private double netAmount;
-//    private double vatRate;
-//    private double vatAmount;
-//    private double grossAmount;
-//    private String numberOfCashBill;
-//    private String currency;
-//    private String country;
-//    private String advanceInvoiceOid;
-//    private double advancePayAmount;
-//    private String preInvoiceOid;
-//    private Buyer buyer;
-//    private List<InvoiceItem> invoiceItems = new ArrayList<>();
-//    private List<Note> notes = new ArrayList<>();
     public InvoiceXML() {
     }
 

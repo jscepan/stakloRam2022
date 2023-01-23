@@ -7,9 +7,9 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PartyTaxSchemeXML {
 
-    @XmlElement(name = "CompanyID")
+    @XmlElement(name = "CompanyID", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private String companyID;
-    @XmlElement(name = "TaxScheme")
+    @XmlElement(name = "TaxScheme", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private TaxSchemeXML taxScheme;
 
     public PartyTaxSchemeXML(String companyID, TaxSchemeXML taxScheme) {

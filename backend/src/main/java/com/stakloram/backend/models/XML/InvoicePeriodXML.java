@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class InvoicePeriodXML {
 
-    @XmlElement(name = "DescriptionCode")
+    @XmlElement(name = "DescriptionCode", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private String descriptionCode;
 
     public InvoicePeriodXML(String descriptionCode) {

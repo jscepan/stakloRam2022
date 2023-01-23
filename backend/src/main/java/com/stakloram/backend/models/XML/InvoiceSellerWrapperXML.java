@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class InvoiceSellerWrapperXML {
 
-    @XmlElement(name = "Party")
+    @XmlElement(name = "Party", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private InvoicePartyXML invoiceSeller;
 
     public InvoiceSellerWrapperXML() {

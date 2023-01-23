@@ -7,19 +7,19 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class InvoicePartyXML {
 
-    @XmlElement(name = "PartyIdentificationXML")
+    @XmlElement(name = "PartyIdentificationXML", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private PartyIdentificationXML partyIdentificationXML;
-    @XmlElement(name = "EndpointID")
+    @XmlElement(name = "EndpointID", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private PibXML pibXML;
-    @XmlElement(name = "PartyName")
+    @XmlElement(name = "PartyName", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private PartyName partyName;
-    @XmlElement(name = "PostalAddress")
+    @XmlElement(name = "PostalAddress", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private PostalAddress postalAddress;
-    @XmlElement(name = "PartyTaxScheme")
+    @XmlElement(name = "PartyTaxScheme", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private PartyTaxSchemeXML partyTaxScheme;
-    @XmlElement(name = "PartyLegalEntity")
+    @XmlElement(name = "PartyLegalEntity", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private PartyLegalEntityXML partyLegalEntity;
-    @XmlElement(name = "Contact")
+    @XmlElement(name = "Contact", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private ContactXML contact;
 
     public InvoicePartyXML() {
