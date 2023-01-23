@@ -6,11 +6,24 @@ import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class InvoiceSeller {
+//
 
     @XmlElement(name = "EndpointID")
     private PibXML pibXML;
     @XmlElement(name = "PartyName")
-    private String name;
+    private PartyName partyName;
+    @XmlElement(name = "PostalAddress")
+    private PostalAddress postalAddress;
+
+    public InvoiceSeller() {
+    }
+//
+//    public InvoiceSeller(PibXML pibXML, PartyName partyName, PostalAddress postalAddress) {
+//        this.pibXML = pibXML;
+//        this.partyName = partyName;
+//        this.postalAddress = postalAddress;
+//    }
+//
 
     public PibXML getPibXML() {
         return pibXML;
@@ -20,12 +33,19 @@ public class InvoiceSeller {
         this.pibXML = pibXML;
     }
 
-    public String getName() {
-        return name;
+    public PartyName getPartyName() {
+        return partyName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPartyName(PartyName partyName) {
+        this.partyName = partyName;
     }
 
+    public PostalAddress getPostalAddress() {
+        return postalAddress;
+    }
+
+    public void setPostalAddress(PostalAddress postalAddress) {
+        this.postalAddress = postalAddress;
+    }
 }

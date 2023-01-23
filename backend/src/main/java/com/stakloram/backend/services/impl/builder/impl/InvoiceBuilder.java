@@ -24,10 +24,13 @@ import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.models.WorkOrderItem;
+import com.stakloram.backend.models.XML.CountryXML;
 import com.stakloram.backend.models.XML.InvoicePeriod;
 import com.stakloram.backend.models.XML.InvoiceSeller;
 import com.stakloram.backend.models.XML.InvoiceSellerWrapper;
+import com.stakloram.backend.models.XML.PartyName;
 import com.stakloram.backend.models.XML.PibXML;
+import com.stakloram.backend.models.XML.PostalAddress;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
 import com.stakloram.backend.util.Helper;
 import java.io.StringWriter;
@@ -46,7 +49,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 public class InvoiceBuilder extends BaseBuilder {
-    
+
     private final BuyerStore BUYER_STORE = new BuyerStore(this.getLocator());
     private final InvoiceItemStore INVOICE_ITEM_STORE = new InvoiceItemStore(this.getLocator());
     private final CityStore CITY_STORE = new CityStore(this.getLocator());
@@ -54,16 +57,16 @@ public class InvoiceBuilder extends BaseBuilder {
     private final WorkOrderItemStore WORK_ORDER_ITEM_STORE = new WorkOrderItemStore(this.getLocator());
     private final NoteStore NOTE_STORE = new NoteStore(this.getLocator());
     private final WorkOrderStore WORK_ORDER_STORE = new WorkOrderStore(this.getLocator());
-    
+
     public InvoiceBuilder(Locator locator) {
         super(locator);
     }
-    
+
     @Override
     public void setObjectStore() {
         this.objectStore = new InvoiceStore(this.getLocator());
     }
-    
+
     @Override
     public void setColumnsForSearch() {
         this.databaseColumnsForQuickSearch = Arrays.asList("buyer_name");
@@ -74,7 +77,7 @@ public class InvoiceBuilder extends BaseBuilder {
         this.databaseColumnsForAttributes.put("from_matured_date", "date_of_maturity");
         this.databaseColumnsForAttributes.put("to_matured_date", "date_of_maturity");
     }
-    
+
     @Override
     public Invoice getObjectByOid(String oid) throws SException {
         Invoice invoice;
@@ -88,7 +91,7 @@ public class InvoiceBuilder extends BaseBuilder {
                 buyer.setCity((City) CITY_STORE.getObjectByOid(buyer.getCity().getOid()));
                 buyer.getCity().setCountry((Country) COUNTRY_STORE.getObjectByOid(buyer.getCity().getCountry().getOid()));
                 invoice.setBuyer(buyer);
-                
+
                 List<InvoiceItem> invoiceItems = new ArrayList<>();
                 ResultSet rs = INVOICE_ITEM_STORE.getAllObjectsFromDatabase(INVOICE_ITEM_STORE.getTableName() + "_invoice_invoice_id=" + invoice.getId());
                 while (rs.next()) {
@@ -102,7 +105,7 @@ public class InvoiceBuilder extends BaseBuilder {
                     invoiceItems.add(invoiceItem);
                 }
                 invoice.setInvoiceItems(invoiceItems);
-                
+
                 List<Note> notes = new ArrayList<>();
                 ResultSet rsNotes = NOTE_STORE.getAllObjectsFromDatabase(NOTE_STORE.getTableName() + "_invoice_invoice_id=" + invoice.getId());
                 while (rsNotes.next()) {
@@ -119,7 +122,7 @@ public class InvoiceBuilder extends BaseBuilder {
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
-    
+
     @Override
     public Invoice createNewObject(BaseModel object) throws SException {
         try {
@@ -139,7 +142,7 @@ public class InvoiceBuilder extends BaseBuilder {
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
-    
+
     @Override
     public Invoice modifyObject(String oid, BaseModel object) throws SException {
         try {
@@ -162,7 +165,7 @@ public class InvoiceBuilder extends BaseBuilder {
                 while (r.next()) {
                     previousWorkOrderItems.add(WORK_ORDER_ITEM_STORE.getObjectFromResultSet(r));
                 }
-                
+
                 Map<Helper.Action, List<? extends BaseModel>> mapOfDifferencesWorkOrderItems = Helper.findDifferenceBetweenLists(((InvoiceItem) inv).getWorkOrderItems(), previousWorkOrderItems);
                 for (BaseModel workOrderItem : mapOfDifferencesWorkOrderItems.get(Helper.Action.FOR_CREATE)) {
                     WORK_ORDER_ITEM_STORE.setInvoiceItemForWorkOrderItem(workOrderItem.getOid(), inv.getOid());
@@ -175,7 +178,7 @@ public class InvoiceBuilder extends BaseBuilder {
                 WORK_ORDER_ITEM_STORE.removeWorkOrdersItemForInvoiceItemOid(inv.getOid());
                 INVOICE_ITEM_STORE.deleteObjectByOid(inv.getOid());
             }
-            
+
             List<Note> oldNotes = new ArrayList<>();
             ResultSet resultSetNotes = NOTE_STORE.getAllObjectsFromDatabase(NOTE_STORE.getTableName() + "_invoice_invoice_id=" + invoice.getId());
             while (resultSetNotes.next()) {
@@ -197,7 +200,7 @@ public class InvoiceBuilder extends BaseBuilder {
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
-    
+
     @Override
     public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
         try {
@@ -215,7 +218,7 @@ public class InvoiceBuilder extends BaseBuilder {
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
-    
+
     @Override
     public boolean deleteObjectByOid(String oid) throws SException {
         Invoice invoice = this.getObjectByOid(oid);
@@ -238,10 +241,10 @@ public class InvoiceBuilder extends BaseBuilder {
                 throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
             }
         }
-        
+
         return super.deleteObjectByOid(oid);
     }
-    
+
     public int getNextInvoiceNumber(Invoice.InvoiceType invoiceType, int year) throws SException {
         try {
             return ((InvoiceStore) this.getObjectStore()).getLastInvoiceNumber(invoiceType, year) + 1;
@@ -250,7 +253,7 @@ public class InvoiceBuilder extends BaseBuilder {
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
-    
+
     public Set<String> getAllInvoiceItemDescriptions() throws SException {
         Set<String> items = new HashSet<>();
         try {
@@ -264,7 +267,7 @@ public class InvoiceBuilder extends BaseBuilder {
         }
         return items;
     }
-    
+
     public boolean changeBuyer(String invoiceOID, String buyerOID) throws SException {
         try {
             return ((InvoiceStore) this.objectStore).changeBuyer(invoiceOID, buyerOID);
@@ -309,7 +312,7 @@ public class InvoiceBuilder extends BaseBuilder {
 //        }
 //        return true;
     }
-    
+
     public Set<String> getAllWorkOrdersForInvoice(Invoice invoice) throws SException {
         // find all associate workOrders
         Set<String> workOrderOIDSForChange = new HashSet<>();
@@ -329,24 +332,26 @@ public class InvoiceBuilder extends BaseBuilder {
         }
         return workOrderOIDSForChange;
     }
-    
+
     public String getXMLForInvoice(String invoiceOID) throws SException {
         // TODO
         Invoice invoice = this.getObjectByOid(invoiceOID);
         if (invoice == null) {
             throw new SException(UserMessage.getLocalizedMessage("invoiceNotFound"));
         }
-        
+
         String customizationID = "urn:cen.eu:en16931:2017#compliant#urn:mfin.gov.rs:srbdt:2021";// settings.getCustomizationID();
         String invoiceTypeCode = "380";// settings.getInvoiceTypeCode(invoice.getType());
         String documentCurrencyCode = "RSD";// settings.getDocumentCurrencyCode();
         InvoicePeriod invoicePeriod = new InvoicePeriod("35");// settings.getInvoicePeriodDescription();
         String schemeID = "9948";// settings.getSchemeID();
         InvoiceSeller sellerXML = new InvoiceSeller();
-        sellerXML.setPibXML(new PibXML(invoice.getBuyer().getPib(), schemeID));
-        sellerXML.setName(invoice.getBuyer().getName());
+        CountryXML sellerCountry = new CountryXML("RS"); // settings.getSellerCountry();
+        sellerXML.setPibXML(new PibXML("10101010", schemeID));//settings.getSellerPIB();
+        sellerXML.setPartyName(new PartyName("StakloRam"));//settings.getSellerName();
+        sellerXML.setPostalAddress(new PostalAddress("Backa Palanka", sellerCountry));//settings.getSellerCity()
         InvoiceSellerWrapper isw = new InvoiceSellerWrapper(sellerXML);
-        
+
         InvoiceXML invoiceXML = new InvoiceXML();
         invoiceXML.setCustomizationID(customizationID);
         invoiceXML.setNumber(invoice.getNumber());
@@ -356,10 +361,10 @@ public class InvoiceBuilder extends BaseBuilder {
         invoiceXML.setDocumentCurrencyCode(documentCurrencyCode);
         invoiceXML.setInvoicePeriod(invoicePeriod);
         invoiceXML.setInvoiceSellerWrapper(isw);
-        
+
         return this.jaxbObjectToXML(invoiceXML);
     }
-    
+
     private String jaxbObjectToXML(InvoiceXML invoice) throws SException {
         try {
             String xmlString = "";
@@ -374,5 +379,5 @@ public class InvoiceBuilder extends BaseBuilder {
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
-    
+
 }
