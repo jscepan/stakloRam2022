@@ -9,12 +9,12 @@ public class PostalAddress {
 
     @XmlElement(name = "CityName")
     private String cityName;
+    @XmlElement(name = "StreetName")
+    private String streetName;
     @XmlElement(name = "Country")
     private CountryXML country;
 
-    public PostalAddress(String cityName, CountryXML country) {
-        this.cityName = cityName;
-        this.country = country;
+    public PostalAddress() {
     }
 
     public String getCityName() {
@@ -31,5 +31,13 @@ public class PostalAddress {
 
     public void setCountry(CountryXML country) {
         this.country = country;
+    }
+
+    public String getStreetName() {
+        return streetName;
+    }
+
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
     }
 }

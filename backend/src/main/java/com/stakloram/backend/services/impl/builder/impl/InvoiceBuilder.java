@@ -24,13 +24,19 @@ import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.models.WorkOrderItem;
+import com.stakloram.backend.models.XML.ContactXML;
 import com.stakloram.backend.models.XML.CountryXML;
-import com.stakloram.backend.models.XML.InvoicePeriod;
-import com.stakloram.backend.models.XML.InvoiceSeller;
-import com.stakloram.backend.models.XML.InvoiceSellerWrapper;
+import com.stakloram.backend.models.XML.InvoiceBuyerWrapperXML;
+import com.stakloram.backend.models.XML.InvoicePeriodXML;
+import com.stakloram.backend.models.XML.InvoicePartyXML;
+import com.stakloram.backend.models.XML.InvoiceSellerWrapperXML;
+import com.stakloram.backend.models.XML.PartyIdentificationXML;
+import com.stakloram.backend.models.XML.PartyLegalEntityXML;
 import com.stakloram.backend.models.XML.PartyName;
+import com.stakloram.backend.models.XML.PartyTaxSchemeXML;
 import com.stakloram.backend.models.XML.PibXML;
 import com.stakloram.backend.models.XML.PostalAddress;
+import com.stakloram.backend.models.XML.TaxSchemeXML;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
 import com.stakloram.backend.util.Helper;
 import java.io.StringWriter;
@@ -343,15 +349,53 @@ public class InvoiceBuilder extends BaseBuilder {
         String customizationID = "urn:cen.eu:en16931:2017#compliant#urn:mfin.gov.rs:srbdt:2021";// settings.getCustomizationID();
         String invoiceTypeCode = "380";// settings.getInvoiceTypeCode(invoice.getType());
         String documentCurrencyCode = "RSD";// settings.getDocumentCurrencyCode();
-        InvoicePeriod invoicePeriod = new InvoicePeriod("35");// settings.getInvoicePeriodDescription();
+        InvoicePeriodXML invoicePeriod = new InvoicePeriodXML("35");// settings.getInvoicePeriodDescription();
         String schemeID = "9948";// settings.getSchemeID();
-        InvoiceSeller sellerXML = new InvoiceSeller();
+
+        //////////////////// SELLER DATA ////////////////////////////
+        InvoicePartyXML sellerXML = new InvoicePartyXML();
         CountryXML sellerCountry = new CountryXML("RS"); // settings.getSellerCountry();
+        TaxSchemeXML taxScheme = new TaxSchemeXML("VAT"); // settings.getTaxScheme()
+        PartyTaxSchemeXML partyTaxScheme = new PartyTaxSchemeXML("RS10101010", taxScheme);//settings.getTaxCountrySign()+settings.getCompanyId, 
+        PartyLegalEntityXML partyLegalEntity = new PartyLegalEntityXML("StakloRam", "20202020");//settings.getRegName(), settings.getCompanyMaticalNr
+        ContactXML sellerContact = new ContactXML("stakloram@gmail.com");//settings.getSellerElectronicMail();
         sellerXML.setPibXML(new PibXML("10101010", schemeID));//settings.getSellerPIB();
         sellerXML.setPartyName(new PartyName("StakloRam"));//settings.getSellerName();
-        sellerXML.setPostalAddress(new PostalAddress("Backa Palanka", sellerCountry));//settings.getSellerCity()
-        InvoiceSellerWrapper isw = new InvoiceSellerWrapper(sellerXML);
+        PostalAddress postalAddressSeller = new PostalAddress();
+        postalAddressSeller.setCityName("Backa Palanka");//settings.getSellerCity()
+        postalAddressSeller.setCountry(sellerCountry);
+        sellerXML.setPostalAddress(postalAddressSeller);
+        sellerXML.setPartyTaxScheme(partyTaxScheme);
+        sellerXML.setPartyLegalEntity(partyLegalEntity);
+        sellerXML.setContact(sellerContact);
+        InvoiceSellerWrapperXML isw = new InvoiceSellerWrapperXML(sellerXML);
+        ///////////////////////////////////////////////////////////////////////////
 
+        //////////////////// BUYER DATA ////////////////////////////
+        InvoicePartyXML buyerXML = new InvoicePartyXML();
+
+        String jbkjs = invoice.getBuyer().getJbkjs();
+        if (jbkjs != null && jbkjs.length() > 0) {
+            buyerXML.setPartyIdentificationXML(new PartyIdentificationXML(jbkjs));
+        }
+
+        CountryXML buyerCountry = new CountryXML(invoice.getBuyer().getCity().getCountry().getIdentificationCode());
+        TaxSchemeXML taxSchemeBuyer = new TaxSchemeXML("VAT"); // settings.getTaxScheme()
+        PartyTaxSchemeXML partyTaxSchemeBuyer = new PartyTaxSchemeXML("RS" + invoice.getBuyer().getPib(), taxSchemeBuyer);//settings.getTaxCountrySign()+pib, 
+        PartyLegalEntityXML partyLegalEntityBuyer = new PartyLegalEntityXML(invoice.getBuyer().getName(), invoice.getBuyer().getMaticalNumber());
+        ContactXML buyerContact = new ContactXML(invoice.getBuyer().getEmail() == null ? "" : invoice.getBuyer().getEmail());
+        buyerXML.setPibXML(new PibXML(invoice.getBuyer().getPib(), schemeID));
+        buyerXML.setPartyName(new PartyName(invoice.getBuyer().getName()));
+        PostalAddress postalAddressBuyer = new PostalAddress();
+        postalAddressBuyer.setCityName(invoice.getBuyer().getCity().getName());
+        postalAddressBuyer.setStreetName(invoice.getBuyer().getAddress());
+        postalAddressBuyer.setCountry(buyerCountry);
+        buyerXML.setPostalAddress(postalAddressBuyer);
+        buyerXML.setPartyTaxScheme(partyTaxSchemeBuyer);
+        buyerXML.setPartyLegalEntity(partyLegalEntityBuyer);
+        buyerXML.setContact(buyerContact);
+        InvoiceBuyerWrapperXML isb = new InvoiceBuyerWrapperXML(buyerXML);
+        ///////////////////////////////////////////////////////////////////////////
         InvoiceXML invoiceXML = new InvoiceXML();
         invoiceXML.setCustomizationID(customizationID);
         invoiceXML.setNumber(invoice.getNumber());
@@ -361,6 +405,7 @@ public class InvoiceBuilder extends BaseBuilder {
         invoiceXML.setDocumentCurrencyCode(documentCurrencyCode);
         invoiceXML.setInvoicePeriod(invoicePeriod);
         invoiceXML.setInvoiceSellerWrapper(isw);
+        invoiceXML.setInvoiceBuyerWrapperXML(isb);
 
         return this.jaxbObjectToXML(invoiceXML);
     }

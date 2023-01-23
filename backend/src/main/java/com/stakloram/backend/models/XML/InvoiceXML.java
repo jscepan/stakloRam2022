@@ -22,9 +22,11 @@ public class InvoiceXML {
     @XmlElement(name = "DocumentCurrencyCode")
     private String documentCurrencyCode;
     @XmlElement(name = "InvoicePeriod")
-    private InvoicePeriod invoicePeriod;
+    private InvoicePeriodXML invoicePeriod;
     @XmlElement(name = "AccountingSupplierParty")
-    private InvoiceSellerWrapper invoiceSellerWrapper;
+    private InvoiceSellerWrapperXML invoiceSellerWrapper;
+    @XmlElement(name = "AccountingCustomerParty")
+    private InvoiceBuyerWrapperXML invoiceBuyerWrapperXML;
 
 //    private String placeOfIssue;
 //    private String methodOfPayment;
@@ -93,20 +95,27 @@ public class InvoiceXML {
         this.documentCurrencyCode = documentCurrencyCode;
     }
 
-    public InvoicePeriod getInvoicePeriod() {
+    public InvoicePeriodXML getInvoicePeriod() {
         return invoicePeriod;
     }
 
-    public void setInvoicePeriod(InvoicePeriod invoicePeriod) {
+    public void setInvoicePeriod(InvoicePeriodXML invoicePeriod) {
         this.invoicePeriod = invoicePeriod;
     }
 
-    public InvoiceSellerWrapper getInvoiceSellerWrapper() {
+    public InvoiceSellerWrapperXML getInvoiceSellerWrapper() {
         return invoiceSellerWrapper;
     }
 
-    public void setInvoiceSellerWrapper(InvoiceSellerWrapper invoiceSellerWrapper) {
+    public void setInvoiceSellerWrapper(InvoiceSellerWrapperXML invoiceSellerWrapper) {
         this.invoiceSellerWrapper = invoiceSellerWrapper;
     }
 
+    public InvoiceBuyerWrapperXML getInvoiceBuyerWrapperXML() {
+        return invoiceBuyerWrapperXML;
+    }
+
+    public void setInvoiceBuyerWrapperXML(InvoiceBuyerWrapperXML invoiceBuyerWrapperXML) {
+        this.invoiceBuyerWrapperXML = invoiceBuyerWrapperXML;
+    }
 }

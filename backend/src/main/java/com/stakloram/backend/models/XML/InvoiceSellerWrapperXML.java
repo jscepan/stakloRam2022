@@ -5,23 +5,23 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class InvoiceSellerWrapper {
+public class InvoiceSellerWrapperXML {
 
     @XmlElement(name = "Party")
-    private InvoiceSeller invoiceSeller;
+    private InvoicePartyXML invoiceSeller;
 
-    public InvoiceSellerWrapper() {
+    public InvoiceSellerWrapperXML() {
     }
 
-    public InvoiceSellerWrapper(InvoiceSeller invoiceSeller) {
+    public InvoiceSellerWrapperXML(InvoicePartyXML invoiceSeller) {
         this.invoiceSeller = invoiceSeller;
     }
 
-    public InvoiceSeller getInvoiceSeller() {
+    public InvoicePartyXML getInvoiceSeller() {
         return invoiceSeller;
     }
 
-    public void setInvoiceSeller(InvoiceSeller invoiceSeller) {
+    public void setInvoiceSeller(InvoicePartyXML invoiceSeller) {
         this.invoiceSeller = invoiceSeller;
     }
 

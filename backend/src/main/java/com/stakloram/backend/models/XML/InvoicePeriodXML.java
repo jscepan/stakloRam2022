@@ -3,16 +3,22 @@ package com.stakloram.backend.models.XML;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
-//@XmlRootElement(name = "InvoicePeriod")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class InvoicePeriod {
+public class InvoicePeriodXML {
 
     @XmlElement(name = "DescriptionCode")
     private String descriptionCode;
 
-    public InvoicePeriod(String descriptionCode) {
+    public InvoicePeriodXML(String descriptionCode) {
+        this.descriptionCode = descriptionCode;
+    }
+
+    public String getDescriptionCode() {
+        return descriptionCode;
+    }
+
+    public void setDescriptionCode(String descriptionCode) {
         this.descriptionCode = descriptionCode;
     }
 }
