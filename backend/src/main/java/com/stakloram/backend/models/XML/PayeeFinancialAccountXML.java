@@ -5,12 +5,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PartyIdentificationXML {
+public class PayeeFinancialAccountXML {
 
     @XmlElement(name = "ID", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private String id;
 
-    public PartyIdentificationXML(String id) {
+    public PayeeFinancialAccountXML(String id) {
         this.id = id;
     }
 

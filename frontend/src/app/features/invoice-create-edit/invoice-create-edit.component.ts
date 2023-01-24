@@ -1100,7 +1100,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
               '_' +
               this.formGroup.get('number')?.value || '';
 
-          this.saveTextAsFile(invoiceXML.xmlText, fileName + '.xml');
+          // this.saveTextAsFile(invoiceXML.xmlText, fileName + '.xml');
         });
     }
   }

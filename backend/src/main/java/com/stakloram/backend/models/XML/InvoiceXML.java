@@ -1,12 +1,13 @@
 package com.stakloram.backend.models.XML;
 
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "Invoice")
-//@XmlType(namespace = "http://www.example.org/type")
+//@XmlType(namespace = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class InvoiceXML {
 
@@ -28,6 +29,16 @@ public class InvoiceXML {
     private InvoiceSellerWrapperXML invoiceSellerWrapper;
     @XmlElement(name = "AccountingCustomerParty", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private InvoiceBuyerWrapperXML invoiceBuyerWrapperXML;
+    @XmlElement(name = "Delivery", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
+    private DeliveryXML deliveryXML;
+    @XmlElement(name = "PaymentMeansXML", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
+    private PaymentMeansXML paymentMeansXML;
+    @XmlElement(name = "TaxTotal", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
+    private TaxTotalXML taxTotalXML;
+    @XmlElement(name = "LegalMonetaryTotal", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
+    private LegalMonetaryTotalXML legalMonetaryTotal;
+    @XmlElement(name = "InvoiceLine", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
+    private List<InvoiceItemXML> invoiceItemsXML;
 
     public InvoiceXML() {
     }
@@ -102,5 +113,45 @@ public class InvoiceXML {
 
     public void setInvoiceBuyerWrapperXML(InvoiceBuyerWrapperXML invoiceBuyerWrapperXML) {
         this.invoiceBuyerWrapperXML = invoiceBuyerWrapperXML;
+    }
+
+    public DeliveryXML getDeliveryXML() {
+        return deliveryXML;
+    }
+
+    public void setDeliveryXML(DeliveryXML deliveryXML) {
+        this.deliveryXML = deliveryXML;
+    }
+
+    public PaymentMeansXML getPaymentMeansXML() {
+        return paymentMeansXML;
+    }
+
+    public void setPaymentMeansXML(PaymentMeansXML paymentMeansXML) {
+        this.paymentMeansXML = paymentMeansXML;
+    }
+
+    public TaxTotalXML getTaxTotalXML() {
+        return taxTotalXML;
+    }
+
+    public void setTaxTotalXML(TaxTotalXML taxTotalXML) {
+        this.taxTotalXML = taxTotalXML;
+    }
+
+    public LegalMonetaryTotalXML getLegalMonetaryTotal() {
+        return legalMonetaryTotal;
+    }
+
+    public void setLegalMonetaryTotal(LegalMonetaryTotalXML legalMonetaryTotal) {
+        this.legalMonetaryTotal = legalMonetaryTotal;
+    }
+
+    public List<InvoiceItemXML> getInvoiceItemsXML() {
+        return invoiceItemsXML;
+    }
+
+    public void setInvoiceItemsXML(List<InvoiceItemXML> invoiceItemsXML) {
+        this.invoiceItemsXML = invoiceItemsXML;
     }
 }

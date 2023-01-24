@@ -64,7 +64,12 @@ public class InvoiceController {
     }
 
     @RequestMapping("/invoices/getXML/{invoiceOid}")
-    public XmlValue getXMLForInvoice(@PathVariable String invoiceOid) throws SException {
-        return new XmlValue(invoiceService.getXMLForInvoice(invoiceOid));
+    public String getXMLForInvoice(@PathVariable String invoiceOid) throws SException {
+        return invoiceService.getXMLForInvoice(invoiceOid);
     }
+//
+//    @RequestMapping("/invoices/getXML/{invoiceOid}")
+//    public XmlValue getXMLForInvoice(@PathVariable String invoiceOid) throws SException {
+//        return new XmlValue(invoiceService.getXMLForInvoice(invoiceOid));
+//    }
 }

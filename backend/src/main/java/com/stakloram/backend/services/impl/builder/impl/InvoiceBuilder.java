@@ -26,17 +26,29 @@ import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.models.WorkOrderItem;
 import com.stakloram.backend.models.XML.ContactXML;
 import com.stakloram.backend.models.XML.CountryXML;
+import com.stakloram.backend.models.XML.DeliveryXML;
 import com.stakloram.backend.models.XML.InvoiceBuyerWrapperXML;
+import com.stakloram.backend.models.XML.InvoiceItemXML;
 import com.stakloram.backend.models.XML.InvoicePeriodXML;
 import com.stakloram.backend.models.XML.InvoicePartyXML;
 import com.stakloram.backend.models.XML.InvoiceSellerWrapperXML;
+import com.stakloram.backend.models.XML.LegalMonetaryTotalXML;
 import com.stakloram.backend.models.XML.PartyIdentificationXML;
 import com.stakloram.backend.models.XML.PartyLegalEntityXML;
 import com.stakloram.backend.models.XML.PartyName;
 import com.stakloram.backend.models.XML.PartyTaxSchemeXML;
+import com.stakloram.backend.models.XML.PayeeFinancialAccountXML;
+import com.stakloram.backend.models.XML.PaymentMeansXML;
 import com.stakloram.backend.models.XML.PibXML;
 import com.stakloram.backend.models.XML.PostalAddress;
+import com.stakloram.backend.models.XML.CurrencyAmountXML;
+import com.stakloram.backend.models.XML.InvoiceItemDetailsXML;
+import com.stakloram.backend.models.XML.InvoicedQuantityXML;
+import com.stakloram.backend.models.XML.PriceXML;
+import com.stakloram.backend.models.XML.TaxCategoryXML;
+import com.stakloram.backend.models.XML.TaxItemXML;
 import com.stakloram.backend.models.XML.TaxSchemeXML;
+import com.stakloram.backend.models.XML.TaxTotalXML;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
 import com.stakloram.backend.util.Helper;
 import java.io.StringWriter;
@@ -405,6 +417,50 @@ public class InvoiceBuilder extends BaseBuilder {
         invoiceXML.setInvoicePeriod(invoicePeriod);
         invoiceXML.setInvoiceSellerWrapper(isw);
         invoiceXML.setInvoiceBuyerWrapperXML(isb);
+        // ako je sifra datuma poreske obaveze BT-8 iskazuje da je nacin odredjivanja
+        // kada nastaje proeska obaveza prema datumu prometa...
+        if (false) {
+            invoiceXML.setDeliveryXML(new DeliveryXML(invoice.getDateOfTurnover() + ""));
+        }
+        invoiceXML.setPaymentMeansXML(new PaymentMeansXML("30", "(mod95) " + invoice.getNumber(), new PayeeFinancialAccountXML(invoice.getBuyer().getAccount())));// settings.getPaymentMeansCode, settings.getModelPaymentCode
+
+        // TODO logiku samo za izracunavanje prepaid amount - kada ima avansa...
+        double prepaidAmount = 0;
+        LegalMonetaryTotalXML legalMonetaryTotal = new LegalMonetaryTotalXML(
+                new CurrencyAmountXML(invoice.getNetAmount(), "RSD"),
+                new CurrencyAmountXML(invoice.getNetAmount(), "RSD"),
+                new CurrencyAmountXML(invoice.getGrossAmount(), "RSD"),
+                new CurrencyAmountXML(0, "RSD"),
+                new CurrencyAmountXML(prepaidAmount, "RSD"),
+                new CurrencyAmountXML(invoice.getGrossAmount() - prepaidAmount, "RSD")
+        );//settings.getCurrency
+        invoiceXML.setLegalMonetaryTotal(legalMonetaryTotal);
+
+        List<TaxItemXML> taxItems = new ArrayList<>();
+        List<InvoiceItemXML> items = new ArrayList<>();
+        int count = 1;
+        for (InvoiceItem invoiceItem : invoice.getInvoiceItems()) {
+            // TODO uraditi category
+            String category = "S";// 
+            // Setting of tax items
+            CurrencyAmountXML taxableAmount = new CurrencyAmountXML(invoiceItem.getNetPrice(), "RSD");//settings.getCurrency
+            CurrencyAmountXML taxAmount = new CurrencyAmountXML(invoiceItem.getVatAmount(), "RSD");//settings.getCurrency
+            TaxCategoryXML taxCategoryXML = new TaxCategoryXML(category, invoiceItem.getVatRate(), new TaxSchemeXML("VAT")); // settings.getTaxScheme
+
+            TaxItemXML taxItem = new TaxItemXML(taxableAmount, taxAmount, taxCategoryXML);
+            taxItems.add(taxItem);// settings.getTaxScheme
+
+            //TODO uzmi jedinice mere...
+            String unitCode = "MTR";
+            InvoiceItemDetailsXML ivoiceItemDetailsXML = new InvoiceItemDetailsXML(invoiceItem.getDescription(), new TaxCategoryXML("S", invoiceItem.getVatRate(), new TaxSchemeXML("VAT"))); // settings.getTaxScheme
+            // Setting of invoice items
+            InvoiceItemXML invoiceLineXML = new InvoiceItemXML(count, new InvoicedQuantityXML(invoiceItem.getQuantity(), unitCode), new CurrencyAmountXML(invoiceItem.getNetPrice(), "RSD"), ivoiceItemDetailsXML, new PriceXML(new CurrencyAmountXML(invoiceItem.getNetPrice(), "RSD")));//settings.getCurrency
+            items.add(invoiceLineXML);
+            count++;
+        }
+        TaxTotalXML taxTotalXML = new TaxTotalXML(new CurrencyAmountXML(invoice.getVatAmount(), "RSD"), taxItems);//settings.getCurrency
+        invoiceXML.setTaxTotalXML(taxTotalXML);
+        invoiceXML.setInvoiceItemsXML(items);
 
         return this.jaxbObjectToXML(invoiceXML);
     }
