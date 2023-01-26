@@ -45,6 +45,24 @@ public class Settings {
     private String workOrderHeadingLine2 = "Oblikovanje i obrada ravnog stakla";
     private String workOrderHeadingLine3 = "Proizvodnja lajsni za ramove i uramljivanje slika";
 
+    private String customizationID = "urn:cen.eu:en16931:2017#compliant#urn:mfin.gov.rs:srbdt:2021";
+    private String invoiceTypeCodeCommercialInvoice = "380";
+    private String invoiceTypeCodeAdvanceInvoice = "386";
+    private String documentCurrencyCode = "RSD";
+    private String schemeID = "9948";
+    private String invoiceTaxPeriodByDateOfCreate = "3";
+    private String invoiceTaxPeriodByDateOfPaying = "432";
+    private String sellerPIB = "105509737";
+    private String sellerName = "StakloRam plus";
+    private String sellerCity = "Bačka Palanka";
+    private String sellerCountry = "RS";
+    private String taxScheme = "VAT";
+    private String taxCountrySign = "RS";
+    private String sellerMaticalNumber = "62199130";
+    private String sellerElectronicMail = "";
+    private String paymentMeansCode = "30";
+    private String modelPaymentCode = "(mod97)";
+
     public Settings() {
     }
 
@@ -326,5 +344,141 @@ public class Settings {
 
     public void setInvoiceForeignNotes(List<KeyValue> invoiceForeignNotes) {
         this.invoiceForeignNotes = invoiceForeignNotes;
+    }
+
+    public String getCustomizationID() {
+        return customizationID;
+    }
+
+    public void setCustomizationID(String customizationID) {
+        this.customizationID = customizationID;
+    }
+
+    public String getInvoiceTypeCodeCommercialInvoice() {
+        return invoiceTypeCodeCommercialInvoice;
+    }
+
+    public void setInvoiceTypeCodeCommercialInvoice(String invoiceTypeCodeCommercialInvoice) {
+        this.invoiceTypeCodeCommercialInvoice = invoiceTypeCodeCommercialInvoice;
+    }
+
+    public String getInvoiceTypeCodeAdvanceInvoice() {
+        return invoiceTypeCodeAdvanceInvoice;
+    }
+
+    public void setInvoiceTypeCodeAdvanceInvoice(String invoiceTypeCodeAdvanceInvoice) {
+        this.invoiceTypeCodeAdvanceInvoice = invoiceTypeCodeAdvanceInvoice;
+    }
+
+    public String getDocumentCurrencyCode() {
+        return documentCurrencyCode;
+    }
+
+    public void setDocumentCurrencyCode(String documentCurrencyCode) {
+        this.documentCurrencyCode = documentCurrencyCode;
+    }
+
+    public String getSchemeID() {
+        return schemeID;
+    }
+
+    public void setSchemeID(String schemeID) {
+        this.schemeID = schemeID;
+    }
+
+    public String getInvoiceTaxPeriodByDateOfCreate() {
+        return invoiceTaxPeriodByDateOfCreate;
+    }
+
+    public void setInvoiceTaxPeriodByDateOfCreate(String invoiceTaxPeriodByDateOfCreate) {
+        this.invoiceTaxPeriodByDateOfCreate = invoiceTaxPeriodByDateOfCreate;
+    }
+
+    public String getInvoiceTaxPeriodByDateOfPaying() {
+        return invoiceTaxPeriodByDateOfPaying;
+    }
+
+    public void setInvoiceTaxPeriodByDateOfPaying(String invoiceTaxPeriodByDateOfPaying) {
+        this.invoiceTaxPeriodByDateOfPaying = invoiceTaxPeriodByDateOfPaying;
+    }
+
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
+    }
+
+    public String getSellerPIB() {
+        return sellerPIB;
+    }
+
+    public void setSellerPIB(String sellerPIB) {
+        this.sellerPIB = sellerPIB;
+    }
+
+    public String getSellerCity() {
+        return sellerCity;
+    }
+
+    public void setSellerCity(String sellerCity) {
+        this.sellerCity = sellerCity;
+    }
+
+    public String getSellerCountry() {
+        return sellerCountry;
+    }
+
+    public void setSellerCountry(String sellerCountry) {
+        this.sellerCountry = sellerCountry;
+    }
+
+    public String getTaxScheme() {
+        return taxScheme;
+    }
+
+    public void setTaxScheme(String taxScheme) {
+        this.taxScheme = taxScheme;
+    }
+
+    public String getTaxCountrySign() {
+        return taxCountrySign;
+    }
+
+    public void setTaxCountrySign(String taxCountrySign) {
+        this.taxCountrySign = taxCountrySign;
+    }
+
+    public String getSellerMaticalNumber() {
+        return sellerMaticalNumber;
+    }
+
+    public void setSellerMaticalNumber(String sellerMaticalNumber) {
+        this.sellerMaticalNumber = sellerMaticalNumber;
+    }
+
+    public String getSellerElectronicMail() {
+        return sellerElectronicMail;
+    }
+
+    public void setSellerElectronicMail(String sellerElectronicMail) {
+        this.sellerElectronicMail = sellerElectronicMail;
+    }
+
+    public String getPaymentMeansCode() {
+        return paymentMeansCode;
+    }
+
+    public void setPaymentMeansCode(String paymentMeansCode) {
+        this.paymentMeansCode = paymentMeansCode;
+    }
+
+    public String getModelPaymentCode() {
+        return modelPaymentCode;
+    }
+
+    public void setModelPaymentCode(String modelPaymentCode) {
+        this.modelPaymentCode = modelPaymentCode;
     }
 }
