@@ -481,7 +481,11 @@ public class InvoiceBuilder extends BaseBuilder {
         //////////////////// BUYER PAYMENT MEANS CODE BT-81 /////////////////
         String paymentMeansCode = settings.getPaymentMeansCode();
         //////////////////// BUYER DATA BT-83 ///////////////////////////////
-        String paymentID = settings.getModelPaymentCode() + " " + invoice.getNumber();
+        String paymentID = null;
+        if (invoice.getType() == InvoiceType.DOMESTIC || invoice.getType() == InvoiceType.CASH) {
+            paymentID = settings.getModelPaymentCode() + " " + invoice.getNumber();
+        }
+
         //////////////////// BUYER ACCOUNT BT-84 ////////////////////////////
         String buyerAccount = invoice.getBuyer().getAccount();
         if (buyerAccount == null || buyerAccount.length() == 0) {
