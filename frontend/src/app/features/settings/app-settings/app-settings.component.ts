@@ -187,6 +187,108 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
               '',
             [Validators.required]
           ),
+          customizationID: new FormControl(
+            this.settingsStoreService.getSettings()?.customizationID || '',
+            [Validators.required]
+          ),
+          invoiceTypeCodeCommercialInvoice: new FormControl(
+            this.settingsStoreService.getSettings()
+              ?.invoiceTypeCodeCommercialInvoice || '',
+            [Validators.required]
+          ),
+          invoiceTypeCodeAdvanceInvoice: new FormControl(
+            this.settingsStoreService.getSettings()
+              ?.invoiceTypeCodeAdvanceInvoice || '',
+            [Validators.required]
+          ),
+          documentCurrencyCode: new FormControl(
+            this.settingsStoreService.getSettings()?.documentCurrencyCode || '',
+            [Validators.required]
+          ),
+          schemeID: new FormControl(
+            this.settingsStoreService.getSettings()?.schemeID || '',
+            [Validators.required]
+          ),
+          invoiceTaxPeriodByDateOfCreate: new FormControl(
+            this.settingsStoreService.getSettings()
+              ?.invoiceTaxPeriodByDateOfCreate || '',
+            [Validators.required]
+          ),
+          invoiceTaxPeriodByDateOfPaying: new FormControl(
+            this.settingsStoreService.getSettings()
+              ?.invoiceTaxPeriodByDateOfPaying || '',
+            [Validators.required]
+          ),
+          sellerPIB: new FormControl(
+            this.settingsStoreService.getSettings()?.sellerPIB || '',
+            [Validators.required]
+          ),
+          sellerName: new FormControl(
+            this.settingsStoreService.getSettings()?.sellerName || '',
+            [Validators.required]
+          ),
+          sellerCity: new FormControl(
+            this.settingsStoreService.getSettings()?.sellerCity || '',
+            [Validators.required]
+          ),
+          sellerCountry: new FormControl(
+            this.settingsStoreService.getSettings()?.sellerCountry || '',
+            [Validators.required]
+          ),
+          taxScheme: new FormControl(
+            this.settingsStoreService.getSettings()?.taxScheme || '',
+            [Validators.required]
+          ),
+          taxCountrySign: new FormControl(
+            this.settingsStoreService.getSettings()?.taxCountrySign || '',
+            [Validators.required]
+          ),
+          sellerMaticalNumber: new FormControl(
+            this.settingsStoreService.getSettings()?.sellerMaticalNumber || '',
+            [Validators.required]
+          ),
+          sellerElectronicMail: new FormControl(
+            this.settingsStoreService.getSettings()?.sellerElectronicMail || '',
+            [Validators.required]
+          ),
+          paymentMeansCode: new FormControl(
+            this.settingsStoreService.getSettings()?.paymentMeansCode || '',
+            [Validators.required]
+          ),
+          modelPaymentCode: new FormControl(
+            this.settingsStoreService.getSettings()?.modelPaymentCode || '',
+            [Validators.required]
+          ),
+          invoiceCurrencyEInvoice: new FormControl(
+            this.settingsStoreService.getSettings()?.invoiceCurrencyEInvoice ||
+              '',
+            [Validators.required]
+          ),
+          digitsCountForInvoice: new FormControl(
+            this.settingsStoreService.getSettings()?.digitsCountForInvoice || 0,
+            [Validators.required]
+          ),
+          categoryForStandardVAT: new FormControl(
+            this.settingsStoreService.getSettings()?.categoryForStandardVAT ||
+              '',
+            [Validators.required]
+          ),
+          unitCodeForMeter2: new FormControl(
+            this.settingsStoreService.getSettings()?.unitCodeForMeter2 || '',
+            [Validators.required]
+          ),
+          unitCodeForMeter: new FormControl(
+            this.settingsStoreService.getSettings()?.unitCodeForMeter || '',
+            [Validators.required]
+          ),
+          unitCodeForHour: new FormControl(
+            this.settingsStoreService.getSettings()?.unitCodeForHour || '',
+            [Validators.required]
+          ),
+          unitCodeForPieces: new FormControl(
+            this.settingsStoreService.getSettings()?.unitCodeForPieces || '',
+            [Validators.required]
+          ),
         });
         this.settingsStoreService
           .getSettings()

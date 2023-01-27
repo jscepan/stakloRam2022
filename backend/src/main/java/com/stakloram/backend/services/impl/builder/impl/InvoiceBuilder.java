@@ -26,6 +26,7 @@ import com.stakloram.backend.models.Settings;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.models.WorkOrderItem;
+import com.stakloram.backend.models.WorkOrderItem.UOM;
 import com.stakloram.backend.models.XML.ContactXML;
 import com.stakloram.backend.models.XML.CountryXML;
 import com.stakloram.backend.models.XML.DeliveryXML;
@@ -398,14 +399,14 @@ public class InvoiceBuilder extends BaseBuilder {
 
         //////////////////// InvoicePeriod BT-8//////////////////////////////
         // Za avansne racune to je datum placanja, a za ostale pogledaj tutorial...
-        String invoiceTaxPeriod = "";
+        String invoiceTaxPeriod;
         if (invoice.getType() == InvoiceType.ADVANCE_INVOICE) {
             invoiceTaxPeriod = settings.getInvoiceTaxPeriodByDateOfPaying();
         } else {
             invoiceTaxPeriod = settings.getInvoiceTaxPeriodByDateOfCreate();
         }
         InvoicePeriodXML invoicePeriod = new InvoicePeriodXML(invoiceTaxPeriod);
-        if (invoicePeriod == null || invoicePeriod.getDescriptionCode() == null || invoicePeriod.getDescriptionCode().length() == 0) {
+        if (invoicePeriod.getDescriptionCode() == null || invoicePeriod.getDescriptionCode().length() == 0) {
             throw new SException(UserMessage.getLocalizedMessage("invoicePeriodError"));
         }
         invoiceXML.setInvoicePeriod(invoicePeriod);
@@ -488,61 +489,83 @@ public class InvoiceBuilder extends BaseBuilder {
         }
         invoiceXML.setPaymentMeansXML(new PaymentMeansXML(paymentMeansCode, paymentID, new PayeeFinancialAccountXML(buyerAccount)));
 
-        //////////////////// BUYER ACCOUNT BT-106 ///////////////////////////
+        //////////////////// Sum of Invoice line net amount BT-106 //////////
         double lineExtensionAmount = invoice.getNetAmount();
-        //////////////////// BUYER ACCOUNT BT-109 ///////////////////////////
+        //////////////////// Invoice total amount without VAT BT-109 ////////
         double taxExclusiveAmount = invoice.getNetAmount();
-        //////////////////// BUYER ACCOUNT BT-112 ///////////////////////////
+        //////////////////// Invoice total amount with VAT BT-112 ///////////
         double taxInclusiveAmount = invoice.getGrossAmount();
-        //////////////////// BUYER ACCOUNT BT-113 ///////////////////////////
+        //////////////////// Paid amounT BT-113 /////////////////////////////
         double prepaidAmount = invoice.getAdvancePayAmount();
-        //////////////////// BUYER ACCOUNT BT-115 ///////////////////////////
+        //////////////////// Amount due for payment BT-115 //////////////////
         double payableAmount = invoice.getGrossAmount() - prepaidAmount;
         LegalMonetaryTotalXML legalMonetaryTotal = new LegalMonetaryTotalXML(
-                new CurrencyAmountXML(DataChecker.roundOnDigits(lineExtensionAmount, 2), settings.getInvoiceCurrencyEInvoice()),
-                new CurrencyAmountXML(DataChecker.roundOnDigits(taxExclusiveAmount, 2), settings.getInvoiceCurrencyEInvoice()),
-                new CurrencyAmountXML(DataChecker.roundOnDigits(taxInclusiveAmount, 2), settings.getInvoiceCurrencyEInvoice()),
+                new CurrencyAmountXML(DataChecker.roundOnDigits(lineExtensionAmount, settings.getDigitsCountForInvoice()), settings.getInvoiceCurrencyEInvoice()),
+                new CurrencyAmountXML(DataChecker.roundOnDigits(taxExclusiveAmount, settings.getDigitsCountForInvoice()), settings.getInvoiceCurrencyEInvoice()),
+                new CurrencyAmountXML(DataChecker.roundOnDigits(taxInclusiveAmount, settings.getDigitsCountForInvoice()), settings.getInvoiceCurrencyEInvoice()),
                 new CurrencyAmountXML(0, settings.getInvoiceCurrencyEInvoice()),
-                new CurrencyAmountXML(DataChecker.roundOnDigits(prepaidAmount, 2), settings.getInvoiceCurrencyEInvoice()),
-                new CurrencyAmountXML(DataChecker.roundOnDigits(payableAmount, 2), settings.getInvoiceCurrencyEInvoice())
+                new CurrencyAmountXML(DataChecker.roundOnDigits(prepaidAmount, settings.getDigitsCountForInvoice()), settings.getInvoiceCurrencyEInvoice()),
+                new CurrencyAmountXML(DataChecker.roundOnDigits(payableAmount, settings.getDigitsCountForInvoice()), settings.getInvoiceCurrencyEInvoice())
         );
         invoiceXML.setLegalMonetaryTotal(legalMonetaryTotal);
 
-        /*
-        ///////////////////////////////////////////////////////////////////////////
         List<TaxItemXML> taxItems = new ArrayList<>();
         List<InvoiceItemXML> items = new ArrayList<>();
         int count = 1;
         for (InvoiceItem invoiceItem : invoice.getInvoiceItems()) {
-            // TODO uraditi category
-            String category = "S";// 
-            // Setting of tax items
-            CurrencyAmountXML taxableAmount = new CurrencyAmountXML(invoiceItem.getNetPrice(), "RSD");//settings.getCurrency
-            CurrencyAmountXML taxAmount = new CurrencyAmountXML(invoiceItem.getVatAmount(), "RSD");//settings.getCurrency
-            TaxCategoryXML taxCategoryXML = new TaxCategoryXML(category, invoiceItem.getVatRate(), new TaxSchemeXML("VAT")); // settings.getTaxScheme
+            //////////////////// VAT CATEGORY BT-118 ////////////////////////
+            String category = settings.getCategoryForStandardVAT();
+            if (invoiceItem.getVatRate() == 0) {
+                throw new SException(UserMessage.getLocalizedMessage("categoryVATError"));
+            }
+            //////////////////// VAT category taxable amount BT-116 /////////
+            CurrencyAmountXML taxableAmount = new CurrencyAmountXML(invoiceItem.getNetPrice(), settings.getInvoiceCurrencyEInvoice());
+            //////////////////// TAX AMOUNT BT-117 //////////////////////////
+            CurrencyAmountXML taxAmount = new CurrencyAmountXML(invoiceItem.getVatAmount(), settings.getInvoiceCurrencyEInvoice());
+            TaxCategoryXML taxCategoryXML = new TaxCategoryXML(category, invoiceItem.getVatRate(), new TaxSchemeXML(settings.getTaxScheme()));
 
             TaxItemXML taxItem = new TaxItemXML(taxableAmount, taxAmount, taxCategoryXML);
-            taxItems.add(taxItem);// settings.getTaxScheme
+            taxItems.add(taxItem);
 
-            //TODO uzmi jedinice mere...
-            String unitCode = "MTR";
-            InvoiceItemDetailsXML ivoiceItemDetailsXML = new InvoiceItemDetailsXML(invoiceItem.getDescription(), new TaxCategoryXML("S", invoiceItem.getVatRate(), new TaxSchemeXML("VAT"))); // settings.getTaxScheme
-            // Setting of invoice items
-            InvoiceItemXML invoiceLineXML = new InvoiceItemXML(count, new InvoicedQuantityXML(invoiceItem.getQuantity(), unitCode), new CurrencyAmountXML(invoiceItem.getNetPrice(), "RSD"), ivoiceItemDetailsXML, new PriceXML(new CurrencyAmountXML(invoiceItem.getNetPrice(), "RSD")));//settings.getCurrency
+            //////////////////// Invoiced quantity BT-130 ///////////////////
+            String unitCode = "";
+            if (invoiceItem.getUom().equals(UOM.M2.name())) {
+                unitCode = settings.getUnitCodeForMeter2();
+            } else if (invoiceItem.getUom().equals(UOM.M.name())) {
+                unitCode = settings.getUnitCodeForMeter();
+            } else if (invoiceItem.getUom().equals(UOM.HOUR.name())) {
+                unitCode = settings.getUnitCodeForHour();
+            } else if (invoiceItem.getUom().equals(UOM.PCS.name())) {
+                unitCode = settings.getUnitCodeForPieces();
+            }
+            if (unitCode == null || unitCode.length() == 0) {
+                throw new SException(UserMessage.getLocalizedMessage("unitCodeError"));
+            }
+            //////////////////// Invoiced quantity BT-129 ///////////////////
+            InvoicedQuantityXML invoicedQuantityXML = new InvoicedQuantityXML(invoiceItem.getQuantity(), unitCode);
+            //////////////////// Invoice line net amount BT-131 /////////////
+            CurrencyAmountXML lineExtensionAmountItem = new CurrencyAmountXML(invoiceItem.getNetPrice(), settings.getInvoiceCurrencyEInvoice());
+            //////////////////// Item name BG-25 ///////////////////////////
+            InvoiceItemDetailsXML invoiceItemDetailsXML = new InvoiceItemDetailsXML(invoiceItem.getDescription(), taxCategoryXML); // settings.getTaxScheme
+            //////////////////// Item net price BT-146 /////////////////////
+            PriceXML priceInvoiceItem = new PriceXML(new CurrencyAmountXML(invoiceItem.getNetPrice(), settings.getInvoiceCurrencyEInvoice()));
+            //////////////////// Invoice line net amount BT-131 /////////////
+            InvoiceItemXML invoiceLineXML = new InvoiceItemXML(count, invoicedQuantityXML, lineExtensionAmountItem, invoiceItemDetailsXML, priceInvoiceItem);
             items.add(invoiceLineXML);
             count++;
         }
-        TaxTotalXML taxTotalXML = new TaxTotalXML(new CurrencyAmountXML(invoice.getVatAmount(), "RSD"), taxItems);//settings.getCurrency
+        //////////////////// TAX TOTAL BT-110 ///////////////////////////////
+        TaxTotalXML taxTotalXML = new TaxTotalXML(new CurrencyAmountXML(invoice.getVatAmount(), settings.getInvoiceCurrencyEInvoice()), taxItems);
         invoiceXML.setTaxTotalXML(taxTotalXML);
         invoiceXML.setInvoiceItemsXML(items);
-         */
         return this.jaxbObjectToXML(invoiceXML);
     }
 
     private String jaxbObjectToXML(InvoiceXML invoice) throws SException {
         try {
             String xmlString = "";
-            JAXBContext context = JAXBContext.newInstance(InvoiceXML.class);
+            JAXBContext context = JAXBContext.newInstance(InvoiceXML.class
+            );
             Marshaller m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE); // To format XML
 

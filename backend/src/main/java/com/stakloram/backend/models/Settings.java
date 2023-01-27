@@ -63,6 +63,12 @@ public class Settings {
     private String paymentMeansCode = "30";
     private String modelPaymentCode = "(mod97)";
     private String invoiceCurrencyEInvoice = "RSD";
+    private int digitsCountForInvoice = 2;
+    private String categoryForStandardVAT = "S";
+    private String unitCodeForMeter2 = "MTK";
+    private String unitCodeForMeter = "MTR";
+    private String unitCodeForHour = "HUR";
+    private String unitCodeForPieces = "H87";
 
     public Settings() {
     }
@@ -489,5 +495,53 @@ public class Settings {
 
     public void setInvoiceCurrencyEInvoice(String invoiceCurrencyEInvoice) {
         this.invoiceCurrencyEInvoice = invoiceCurrencyEInvoice;
+    }
+
+    public int getDigitsCountForInvoice() {
+        return digitsCountForInvoice;
+    }
+
+    public void setDigitsCountForInvoice(int digitsCountForInvoice) {
+        this.digitsCountForInvoice = digitsCountForInvoice;
+    }
+
+    public String getCategoryForStandardVAT() {
+        return categoryForStandardVAT;
+    }
+
+    public void setCategoryForStandardVAT(String categoryForStandardVAT) {
+        this.categoryForStandardVAT = categoryForStandardVAT;
+    }
+
+    public String getUnitCodeForMeter2() {
+        return unitCodeForMeter2;
+    }
+
+    public void setUnitCodeForMeter2(String unitCodeForMeter2) {
+        this.unitCodeForMeter2 = unitCodeForMeter2;
+    }
+
+    public String getUnitCodeForMeter() {
+        return unitCodeForMeter;
+    }
+
+    public void setUnitCodeForMeter(String unitCodeForMeter) {
+        this.unitCodeForMeter = unitCodeForMeter;
+    }
+
+    public String getUnitCodeForHour() {
+        return unitCodeForHour;
+    }
+
+    public void setUnitCodeForHour(String unitCodeForHour) {
+        this.unitCodeForHour = unitCodeForHour;
+    }
+
+    public String getUnitCodeForPieces() {
+        return unitCodeForPieces;
+    }
+
+    public void setUnitCodeForPieces(String unitCodeForPieces) {
+        this.unitCodeForPieces = unitCodeForPieces;
     }
 }

@@ -472,21 +472,244 @@
             [class.mark-required]="true"
             [class.mark-opt-required]="true"
           >
-            {{ "xxxx" | translate }}
+            {{ "customizationID" | translate }}
           </mat-label>
-          <mat-select matSelect formControlName="xxxx">
-            <mat-option [value]="true">{{ "yes" | translate }}</mat-option>
-            <mat-option [value]="false">{{ "no" | translate }}</mat-option>
-          </mat-select>
+          <input type="text" matInput formControlName="customizationID" />
         </mat-form-field>
         <mat-form-field>
           <mat-label
             [class.mark-required]="true"
             [class.mark-opt-required]="true"
           >
-            {{ "yyyy" | translate }}
+            {{ "invoiceTypeCodeCommercialInvoice" | translate }}
           </mat-label>
-          <input type="text" matInput formControlName="yyyy" />
+          <input
+            type="text"
+            matInput
+            formControlName="invoiceTypeCodeCommercialInvoice"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "invoiceTypeCodeAdvanceInvoice" | translate }}
+          </mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="invoiceTypeCodeAdvanceInvoice"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "documentCurrencyCode" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="documentCurrencyCode" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "schemeID" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="schemeID" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "invoiceTaxPeriodByDateOfCreate" | translate }}
+          </mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="invoiceTaxPeriodByDateOfCreate"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "invoiceTaxPeriodByDateOfPaying" | translate }}
+          </mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="invoiceTaxPeriodByDateOfPaying"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "sellerPIB" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="sellerPIB" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "sellerName" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="sellerName" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "sellerCity" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="sellerCity" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "sellerCountry" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="sellerCountry" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "taxScheme" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="taxScheme" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "taxCountrySign" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="taxCountrySign" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "sellerMaticalNumber" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="sellerMaticalNumber" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "sellerElectronicMail" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="sellerElectronicMail" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "paymentMeansCode" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="paymentMeansCode" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "modelPaymentCode" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="modelPaymentCode" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "invoiceCurrencyEInvoice" | translate }}
+          </mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="invoiceCurrencyEInvoice"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "digitsCountForInvoice" | translate }}
+          </mat-label>
+          <input
+            type="number"
+            matInput
+            formControlName="digitsCountForInvoice"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "categoryForStandardVAT" | translate }}
+          </mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="categoryForStandardVAT"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "unitCodeForMeter2" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="unitCodeForMeter2" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "unitCodeForMeter" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="unitCodeForMeter" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "unitCodeForHour" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="unitCodeForHour" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "unitCodeForPieces" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="unitCodeForPieces" />
         </mat-form-field>
       </mat-expansion-panel>
     </mat-accordion>

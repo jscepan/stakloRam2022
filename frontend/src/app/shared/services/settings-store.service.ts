@@ -42,6 +42,31 @@ export class AppSettings {
   workOrderHeadingLine1?: string;
   workOrderHeadingLine2?: string;
   workOrderHeadingLine3?: string;
+
+  customizationID?: string;
+  invoiceTypeCodeCommercialInvoice?: string;
+  invoiceTypeCodeAdvanceInvoice?: string;
+  documentCurrencyCode?: string;
+  schemeID?: string;
+  invoiceTaxPeriodByDateOfCreate?: string;
+  invoiceTaxPeriodByDateOfPaying?: string;
+  sellerPIB?: string;
+  sellerName?: string;
+  sellerCity?: string;
+  sellerCountry?: string;
+  taxScheme?: string;
+  taxCountrySign?: string;
+  sellerMaticalNumber?: string;
+  sellerElectronicMail?: string;
+  paymentMeansCode?: string;
+  modelPaymentCode?: string;
+  invoiceCurrencyEInvoice?: string;
+  digitsCountForInvoice?: number;
+  categoryForStandardVAT?: string;
+  unitCodeForMeter2?: string;
+  unitCodeForMeter?: string;
+  unitCodeForHour?: string;
+  unitCodeForPieces?: string;
 }
 
 @Injectable({
