@@ -47,4 +47,10 @@ public class DataChecker {
     public static boolean maxTextLength(String text, int max) {
         return text != null && text.length() <= max;
     }
+
+    public static double roundOnDigits(double number, int digits) {
+        double newNumber = number;
+        //
+        return newNumber;
+    }
 }

@@ -52,6 +52,7 @@ import com.stakloram.backend.models.XML.TaxItemXML;
 import com.stakloram.backend.models.XML.TaxSchemeXML;
 import com.stakloram.backend.models.XML.TaxTotalXML;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
+import com.stakloram.backend.util.DataChecker;
 import com.stakloram.backend.util.Helper;
 import java.io.StringWriter;
 import java.sql.ResultSet;
@@ -486,21 +487,29 @@ public class InvoiceBuilder extends BaseBuilder {
             throw new SException(UserMessage.getLocalizedMessage("buyerAccountError"));
         }
         invoiceXML.setPaymentMeansXML(new PaymentMeansXML(paymentMeansCode, paymentID, new PayeeFinancialAccountXML(buyerAccount)));
-        /*
-        ///////////////////////////////////////////////////////////////////////////
 
-        // TODO logiku samo za izracunavanje prepaid amount - kada ima avansa...
-        double prepaidAmount = 0;
+        //////////////////// BUYER ACCOUNT BT-106 ///////////////////////////
+        double lineExtensionAmount = invoice.getNetAmount();
+        //////////////////// BUYER ACCOUNT BT-109 ///////////////////////////
+        double taxExclusiveAmount = invoice.getNetAmount();
+        //////////////////// BUYER ACCOUNT BT-112 ///////////////////////////
+        double taxInclusiveAmount = invoice.getGrossAmount();
+        //////////////////// BUYER ACCOUNT BT-113 ///////////////////////////
+        double prepaidAmount = invoice.getAdvancePayAmount();
+        //////////////////// BUYER ACCOUNT BT-115 ///////////////////////////
+        double payableAmount = invoice.getGrossAmount() - prepaidAmount;
         LegalMonetaryTotalXML legalMonetaryTotal = new LegalMonetaryTotalXML(
-                new CurrencyAmountXML(invoice.getNetAmount(), "RSD"),
-                new CurrencyAmountXML(invoice.getNetAmount(), "RSD"),
-                new CurrencyAmountXML(invoice.getGrossAmount(), "RSD"),
-                new CurrencyAmountXML(0, "RSD"),
-                new CurrencyAmountXML(prepaidAmount, "RSD"),
-                new CurrencyAmountXML(invoice.getGrossAmount() - prepaidAmount, "RSD")
-        );//settings.getCurrency
+                new CurrencyAmountXML(DataChecker.roundOnDigits(lineExtensionAmount, 2), settings.getInvoiceCurrencyEInvoice()),
+                new CurrencyAmountXML(DataChecker.roundOnDigits(taxExclusiveAmount, 2), settings.getInvoiceCurrencyEInvoice()),
+                new CurrencyAmountXML(DataChecker.roundOnDigits(taxInclusiveAmount, 2), settings.getInvoiceCurrencyEInvoice()),
+                new CurrencyAmountXML(0, settings.getInvoiceCurrencyEInvoice()),
+                new CurrencyAmountXML(DataChecker.roundOnDigits(prepaidAmount, 2), settings.getInvoiceCurrencyEInvoice()),
+                new CurrencyAmountXML(DataChecker.roundOnDigits(payableAmount, 2), settings.getInvoiceCurrencyEInvoice())
+        );
         invoiceXML.setLegalMonetaryTotal(legalMonetaryTotal);
 
+        /*
+        ///////////////////////////////////////////////////////////////////////////
         List<TaxItemXML> taxItems = new ArrayList<>();
         List<InvoiceItemXML> items = new ArrayList<>();
         int count = 1;

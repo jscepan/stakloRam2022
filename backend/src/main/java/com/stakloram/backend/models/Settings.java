@@ -62,6 +62,7 @@ public class Settings {
     private String sellerElectronicMail = "";
     private String paymentMeansCode = "30";
     private String modelPaymentCode = "(mod97)";
+    private String invoiceCurrencyEInvoice = "RSD";
 
     public Settings() {
     }
@@ -480,5 +481,13 @@ public class Settings {
 
     public void setModelPaymentCode(String modelPaymentCode) {
         this.modelPaymentCode = modelPaymentCode;
+    }
+
+    public String getInvoiceCurrencyEInvoice() {
+        return invoiceCurrencyEInvoice;
+    }
+
+    public void setInvoiceCurrencyEInvoice(String invoiceCurrencyEInvoice) {
+        this.invoiceCurrencyEInvoice = invoiceCurrencyEInvoice;
     }
 }
