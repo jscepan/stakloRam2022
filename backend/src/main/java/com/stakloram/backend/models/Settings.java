@@ -55,6 +55,7 @@ public class Settings {
     private String sellerPIB = "105509737";
     private String sellerName = "StakloRam plus";
     private String sellerCity = "Bačka Palanka";
+    private String sellerPostalCode = "21400";
     private String sellerCountry = "RS";
     private String taxScheme = "VAT";
     private String taxCountrySign = "RS";
@@ -543,5 +544,13 @@ public class Settings {
 
     public void setUnitCodeForPieces(String unitCodeForPieces) {
         this.unitCodeForPieces = unitCodeForPieces;
+    }
+
+    public String getSellerPostalCode() {
+        return sellerPostalCode;
+    }
+
+    public void setSellerPostalCode(String sellerPostalCode) {
+        this.sellerPostalCode = sellerPostalCode;
     }
 }

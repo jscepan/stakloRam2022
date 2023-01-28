@@ -53,6 +53,7 @@ export class AppSettings {
   sellerPIB?: string;
   sellerName?: string;
   sellerCity?: string;
+  sellerPostalCode?: string;
   sellerCountry?: string;
   taxScheme?: string;
   taxCountrySign?: string;

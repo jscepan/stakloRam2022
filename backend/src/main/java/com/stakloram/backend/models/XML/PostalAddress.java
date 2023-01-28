@@ -11,6 +11,8 @@ public class PostalAddress {
     private String cityName;
     @XmlElement(name = "StreetName", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private String streetName;
+    @XmlElement(name = "PostalZone", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
+    private String postalZone;
     @XmlElement(name = "Country", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private CountryXML country;
 
@@ -31,6 +33,14 @@ public class PostalAddress {
 
     public void setCountry(CountryXML country) {
         this.country = country;
+    }
+
+    public String getPostalZone() {
+        return postalZone;
+    }
+
+    public void setPostalZone(String postalZone) {
+        this.postalZone = postalZone;
     }
 
     public String getStreetName() {

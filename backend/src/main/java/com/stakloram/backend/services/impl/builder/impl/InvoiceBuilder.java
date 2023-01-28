@@ -421,8 +421,10 @@ public class InvoiceBuilder extends BaseBuilder {
         PostalAddress postalAddressSeller = new PostalAddress();
         //////////////////// SELLER CITY BT-37 //////////////////////////////
         postalAddressSeller.setCityName(settings.getSellerCity());
+        //////////////////// SELLER CITY BT-38 //////////////////////////////
+        postalAddressSeller.setPostalZone(settings.getSellerPostalCode());
         //////////////////// SELLER COUNTRY BT-40 ///////////////////////////
-        CountryXML sellerCountry = new CountryXML(settings.getSellerCountry()); // settings.getSellerCountry();
+        CountryXML sellerCountry = new CountryXML(settings.getSellerCountry());
         postalAddressSeller.setCountry(sellerCountry);
         sellerXML.setPostalAddress(postalAddressSeller);
         //////////////////// SELLER TAX SCHEME BT-62 ////////////////////////
@@ -456,6 +458,7 @@ public class InvoiceBuilder extends BaseBuilder {
         //////////////////// BUYER DATA BT-52 ///////////////////////////////
         postalAddressBuyer.setStreetName(invoice.getBuyer().getAddress());
         postalAddressBuyer.setCityName(invoice.getBuyer().getCity().getName());
+        postalAddressBuyer.setPostalZone(invoice.getBuyer().getCity().getZipCode());
         CountryXML buyerCountry = new CountryXML(invoice.getBuyer().getCity().getCountry().getIdentificationCode());
         postalAddressBuyer.setCountry(buyerCountry);
         buyerXML.setPostalAddress(postalAddressBuyer);

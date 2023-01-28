@@ -578,6 +578,15 @@
             [class.mark-required]="true"
             [class.mark-opt-required]="true"
           >
+            {{ "sellerPostalCode" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="sellerPostalCode" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
             {{ "sellerCountry" | translate }}
           </mat-label>
           <input type="text" matInput formControlName="sellerCountry" />

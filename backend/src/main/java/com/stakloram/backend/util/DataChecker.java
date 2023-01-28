@@ -49,8 +49,8 @@ public class DataChecker {
     }
 
     public static double roundOnDigits(double number, int digits) {
-        double newNumber = number;
-        //
-        return newNumber;
+        double multipicationFactor = Math.pow(10, digits);
+        double interestedInZeroDPs = number * multipicationFactor;
+        return Math.round(interestedInZeroDPs) / multipicationFactor;
     }
 }
