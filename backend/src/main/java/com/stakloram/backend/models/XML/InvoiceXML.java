@@ -11,6 +11,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class InvoiceXML {
 
+    @XmlElement(name = "UBLExtensions", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2")
+    private List<UBLExtensionXML> ublExtensions;
     @XmlElement(name = "CustomizationID", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private String customizationID;
     @XmlElement(name = "ID", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
@@ -21,6 +23,8 @@ public class InvoiceXML {
     private String dateOfMaturity;
     @XmlElement(name = "InvoiceTypeCode", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private String invoiceTypeCode;
+    @XmlElement(name = "Note", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
+    private String note;
     @XmlElement(name = "DocumentCurrencyCode", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private String documentCurrencyCode;
     @XmlElement(name = "InvoicePeriod", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
@@ -41,6 +45,14 @@ public class InvoiceXML {
     private List<InvoiceItemXML> invoiceItemsXML;
 
     public InvoiceXML() {
+    }
+
+    public List<UBLExtensionXML> getUblExtensions() {
+        return ublExtensions;
+    }
+
+    public void setUblExtensions(List<UBLExtensionXML> ublExtensions) {
+        this.ublExtensions = ublExtensions;
     }
 
     public String getCustomizationID() {
@@ -81,6 +93,14 @@ public class InvoiceXML {
 
     public void setInvoiceTypeCode(String invoiceTypeCode) {
         this.invoiceTypeCode = invoiceTypeCode;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public String getDocumentCurrencyCode() {

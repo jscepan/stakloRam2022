@@ -293,6 +293,6 @@ public class Invoice extends BaseModel {
     }
 
     public enum InvoiceType {
-        DOMESTIC, FOREIGN, CASH, PRE_INVOICE, ADVANCE_INVOICE
+        DOMESTIC, FOREIGN, CASH, PRE_INVOICE, ADVANCE_INVOICE, FINAL
     }
 }
