@@ -48,7 +48,6 @@ import {
   SweetAlertI,
   SweetAlertTypeEnum,
 } from 'src/app/shared/components/sweet-alert/sweet-alert.interface';
-import { EInvoiceService } from 'src/app/shared/services/e-invoice.service';
 
 @Component({
   selector: 'app-invoice-create-edit',
@@ -63,7 +62,6 @@ import { EInvoiceService } from 'src/app/shared/services/e-invoice.service';
     WorkOrderWebService,
     WorkOrderSelectionComponentService,
     WorkOrderItemSelectionComponentService,
-    EInvoiceService,
   ],
 })
 export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
@@ -158,8 +156,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     private workOrderSelectionComponentService: WorkOrderSelectionComponentService,
     private workOrderItemSelectionComponentService: WorkOrderItemSelectionComponentService,
     private sweetAlertService: SweetAlertService,
-    private authStoreService: AuthStoreService,
-    private eInvoiceService: EInvoiceService
+    private authStoreService: AuthStoreService
   ) {}
 
   ngOnInit(): void {
@@ -251,13 +248,16 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     return this.authStoreService.isAllowed(privilege);
   }
 
-  initializeCreate(): void {
+  initializeCreate(isFinalInvoice: boolean = false): void {
     if (this.isEdit) this.selectedBuyer = this.invoice.buyer;
 
     this.formGroup = new FormGroup({
-      type: new FormControl(this.invoice?.type || this.typesOptions[0].value, [
-        Validators.required,
-      ]),
+      type: new FormControl(
+        isFinalInvoice
+          ? this.typesOptions[5].value
+          : this.invoice?.type || this.typesOptions[0].value,
+        [Validators.required]
+      ),
       number: new FormControl(this.invoice?.number || 0, [Validators.required]),
       dateOfCreate: new FormControl(
         this.invoice?.dateOfCreate || new Date().toISOString().substring(0, 10),
@@ -704,6 +704,17 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
             .get('methodOfPayment')
             ?.setValue(this.settings?.invoiceMethodOfPayment);
           break;
+        case 'FINAL':
+          this.globalService.showBasicAlert(
+            MODE.error,
+            this.translateService.instant('invoiceTypeError'),
+            this.translateService.instant(
+              'finalInvoiceCanBeSelectedOnlyFromAdvanceInvoice'
+            )
+          );
+          this.formGroup.get('type')?.setValue(this.typesOptions[0].value);
+          this.invoiceTypeChanged(this.typesOptions[0].value);
+          break;
         default:
           this.formGroup.removeControl('numberOfCashBill');
           this.formGroup
@@ -937,7 +948,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
         ? (this.advanceInvoice = previousInvoice)
         : (this.preInvoice = previousInvoice);
       this.selectedBuyer = previousInvoice.buyer;
-      this.initializeCreate();
+      this.initializeCreate(type === 'advanceInvoice');
       this.formGroup.get('comment')?.setValue(
         this.formGroup.get('comment')?.value +
           this.translateService.instant(

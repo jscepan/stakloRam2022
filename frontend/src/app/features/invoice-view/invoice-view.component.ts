@@ -1,8 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 import { InvoiceModel } from 'src/app/shared/models/invoice.model';
-import { GlobalService } from 'src/app/shared/services/global.service';
 import {
   AppSettings,
   SettingsStoreService,
@@ -26,12 +24,9 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   getUOMDisplayValue = getUOMDisplayValue;
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
-    private globalService: GlobalService,
     private webService: InvoiceWebService,
-    private settingsStoreService: SettingsStoreService,
-    private translateService: TranslateService
+    private settingsStoreService: SettingsStoreService
   ) {}
 
   ngOnInit(): void {

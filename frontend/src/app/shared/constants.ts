@@ -78,6 +78,7 @@ export const INVOICE_TYPES: EnumValueModel[] = [
   { value: 'CASH', displayName: 'cashInvoice' },
   { value: 'PRE_INVOICE', displayName: 'preInvoice' },
   { value: 'ADVANCE_INVOICE', displayName: 'advanceInvoice' },
+  { value: 'FINAL', displayName: 'finalInvoice' },
 ];
 
 export const UOM_TYPES: EnumValueModel[] = [
