@@ -155,7 +155,11 @@
             [iconName]="'dollar-sign'"
             [isTransparentMode]="true"
             (clickEvent)="createIncome(invoice)"
-            *ngIf="invoice.type === 'DOMESTIC' || invoice.type === 'FOREIGN'"
+            *ngIf="
+              invoice.type === 'DOMESTIC' ||
+              invoice.type === 'FOREIGN' ||
+              invoice.type === 'FINAL'
+            "
             [matTooltip]="'createIncome' | translate"
             [disabled]="!hasPrivilege('INCOME_CREATE')"
           ></app-button>
