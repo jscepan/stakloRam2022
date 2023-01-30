@@ -337,6 +337,7 @@
   "sellerName": "Seller name - BT-27",
   "sellerPIB": "Seller PIB - BT-31",
   "sellerPostalCode": "Seller postal code",
+  "sellerStreetName": "Seller street name",
   "settings": "Settings",
   "settingsEditPrivilege": "Settings - edit",
   "settingsSuccessfullyUpdated": "Settings successfully updated",

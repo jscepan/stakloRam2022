@@ -569,6 +569,15 @@
             [class.mark-required]="true"
             [class.mark-opt-required]="true"
           >
+            {{ "sellerStreetName" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="sellerStreetName" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
             {{ "sellerCity" | translate }}
           </mat-label>
           <input type="text" matInput formControlName="sellerCity" />

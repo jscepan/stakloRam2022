@@ -35,7 +35,7 @@ public class InvoiceXML {
     private InvoiceBuyerWrapperXML invoiceBuyerWrapperXML;
     @XmlElement(name = "Delivery", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private DeliveryXML deliveryXML;
-    @XmlElement(name = "PaymentMeansXML", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
+    @XmlElement(name = "PaymentMeans", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private PaymentMeansXML paymentMeansXML;
     @XmlElement(name = "TaxTotal", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private TaxTotalXML taxTotalXML;

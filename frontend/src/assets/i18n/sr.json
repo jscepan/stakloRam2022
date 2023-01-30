@@ -337,6 +337,7 @@
   "sellerName": "Naziv prodavca - BT-27",
   "sellerPIB": "PIB prodavca - BT-31",
   "sellerPostalCode": "Poštanski broj prodavca",
+  "sellerStreetName": "Ulica i broj prodavca",
   "settings": "Podešavanja",
   "settingsEditPrivilege": "Podešavanja - izmeni",
   "settingsSuccessfullyUpdated": "Podešavanja uspešno izmenjena",

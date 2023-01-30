@@ -54,6 +54,7 @@ public class Settings {
     private String invoiceTaxPeriodByDateOfPaying = "432";
     private String sellerPIB = "105509737";
     private String sellerName = "StakloRam plus";
+    private String sellerStreetName = "Žarka Zrenjanina 70";
     private String sellerCity = "Bačka Palanka";
     private String sellerPostalCode = "21400";
     private String sellerCountry = "RS";
@@ -424,6 +425,14 @@ public class Settings {
 
     public void setSellerPIB(String sellerPIB) {
         this.sellerPIB = sellerPIB;
+    }
+
+    public String getSellerStreetName() {
+        return sellerStreetName;
+    }
+
+    public void setSellerStreetName(String sellerStreetName) {
+        this.sellerStreetName = sellerStreetName;
     }
 
     public String getSellerCity() {

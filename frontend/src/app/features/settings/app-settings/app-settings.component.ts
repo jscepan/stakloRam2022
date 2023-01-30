@@ -227,6 +227,10 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
             this.settingsStoreService.getSettings()?.sellerName || '',
             [Validators.required]
           ),
+          sellerStreetName: new FormControl(
+            this.settingsStoreService.getSettings()?.sellerStreetName || '',
+            [Validators.required]
+          ),
           sellerCity: new FormControl(
             this.settingsStoreService.getSettings()?.sellerCity || '',
             [Validators.required]

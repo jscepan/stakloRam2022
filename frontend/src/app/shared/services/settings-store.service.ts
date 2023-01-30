@@ -52,6 +52,7 @@ export class AppSettings {
   invoiceTaxPeriodByDateOfPaying?: string;
   sellerPIB?: string;
   sellerName?: string;
+  sellerStreetName?: string;
   sellerCity?: string;
   sellerPostalCode?: string;
   sellerCountry?: string;

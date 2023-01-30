@@ -496,8 +496,8 @@ public class InvoiceBuilder extends BaseBuilder {
         //////////////////// SELLER ADDRESS BG-5 ////////////////////////////
         PostalAddress postalAddressSeller = new PostalAddress();
         //////////////////// SELLER CITY BT-37 //////////////////////////////
-
         postalAddressSeller.setCityName(settings.getSellerCity());
+        postalAddressSeller.setStreetName(settings.getSellerStreetName());
         //////////////////// SELLER CITY BT-38 //////////////////////////////
         postalAddressSeller.setPostalZone(settings.getSellerPostalCode());
         //////////////////// SELLER COUNTRY BT-40 ///////////////////////////
@@ -575,10 +575,12 @@ public class InvoiceBuilder extends BaseBuilder {
         invoiceXML.setInvoiceBuyerWrapperXML(isb);
         // ako je sifra datuma poreske obaveze BT-8 iskazuje da je nacin odredjivanja
         // kada nastaje poreska obaveza prema datumu prometa...
-
-        if (false) {
-            invoiceXML.setDeliveryXML(new DeliveryXML(invoice.getDateOfTurnover() + ""));
-        }
+//        if (false) {
+//        <cac:Delivery>
+//            <cbc:ActualDeliveryDate>2023-01-10</cbc:ActualDeliveryDate>
+//        </cac:Delivery>
+        invoiceXML.setDeliveryXML(new DeliveryXML(invoice.getDateOfTurnover() + ""));
+//        }
         //////////////////// BUYER PAYMENT MEANS CODE BT-81 /////////////////
         String paymentMeansCode = settings.getPaymentMeansCode();
         //////////////////// BUYER DATA BT-83 ///////////////////////////////

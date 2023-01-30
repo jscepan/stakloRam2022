@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class InvoicePartyXML {
 
-    @XmlElement(name = "PartyIdentificationXML", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
+    @XmlElement(name = "PartyIdentification", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private PartyIdentificationXML partyIdentificationXML;
     @XmlElement(name = "EndpointID", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
     private PibXML pibXML;
