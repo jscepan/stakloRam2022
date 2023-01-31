@@ -300,42 +300,7 @@ public class InvoiceBuilder extends BaseBuilder {
             super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
-//        try {
-//            if (!((InvoiceStore) this.objectStore).changeBuyer(invoiceOID, buyerOID)) {
-//                return false;
-//            }
-//        } catch (SQLException ex) {
-//            super.logger.error(ex.toString());
-//            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
-//        }
-//        // find all associate workOrders
-//        Set<String> workOrderOIDSForChange = new HashSet<>();
-//        try {
-//            String from = this.getSqlFromObjectStores(Arrays.asList(WORK_ORDER_ITEM_STORE, WORK_ORDER_STORE));
-//            for (InvoiceItem ii : invoice.getInvoiceItems()) {
-//                String where = WORK_ORDER_ITEM_STORE.getTableName() + "_invoice_item_invoice_item_id=" + BaseModel.getIdFromOid(ii.getOid());
-//                ResultSet rs = this.getObjectStore().getAllObjectsFromDatabase(from, where);
-//                while (rs.next()) {
-//                    WorkOrder workOrder = WORK_ORDER_STORE.getObjectFromResultSet(rs);
-//                    workOrderOIDSForChange.add(workOrder.getOid());
-//                }
-//            }
-//        } catch (SQLException ex) {
-//            super.logger.error(ex.toString());
-//            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
-//        }
-//
-//        for (String oid : workOrderOIDSForChange) {
-//            try {
-//                if (!WORK_ORDER_STORE.changeBuyer(oid, buyerOID)) {
-//                    return false;
-//                }
-//            } catch (SQLException ex) {
-//                super.logger.error(ex.toString());
-//                throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
-//            }
-//        }
-//        return true;
+        // find all associate workOrders - get decision about work orders of that invoice...
     }
 
     public Set<String> getAllWorkOrdersForInvoice(Invoice invoice) throws SException {
@@ -374,45 +339,47 @@ public class InvoiceBuilder extends BaseBuilder {
         }
         // For final invoices first part is UBLExtensions
         if (invoice.getType() == InvoiceType.FINAL) {
-//            Invoice advanceInvoice = this.getObjectByOid(invoice.getAdvanceInvoiceOid());
-//            List<UBLExtensionXML> ublExtensions = new ArrayList<>();
-//            List<TaxItemXML> taxSubtotalAdvanceInvoiceXML = new ArrayList<>();
-//
-//            for (InvoiceItem aii : advanceInvoice.getInvoiceItems()) {
-//                String categoryAdvanceInvoice = settings.getCategoryForStandardVAT();
-//                if (aii.getVatRate() == 0) {
-//                    throw new SException(UserMessage.getLocalizedMessage("categoryVATError"));
-//                }
-//                TaxCategoryXML taxCategoryXML = new TaxCategoryXML(categoryAdvanceInvoice, aii.getVatRate(), new TaxSchemeXML(settings.getTaxScheme()));
-//                TaxItemXML taxItemAdvanceInvoiceXML = new TaxItemXML(new CurrencyAmountXML(aii.getNetPrice(), settings.getInvoiceCurrencyEInvoice()), new CurrencyAmountXML(aii.getVatAmount(), settings.getInvoiceCurrencyEInvoice()), taxCategoryXML);
-//                taxSubtotalAdvanceInvoiceXML.add(taxItemAdvanceInvoiceXML);
-//                TaxTotalXML taxTotalAdvanceInvoiced = new TaxTotalXML(new CurrencyAmountXML(advanceInvoice.getGrossAmount(), settings.getInvoiceCurrencyEInvoice()), taxSubtotalAdvanceInvoiceXML);
-//                InvoicedPrepaymentAmmountXML invoicedPrepaymentAmmount = new InvoicedPrepaymentAmmountXML(invoice.getNumber(), taxTotalAdvanceInvoiced);
-//
-//                ReducedTotalsXML reducedTotalsXML = new ReducedTotalsXML();
-//                SrbDtExtXML srbDtExtXML = new SrbDtExtXML(invoicedPrepaymentAmmount, reducedTotalsXML);
-//                UBLExtensionXML ublExtension = new UBLExtensionXML(new ExtensionContentXML(srbDtExtXML));
-//                ublExtensions.add(ublExtension);
-//
-//                //////////////////// Invoice total amount without VAT BT-109 ////////
-//                double taxExclusiveAmount = invoice.getNetAmount();
-//                //////////////////// Invoice total amount with VAT BT-112 ///////////
-//                double taxInclusiveAmount = invoice.getGrossAmount();
-//                //////////////////// Paid amounT BT-113 /////////////////////////////
-//                double prepaidAmount = invoice.getAdvancePayAmount();
-//                //////////////////// Amount due for payment BT-115 //////////////////
-//                double payableAmount = invoice.getGrossAmount() - prepaidAmount;
-//
-//                LegalMonetaryTotalXML legalMonetaryTotalAdvanceInvoice = new LegalMonetaryTotalXML(
-//                        null,
-//                        new CurrencyAmountXML(DataChecker.roundOnDigits(taxExclusiveAmount, settings.getDigitsCountForInvoice()), settings.getInvoiceCurrencyEInvoice()),
-//                        new CurrencyAmountXML(DataChecker.roundOnDigits(taxInclusiveAmount, settings.getDigitsCountForInvoice()), settings.getInvoiceCurrencyEInvoice()),
-//                        null,
-//                        null,
-//                        new CurrencyAmountXML(DataChecker.roundOnDigits(payableAmount, settings.getDigitsCountForInvoice()), settings.getInvoiceCurrencyEInvoice())
-//                );
-//        }
-//            invoiceXML.setUblExtensions(ublExtensions);
+            /*
+            Invoice advanceInvoice = this.getObjectByOid(invoice.getAdvanceInvoiceOid());
+            List<UBLExtensionXML> ublExtensions = new ArrayList<>();
+            List<TaxItemXML> taxSubtotalAdvanceInvoiceXML = new ArrayList<>();
+
+            for (InvoiceItem aii : advanceInvoice.getInvoiceItems()) {
+                String categoryAdvanceInvoice = settings.getCategoryForStandardVAT();
+                if (aii.getVatRate() == 0) {
+                    throw new SException(UserMessage.getLocalizedMessage("categoryVATError"));
+                }
+                TaxCategoryXML taxCategoryXML = new TaxCategoryXML(categoryAdvanceInvoice, aii.getVatRate(), new TaxSchemeXML(settings.getTaxScheme()));
+                TaxItemXML taxItemAdvanceInvoiceXML = new TaxItemXML(new CurrencyAmountXML(aii.getNetPrice(), settings.getInvoiceCurrencyEInvoice()), new CurrencyAmountXML(aii.getVatAmount(), settings.getInvoiceCurrencyEInvoice()), taxCategoryXML);
+                taxSubtotalAdvanceInvoiceXML.add(taxItemAdvanceInvoiceXML);
+                TaxTotalXML taxTotalAdvanceInvoiced = new TaxTotalXML(new CurrencyAmountXML(advanceInvoice.getGrossAmount(), settings.getInvoiceCurrencyEInvoice()), taxSubtotalAdvanceInvoiceXML);
+                InvoicedPrepaymentAmmountXML invoicedPrepaymentAmmount = new InvoicedPrepaymentAmmountXML(invoice.getNumber(), taxTotalAdvanceInvoiced);
+
+                ReducedTotalsXML reducedTotalsXML = new ReducedTotalsXML();
+                SrbDtExtXML srbDtExtXML = new SrbDtExtXML(invoicedPrepaymentAmmount, reducedTotalsXML);
+                UBLExtensionXML ublExtension = new UBLExtensionXML(new ExtensionContentXML(srbDtExtXML));
+                ublExtensions.add(ublExtension);
+
+                //////////////////// Invoice total amount without VAT BT-109 ////////
+                double taxExclusiveAmount = invoice.getNetAmount();
+                //////////////////// Invoice total amount with VAT BT-112 ///////////
+                double taxInclusiveAmount = invoice.getGrossAmount();
+                //////////////////// Paid amounT BT-113 /////////////////////////////
+                double prepaidAmount = invoice.getAdvancePayAmount();
+                //////////////////// Amount due for payment BT-115 //////////////////
+                double payableAmount = invoice.getGrossAmount() - prepaidAmount;
+
+                LegalMonetaryTotalXML legalMonetaryTotalAdvanceInvoice = new LegalMonetaryTotalXML(
+                        null,
+                        new CurrencyAmountXML(DataChecker.roundOnDigits(taxExclusiveAmount, settings.getDigitsCountForInvoice()), settings.getInvoiceCurrencyEInvoice()),
+                        new CurrencyAmountXML(DataChecker.roundOnDigits(taxInclusiveAmount, settings.getDigitsCountForInvoice()), settings.getInvoiceCurrencyEInvoice()),
+                        null,
+                        null,
+                        new CurrencyAmountXML(DataChecker.roundOnDigits(payableAmount, settings.getDigitsCountForInvoice()), settings.getInvoiceCurrencyEInvoice())
+                );
+        }
+            invoiceXML.setUblExtensions(ublExtensions);
+             */
         }
 
         //////////////////// customizationID BT-24////////////////////////////
@@ -535,7 +502,7 @@ public class InvoiceBuilder extends BaseBuilder {
         if (jbkjs
                 != null && jbkjs.length()
                 > 0) {
-            buyerXML.setPartyIdentificationXML(new PartyIdentificationXML(jbkjs));
+            buyerXML.setPartyIdentificationXML(new PartyIdentificationXML(settings.getJbkjsPrefix() + ":" + jbkjs));
         }
         //////////////////// BUYER DATA BT-44 ///////////////////////////////
 
@@ -573,14 +540,19 @@ public class InvoiceBuilder extends BaseBuilder {
         InvoiceBuyerWrapperXML isb = new InvoiceBuyerWrapperXML(buyerXML);
 
         invoiceXML.setInvoiceBuyerWrapperXML(isb);
-        // ako je sifra datuma poreske obaveze BT-8 iskazuje da je nacin odredjivanja
-        // kada nastaje poreska obaveza prema datumu prometa...
-//        if (false) {
-//        <cac:Delivery>
-//            <cbc:ActualDeliveryDate>2023-01-10</cbc:ActualDeliveryDate>
-//        </cac:Delivery>
-        invoiceXML.setDeliveryXML(new DeliveryXML(invoice.getDateOfTurnover() + ""));
-//        }
+
+        // ako je sifra datuma poreske obaveze BT-8 != 432 iskazuje da je nacin odredjivanja
+        // kada nastaje poreska obaveza prema datumu placanja...
+        // IF is not advance invoice
+        if (invoiceTaxPeriod != settings.getInvoiceTaxPeriodByDateOfPaying()) {
+            // If BT-8 == 3 then it's by date of create of invoice
+            if (invoiceTaxPeriod == settings.getInvoiceTaxPeriodByDateOfCreate()) {
+                invoiceXML.setDeliveryXML(new DeliveryXML(invoice.getDateOfCreate() + ""));
+            } else {
+                // otherwise it's 35 - by date of turnover
+                invoiceXML.setDeliveryXML(new DeliveryXML(invoice.getDateOfTurnover() + ""));
+            }
+        }
         //////////////////// BUYER PAYMENT MEANS CODE BT-81 /////////////////
         String paymentMeansCode = settings.getPaymentMeansCode();
         //////////////////// BUYER DATA BT-83 ///////////////////////////////

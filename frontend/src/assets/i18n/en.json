@@ -221,6 +221,7 @@
   "invoicesViewPrivilege": "Invoices - view",
   "items": "Items",
   "jbkjs": "JBKJS",
+  "jbkjsPrefix": "JBKJS prefix",
   "key": "Key",
   "label": "Label",
   "language": "Language",

@@ -48,6 +48,7 @@ export class AppSettings {
   invoiceTypeCodeAdvanceInvoice?: string;
   documentCurrencyCode?: string;
   schemeID?: string;
+  jbkjsPrefix?: string;
   invoiceTaxPeriodByDateOfCreate?: string;
   invoiceTaxPeriodByDateOfPaying?: string;
   sellerPIB?: string;

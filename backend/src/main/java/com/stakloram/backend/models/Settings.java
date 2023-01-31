@@ -50,6 +50,7 @@ public class Settings {
     private String invoiceTypeCodeAdvanceInvoice = "386";
     private String documentCurrencyCode = "RSD";
     private String schemeID = "9948";
+    private String jbkjsPrefix = "JBKJS";
     private String invoiceTaxPeriodByDateOfCreate = "3";
     private String invoiceTaxPeriodByDateOfPaying = "432";
     private String sellerPIB = "105509737";
@@ -393,6 +394,14 @@ public class Settings {
 
     public void setSchemeID(String schemeID) {
         this.schemeID = schemeID;
+    }
+
+    public String getJbkjsPrefix() {
+        return jbkjsPrefix;
+    }
+
+    public void setJbkjsPrefix(String jbkjsPrefix) {
+        this.jbkjsPrefix = jbkjsPrefix;
     }
 
     public String getInvoiceTaxPeriodByDateOfCreate() {

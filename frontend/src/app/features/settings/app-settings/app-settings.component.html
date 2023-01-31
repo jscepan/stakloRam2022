@@ -525,6 +525,15 @@
             [class.mark-required]="true"
             [class.mark-opt-required]="true"
           >
+            {{ "jbkjsPrefix" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="jbkjsPrefix" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
             {{ "invoiceTaxPeriodByDateOfCreate" | translate }}
           </mat-label>
           <input

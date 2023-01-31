@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "Invoice")
-//@XmlType(namespace = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class InvoiceXML {
 

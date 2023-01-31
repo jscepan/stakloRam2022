@@ -209,6 +209,10 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
             this.settingsStoreService.getSettings()?.schemeID || '',
             [Validators.required]
           ),
+          jbkjsPrefix: new FormControl(
+            this.settingsStoreService.getSettings()?.jbkjsPrefix || '',
+            [Validators.required]
+          ),
           invoiceTaxPeriodByDateOfCreate: new FormControl(
             this.settingsStoreService.getSettings()
               ?.invoiceTaxPeriodByDateOfCreate || '',
