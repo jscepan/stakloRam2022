@@ -694,12 +694,43 @@
             [class.mark-required]="true"
             [class.mark-opt-required]="true"
           >
+            {{ "standardVATRate" | translate }}
+          </mat-label>
+          <input type="number" matInput formControlName="standardVATRate" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
             {{ "categoryForStandardVAT" | translate }}
           </mat-label>
           <input
             type="text"
             matInput
             formControlName="categoryForStandardVAT"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "privillegedVATRate" | translate }}
+          </mat-label>
+          <input type="number" matInput formControlName="privillegedVATRate" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "categoryForPrivillegedVAT" | translate }}
+          </mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="categoryForPrivillegedVAT"
           />
         </mat-form-field>
         <mat-form-field>

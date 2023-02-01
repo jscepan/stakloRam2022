@@ -67,7 +67,10 @@ public class Settings {
     private String modelPaymentCode = "(mod97)";
     private String invoiceCurrencyEInvoice = "RSD";
     private int digitsCountForInvoice = 2;
+    private double standardVATRate = 20;
     private String categoryForStandardVAT = "S";
+    private double privillegedVATRate = 20;
+    private String categoryForPrivillegedVAT = "S";
     private String unitCodeForMeter2 = "MTK";
     private String unitCodeForMeter = "MTR";
     private String unitCodeForHour = "HUR";
@@ -524,12 +527,36 @@ public class Settings {
         this.digitsCountForInvoice = digitsCountForInvoice;
     }
 
+    public double getStandardVATRate() {
+        return standardVATRate;
+    }
+
+    public void setStandardVATRate(double standardVATRate) {
+        this.standardVATRate = standardVATRate;
+    }
+
     public String getCategoryForStandardVAT() {
         return categoryForStandardVAT;
     }
 
     public void setCategoryForStandardVAT(String categoryForStandardVAT) {
         this.categoryForStandardVAT = categoryForStandardVAT;
+    }
+
+    public double getPrivillegedVATRate() {
+        return privillegedVATRate;
+    }
+
+    public void setPrivillegedVATRate(double privillegedVATRate) {
+        this.privillegedVATRate = privillegedVATRate;
+    }
+
+    public String getCategoryForPrivillegedVAT() {
+        return categoryForPrivillegedVAT;
+    }
+
+    public void setCategoryForPrivillegedVAT(String categoryForPrivillegedVAT) {
+        this.categoryForPrivillegedVAT = categoryForPrivillegedVAT;
     }
 
     public String getUnitCodeForMeter2() {

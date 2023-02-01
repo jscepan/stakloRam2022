@@ -65,7 +65,10 @@ export class AppSettings {
   modelPaymentCode?: string;
   invoiceCurrencyEInvoice?: string;
   digitsCountForInvoice?: number;
+  standardVATRate?: number;
   categoryForStandardVAT?: string;
+  privillegedVATRate?: number;
+  categoryForPrivillegedVAT?: string;
   unitCodeForMeter2?: string;
   unitCodeForMeter?: string;
   unitCodeForHour?: string;

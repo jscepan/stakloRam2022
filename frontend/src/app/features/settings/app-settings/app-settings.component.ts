@@ -280,9 +280,22 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
             this.settingsStoreService.getSettings()?.digitsCountForInvoice || 0,
             [Validators.required]
           ),
+          standardVATRate: new FormControl(
+            this.settingsStoreService.getSettings()?.standardVATRate || 0,
+            [Validators.required]
+          ),
           categoryForStandardVAT: new FormControl(
             this.settingsStoreService.getSettings()?.categoryForStandardVAT ||
               '',
+            [Validators.required]
+          ),
+          privillegedVATRate: new FormControl(
+            this.settingsStoreService.getSettings()?.privillegedVATRate || 20,
+            [Validators.required]
+          ),
+          categoryForPrivillegedVAT: new FormControl(
+            this.settingsStoreService.getSettings()
+              ?.categoryForPrivillegedVAT || '',
             [Validators.required]
           ),
           unitCodeForMeter2: new FormControl(
