@@ -595,24 +595,49 @@ public class InvoiceBuilder extends BaseBuilder {
 
         invoiceXML.setLegalMonetaryTotal(legalMonetaryTotal);
 
+        //////////////////// TAX AMOUNT BT-117 //////////////////////////
+        CurrencyAmountXML taxAmount = new CurrencyAmountXML(invoice.getVatAmount(), settings.getInvoiceCurrencyEInvoice());
+
         List<TaxItemXML> taxItems = new ArrayList<>();
         List<InvoiceItemXML> items = new ArrayList<>();
         int count = 1;
         for (InvoiceItem invoiceItem
                 : invoice.getInvoiceItems()) {
             //////////////////// VAT CATEGORY BT-118 ////////////////////////
-            String category = settings.getCategoryForStandardVAT();
-            if (invoiceItem.getVatRate() == 0) {
+            String category = null;
+            double rate = 0;
+            if (invoiceItem.getVatRate() == settings.getStandardVATRate()) {
+                category = settings.getCategoryForStandardVAT();
+                rate = settings.getStandardVATRate();
+            } else if (invoiceItem.getVatRate() == settings.getPrivillegedVATRate()) {
+                category = settings.getCategoryForPrivillegedVAT();
+                rate = settings.getPrivillegedVATRate();
+            } else {
                 throw new SException(UserMessage.getLocalizedMessage("categoryVATError"));
             }
-            //////////////////// VAT category taxable amount BT-116 /////////
-            CurrencyAmountXML taxableAmount = new CurrencyAmountXML(invoiceItem.getNetPrice(), settings.getInvoiceCurrencyEInvoice());
-            //////////////////// TAX AMOUNT BT-117 //////////////////////////
-            CurrencyAmountXML taxAmount = new CurrencyAmountXML(invoiceItem.getVatAmount(), settings.getInvoiceCurrencyEInvoice());
-            TaxCategoryXML taxCategoryXML = new TaxCategoryXML(category, invoiceItem.getVatRate(), new TaxSchemeXML(settings.getTaxScheme()));
+            if (category == null || rate == 0) {
+                throw new SException(UserMessage.getLocalizedMessage("categoryVATError"));
+            }
+            TaxCategoryXML taxCategoryXML = new TaxCategoryXML(category, rate, new TaxSchemeXML(settings.getTaxScheme()));
 
-            TaxItemXML taxItem = new TaxItemXML(taxableAmount, taxAmount, taxCategoryXML);
-            taxItems.add(taxItem);
+            TaxItemXML previousTaxItemXML = null;
+            CurrencyAmountXML itemTaxAmount = new CurrencyAmountXML(invoiceItem.getVatAmount(), settings.getInvoiceCurrencyEInvoice());
+
+            for (TaxItemXML tiXML : taxItems) {
+                if (tiXML.getTaxCategoryXML().getId() == category) {
+                    previousTaxItemXML = tiXML;
+                }
+            }
+            if (previousTaxItemXML == null) {
+                //////////////////// VAT category taxable amount BT-116 /////////
+                CurrencyAmountXML taxableAmount = new CurrencyAmountXML(invoiceItem.getNetPrice(), settings.getInvoiceCurrencyEInvoice());
+
+                TaxItemXML taxItem = new TaxItemXML(taxableAmount, itemTaxAmount, taxCategoryXML);
+                taxItems.add(taxItem);
+            } else {
+                previousTaxItemXML.getTaxableAmount().setValue(previousTaxItemXML.getTaxableAmount().getValue() + invoiceItem.getNetPrice());
+                previousTaxItemXML.getTaxAmount().setValue(previousTaxItemXML.getTaxAmount().getValue() + invoiceItem.getVatAmount());
+            }
 
             //////////////////// Invoiced quantity BT-130 ///////////////////
             String unitCode = "";
@@ -633,7 +658,7 @@ public class InvoiceBuilder extends BaseBuilder {
             //////////////////// Invoice line net amount BT-131 /////////////
             CurrencyAmountXML lineExtensionAmountItem = new CurrencyAmountXML(invoiceItem.getNetPrice(), settings.getInvoiceCurrencyEInvoice());
             //////////////////// Item name BG-25 ///////////////////////////
-            InvoiceItemDetailsXML invoiceItemDetailsXML = new InvoiceItemDetailsXML(invoiceItem.getDescription(), taxCategoryXML); // settings.getTaxScheme
+            InvoiceItemDetailsXML invoiceItemDetailsXML = new InvoiceItemDetailsXML(invoiceItem.getDescription(), taxCategoryXML);
             //////////////////// Item net price BT-146 /////////////////////
             PriceXML priceInvoiceItem = new PriceXML(new CurrencyAmountXML(invoiceItem.getNetPrice(), settings.getInvoiceCurrencyEInvoice()));
             //////////////////// Invoice line net amount BT-131 /////////////
