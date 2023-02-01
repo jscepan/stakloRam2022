@@ -28,6 +28,7 @@ import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.models.WorkOrderItem;
 import com.stakloram.backend.models.WorkOrderItem.UOM;
 import com.stakloram.backend.models.XML.ContactXML;
+import com.stakloram.backend.models.XML.ContractDocumentReferenceXML;
 import com.stakloram.backend.models.XML.CountryXML;
 import com.stakloram.backend.models.XML.DeliveryXML;
 import com.stakloram.backend.models.XML.InvoiceBuyerWrapperXML;
@@ -431,6 +432,9 @@ public class InvoiceBuilder extends BaseBuilder {
         }
 
         invoiceXML.setDocumentCurrencyCode(documentCurrencyCode);
+
+        //////////////////// ContractDocumentReference BT-12/////////////////
+        invoiceXML.setContractDocumentReferenceXML(new ContractDocumentReferenceXML(invoice.getNumber()));
 
         //////////////////// InvoicePeriod BT-8//////////////////////////////
         // Za avansne racune to je datum placanja, a za ostale pogledaj tutorial...
