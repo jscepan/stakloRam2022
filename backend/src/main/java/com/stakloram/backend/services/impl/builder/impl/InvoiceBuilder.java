@@ -180,7 +180,7 @@ public class InvoiceBuilder extends BaseBuilder {
             }
             Map<Helper.Action, List<? extends BaseModel>> mapOfDifferences = Helper.findDifferenceBetweenLists(invoice.getInvoiceItems(), oldInvoiceItems);
             for (BaseModel inv : mapOfDifferences.get(Helper.Action.FOR_CREATE)) {
-                INVOICE_ITEM_STORE.createNewObjectToDatabase(inv);
+                INVOICE_ITEM_STORE.createNewObjectToDatabase(inv, invoice.getId());
             }
             for (BaseModel inv : mapOfDifferences.get(Helper.Action.FOR_UPDATE)) {
                 INVOICE_ITEM_STORE.modifyObject(inv.getOid(), inv);
