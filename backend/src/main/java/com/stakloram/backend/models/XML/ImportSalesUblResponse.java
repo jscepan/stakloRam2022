@@ -6,6 +6,9 @@ public class ImportSalesUblResponse {
     private String purchaseInvoiceId;
     private String salesInvoiceId;
 
+    public ImportSalesUblResponse() {
+    }
+
     public ImportSalesUblResponse(String invoiceId, String purchaseInvoiceId, String salesInvoiceId) {
         this.invoiceId = invoiceId;
         this.purchaseInvoiceId = purchaseInvoiceId;

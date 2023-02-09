@@ -875,18 +875,17 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       let netAmount = 0;
       let vatRate = 0;
-      let vatAmount = 0;
-      let grossAmount = 0;
       this.invoiceItemsFormArr.value.forEach((element: InvoiceItemModel) => {
         netAmount += element.netPrice;
-        vatRate += element.vatRate;
-        vatAmount += element.vatAmount;
-        grossAmount += element.grossPrice;
+        if (element.vatRate > vatRate) {
+          vatRate = element.vatRate;
+        }
       });
+      let vatAmount = (netAmount * vatRate) / 100;
+      let grossAmount = netAmount + vatAmount;
+
       this.formGroup.get('netAmount')?.setValue(roundOnDigits(netAmount));
-      this.formGroup
-        .get('vatRate')
-        ?.setValue(roundOnDigits(vatRate / this.invoiceItemsFormArr.length));
+      this.formGroup.get('vatRate')?.setValue(roundOnDigits(vatRate));
       this.formGroup.get('vatAmount')?.setValue(roundOnDigits(vatAmount));
       this.formGroup.get('grossAmount')?.setValue(roundOnDigits(grossAmount));
     });

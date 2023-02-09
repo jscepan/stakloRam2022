@@ -565,6 +565,19 @@
             [class.mark-required]="true"
             [class.mark-opt-required]="true"
           >
+            {{ "invoiceTaxPeriodByDateOfTurnover" | translate }}
+          </mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="invoiceTaxPeriodByDateOfTurnover"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
             {{ "invoiceTaxPeriodByDateOfCreate" | translate }}
           </mat-label>
           <input
@@ -639,6 +652,15 @@
             {{ "sellerCountry" | translate }}
           </mat-label>
           <input type="text" matInput formControlName="sellerCountry" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "sellerAccount" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="sellerAccount" />
         </mat-form-field>
         <mat-form-field>
           <mat-label

@@ -225,6 +225,11 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
             this.settingsStoreService.getSettings()?.jbkjsPrefix || '',
             [Validators.required]
           ),
+          invoiceTaxPeriodByDateOfTurnover: new FormControl(
+            this.settingsStoreService.getSettings()
+              ?.invoiceTaxPeriodByDateOfTurnover || '',
+            [Validators.required]
+          ),
           invoiceTaxPeriodByDateOfCreate: new FormControl(
             this.settingsStoreService.getSettings()
               ?.invoiceTaxPeriodByDateOfCreate || '',
@@ -257,6 +262,10 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
           ),
           sellerCountry: new FormControl(
             this.settingsStoreService.getSettings()?.sellerCountry || '',
+            [Validators.required]
+          ),
+          sellerAccount: new FormControl(
+            this.settingsStoreService.getSettings()?.sellerAccount || '',
             [Validators.required]
           ),
           taxScheme: new FormControl(

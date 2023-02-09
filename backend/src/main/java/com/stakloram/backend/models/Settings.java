@@ -48,13 +48,14 @@ public class Settings {
     private String keyAPI = "";
     private int requestIDcharsNumber = 10;
     private String urlImportSalesUbl = "https://demoefaktura.mfin.gov.rs/api/publicApi/sales-invoice/ubl";
-    
+
     private String customizationID = "urn:cen.eu:en16931:2017#compliant#urn:mfin.gov.rs:srbdt:2021";
     private String invoiceTypeCodeCommercialInvoice = "380";
     private String invoiceTypeCodeAdvanceInvoice = "386";
     private String documentCurrencyCode = "RSD";
     private String schemeID = "9948";
     private String jbkjsPrefix = "JBKJS";
+    private String invoiceTaxPeriodByDateOfTurnover = "35";
     private String invoiceTaxPeriodByDateOfCreate = "3";
     private String invoiceTaxPeriodByDateOfPaying = "432";
     private String sellerPIB = "105509737";
@@ -63,6 +64,7 @@ public class Settings {
     private String sellerCity = "Bačka Palanka";
     private String sellerPostalCode = "21400";
     private String sellerCountry = "RS";
+    private String sellerAccount = "330-11001154-04";
     private String taxScheme = "VAT";
     private String taxCountrySign = "RS";
     private String sellerMaticalNumber = "62199130";
@@ -436,6 +438,14 @@ public class Settings {
         this.jbkjsPrefix = jbkjsPrefix;
     }
 
+    public String getInvoiceTaxPeriodByDateOfTurnover() {
+        return invoiceTaxPeriodByDateOfTurnover;
+    }
+
+    public void setInvoiceTaxPeriodByDateOfTurnover(String invoiceTaxPeriodByDateOfTurnover) {
+        this.invoiceTaxPeriodByDateOfTurnover = invoiceTaxPeriodByDateOfTurnover;
+    }
+
     public String getInvoiceTaxPeriodByDateOfCreate() {
         return invoiceTaxPeriodByDateOfCreate;
     }
@@ -490,6 +500,14 @@ public class Settings {
 
     public void setSellerCountry(String sellerCountry) {
         this.sellerCountry = sellerCountry;
+    }
+
+    public String getSellerAccount() {
+        return sellerAccount;
+    }
+
+    public void setSellerAccount(String sellerAccount) {
+        this.sellerAccount = sellerAccount;
     }
 
     public String getTaxScheme() {

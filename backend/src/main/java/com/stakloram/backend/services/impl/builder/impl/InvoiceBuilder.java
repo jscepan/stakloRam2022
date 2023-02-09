@@ -74,6 +74,7 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -451,7 +452,6 @@ public class InvoiceBuilder extends BaseBuilder {
 
         //////////////////// ContractDocumentReference BT-12/////////////////
 //        invoiceXML.setContractDocumentReferenceXML(new ContractDocumentReferenceXML(invoice.getNumber()));
-
         //////////////////// InvoicePeriod BT-8//////////////////////////////
         // Za avansne racune to je datum placanja, a za ostale pogledaj tutorial...
         String invoiceTaxPeriod;
@@ -460,7 +460,11 @@ public class InvoiceBuilder extends BaseBuilder {
                 == InvoiceType.ADVANCE_INVOICE) {
             invoiceTaxPeriod = settings.getInvoiceTaxPeriodByDateOfPaying();
         } else {
-            invoiceTaxPeriod = settings.getInvoiceTaxPeriodByDateOfCreate();
+            if (invoice.getDateOfTurnover().isBefore(invoice.getDateOfCreate())) {
+                invoiceTaxPeriod = settings.getInvoiceTaxPeriodByDateOfTurnover();
+            } else {
+                invoiceTaxPeriod = settings.getInvoiceTaxPeriodByDateOfCreate();
+            }
         }
         InvoicePeriodXML invoicePeriod = new InvoicePeriodXML(invoiceTaxPeriod);
 
@@ -592,7 +596,7 @@ public class InvoiceBuilder extends BaseBuilder {
         }
 
         invoiceXML.setPaymentMeansXML(
-                new PaymentMeansXML(paymentMeansCode, paymentID, new PayeeFinancialAccountXML(buyerAccount)));
+                new PaymentMeansXML(paymentMeansCode, paymentID, new PayeeFinancialAccountXML(settings.getSellerAccount())));
 
         //////////////////// Sum of Invoice line net amount BT-106 //////////
         double lineExtensionAmount = invoice.getNetAmount();
@@ -676,7 +680,7 @@ public class InvoiceBuilder extends BaseBuilder {
             //////////////////// Invoiced quantity BT-129 ///////////////////
             InvoicedQuantityXML invoicedQuantityXML = new InvoicedQuantityXML(invoiceItem.getQuantity(), unitCode);
             //////////////////// Invoice line net amount BT-131 /////////////
-            CurrencyAmountXML lineExtensionAmountItem = new CurrencyAmountXML(invoiceItem.getNetPrice(), settings.getInvoiceCurrencyEInvoice());
+            CurrencyAmountXML lineExtensionAmountItem = new CurrencyAmountXML(invoiceItem.getPricePerUnit(), settings.getInvoiceCurrencyEInvoice());
             //////////////////// Item name BG-25 ///////////////////////////
             InvoiceItemDetailsXML invoiceItemDetailsXML = new InvoiceItemDetailsXML(invoiceItem.getDescription(), taxCategoryXML);
             //////////////////// Item net price BT-146 /////////////////////
@@ -721,7 +725,7 @@ public class InvoiceBuilder extends BaseBuilder {
         // Parameters for http call
         String apiUrl = settings.getUrlImportSalesUbl();
         String requestID = Helper.generateRandomString(settings.getRequestIDcharsNumber());
-        String sendToCir = null;
+        String sendToCir;
         String body = this.getXMLForInvoice(invoiceOID);
 
         if (invoice.getBuyer().getJbkjs() == null || invoice.getBuyer().getJbkjs().length() == 0) {
@@ -750,6 +754,7 @@ public class InvoiceBuilder extends BaseBuilder {
             URL url = new URL(apiUrl + "?" + urlParams);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(5000); //set timeout to 5 seconds
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
             conn.setRequestProperty("ApiKey", settings.getKeyAPI());
@@ -764,11 +769,15 @@ public class InvoiceBuilder extends BaseBuilder {
                     conn.getInputStream()))) {
                 String line;
                 while ((line = br.readLine()) != null) {
-                    System.out.println("line");
-                    System.out.println(line);
                     stb.append(line);
                 }
             }
+        } catch (SocketTimeoutException e) {
+            super.logger.error(e.toString());
+            throw new SException(UserMessage.getLocalizedMessage("apiCallTimeoutError"));
+        } catch (IOException e) {
+            super.logger.error(e.toString());
+            throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
         } catch (Exception e) {
             super.logger.error(e.toString());
             throw new SException(UserMessage.getLocalizedMessage("apiCallError"));

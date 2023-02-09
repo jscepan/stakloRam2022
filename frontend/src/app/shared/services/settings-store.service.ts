@@ -52,6 +52,7 @@ export class AppSettings {
   documentCurrencyCode?: string;
   schemeID?: string;
   jbkjsPrefix?: string;
+  invoiceTaxPeriodByDateOfTurnover?: string;
   invoiceTaxPeriodByDateOfCreate?: string;
   invoiceTaxPeriodByDateOfPaying?: string;
   sellerPIB?: string;
@@ -60,6 +61,7 @@ export class AppSettings {
   sellerCity?: string;
   sellerPostalCode?: string;
   sellerCountry?: string;
+  sellerAccount?: string;
   taxScheme?: string;
   taxCountrySign?: string;
   sellerMaticalNumber?: string;
