@@ -472,6 +472,37 @@
             [class.mark-required]="true"
             [class.mark-opt-required]="true"
           >
+            {{ "keyAPI" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="keyAPI" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "requestIDcharsNumber" | translate }}
+          </mat-label>
+          <input
+            type="number"
+            matInput
+            formControlName="requestIDcharsNumber"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "urlImportSalesUbl" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="urlImportSalesUbl" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
             {{ "customizationID" | translate }}
           </mat-label>
           <input type="text" matInput formControlName="customizationID" />
@@ -687,6 +718,19 @@
             type="number"
             matInput
             formControlName="digitsCountForInvoice"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "digitsCountForTaxInvoice" | translate }}
+          </mat-label>
+          <input
+            type="number"
+            matInput
+            formControlName="digitsCountForTaxInvoice"
           />
         </mat-form-field>
         <mat-form-field>

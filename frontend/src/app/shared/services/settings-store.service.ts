@@ -43,6 +43,9 @@ export class AppSettings {
   workOrderHeadingLine2?: string;
   workOrderHeadingLine3?: string;
 
+  keyAPI?: string;
+  requestIDcharsNumber?: number;
+  urlImportSalesUbl?: string;
   customizationID?: string;
   invoiceTypeCodeCommercialInvoice?: string;
   invoiceTypeCodeAdvanceInvoice?: string;
@@ -65,6 +68,7 @@ export class AppSettings {
   modelPaymentCode?: string;
   invoiceCurrencyEInvoice?: string;
   digitsCountForInvoice?: number;
+  digitsCountForTaxInvoice?: number;
   standardVATRate?: number;
   categoryForStandardVAT?: string;
   privillegedVATRate?: number;

@@ -187,6 +187,18 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
               '',
             [Validators.required]
           ),
+          keyAPI: new FormControl(
+            this.settingsStoreService.getSettings()?.keyAPI || '',
+            [Validators.required]
+          ),
+          requestIDcharsNumber: new FormControl(
+            this.settingsStoreService.getSettings()?.requestIDcharsNumber || 0,
+            [Validators.required]
+          ),
+          urlImportSalesUbl: new FormControl(
+            this.settingsStoreService.getSettings()?.urlImportSalesUbl || '',
+            [Validators.required]
+          ),
           customizationID: new FormControl(
             this.settingsStoreService.getSettings()?.customizationID || '',
             [Validators.required]
@@ -278,6 +290,11 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
           ),
           digitsCountForInvoice: new FormControl(
             this.settingsStoreService.getSettings()?.digitsCountForInvoice || 0,
+            [Validators.required]
+          ),
+          digitsCountForTaxInvoice: new FormControl(
+            this.settingsStoreService.getSettings()?.digitsCountForTaxInvoice ||
+              0,
             [Validators.required]
           ),
           standardVATRate: new FormControl(

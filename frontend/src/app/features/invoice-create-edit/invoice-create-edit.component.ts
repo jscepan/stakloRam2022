@@ -1116,6 +1116,16 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     }
   }
 
+  registrate(): void {
+    if (this.invoiceOID) {
+      this.subs.sink = this.webService
+        .registrationOfInvoice(this.invoiceOID)
+        .subscribe((success) => {
+          console.log('success: ' + success);
+        });
+    }
+  }
+
   saveTextAsFile(data: string, filename: string) {
     if (!data) {
       console.error('Console.save: No data');

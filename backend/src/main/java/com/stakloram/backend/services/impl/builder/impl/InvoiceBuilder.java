@@ -1,5 +1,9 @@
 package com.stakloram.backend.services.impl.builder.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.stakloram.backend.database.ResponseWithCount;
 import com.stakloram.backend.database.objects.BuyerStore;
 import com.stakloram.backend.database.objects.CityStore;
@@ -47,6 +51,7 @@ import com.stakloram.backend.models.XML.PibXML;
 import com.stakloram.backend.models.XML.PostalAddress;
 import com.stakloram.backend.models.XML.CurrencyAmountXML;
 import com.stakloram.backend.models.XML.ExtensionContentXML;
+import com.stakloram.backend.models.XML.ImportSalesUblResponse;
 import com.stakloram.backend.models.XML.InvoiceItemDetailsXML;
 import com.stakloram.backend.models.XML.InvoicedPrepaymentAmmountXML;
 import com.stakloram.backend.models.XML.InvoicedQuantityXML;
@@ -61,12 +66,23 @@ import com.stakloram.backend.models.XML.UBLExtensionXML;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
 import com.stakloram.backend.util.DataChecker;
 import com.stakloram.backend.util.Helper;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -639,8 +655,8 @@ public class InvoiceBuilder extends BaseBuilder {
                 TaxItemXML taxItem = new TaxItemXML(taxableAmount, itemTaxAmount, taxCategoryXML);
                 taxItems.add(taxItem);
             } else {
-                previousTaxItemXML.getTaxableAmount().setValue(previousTaxItemXML.getTaxableAmount().getValue() + invoiceItem.getNetPrice());
-                previousTaxItemXML.getTaxAmount().setValue(previousTaxItemXML.getTaxAmount().getValue() + invoiceItem.getVatAmount());
+                previousTaxItemXML.getTaxableAmount().setValue(DataChecker.roundOnDigits(previousTaxItemXML.getTaxableAmount().getValue() + invoiceItem.getNetPrice(), settings.getDigitsCountForTaxInvoice()));
+                previousTaxItemXML.getTaxAmount().setValue(DataChecker.roundOnDigits(previousTaxItemXML.getTaxAmount().getValue() + invoiceItem.getVatAmount(), settings.getDigitsCountForTaxInvoice()));
             }
 
             //////////////////// Invoiced quantity BT-130 ///////////////////
@@ -695,5 +711,84 @@ public class InvoiceBuilder extends BaseBuilder {
         } catch (JAXBException ex) {
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
+    }
+
+    public boolean registrationOfInvoice(String invoiceOID) throws SException {
+        Invoice invoice = this.getObjectByOid(invoiceOID);
+        SettingsBuilder settingsBuilder = new SettingsBuilder();
+        Settings settings = settingsBuilder.getSettings();
+
+        // Parameters for http call
+        String apiUrl = settings.getUrlImportSalesUbl();
+        String requestID = Helper.generateRandomString(settings.getRequestIDcharsNumber());
+        String sendToCir = null;
+        String body = this.getXMLForInvoice(invoiceOID);
+
+        if (invoice.getBuyer().getJbkjs() == null || invoice.getBuyer().getJbkjs().length() == 0) {
+            sendToCir = "No";
+        } else {
+            sendToCir = "Yes";
+        }
+
+        if (invoice == null) {
+            throw new SException(UserMessage.getLocalizedMessage("invoiceNotFound"));
+        }
+        if (apiUrl == null || apiUrl.length() == 0) {
+            throw new SException(UserMessage.getLocalizedMessage("apiUrlError"));
+        }
+        if (requestID == null || requestID.length() == 0) {
+            throw new SException(UserMessage.getLocalizedMessage("requestIDError"));
+        }
+        if (body == null || body.length() == 0) {
+            throw new SException(UserMessage.getLocalizedMessage("requestBodyError"));
+        }
+        // TODO save requestID
+        StringBuilder stb = new StringBuilder();
+
+        try {
+            String urlParams = "requestId=" + requestID + "&sendToCir=" + sendToCir;
+            URL url = new URL(apiUrl + "?" + urlParams);
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            conn.setRequestProperty("ApiKey", settings.getKeyAPI());
+            conn.setRequestProperty("Content-Type", "application/xml");
+            conn.setUseCaches(false);
+
+            try ( DataOutputStream dos = new DataOutputStream(conn.getOutputStream())) {
+                dos.writeBytes(body);
+            }
+
+            try ( BufferedReader br = new BufferedReader(new InputStreamReader(
+                    conn.getInputStream()))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    System.out.println("line");
+                    System.out.println(line);
+                    stb.append(line);
+                }
+            }
+        } catch (Exception e) {
+            super.logger.error(e.toString());
+            throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
+        }
+        System.out.println("RESPONSE");
+        System.out.println(stb);
+
+        if (stb.toString() != null && stb.toString().length() > 0) {
+            try {
+                ObjectMapper objectMapper = JsonMapper.builder()
+                        .addModule(new JavaTimeModule())
+                        .build();
+                ImportSalesUblResponse importSalesUblResponse = objectMapper.readValue(stb.toString(), ImportSalesUblResponse.class);
+                System.out.println("importSalesUblResponse");
+                System.out.println(importSalesUblResponse);
+                // TODO
+            } catch (JsonProcessingException ex) {
+                logger.error(ex.toString());
+            }
+        }
+        return true;
     }
 }

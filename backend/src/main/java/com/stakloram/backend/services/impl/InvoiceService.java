@@ -169,4 +169,7 @@ public class InvoiceService extends ServiceModel {
         return ((InvoiceBuilder) this.baseBuilder).getXMLForInvoice(invoiceOID);
     }
 
+    public boolean registrationOfInvoice(String invoiceOID) throws SException {
+        return ((InvoiceBuilder) this.baseBuilder).registrationOfInvoice(invoiceOID);
+    }
 }

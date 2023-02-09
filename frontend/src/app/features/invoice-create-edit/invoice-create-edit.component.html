@@ -633,6 +633,12 @@
       (clickEvent)="generateXMLFile()"
     ></app-button>
     <app-button
+      [text]="'registrateInvoice' | translate"
+      [disabled]="formGroup.invalid || !isEdit"
+      class="update"
+      (clickEvent)="registrate()"
+    ></app-button>
+    <app-button
       [text]="'save' | translate"
       [disabled]="!formGroup.dirty || formGroup.invalid"
       class="update"

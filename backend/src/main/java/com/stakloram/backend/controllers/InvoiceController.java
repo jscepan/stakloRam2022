@@ -5,6 +5,7 @@ import com.stakloram.backend.models.Invoice;
 import com.stakloram.backend.models.Invoice.InvoiceType;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.SearchRequest;
+import com.stakloram.backend.models.XML.ImportSalesUblResponse;
 import com.stakloram.backend.models.XmlValue;
 import com.stakloram.backend.services.impl.InvoiceService;
 import java.util.List;
@@ -67,9 +68,13 @@ public class InvoiceController {
 //    public String getXMLForInvoice(@PathVariable String invoiceOid) throws SException {
 //        return invoiceService.getXMLForInvoice(invoiceOid);
 //    }
-
     @RequestMapping("/invoices/getXML/{invoiceOid}")
     public XmlValue getXMLForInvoice(@PathVariable String invoiceOid) throws SException {
         return new XmlValue(invoiceService.getXMLForInvoice(invoiceOid));
+    }
+
+    @RequestMapping("/invoices/registration/{invoiceOid}")
+    public boolean registrationOfInvoice(@PathVariable String invoiceOid) throws SException {
+        return invoiceService.registrationOfInvoice(invoiceOid);
     }
 }

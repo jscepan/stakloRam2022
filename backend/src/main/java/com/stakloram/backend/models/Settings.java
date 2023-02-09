@@ -45,6 +45,10 @@ public class Settings {
     private String workOrderHeadingLine2 = "Oblikovanje i obrada ravnog stakla";
     private String workOrderHeadingLine3 = "Proizvodnja lajsni za ramove i uramljivanje slika";
 
+    private String keyAPI = "";
+    private int requestIDcharsNumber = 10;
+    private String urlImportSalesUbl = "https://demoefaktura.mfin.gov.rs/api/publicApi/sales-invoice/ubl";
+    
     private String customizationID = "urn:cen.eu:en16931:2017#compliant#urn:mfin.gov.rs:srbdt:2021";
     private String invoiceTypeCodeCommercialInvoice = "380";
     private String invoiceTypeCodeAdvanceInvoice = "386";
@@ -62,11 +66,12 @@ public class Settings {
     private String taxScheme = "VAT";
     private String taxCountrySign = "RS";
     private String sellerMaticalNumber = "62199130";
-    private String sellerElectronicMail = "";
+    private String sellerElectronicMail = "staklorambp@gmail.com";
     private String paymentMeansCode = "30";
     private String modelPaymentCode = "(mod97)";
     private String invoiceCurrencyEInvoice = "RSD";
     private int digitsCountForInvoice = 2;
+    private int digitsCountForTaxInvoice = 2;
     private double standardVATRate = 20;
     private String categoryForStandardVAT = "S";
     private double privillegedVATRate = 20;
@@ -359,6 +364,30 @@ public class Settings {
         this.invoiceForeignNotes = invoiceForeignNotes;
     }
 
+    public String getKeyAPI() {
+        return keyAPI;
+    }
+
+    public void setKeyAPI(String keyAPI) {
+        this.keyAPI = keyAPI;
+    }
+
+    public int getRequestIDcharsNumber() {
+        return requestIDcharsNumber;
+    }
+
+    public void setRequestIDcharsNumber(int requestIDcharsNumber) {
+        this.requestIDcharsNumber = requestIDcharsNumber;
+    }
+
+    public String getUrlImportSalesUbl() {
+        return urlImportSalesUbl;
+    }
+
+    public void setUrlImportSalesUbl(String urlImportSalesUbl) {
+        this.urlImportSalesUbl = urlImportSalesUbl;
+    }
+
     public String getCustomizationID() {
         return customizationID;
     }
@@ -525,6 +554,14 @@ public class Settings {
 
     public void setDigitsCountForInvoice(int digitsCountForInvoice) {
         this.digitsCountForInvoice = digitsCountForInvoice;
+    }
+
+    public int getDigitsCountForTaxInvoice() {
+        return digitsCountForTaxInvoice;
+    }
+
+    public void setDigitsCountForTaxInvoice(int digitsCountForTaxInvoice) {
+        this.digitsCountForTaxInvoice = digitsCountForTaxInvoice;
     }
 
     public double getStandardVATRate() {
