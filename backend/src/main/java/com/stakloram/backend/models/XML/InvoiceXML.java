@@ -28,7 +28,7 @@ public class InvoiceXML {
     private String documentCurrencyCode;
     @XmlElement(name = "InvoicePeriod", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private InvoicePeriodXML invoicePeriod;
-    @XmlElement(name = "ContractDocumentReferenceXML", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
+    @XmlElement(name = "ContractDocumentReference", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private ContractDocumentReferenceXML contractDocumentReferenceXML;
     @XmlElement(name = "AccountingSupplierParty", namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
     private InvoiceSellerWrapperXML invoiceSellerWrapper;

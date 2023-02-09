@@ -450,7 +450,7 @@ public class InvoiceBuilder extends BaseBuilder {
         invoiceXML.setDocumentCurrencyCode(documentCurrencyCode);
 
         //////////////////// ContractDocumentReference BT-12/////////////////
-        invoiceXML.setContractDocumentReferenceXML(new ContractDocumentReferenceXML(invoice.getNumber()));
+//        invoiceXML.setContractDocumentReferenceXML(new ContractDocumentReferenceXML(invoice.getNumber()));
 
         //////////////////// InvoicePeriod BT-8//////////////////////////////
         // Za avansne racune to je datum placanja, a za ostale pogledaj tutorial...
