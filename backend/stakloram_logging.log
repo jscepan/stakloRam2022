@@ -1,41 +1,231 @@
-2022-12-23 10:11:43.702 ERROR 17472 --- [http-nio-8081-exec-6] c.s.b.services.impl.builder.BaseBuilder  : java.sql.SQLSyntaxErrorException: Unknown column 'invoice.invoice_null' in 'where clause'
-2022-12-23 10:13:35.658  INFO 20820 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 1.8.0_341 on scepanjan-pc2 with PID 20820 (D:\StakloRam\stakloRam2022\backend\target\classes started by scepan.jankovic in D:\StakloRam\stakloRam2022\backend)
-2022-12-23 10:13:35.661 DEBUG 20820 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
-2022-12-23 10:13:35.662  INFO 20820 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
-2022-12-23 10:13:36.903  INFO 20820 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
-2022-12-23 10:13:36.916  INFO 20820 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2022-12-23 10:13:36.916  INFO 20820 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
-2022-12-23 10:13:37.075  INFO 20820 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2022-12-23 10:13:37.075  INFO 20820 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1369 ms
-2022-12-23 10:13:37.384 DEBUG 20820 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
-2022-12-23 10:13:37.742  INFO 20820 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
-2022-12-23 10:13:37.815  INFO 20820 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5bb51241, org.springframework.security.web.context.SecurityContextPersistenceFilter@1128620c, org.springframework.security.web.header.HeaderWriterFilter@3bbf9027, org.springframework.web.filter.CorsFilter@7479b626, org.springframework.security.web.authentication.logout.LogoutFilter@4f966719, com.stakloram.backend.auth.JwtRequestFilter@281f23f2, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@299270eb, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@31f20c9f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@e8ea697, org.springframework.security.web.session.SessionManagementFilter@5432c277, org.springframework.security.web.access.ExceptionTranslationFilter@743c6ce4, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3e3861d7]
-2022-12-23 10:13:37.956  INFO 20820 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
-2022-12-23 10:13:37.965  INFO 20820 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 2.742 seconds (JVM running for 3.18)
-2022-12-23 10:13:41.947  INFO 20820 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2022-12-23 10:13:41.947  INFO 20820 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2022-12-23 10:13:41.948  INFO 20820 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-2022-12-23 10:13:42.325 ERROR 20820 --- [http-nio-8081-exec-1] c.s.b.services.impl.builder.BaseBuilder  : java.sql.SQLException: Incorrect DATE value: ''
-2022-12-23 10:18:28.458  INFO 19052 --- [main] c.s.backend.StakloRamBeApplication       : Starting StakloRamBeApplication using Java 1.8.0_341 on scepanjan-pc2 with PID 19052 (D:\StakloRam\stakloRam2022\backend\target\classes started by scepan.jankovic in D:\StakloRam\stakloRam2022\backend)
-2022-12-23 10:18:28.461 DEBUG 19052 --- [main] c.s.backend.StakloRamBeApplication       : Running with Spring Boot v2.6.7, Spring v5.3.19
-2022-12-23 10:18:28.462  INFO 19052 --- [main] c.s.backend.StakloRamBeApplication       : No active profile set, falling back to 1 default profile: "default"
-2022-12-23 10:18:29.633  INFO 19052 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
-2022-12-23 10:18:29.643  INFO 19052 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2022-12-23 10:18:29.643  INFO 19052 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]
-2022-12-23 10:18:29.782  INFO 19052 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2022-12-23 10:18:29.782  INFO 19052 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1274 ms
-2022-12-23 10:18:30.080 DEBUG 19052 --- [main] c.s.backend.auth.JwtRequestFilter        : Filter 'jwtRequestFilter' configured for use
-2022-12-23 10:18:30.454  INFO 19052 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
-2022-12-23 10:18:30.532  INFO 19052 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@48eb9836, org.springframework.security.web.context.SecurityContextPersistenceFilter@743c6ce4, org.springframework.security.web.header.HeaderWriterFilter@2b917fb0, org.springframework.web.filter.CorsFilter@6c518474, org.springframework.security.web.authentication.logout.LogoutFilter@49a26d19, com.stakloram.backend.auth.JwtRequestFilter@a64e035, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3bbf9027, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@280d9edc, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@11b455e5, org.springframework.security.web.session.SessionManagementFilter@629adce, org.springframework.security.web.access.ExceptionTranslationFilter@77a2aa4a, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@58496c97]
-2022-12-23 10:18:30.675  INFO 19052 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
-2022-12-23 10:18:30.686  INFO 19052 --- [main] c.s.backend.StakloRamBeApplication       : Started StakloRamBeApplication in 2.647 seconds (JVM running for 3.041)
-2022-12-23 10:18:32.843  INFO 19052 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2022-12-23 10:18:32.843  INFO 19052 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2022-12-23 10:18:32.845  INFO 19052 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-2022-12-23 11:19:21.870 ERROR 19052 --- [http-nio-8081-exec-5] c.s.backend.auth.JwtRequestFilter        : org.springframework.web.util.NestedServletException: Request processing failed; nested exception is java.lang.ArrayIndexOutOfBoundsException: 1
-2022-12-23 11:51:41.208  INFO 8016 --- [main] c.s.backend.StakloRamBeApplicationTests  : Starting StakloRamBeApplicationTests using Java 1.8.0_341 on scepanjan-pc2 with PID 8016 (started by scepan.jankovic in D:\StakloRam\stakloRam2022\backend)
-2022-12-23 11:51:41.209 DEBUG 8016 --- [main] c.s.backend.StakloRamBeApplicationTests  : Running with Spring Boot v2.6.7, Spring v5.3.19
-2022-12-23 11:51:41.209  INFO 8016 --- [main] c.s.backend.StakloRamBeApplicationTests  : No active profile set, falling back to 1 default profile: "default"
-2022-12-23 11:51:43.064  INFO 8016 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
-2022-12-23 11:51:43.212  INFO 8016 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5b9396d3, org.springframework.security.web.context.SecurityContextPersistenceFilter@61d84e08, org.springframework.security.web.header.HeaderWriterFilter@4e1459ea, org.springframework.web.filter.CorsFilter@761e788f, org.springframework.security.web.authentication.logout.LogoutFilter@f288c14, com.stakloram.backend.auth.JwtRequestFilter@6a472566, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@21ac5eb4, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6428591a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1907874b, org.springframework.security.web.session.SessionManagementFilter@642505c7, org.springframework.security.web.access.ExceptionTranslationFilter@7be3a9ce, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@2a3194c6]
-2022-12-23 11:51:43.537  INFO 8016 --- [main] c.s.backend.StakloRamBeApplicationTests  : Started StakloRamBeApplicationTests in 2.593 seconds (JVM running for 3.633)
+2023-02-10 08:48:33.960  INFO 11240 --- [main] c.s.backend.StakloRamBeApplicationTests  : Starting StakloRamBeApplicationTests using Java 1.8.0_202 on DESKTOP-IBIOU8D with PID 11240 (started by PC in D:\WorkPRIVATE\stakloRam2022\backend)
+2023-02-10 08:48:33.963 DEBUG 11240 --- [main] c.s.backend.StakloRamBeApplicationTests  : Running with Spring Boot v2.6.7, Spring v5.3.19
+2023-02-10 08:48:33.964  INFO 11240 --- [main] c.s.backend.StakloRamBeApplicationTests  : No active profile set, falling back to 1 default profile: "default"
+2023-02-10 08:48:34.125  WARN 11240 --- [main] o.s.w.c.s.GenericWebApplicationContext   : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to read candidate component class: file [D:\WorkPRIVATE\stakloRam2022\backend\target\classes\com\stakloram\backend\models\XML\ContactXML.class]; nested exception is java.lang.ArrayIndexOutOfBoundsException: 6
+2023-02-10 08:48:34.163 ERROR 11240 --- [main] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.BeanDefinitionStoreException: Failed to read candidate component class: file [D:\WorkPRIVATE\stakloRam2022\backend\target\classes\com\stakloram\backend\models\XML\ContactXML.class]; nested exception is java.lang.ArrayIndexOutOfBoundsException: 6
+	at org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider.scanCandidateComponents(ClassPathScanningCandidateComponentProvider.java:457) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider.findCandidateComponents(ClassPathScanningCandidateComponentProvider.java:316) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ClassPathBeanDefinitionScanner.doScan(ClassPathBeanDefinitionScanner.java:276) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ComponentScanAnnotationParser.parse(ComponentScanAnnotationParser.java:128) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ConfigurationClassParser.doProcessConfigurationClass(ConfigurationClassParser.java:296) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ConfigurationClassParser.processConfigurationClass(ConfigurationClassParser.java:250) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:207) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:175) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:331) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:247) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:311) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:112) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:746) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:564) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:740) ~[spring-boot-2.6.7.jar:2.6.7]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:415) ~[spring-boot-2.6.7.jar:2.6.7]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:303) ~[spring-boot-2.6.7.jar:2.6.7]
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:144) [spring-boot-test-2.6.7.jar:2.6.7]
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:99) [spring-test-5.3.19.jar:5.3.19]
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:124) [spring-test-5.3.19.jar:5.3.19]
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124) [spring-test-5.3.19.jar:5.3.19]
+	at org.springframework.test.context.web.ServletTestExecutionListener.setUpRequestContextIfNecessary(ServletTestExecutionListener.java:190) [spring-test-5.3.19.jar:5.3.19]
+	at org.springframework.test.context.web.ServletTestExecutionListener.prepareTestInstance(ServletTestExecutionListener.java:132) [spring-test-5.3.19.jar:5.3.19]
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:248) [spring-test-5.3.19.jar:5.3.19]
+	at org.springframework.test.context.junit.jupiter.SpringExtension.postProcessTestInstance(SpringExtension.java:138) [spring-test-5.3.19.jar:5.3.19]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$8(ClassBasedTestDescriptor.java:363) [junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.executeAndMaskThrowable(ClassBasedTestDescriptor.java:368) [junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$9(ClassBasedTestDescriptor.java:363) [junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193) ~[na:1.8.0_202]
+	at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175) ~[na:1.8.0_202]
+	at java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1382) ~[na:1.8.0_202]
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:481) ~[na:1.8.0_202]
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:471) ~[na:1.8.0_202]
+	at java.util.stream.StreamSpliterators$WrappingSpliterator.forEachRemaining(StreamSpliterators.java:312) ~[na:1.8.0_202]
+	at java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:743) ~[na:1.8.0_202]
+	at java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:742) ~[na:1.8.0_202]
+	at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:580) ~[na:1.8.0_202]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.invokeTestInstancePostProcessors(ClassBasedTestDescriptor.java:362) [junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$instantiateAndPostProcessTestInstance$6(ClassBasedTestDescriptor.java:283) [junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.instantiateAndPostProcessTestInstance(ClassBasedTestDescriptor.java:282) [junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$testInstancesProvider$4(ClassBasedTestDescriptor.java:272) [junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at java.util.Optional.orElseGet(Optional.java:267) ~[na:1.8.0_202]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$testInstancesProvider$5(ClassBasedTestDescriptor.java:271) [junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.jupiter.engine.execution.TestInstancesProvider.getTestInstances(TestInstancesProvider.java:31) ~[junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$prepare$0(TestMethodTestDescriptor.java:102) ~[junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.prepare(TestMethodTestDescriptor.java:101) ~[junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.prepare(TestMethodTestDescriptor.java:66) ~[junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$prepare$2(NodeTestTask.java:123) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.prepare(NodeTestTask.java:123) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:90) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at java.util.ArrayList.forEach(ArrayList.java:1257) ~[na:1.8.0_202]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at java.util.ArrayList.forEach(ArrayList.java:1257) ~[na:1.8.0_202]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:220) ~[junit-platform-launcher-1.3.1.jar:1.3.1]
+	at org.junit.platform.launcher.core.DefaultLauncher.lambda$execute$6(DefaultLauncher.java:188) ~[junit-platform-launcher-1.3.1.jar:1.3.1]
+	at org.junit.platform.launcher.core.DefaultLauncher.withInterceptedStreams(DefaultLauncher.java:202) ~[junit-platform-launcher-1.3.1.jar:1.3.1]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:181) ~[junit-platform-launcher-1.3.1.jar:1.3.1]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:128) ~[junit-platform-launcher-1.3.1.jar:1.3.1]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:150) ~[surefire-junit-platform-2.22.2.jar:2.22.2]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:124) ~[surefire-junit-platform-2.22.2.jar:2.22.2]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:384) ~[surefire-booter-2.22.2.jar:2.22.2]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:345) ~[surefire-booter-2.22.2.jar:2.22.2]
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:126) ~[surefire-booter-2.22.2.jar:2.22.2]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:418) ~[surefire-booter-2.22.2.jar:2.22.2]
+Caused by: java.lang.ArrayIndexOutOfBoundsException: 6
+	at org.springframework.asm.ClassReader.readShort(ClassReader.java:3614) ~[spring-core-5.3.19.jar:5.3.19]
+	at org.springframework.asm.ClassReader.<init>(ClassReader.java:197) ~[spring-core-5.3.19.jar:5.3.19]
+	at org.springframework.asm.ClassReader.<init>(ClassReader.java:180) ~[spring-core-5.3.19.jar:5.3.19]
+	at org.springframework.asm.ClassReader.<init>(ClassReader.java:166) ~[spring-core-5.3.19.jar:5.3.19]
+	at org.springframework.asm.ClassReader.<init>(ClassReader.java:287) ~[spring-core-5.3.19.jar:5.3.19]
+	at org.springframework.core.type.classreading.SimpleMetadataReader.getClassReader(SimpleMetadataReader.java:57) ~[spring-core-5.3.19.jar:5.3.19]
+	at org.springframework.core.type.classreading.SimpleMetadataReader.<init>(SimpleMetadataReader.java:49) ~[spring-core-5.3.19.jar:5.3.19]
+	at org.springframework.core.type.classreading.SimpleMetadataReaderFactory.getMetadataReader(SimpleMetadataReaderFactory.java:103) ~[spring-core-5.3.19.jar:5.3.19]
+	at org.springframework.core.type.classreading.CachingMetadataReaderFactory.getMetadataReader(CachingMetadataReaderFactory.java:123) ~[spring-core-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider.scanCandidateComponents(ClassPathScanningCandidateComponentProvider.java:429) ~[spring-context-5.3.19.jar:5.3.19]
+	... 86 common frames omitted
+
+2023-02-10 08:48:34.167 ERROR 11240 --- [main] o.s.test.context.TestContextManager      : Caught exception while allowing TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener@194fad1] to prepare test instance [com.stakloram.backend.StakloRamBeApplicationTests@46f699d5]
+
+java.lang.IllegalStateException: Failed to load ApplicationContext
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:132) ~[spring-test-5.3.19.jar:5.3.19]
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124) ~[spring-test-5.3.19.jar:5.3.19]
+	at org.springframework.test.context.web.ServletTestExecutionListener.setUpRequestContextIfNecessary(ServletTestExecutionListener.java:190) ~[spring-test-5.3.19.jar:5.3.19]
+	at org.springframework.test.context.web.ServletTestExecutionListener.prepareTestInstance(ServletTestExecutionListener.java:132) ~[spring-test-5.3.19.jar:5.3.19]
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:248) ~[spring-test-5.3.19.jar:5.3.19]
+	at org.springframework.test.context.junit.jupiter.SpringExtension.postProcessTestInstance(SpringExtension.java:138) [spring-test-5.3.19.jar:5.3.19]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$8(ClassBasedTestDescriptor.java:363) [junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.executeAndMaskThrowable(ClassBasedTestDescriptor.java:368) [junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$9(ClassBasedTestDescriptor.java:363) [junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193) ~[na:1.8.0_202]
+	at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175) ~[na:1.8.0_202]
+	at java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1382) ~[na:1.8.0_202]
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:481) ~[na:1.8.0_202]
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:471) ~[na:1.8.0_202]
+	at java.util.stream.StreamSpliterators$WrappingSpliterator.forEachRemaining(StreamSpliterators.java:312) ~[na:1.8.0_202]
+	at java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:743) ~[na:1.8.0_202]
+	at java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:742) ~[na:1.8.0_202]
+	at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:580) ~[na:1.8.0_202]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.invokeTestInstancePostProcessors(ClassBasedTestDescriptor.java:362) [junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$instantiateAndPostProcessTestInstance$6(ClassBasedTestDescriptor.java:283) [junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.instantiateAndPostProcessTestInstance(ClassBasedTestDescriptor.java:282) [junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$testInstancesProvider$4(ClassBasedTestDescriptor.java:272) [junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at java.util.Optional.orElseGet(Optional.java:267) ~[na:1.8.0_202]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$testInstancesProvider$5(ClassBasedTestDescriptor.java:271) [junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.jupiter.engine.execution.TestInstancesProvider.getTestInstances(TestInstancesProvider.java:31) ~[junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$prepare$0(TestMethodTestDescriptor.java:102) ~[junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.prepare(TestMethodTestDescriptor.java:101) ~[junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.prepare(TestMethodTestDescriptor.java:66) ~[junit-jupiter-engine-5.8.2.jar:5.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$prepare$2(NodeTestTask.java:123) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.prepare(NodeTestTask.java:123) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:90) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at java.util.ArrayList.forEach(ArrayList.java:1257) ~[na:1.8.0_202]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at java.util.ArrayList.forEach(ArrayList.java:1257) ~[na:1.8.0_202]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54) ~[junit-platform-engine-1.8.2.jar:1.8.2]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:220) ~[junit-platform-launcher-1.3.1.jar:1.3.1]
+	at org.junit.platform.launcher.core.DefaultLauncher.lambda$execute$6(DefaultLauncher.java:188) ~[junit-platform-launcher-1.3.1.jar:1.3.1]
+	at org.junit.platform.launcher.core.DefaultLauncher.withInterceptedStreams(DefaultLauncher.java:202) ~[junit-platform-launcher-1.3.1.jar:1.3.1]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:181) ~[junit-platform-launcher-1.3.1.jar:1.3.1]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:128) ~[junit-platform-launcher-1.3.1.jar:1.3.1]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:150) ~[surefire-junit-platform-2.22.2.jar:2.22.2]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:124) ~[surefire-junit-platform-2.22.2.jar:2.22.2]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:384) ~[surefire-booter-2.22.2.jar:2.22.2]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:345) ~[surefire-booter-2.22.2.jar:2.22.2]
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:126) ~[surefire-booter-2.22.2.jar:2.22.2]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:418) ~[surefire-booter-2.22.2.jar:2.22.2]
+Caused by: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to read candidate component class: file [D:\WorkPRIVATE\stakloRam2022\backend\target\classes\com\stakloram\backend\models\XML\ContactXML.class]; nested exception is java.lang.ArrayIndexOutOfBoundsException: 6
+	at org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider.scanCandidateComponents(ClassPathScanningCandidateComponentProvider.java:457) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider.findCandidateComponents(ClassPathScanningCandidateComponentProvider.java:316) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ClassPathBeanDefinitionScanner.doScan(ClassPathBeanDefinitionScanner.java:276) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ComponentScanAnnotationParser.parse(ComponentScanAnnotationParser.java:128) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ConfigurationClassParser.doProcessConfigurationClass(ConfigurationClassParser.java:296) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ConfigurationClassParser.processConfigurationClass(ConfigurationClassParser.java:250) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:207) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:175) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:331) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:247) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:311) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:112) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:746) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:564) ~[spring-context-5.3.19.jar:5.3.19]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:740) ~[spring-boot-2.6.7.jar:2.6.7]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:415) ~[spring-boot-2.6.7.jar:2.6.7]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:303) ~[spring-boot-2.6.7.jar:2.6.7]
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:144) ~[spring-boot-test-2.6.7.jar:2.6.7]
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:99) ~[spring-test-5.3.19.jar:5.3.19]
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:124) ~[spring-test-5.3.19.jar:5.3.19]
+	... 67 common frames omitted
+Caused by: java.lang.ArrayIndexOutOfBoundsException: 6
+	at org.springframework.asm.ClassReader.readShort(ClassReader.java:3614) ~[spring-core-5.3.19.jar:5.3.19]
+	at org.springframework.asm.ClassReader.<init>(ClassReader.java:197) ~[spring-core-5.3.19.jar:5.3.19]
+	at org.springframework.asm.ClassReader.<init>(ClassReader.java:180) ~[spring-core-5.3.19.jar:5.3.19]
+	at org.springframework.asm.ClassReader.<init>(ClassReader.java:166) ~[spring-core-5.3.19.jar:5.3.19]
+	at org.springframework.asm.ClassReader.<init>(ClassReader.java:287) ~[spring-core-5.3.19.jar:5.3.19]
+	at org.springframework.core.type.classreading.SimpleMetadataReader.getClassReader(SimpleMetadataReader.java:57) ~[spring-core-5.3.19.jar:5.3.19]
+	at org.springframework.core.type.classreading.SimpleMetadataReader.<init>(SimpleMetadataReader.java:49) ~[spring-core-5.3.19.jar:5.3.19]
+	at org.springframework.core.type.classreading.SimpleMetadataReaderFactory.getMetadataReader(SimpleMetadataReaderFactory.java:103) ~[spring-core-5.3.19.jar:5.3.19]
+	at org.springframework.core.type.classreading.CachingMetadataReaderFactory.getMetadataReader(CachingMetadataReaderFactory.java:123) ~[spring-core-5.3.19.jar:5.3.19]
+	at org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider.scanCandidateComponents(ClassPathScanningCandidateComponentProvider.java:429) ~[spring-context-5.3.19.jar:5.3.19]
+	... 86 common frames omitted
+
+2023-02-10 08:48:35.205  INFO 9744 --- [main] c.s.backend.StakloRamBeApplicationTests  : Starting StakloRamBeApplicationTests using Java 1.8.0_202 on DESKTOP-IBIOU8D with PID 9744 (started by PC in D:\WorkPRIVATE\stakloRam2022\backend)
+2023-02-10 08:48:35.206 DEBUG 9744 --- [main] c.s.backend.StakloRamBeApplicationTests  : Running with Spring Boot v2.6.7, Spring v5.3.19
+2023-02-10 08:48:35.206  INFO 9744 --- [main] c.s.backend.StakloRamBeApplicationTests  : No active profile set, falling back to 1 default profile: "default"
+2023-02-10 08:48:36.023  INFO 9744 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2023-02-10 08:48:36.089  INFO 9744 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@62db3891, org.springframework.security.web.context.SecurityContextPersistenceFilter@b0fc838, org.springframework.security.web.header.HeaderWriterFilter@53a665ad, org.springframework.web.filter.CorsFilter@61cd1c71, org.springframework.security.web.authentication.logout.LogoutFilter@2d9f64c9, com.stakloram.backend.auth.JwtRequestFilter@6724cdec, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@62db0521, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@65753040, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6944e53e, org.springframework.security.web.session.SessionManagementFilter@6d7cada5, org.springframework.security.web.access.ExceptionTranslationFilter@2aa6311a, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@582a764a]
+2023-02-10 08:48:36.259  INFO 9744 --- [main] c.s.backend.StakloRamBeApplicationTests  : Started StakloRamBeApplicationTests in 1.189 seconds (JVM running for 1.677)
+2023-02-10 08:53:03.357  INFO 1840 --- [main] c.s.backend.StakloRamBeApplicationTests  : Starting StakloRamBeApplicationTests using Java 1.8.0_202 on DESKTOP-IBIOU8D with PID 1840 (started by PC in D:\WorkPRIVATE\stakloRam2022\backend)
+2023-02-10 08:53:03.357 DEBUG 1840 --- [main] c.s.backend.StakloRamBeApplicationTests  : Running with Spring Boot v2.6.7, Spring v5.3.19
+2023-02-10 08:53:03.357  INFO 1840 --- [main] c.s.backend.StakloRamBeApplicationTests  : No active profile set, falling back to 1 default profile: "default"
+2023-02-10 08:53:04.299  INFO 1840 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2023-02-10 08:53:04.370  INFO 1840 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@62db3891, org.springframework.security.web.context.SecurityContextPersistenceFilter@b0fc838, org.springframework.security.web.header.HeaderWriterFilter@53a665ad, org.springframework.web.filter.CorsFilter@61cd1c71, org.springframework.security.web.authentication.logout.LogoutFilter@2d9f64c9, com.stakloram.backend.auth.JwtRequestFilter@6724cdec, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@62db0521, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@65753040, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6944e53e, org.springframework.security.web.session.SessionManagementFilter@6d7cada5, org.springframework.security.web.access.ExceptionTranslationFilter@2aa6311a, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@582a764a]
+2023-02-10 08:53:04.589  INFO 1840 --- [main] c.s.backend.StakloRamBeApplicationTests  : Started StakloRamBeApplicationTests in 1.358 seconds (JVM running for 1.78)
+2023-02-10 09:03:33.937  INFO 31976 --- [main] c.s.backend.StakloRamBeApplicationTests  : Starting StakloRamBeApplicationTests using Java 1.8.0_202 on DESKTOP-IBIOU8D with PID 31976 (started by PC in D:\WorkPRIVATE\stakloRam2022\backend)
+2023-02-10 09:03:33.938 DEBUG 31976 --- [main] c.s.backend.StakloRamBeApplicationTests  : Running with Spring Boot v2.6.7, Spring v5.3.19
+2023-02-10 09:03:33.938  INFO 31976 --- [main] c.s.backend.StakloRamBeApplicationTests  : No active profile set, falling back to 1 default profile: "default"
+2023-02-10 09:03:35.014  INFO 31976 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [public/index.html]
+2023-02-10 09:03:35.092  INFO 31976 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@62db3891, org.springframework.security.web.context.SecurityContextPersistenceFilter@b0fc838, org.springframework.security.web.header.HeaderWriterFilter@53a665ad, org.springframework.web.filter.CorsFilter@61cd1c71, org.springframework.security.web.authentication.logout.LogoutFilter@2d9f64c9, com.stakloram.backend.auth.JwtRequestFilter@6724cdec, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@62db0521, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@65753040, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6944e53e, org.springframework.security.web.session.SessionManagementFilter@6d7cada5, org.springframework.security.web.access.ExceptionTranslationFilter@2aa6311a, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@582a764a]
+2023-02-10 09:03:35.313  INFO 31976 --- [main] c.s.backend.StakloRamBeApplicationTests  : Started StakloRamBeApplicationTests in 1.536 seconds (JVM running for 2.064)

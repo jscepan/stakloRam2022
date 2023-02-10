@@ -531,13 +531,13 @@ public class InvoiceBuilder extends BaseBuilder {
         //////////////////// BUYER DATA BT-44 ///////////////////////////////
 
         buyerXML.setPartyName(
-                new PartyName(invoice.getBuyer().getName()));
+                new PartyName(invoice.getBuyer().getName().trim()));
 
         //////////////////// BUYER DATA BT-55 ///////////////////////////////
         PostalAddress postalAddressBuyer = new PostalAddress();
         //////////////////// BUYER DATA BT-52 ///////////////////////////////
 
-        postalAddressBuyer.setStreetName(invoice.getBuyer().getAddress());
+        postalAddressBuyer.setStreetName(invoice.getBuyer().getAddress().trim());
         postalAddressBuyer.setCityName(invoice.getBuyer().getCity().getName());
         postalAddressBuyer.setPostalZone(invoice.getBuyer().getCity().getZipCode());
         CountryXML buyerCountry = new CountryXML(invoice.getBuyer().getCity().getCountry().getIdentificationCode());
@@ -588,13 +588,12 @@ public class InvoiceBuilder extends BaseBuilder {
         }
 
         //////////////////// BUYER ACCOUNT BT-84 ////////////////////////////
-        String buyerAccount = invoice.getBuyer().getAccount();
-        if (buyerAccount
-                == null || buyerAccount.length()
-                == 0) {
-            throw new SException(UserMessage.getLocalizedMessage("buyerAccountError"));
-        }
-
+//        String buyerAccount = invoice.getBuyer().getAccount();
+//        if (buyerAccount
+//                == null || buyerAccount.length()
+//                == 0) {
+//            throw new SException(UserMessage.getLocalizedMessage("buyerAccountError"));
+//        }
         invoiceXML.setPaymentMeansXML(
                 new PaymentMeansXML(paymentMeansCode, paymentID, new PayeeFinancialAccountXML(settings.getSellerAccount())));
 
@@ -680,7 +679,7 @@ public class InvoiceBuilder extends BaseBuilder {
             //////////////////// Invoiced quantity BT-129 ///////////////////
             InvoicedQuantityXML invoicedQuantityXML = new InvoicedQuantityXML(invoiceItem.getQuantity(), unitCode);
             //////////////////// Invoice line net amount BT-131 /////////////
-            CurrencyAmountXML lineExtensionAmountItem = new CurrencyAmountXML(invoiceItem.getPricePerUnit(), settings.getInvoiceCurrencyEInvoice());
+            CurrencyAmountXML lineExtensionAmountItem = new CurrencyAmountXML(DataChecker.roundOnDigits(invoiceItem.getPricePerUnit(), settings.getDigitsCountForInvoice()), settings.getInvoiceCurrencyEInvoice());
             //////////////////// Item name BG-25 ///////////////////////////
             InvoiceItemDetailsXML invoiceItemDetailsXML = new InvoiceItemDetailsXML(invoiceItem.getDescription(), taxCategoryXML);
             //////////////////// Item net price BT-146 /////////////////////
