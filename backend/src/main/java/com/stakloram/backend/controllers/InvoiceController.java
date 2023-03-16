@@ -5,7 +5,6 @@ import com.stakloram.backend.models.Invoice;
 import com.stakloram.backend.models.Invoice.InvoiceType;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.SearchRequest;
-import com.stakloram.backend.models.XML.ImportSalesUblResponse;
 import com.stakloram.backend.models.XmlValue;
 import com.stakloram.backend.services.impl.InvoiceService;
 import java.util.List;

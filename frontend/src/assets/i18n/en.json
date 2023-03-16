@@ -197,6 +197,7 @@
   "invoiceGrossPrice": "INVOICE GROSS PRICE WITH VAT",
   "invoiceHaveBeenSuccessfullyDeleted": "Invoice have been successfully deleted",
   "invoiceIsSuccessfullyUpdated": "Invoice is successfully updated",
+  "invoiceIsSuccessfullyRegistrated": "Invoice is successfully registrated",
   "invoiceNetPrice": "Invoice net price",
   "invoiceNetPriceAllCaps": "INVOICE NET PRICE",
   "invoiceNumber": "Invoice number",

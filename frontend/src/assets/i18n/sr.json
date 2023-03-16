@@ -197,6 +197,7 @@
   "invoiceGrossPrice": "UKUPNA NAKNADA SA PDV-om",
   "invoiceHaveBeenSuccessfullyDeleted": "Faktura je uspešno obrisana",
   "invoiceIsSuccessfullyUpdated": "Račun je uspešno izmenjen",
+  "invoiceIsSuccessfullyRegistrated": "Račun je uspešno registrovan",
   "invoiceNetPrice": "Poreska osnovica",
   "invoiceNetPriceAllCaps": "PORESKA OSNOVICA",
   "invoiceNumber": "Broj računa",

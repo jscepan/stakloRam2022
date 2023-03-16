@@ -1120,7 +1120,13 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
       this.subs.sink = this.webService
         .registrationOfInvoice(this.invoiceOID)
         .subscribe((success) => {
-          console.log('success: ' + success);
+          if (success) {
+            this.globalService.showBasicAlert(
+              MODE.success,
+              this.translateService.instant('successfully'),
+              this.translateService.instant('invoiceIsSuccessfullyRegistrated')
+            );
+          }
         });
     }
   }
