@@ -81,6 +81,16 @@ public class WorkOrderStore extends ObjectStore {
         return st.executeUpdate() > 0;
     }
 
+    public boolean assignPdf(String workOrderOID, String pdfOID) throws SQLException {
+        int i = 0;
+        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+                + this.getTableName() + "_pdf_pdf_id=? "
+                + " WHERE " + this.getPrimaryKey() + "=?");
+        st.setLong(++i, BaseModel.getIdFromOid(pdfOID));
+        st.setLong(++i, BaseModel.getIdFromOid(workOrderOID));
+        return st.executeUpdate() > 0;
+    }
+
     @Override
     public WorkOrder getObjectFromResultSet(ResultSet resultSet) throws SQLException {
         WorkOrder object = new WorkOrder(resultSet.getLong(this.getPrimaryKey()));

@@ -13,6 +13,7 @@ import com.stakloram.backend.models.Buyer;
 import com.stakloram.backend.models.City;
 import com.stakloram.backend.models.Image;
 import com.stakloram.backend.models.Locator;
+import com.stakloram.backend.models.Pdf;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.models.WorkOrder;
@@ -254,6 +255,17 @@ public class WorkOrderBuilder extends BaseBuilder {
     public boolean changeBuyer(String workOrderOID, String buyerOID) throws SException {
         try {
             return ((WorkOrderStore) this.objectStore).changeBuyer(workOrderOID, buyerOID);
+        } catch (SQLException ex) {
+            super.logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+        }
+    }
+
+    public boolean assignPdf(WorkOrder workOrder, Pdf pdf) throws SException {
+        try {
+            boolean assigned = ((WorkOrderStore) this.objectStore).assignPdf(workOrder.getOid(), pdf.getOid());
+            workOrder.setPdf(pdf);
+            return assigned;
         } catch (SQLException ex) {
             super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));

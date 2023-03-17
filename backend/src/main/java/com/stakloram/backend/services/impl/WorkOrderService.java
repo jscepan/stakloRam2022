@@ -4,25 +4,39 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import static com.stakloram.backend.constants.Constants.WORK_ORDER_PDF_DIRECTORY;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.History;
 import com.stakloram.backend.models.Image;
+import com.stakloram.backend.models.Pdf;
 import com.stakloram.backend.models.User;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.models.WorkOrderItem;
 import com.stakloram.backend.services.ServiceModel;
-import com.stakloram.backend.services.impl.builder.impl.InvoiceBuilder;
+import com.stakloram.backend.services.impl.builder.impl.PdfBuilder;
 import com.stakloram.backend.services.impl.builder.impl.WorkOrderBuilder;
 import com.stakloram.backend.util.DataChecker;
+import com.stakloram.backend.util.Helper;
+import java.io.File;
+import java.io.IOException;
+import static java.nio.file.Files.copy;
+import java.nio.file.Path;
+import static java.nio.file.Paths.get;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class WorkOrderService extends ServiceModel {
+
+    private final PdfBuilder pdfBuilder = new PdfBuilder(this.locator);
 
     @Override
     public void setBaseBuilder() {
@@ -102,5 +116,33 @@ public class WorkOrderService extends ServiceModel {
             this.rollback();
         }
         return isChanged;
+    }
+
+    public WorkOrder uploadFile(String workOrderOid, MultipartFile file) throws SException {
+        try {
+            this.startTransaction();
+            WorkOrder workOrder = (WorkOrder) this.getObjectByOID(workOrderOid);
+
+            // save file
+            String filename = "workOrder_" + LocalDate.now() + "_" + LocalTime.now().getHour() + "_" + LocalTime.now().getMinute() + "_" + LocalTime.now().getSecond() + "_" + workOrder.getNumber() + "/" + workOrder.getDateOfCreate().getYear() + "." + Helper.getFileExtension(file);
+            File f = new File(WORK_ORDER_PDF_DIRECTORY);
+            if (!(f.exists() && f.isDirectory())) {
+                f.mkdir();
+            }
+            Path fileStorage = get(WORK_ORDER_PDF_DIRECTORY, filename).toAbsolutePath().normalize();
+            copy(file.getInputStream(), fileStorage, REPLACE_EXISTING);
+
+            // if file is saved then add it to work order
+            Pdf pdf = (Pdf) this.pdfBuilder.createNewObject(new Pdf(filename));
+            boolean isChanged = ((WorkOrderBuilder) this.baseBuilder).assignPdf(workOrder, pdf);
+            if (isChanged) {
+                this.endTransaction();
+            } else {
+                this.rollback();
+            }
+            return workOrder;
+        } catch (IOException ex) {
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+        }
     }
 }

@@ -15,6 +15,7 @@ public class WorkOrder extends BaseModel {
     private Buyer buyer;
     private List<WorkOrderItem> workOrderItems = new ArrayList<>();
     private List<Image> images = new ArrayList<>();
+    private Pdf pdf;
 
     public WorkOrder() {
     }
@@ -27,7 +28,7 @@ public class WorkOrder extends BaseModel {
         super(id);
     }
 
-    public WorkOrder(int number, LocalDate dateOfCreate, String placeOfIssue, String forPerson, String description, String note, Buyer buyer, String oid) {
+    public WorkOrder(int number, LocalDate dateOfCreate, String placeOfIssue, String forPerson, String description, String note, Buyer buyer, Pdf pdf, String oid) {
         super(oid);
         this.number = number;
         this.dateOfCreate = dateOfCreate;
@@ -36,9 +37,10 @@ public class WorkOrder extends BaseModel {
         this.description = description;
         this.note = note;
         this.buyer = buyer;
+        this.pdf = pdf;
     }
 
-    public WorkOrder(int number, LocalDate dateOfCreate, String placeOfIssue, String forPerson, String description, String note, Buyer buyer, Long id) {
+    public WorkOrder(int number, LocalDate dateOfCreate, String placeOfIssue, String forPerson, String description, String note, Buyer buyer, Pdf pdf, Long id) {
         super(id);
         this.number = number;
         this.dateOfCreate = dateOfCreate;
@@ -47,6 +49,7 @@ public class WorkOrder extends BaseModel {
         this.description = description;
         this.note = note;
         this.buyer = buyer;
+        this.pdf = pdf;
     }
 
     public int getNumber() {
@@ -121,8 +124,16 @@ public class WorkOrder extends BaseModel {
         this.images = images;
     }
 
+    public Pdf getPdf() {
+        return pdf;
+    }
+
+    public void setPdf(Pdf pdf) {
+        this.pdf = pdf;
+    }
+
     @Override
     public String toString() {
-        return "WorkOrder{" + "number=" + number + ", dateOfCreate=" + dateOfCreate + ", placeOfIssue=" + placeOfIssue + ", forPerson=" + forPerson + ", description=" + description + ", note=" + note + ", buyer=" + buyer + '}';
+        return "WorkOrder{" + "number=" + number + ", dateOfCreate=" + dateOfCreate + ", placeOfIssue=" + placeOfIssue + ", forPerson=" + forPerson + ", description=" + description + ", note=" + note + ", buyer=" + buyer + ", workOrderItems=" + workOrderItems + ", images=" + images + ", pdf=" + pdf + '}';
     }
 }
