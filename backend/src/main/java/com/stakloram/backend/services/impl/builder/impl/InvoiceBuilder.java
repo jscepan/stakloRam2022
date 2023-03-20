@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import static com.stakloram.backend.constants.Constants.WORK_ORDER_PDF_DIRECTORY;
 import com.stakloram.backend.database.ResponseWithCount;
 import com.stakloram.backend.database.objects.BuyerStore;
 import com.stakloram.backend.database.objects.CityStore;
@@ -11,6 +12,7 @@ import com.stakloram.backend.database.objects.CountryStore;
 import com.stakloram.backend.database.objects.InvoiceItemStore;
 import com.stakloram.backend.database.objects.InvoiceStore;
 import com.stakloram.backend.database.objects.NoteStore;
+import com.stakloram.backend.database.objects.PdfStore;
 import com.stakloram.backend.database.objects.WorkOrderItemStore;
 import com.stakloram.backend.database.objects.WorkOrderStore;
 import com.stakloram.backend.models.ArrayResponse;
@@ -25,14 +27,16 @@ import com.stakloram.backend.models.Country;
 import com.stakloram.backend.models.Invoice.InvoiceType;
 import com.stakloram.backend.models.XML.InvoiceXML;
 import com.stakloram.backend.models.Note;
+import com.stakloram.backend.models.Pdf;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.Settings;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.models.WorkOrderItem;
 import com.stakloram.backend.models.WorkOrderItem.UOM;
+import com.stakloram.backend.models.XML.AdditionalDocumentReferenceXML;
+import com.stakloram.backend.models.XML.AttachmentXML;
 import com.stakloram.backend.models.XML.ContactXML;
-import com.stakloram.backend.models.XML.ContractDocumentReferenceXML;
 import com.stakloram.backend.models.XML.CountryXML;
 import com.stakloram.backend.models.XML.DeliveryXML;
 import com.stakloram.backend.models.XML.InvoiceBuyerWrapperXML;
@@ -50,46 +54,44 @@ import com.stakloram.backend.models.XML.PaymentMeansXML;
 import com.stakloram.backend.models.XML.PibXML;
 import com.stakloram.backend.models.XML.PostalAddress;
 import com.stakloram.backend.models.XML.CurrencyAmountXML;
-import com.stakloram.backend.models.XML.ExtensionContentXML;
+import com.stakloram.backend.models.XML.EmbeddedDocumentBinaryObjectXML;
 import com.stakloram.backend.models.XML.ImportSalesUblResponse;
 import com.stakloram.backend.models.XML.InvoiceItemDetailsXML;
-import com.stakloram.backend.models.XML.InvoicedPrepaymentAmmountXML;
 import com.stakloram.backend.models.XML.InvoicedQuantityXML;
 import com.stakloram.backend.models.XML.PriceXML;
-import com.stakloram.backend.models.XML.ReducedTotalsXML;
-import com.stakloram.backend.models.XML.SrbDtExtXML;
 import com.stakloram.backend.models.XML.TaxCategoryXML;
 import com.stakloram.backend.models.XML.TaxItemXML;
 import com.stakloram.backend.models.XML.TaxSchemeXML;
 import com.stakloram.backend.models.XML.TaxTotalXML;
-import com.stakloram.backend.models.XML.UBLExtensionXML;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
 import com.stakloram.backend.util.DataChecker;
 import com.stakloram.backend.util.Helper;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import org.apache.pdfbox.io.MemoryUsageSetting;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 
 public class InvoiceBuilder extends BaseBuilder {
 
@@ -100,6 +102,7 @@ public class InvoiceBuilder extends BaseBuilder {
     private final WorkOrderItemStore WORK_ORDER_ITEM_STORE = new WorkOrderItemStore(this.getLocator());
     private final NoteStore NOTE_STORE = new NoteStore(this.getLocator());
     private final WorkOrderStore WORK_ORDER_STORE = new WorkOrderStore(this.getLocator());
+    private final PdfStore PDF_STORE = new PdfStore(this.getLocator());
 
     public InvoiceBuilder(Locator locator) {
         super(locator);
@@ -475,6 +478,83 @@ public class InvoiceBuilder extends BaseBuilder {
 
         invoiceXML.setInvoicePeriod(invoicePeriod);
 
+        //////////////////// BG-24 AdditionalDocumentReference //////////////
+        Set<String> workOrderOIDS = new HashSet<String>();
+        for (InvoiceItem ii : invoice.getInvoiceItems()) {
+            for (WorkOrderItem woi : ii.getWorkOrderItems()) {
+                try {
+                    workOrderOIDS.add(this.WORK_ORDER_ITEM_STORE.getWorkOrderOidForWorkOrderItemOid(woi.getOid()));
+                } catch (SQLException ex) {
+                    throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+                }
+            }
+        }
+
+        if (!workOrderOIDS.isEmpty()) {
+            List<AdditionalDocumentReferenceXML> additionalDocumentReferencesList = new ArrayList<>();
+            String title = UserMessage.getLocalizedMessage("workOrder") + " ";
+            List<File> allPdfs = new ArrayList<>();
+            boolean start = false;
+            for (String woOIDS : workOrderOIDS) {
+                if (start == true) {
+                    title += ", ";
+                }
+                WorkOrder wo;
+                try {
+                    wo = ((WorkOrder) this.WORK_ORDER_STORE.getObjectByOid(woOIDS));
+                    title += wo.getNumber();
+                } catch (SQLException ex) {
+                    throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+                }
+
+                // Get All pdf-s and add it to list
+                if (wo.getPdf() != null && wo.getPdf().getOid() != null) {
+                    try {
+                        wo.setPdf((Pdf) this.PDF_STORE.getObjectByOid(wo.getPdf().getOid()));
+                    } catch (SQLException ex) {
+                        throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+                    }
+                    try {
+                        File f = this.getExistingPdfForWorkOrder(wo);
+                        if (f.exists()) {
+                            allPdfs.add(f);
+                        }
+                    } catch (Exception e) {
+                        File f = this.createNewPdfForWorkOrder(wo);
+                        if (f.exists()) {
+                            allPdfs.add(f);
+                        }
+                    }
+                } else {
+                    File f = this.createNewPdfForWorkOrder(wo);
+                    if (f.exists()) {
+                        allPdfs.add(f);
+                    }
+                }
+                start = true;
+            }
+            File mergedPDF = null;
+            if (!allPdfs.isEmpty()) {
+                mergedPDF = this.mergePDFs(allPdfs);
+            }
+            if (mergedPDF != null) {
+                // Convert sumOfAllPdfs to string
+                String fileInBase64;
+                try {
+                    fileInBase64 = this.convertFileToBase64(mergedPDF);
+                } catch (IOException ex) {
+                    super.logger.error(ex.toString());
+                    throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+                }
+                String encoding = "base64";
+                EmbeddedDocumentBinaryObjectXML attachment = new EmbeddedDocumentBinaryObjectXML(fileInBase64, "application/pdf", encoding, title + ".pdf");
+                AdditionalDocumentReferenceXML additionalDocumentReference = new AdditionalDocumentReferenceXML(title, new AttachmentXML(attachment));
+                additionalDocumentReferencesList.add(additionalDocumentReference);
+                invoiceXML.setAdditionalDocumentReferencesXML(additionalDocumentReferencesList);
+
+            }
+        }
+
         //////////////////// SELLER DATA BG-4 ///////////////////////////////
         InvoicePartyXML sellerXML = new InvoicePartyXML();
         //////////////////// SELLER PIB BT-31 ///////////////////////////////
@@ -798,5 +878,32 @@ public class InvoiceBuilder extends BaseBuilder {
             }
         }
         return true;
+    }
+
+    private File getExistingPdfForWorkOrder(WorkOrder wo) {
+        return new File(WORK_ORDER_PDF_DIRECTORY + "/" + wo.getPdf().getUrl());
+    }
+
+    private File createNewPdfForWorkOrder(WorkOrder wo) throws SException {
+        return null;
+    }
+
+    private File mergePDFs(List<File> allPdfs) {
+        try {
+            PDFMergerUtility pdfmerger = new PDFMergerUtility();
+            pdfmerger.setDestinationFileName("newMerged.pdf");
+            for (File file : allPdfs) {
+                pdfmerger.addSource(file);
+                pdfmerger.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
+            }
+            return new File("newMerged.pdf");
+        } catch (IOException e) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+    }
+
+    private String convertFileToBase64(File mergedPDF) throws IOException {
+        byte[] bytes = Files.readAllBytes(mergedPDF.toPath());
+        return Base64.getEncoder().encodeToString(bytes);
     }
 }

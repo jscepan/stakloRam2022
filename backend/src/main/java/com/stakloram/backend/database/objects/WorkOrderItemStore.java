@@ -1,14 +1,17 @@
 package com.stakloram.backend.database.objects;
 
+import com.stakloram.backend.database.ConnectionToDatabase;
 import com.stakloram.backend.database.ObjectStore;
 import static com.stakloram.backend.database.ObjectStore.DATABASE_NAME;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Locator;
+import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.models.WorkOrderItem;
 import com.stakloram.backend.models.WorkOrderItem.UOM;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class WorkOrderItemStore extends ObjectStore {
 
@@ -141,5 +144,15 @@ public class WorkOrderItemStore extends ObjectStore {
 
     public ResultSet getAllObjectsForSpecificColumn(String columnName) throws SQLException {
         return this.getConn().createStatement().executeQuery("SELECT " + columnName + " from " + this.getDefaultFromClausule());
+    }
+
+    public String getWorkOrderOidForWorkOrderItemOid(String workOrderItemOid) throws SQLException {
+        String oid = "";
+        Statement st = this.getConn().createStatement();
+        ResultSet resultSet = st.executeQuery("SELECT * from " + ConnectionToDatabase.getDatabaseName() + "." + this.tableName + " WHERE " + ConnectionToDatabase.getDatabaseName() + "." + this.tableName + "." + this.getPrimaryKey() + "=" + BaseModel.getIdFromOid(workOrderItemOid));
+        while (resultSet.next()) {
+            oid = new WorkOrder(resultSet.getLong(this.getTableName() + "_work_order_work_order_id")).getOid();
+        }
+        return oid;
     }
 }

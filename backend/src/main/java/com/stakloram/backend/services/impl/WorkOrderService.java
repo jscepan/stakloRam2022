@@ -124,7 +124,7 @@ public class WorkOrderService extends ServiceModel {
             WorkOrder workOrder = (WorkOrder) this.getObjectByOID(workOrderOid);
 
             // save file
-            String filename = "workOrder_" + LocalDate.now() + "_" + LocalTime.now().getHour() + "_" + LocalTime.now().getMinute() + "_" + LocalTime.now().getSecond() + "_" + workOrder.getNumber() + "/" + workOrder.getDateOfCreate().getYear() + "." + Helper.getFileExtension(file);
+            String filename = "workOrder_" + workOrder.getDateOfCreate().getYear() + "_" + workOrder.getDateOfCreate().getMonthValue() + "_" + workOrder.getDateOfCreate().getDayOfMonth() + "__" + workOrder.getNumber() + "_" + workOrder.getDateOfCreate().getYear() + "." + Helper.getFileExtension(file);
             File f = new File(WORK_ORDER_PDF_DIRECTORY);
             if (!(f.exists() && f.isDirectory())) {
                 f.mkdir();
@@ -133,7 +133,9 @@ public class WorkOrderService extends ServiceModel {
             copy(file.getInputStream(), fileStorage, REPLACE_EXISTING);
 
             // if file is saved then add it to work order
-            Pdf pdf = (Pdf) this.pdfBuilder.createNewObject(new Pdf(filename));
+            Pdf pdf = new Pdf();
+            pdf.setUrl(filename);
+            this.pdfBuilder.createNewObject(pdf);
             boolean isChanged = ((WorkOrderBuilder) this.baseBuilder).assignPdf(workOrder, pdf);
             if (isChanged) {
                 this.endTransaction();

@@ -68,6 +68,12 @@
         {{ "note" | translate }}
       </div>
       <div class="grid-item header sticky">
+        {{ "PDF" | translate }}
+      </div>
+      <div class="grid-item header sticky">
+        {{ "uploadPDF" | translate }}
+      </div>
+      <div class="grid-item header sticky">
         {{ "view" | translate }}
       </div>
       <div class="grid-item header sticky">
@@ -116,7 +122,7 @@
           {{ getWorkOrderNumber(workOrder) }}
         </div>
         <div class="grid-item">
-          {{ workOrder.dateOfCreate | date: "dd.MM.yyyy" }}
+          {{ workOrder.dateOfCreate | date : "dd.MM.yyyy" }}
         </div>
         <div class="grid-item align-left">
           {{ workOrder.forPerson }}
@@ -126,6 +132,31 @@
         </div>
         <div class="grid-item align-left">
           {{ workOrder.note }}
+        </div>
+        <div class="grid-item">
+          <app-button
+            [iconName]="'file-text'"
+            [isTransparentMode]="true"
+            (clickEvent)="viewWorkOrder(workOrder.oid)"
+            [disabled]="!hasPrivilege('WORK_ORDER_VIEW')"
+            [matTooltip]="'viewPDF' | translate"
+          ></app-button>
+        </div>
+        <div class="grid-item">
+          <app-button
+            [iconName]="'upload'"
+            [isTransparentMode]="true"
+            (clickEvent)="openFileDialog(workOrder.oid)"
+            [disabled]="!hasPrivilege('WORK_ORDER_VIEW')"
+            [matTooltip]="'uploadPDF' | translate"
+          ></app-button>
+          <input
+            type="file"
+            accept=".pdf"
+            (change)="onFileSelected(workOrder.oid)"
+            #fileInput
+            style="display: none"
+          />
         </div>
         <div class="grid-item">
           <app-button

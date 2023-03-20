@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -44,6 +44,8 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
   totalEntitiesLengthUnsettled?: number;
 
   searchFilter: SearchModel = new SearchModel();
+
+  @ViewChild('fileInput') fileInput: any;
 
   constructor(
     private globalService: GlobalService,
@@ -106,6 +108,37 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
 
   createWorkOrder(): void {
     this.router.navigate(['work-orders', 'create']);
+  }
+
+  viewWorkOrderPDF(workOrderOID: string): void {
+    window.open('#/print/work-order-view/' + workOrderOID);
+  }
+
+  openFileDialog(_workOrderOID: string): void {
+    this.fileInput.nativeElement.click();
+  }
+
+  onFileSelected(workOrderOID: string) {
+    const file: File = this.fileInput.nativeElement.files[0];
+    if (file && file.type === 'application/pdf') {
+      const formData = new FormData();
+      formData.append('pdfFile', file, file.name);
+
+      this.webService.uploadFile(workOrderOID, formData).subscribe(() => {
+        this.globalService.showBasicAlert(
+          MODE.success,
+          this.translateService.instant('success'),
+          this.translateService.instant('successfullyUploaded')
+        );
+      });
+    } else {
+      // Handle invalid file format error
+      this.globalService.showBasicAlert(
+        MODE.error,
+        this.translateService.instant('error'),
+        this.translateService.instant('handleInvalidFileFormatError')
+      );
+    }
   }
 
   viewWorkOrder(workOrderOID: string): void {

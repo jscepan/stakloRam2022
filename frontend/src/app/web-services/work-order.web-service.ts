@@ -56,4 +56,11 @@ export class WorkOrderWebService extends EntityBaseWebService<WorkOrderModel> {
       }/change-buyer?workOrderOID=${workOrderOID}&buyerOID=${buyerOID}`
     );
   }
+
+  uploadFile<T>(workOrderOID: string, data: FormData): Observable<T> {
+    return this.baseWebService.postRequest<T, FormData>(
+      `${BASE_API_URL + '/' + this.domainName}/${workOrderOID}/files`,
+      data
+    );
+  }
 }

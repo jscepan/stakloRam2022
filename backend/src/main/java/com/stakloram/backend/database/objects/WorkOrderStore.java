@@ -6,6 +6,7 @@ import static com.stakloram.backend.database.ObjectStore.DATABASE_NAME;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Buyer;
 import com.stakloram.backend.models.Locator;
+import com.stakloram.backend.models.Pdf;
 import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.util.Helper;
 import java.sql.PreparedStatement;
@@ -101,6 +102,7 @@ public class WorkOrderStore extends ObjectStore {
         object.setDescription(resultSet.getString(this.getTableName() + "_description"));
         object.setNote(resultSet.getString(this.getTableName() + "_note"));
         object.setBuyer(new Buyer(resultSet.getLong(this.getTableName() + "_buyer_buyer_id")));
+        object.setPdf(resultSet.getLong(this.getTableName() + "_pdf_pdf_id") > 0 ? (new Pdf(resultSet.getLong(this.getTableName() + "_pdf_pdf_id"))) : null);
         return object;
     }
 
