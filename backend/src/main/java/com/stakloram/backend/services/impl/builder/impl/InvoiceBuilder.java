@@ -75,23 +75,17 @@ import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import org.apache.pdfbox.io.MemoryUsageSetting;
-import org.apache.pdfbox.multipdf.PDFMergerUtility;
 
 public class InvoiceBuilder extends BaseBuilder {
 
@@ -499,13 +493,8 @@ public class InvoiceBuilder extends BaseBuilder {
                 if (start == true) {
                     title += ", ";
                 }
-                WorkOrder wo;
-                try {
-                    wo = ((WorkOrder) this.WORK_ORDER_STORE.getObjectByOid(woOIDS));
-                    title += wo.getNumber();
-                } catch (SQLException ex) {
-                    throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
-                }
+                WorkOrder wo = (WorkOrder) new WorkOrderBuilder(this.getLocator()).getObjectByOid(woOIDS);
+                title += wo.getNumber();
 
                 // Get All pdf-s and add it to list
                 if (wo.getPdf() != null && wo.getPdf().getOid() != null) {
@@ -520,13 +509,13 @@ public class InvoiceBuilder extends BaseBuilder {
                             allPdfs.add(f);
                         }
                     } catch (Exception e) {
-                        File f = this.createNewPdfForWorkOrder(wo);
+                        File f = Helper.createNewPdfForHtmlPage(PdfBuilder.generateHtmlForWorkOrder(wo));
                         if (f.exists()) {
                             allPdfs.add(f);
                         }
                     }
                 } else {
-                    File f = this.createNewPdfForWorkOrder(wo);
+                    File f = Helper.createNewPdfForHtmlPage(PdfBuilder.generateHtmlForWorkOrder(wo));
                     if (f.exists()) {
                         allPdfs.add(f);
                     }
@@ -535,13 +524,13 @@ public class InvoiceBuilder extends BaseBuilder {
             }
             File mergedPDF = null;
             if (!allPdfs.isEmpty()) {
-                mergedPDF = this.mergePDFs(allPdfs);
+                mergedPDF = Helper.mergePDFs(allPdfs);
             }
             if (mergedPDF != null) {
                 // Convert sumOfAllPdfs to string
                 String fileInBase64;
                 try {
-                    fileInBase64 = this.convertFileToBase64(mergedPDF);
+                    fileInBase64 = Helper.convertFileToBase64(mergedPDF);
                 } catch (IOException ex) {
                     super.logger.error(ex.toString());
                     throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
@@ -882,28 +871,5 @@ public class InvoiceBuilder extends BaseBuilder {
 
     private File getExistingPdfForWorkOrder(WorkOrder wo) {
         return new File(WORK_ORDER_PDF_DIRECTORY + "/" + wo.getPdf().getUrl());
-    }
-
-    private File createNewPdfForWorkOrder(WorkOrder wo) throws SException {
-        return null;
-    }
-
-    private File mergePDFs(List<File> allPdfs) {
-        try {
-            PDFMergerUtility pdfmerger = new PDFMergerUtility();
-            pdfmerger.setDestinationFileName("newMerged.pdf");
-            for (File file : allPdfs) {
-                pdfmerger.addSource(file);
-                pdfmerger.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
-            }
-            return new File("newMerged.pdf");
-        } catch (IOException e) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-    }
-
-    private String convertFileToBase64(File mergedPDF) throws IOException {
-        byte[] bytes = Files.readAllBytes(mergedPDF.toPath());
-        return Base64.getEncoder().encodeToString(bytes);
     }
 }

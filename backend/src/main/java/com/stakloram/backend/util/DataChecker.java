@@ -1,5 +1,7 @@
 package com.stakloram.backend.util;
 
+import java.text.DecimalFormat;
+import java.util.Locale;
 import org.apache.commons.validator.EmailValidator;
 
 public class DataChecker {
@@ -52,5 +54,21 @@ public class DataChecker {
         double multipicationFactor = Math.pow(10, digits);
         double interestedInZeroDPs = number * multipicationFactor;
         return Math.round(interestedInZeroDPs) / multipicationFactor;
+    }
+
+    public static String roundNumberAndGetDisplayValue(double number, int digits) {
+        return roundNumberAndGetDisplayValue(number, digits, true);
+    }
+
+    public static String roundNumberAndGetDisplayValue(double number, int digits, boolean dotIsPlaceForThousand) {
+        Locale locale;
+        if (dotIsPlaceForThousand) {
+            locale = new Locale("de", "DE");
+        } else {
+            locale = new Locale("en", "EN");
+        }
+        double num = roundOnDigits(number, digits);
+        String value = String.format(locale, "%,." + digits + "f", num);
+        return value;
     }
 }

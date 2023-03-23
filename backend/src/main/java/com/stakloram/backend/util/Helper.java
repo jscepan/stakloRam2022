@@ -1,25 +1,42 @@
 package com.stakloram.backend.util;
 
+import com.ironsoftware.ironpdf.PdfDocument;
 import com.stakloram.backend.models.BaseModel;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import org.apache.pdfbox.io.MemoryUsageSetting;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
+import com.stakloram.backend.models.WorkOrder;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
+import java.util.logging.Level;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.xhtmlrenderer.layout.SharedContext;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
 public class Helper {
 
@@ -45,7 +62,8 @@ public class Helper {
         BufferedReader reader = null;
         String data = "";
         try {
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), "UTF-8"));
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            reader = new BufferedReader(new InputStreamReader(fileInputStream, StandardCharsets.UTF_8));
             String thisLine = null;
             while ((thisLine = reader.readLine()) != null) {
                 data += thisLine;
@@ -121,6 +139,59 @@ public class Helper {
         } catch (Exception e) {
             return "";
         }
+    }
+
+    public static File mergePDFs(List<File> allPdfs) {
+        try {
+            PDFMergerUtility pdfmerger = new PDFMergerUtility();
+            pdfmerger.setDestinationFileName("newMerged.pdf");
+            for (File file : allPdfs) {
+                pdfmerger.addSource(file);
+                pdfmerger.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
+            }
+            return new File("newMerged.pdf");
+        } catch (IOException e) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+    }
+
+    public static String convertFileToBase64(File mergedPDF) throws IOException {
+        byte[] bytes = Files.readAllBytes(mergedPDF.toPath());
+        return Base64.getEncoder().encodeToString(bytes);
+    }
+
+    public static File createNewPdfForHtmlPage(String html) {
+        System.out.println("html");
+        System.out.println(html);
+        File pdfFile = new File("new_pdf.pdf");
+        OutputStream outputStream = null;
+        try {
+            ITextRenderer renderer = new ITextRenderer();
+            SharedContext sharedContext = renderer.getSharedContext();
+            sharedContext.setPrint(true);
+            sharedContext.setInteractive(false);
+            renderer.setDocumentFromString(html);
+            renderer.layout();
+            outputStream = new FileOutputStream(pdfFile);
+            renderer.createPDF(outputStream);
+        } catch (FileNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Helper.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                outputStream.close();
+            } catch (IOException ex) {
+                java.util.logging.Logger.getLogger(Helper.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return pdfFile;
+    }
+
+    public static String getDisplayValueForWorkOrderNumber(WorkOrder wo) {
+        return wo.getNumber() + "/" + wo.getDateOfCreate().getYear();
+    }
+
+    public static String getDisplayValueForWorkOrderDate(WorkOrder wo) {
+        return wo.getDateOfCreate().getDayOfMonth() + "." + wo.getDateOfCreate().getMonthValue() + "." + wo.getDateOfCreate().getYear();
     }
 
     public enum Action {
