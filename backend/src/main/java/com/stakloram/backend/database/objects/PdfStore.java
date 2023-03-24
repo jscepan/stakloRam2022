@@ -20,7 +20,7 @@ public class PdfStore extends ObjectStore {
     }
 
     @Override
-    public BaseModel createNewObjectToDatabase(BaseModel model) throws SQLException {
+    public Pdf createNewObjectToDatabase(BaseModel model) throws SQLException {
         Pdf object = (Pdf) model;
         int i = 0;
         PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?)", PreparedStatement.RETURN_GENERATED_KEYS);

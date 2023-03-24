@@ -2,40 +2,40 @@ package com.stakloram.backend.models.XML;
 
 public class ImportSalesUblResponse {
 
-    private String invoiceId;
-    private String purchaseInvoiceId;
-    private String salesInvoiceId;
+    private int invoiceId;
+    private int purchaseInvoiceId;
+    private int salesInvoiceId;
 
     public ImportSalesUblResponse() {
     }
 
-    public ImportSalesUblResponse(String invoiceId, String purchaseInvoiceId, String salesInvoiceId) {
+    public ImportSalesUblResponse(int invoiceId, int purchaseInvoiceId, int salesInvoiceId) {
         this.invoiceId = invoiceId;
         this.purchaseInvoiceId = purchaseInvoiceId;
         this.salesInvoiceId = salesInvoiceId;
     }
 
-    public String getInvoiceId() {
+    public int getInvoiceId() {
         return invoiceId;
     }
 
-    public void setInvoiceId(String invoiceId) {
+    public void setInvoiceId(int invoiceId) {
         this.invoiceId = invoiceId;
     }
 
-    public String getPurchaseInvoiceId() {
+    public int getPurchaseInvoiceId() {
         return purchaseInvoiceId;
     }
 
-    public void setPurchaseInvoiceId(String purchaseInvoiceId) {
+    public void setPurchaseInvoiceId(int purchaseInvoiceId) {
         this.purchaseInvoiceId = purchaseInvoiceId;
     }
 
-    public String getSalesInvoiceId() {
+    public int getSalesInvoiceId() {
         return salesInvoiceId;
     }
 
-    public void setSalesInvoiceId(String salesInvoiceId) {
+    public void setSalesInvoiceId(int salesInvoiceId) {
         this.salesInvoiceId = salesInvoiceId;
     }
 

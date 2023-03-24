@@ -13,6 +13,7 @@ import com.stakloram.backend.database.objects.InvoiceItemStore;
 import com.stakloram.backend.database.objects.InvoiceStore;
 import com.stakloram.backend.database.objects.NoteStore;
 import com.stakloram.backend.database.objects.PdfStore;
+import com.stakloram.backend.database.objects.RegistratedInvoiceStore;
 import com.stakloram.backend.database.objects.WorkOrderItemStore;
 import com.stakloram.backend.database.objects.WorkOrderStore;
 import com.stakloram.backend.models.ArrayResponse;
@@ -28,6 +29,7 @@ import com.stakloram.backend.models.Invoice.InvoiceType;
 import com.stakloram.backend.models.XML.InvoiceXML;
 import com.stakloram.backend.models.Note;
 import com.stakloram.backend.models.Pdf;
+import com.stakloram.backend.models.RegistratedInvoice;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.Settings;
 import com.stakloram.backend.models.UserMessage;
@@ -77,12 +79,15 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -861,10 +866,14 @@ public class InvoiceBuilder extends BaseBuilder {
                         .addModule(new JavaTimeModule())
                         .build();
                 ImportSalesUblResponse importSalesUblResponse = objectMapper.readValue(stb.toString(), ImportSalesUblResponse.class);
-                System.out.println("importSalesUblResponse");
-                System.out.println(importSalesUblResponse);
-                // TODO
+
+                // TODO mark invoice as registrated
+                RegistratedInvoiceStore registratedInvoiceStore = new RegistratedInvoiceStore(this.getLocator());
+                RegistratedInvoice regInvoice = new RegistratedInvoice(importSalesUblResponse.getInvoiceId(), importSalesUblResponse.getPurchaseInvoiceId(), importSalesUblResponse.getSalesInvoiceId(), LocalDateTime.now(), invoice);
+                registratedInvoiceStore.createNewObjectToDatabase(regInvoice);
             } catch (JsonProcessingException ex) {
+                logger.error(ex.toString());
+            } catch (SQLException ex) {
                 logger.error(ex.toString());
             }
         }
