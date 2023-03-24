@@ -9,6 +9,7 @@ import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
 import com.stakloram.backend.util.DataChecker;
 import com.stakloram.backend.util.Helper;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,21 +34,23 @@ public class PdfBuilder extends BaseBuilder {
         SettingsBuilder settingsBuilder = new SettingsBuilder();
         Settings settings = settingsBuilder.getSettings();
 
-        StringBuffer html = new StringBuffer();
-        html.append("<!DOCTYPE html><html lang=\"sr\">");
-        html.append("<head>");
-        html.append("<style>");
-        html.append(".container {\n"
-                + "	 font-size: 14px;"
-                + "	 font-family: \"Open Sans\", sans-serif;"
-                + "	 color: #434349;"
+        String html = "";
+        html += ("<!DOCTYPE html><html lang=\"sr\">");
+        html += ("<head>");
+        html += ("<meta charset=\"UTF-8\" />");
+        html += ("<style>");
+        html += (" .container {\n"
                 + "	 display: flex;\n"
+                + "	 font-size: 12px;\n"
                 + "	 flex-direction: column;\n"
+                + "	 font-family: Verdana;\n"
+                + "	 color: #434349;\n"
                 + "	 width: 100%;\n"
                 + "	 height: 100%;\n"
                 + "}\n"
                 + " .container .header {\n"
                 + "	 display: flex;\n"
+                + "	 flex-direction: row;\n"
                 + "}\n"
                 + " .container .header .logo {\n"
                 + "	 display: flex;\n"
@@ -57,18 +60,19 @@ public class PdfBuilder extends BaseBuilder {
                 + " .container .header .logo img {\n"
                 + "	 height: 80px;\n"
                 + "	 width: 300px;\n"
+                + "	 background: red;\n"
                 + "}\n"
-                + " .container .header .heading {\n"
+                + " .container .header .company-heading {\n"
                 + "	 display: flex;\n"
                 + "	 flex-direction: column;\n"
                 + "	 font-weight: 600;\n"
                 + "	 padding: 20px;\n"
                 + "	 font-size: 1.14em;\n"
                 + "}\n"
-                + " .container .header .heading .title {\n"
+                + " .container .header .company-heading .company-heading-title {\n"
                 + "	 text-transform: uppercase;\n"
                 + "}\n"
-                + " .container .header .heading .email {\n"
+                + " .container .header .company-heading .company-heading-email {\n"
                 + "	 margin-top: 20px;\n"
                 + "}\n"
                 + " .container .company-description {\n"
@@ -97,11 +101,12 @@ public class PdfBuilder extends BaseBuilder {
                 + " .container .body-content .table {\n"
                 + "	 border-collapse: collapse;\n"
                 + "	 color: #000;\n"
-                + "	 font-size: 16px;\n"
+                + "	 font-size: 1.14em;\n"
                 + "}\n"
                 + " .container .body-content .table tr {\n"
                 + "	 border: 1px solid #000;\n"
                 + "	 background-color: #fff;\n"
+                + "	 -webkit-print-color-adjust: exact;\n"
                 + "}\n"
                 + " .container .body-content .table tr th {\n"
                 + "	 font-weight: 600;\n"
@@ -148,128 +153,132 @@ public class PdfBuilder extends BaseBuilder {
                 + "	 display: flex;\n"
                 + "	 flex-direction: column;\n"
                 + "}\n"
-                + " .container .body-content .signature .signature-container .title {\n"
+                + " .container .body-content .signature .signature-container .signature-title {\n"
                 + "	 margin-bottom: 20px;\n"
                 + "	 text-align: center;\n"
                 + "}\n"
-                + " .container .body-content .signature .signature-container .description {\n"
+                + " .container .body-content .signature .signature-container .signature-description {\n"
                 + "	 width: 150px;\n"
-                + "	 border-bottom: 1px solid #000;\n"
-                + "}\n");
-        html.append("</style>");
-        html.append("</head>");
-        html.append("<body>");
-        html.append("<div class='container'>");
-        html.append("<div class='header'>");
-        html.append("<div class='logo'>");
-        html.append("<img src='" + getCompanyLogoUrl() + "' />");
-        html.append("</div>");
-        html.append("<div class='heading'>");
-        html.append("<div class='title'>" + settings.getWorkOrderHeadingLine1());
-        html.append("</div>");
-        html.append("<div class='title'>" + settings.getWorkOrderHeadingLine2());
-        html.append("</div>");
-        html.append("<div class='title'>" + settings.getWorkOrderHeadingLine3());
-        html.append("</div>");
-        html.append("<div class='email'>" + UserMessage.getLocalizedMessage("place") + ": " + settings.getCompanyEmail());
-        html.append("</div>");
-        html.append("</div>");
-        html.append("</div>");
-        html.append("<div class='company-description'>" + settings.getWorkOrderCompanyDescription());
-        html.append("</div>");
-        html.append("<div class='body-content'>");
-        html.append("<div class='heading'>");
+                + "	 border-bottom: 1px solid #fff;\n"
+                + "}\n"
+                + " .right {\n"
+                + "	 text-align: right;\n"
+                + "}\n"
+                + " ");
+        html += ("</style>");
+        html += ("</head>");
+        html += ("<body>");
+        html += ("<div class='container'>");
+        html += ("<div class='header'>");
+//        html += ("<div class='logo'>");
+//        html += ("<img src='D:\\StakloRam\\stakloRam2022\\backend\\company_logo.PNG' />");
+//        html += ("</div>");
+        html += ("<div class='company-heading'>");
+        html += ("<div class='company-heading-title'>" + settings.getWorkOrderHeadingLine1());
+        html += ("</div>");
+        html += ("<div class='company-heading-title'>" + settings.getWorkOrderHeadingLine2());
+        html += ("</div>");
+        html += ("<div class='company-heading-title'>" + settings.getWorkOrderHeadingLine3());
+        html += ("</div>");
+        html += ("<div class='company-heading-email'>" + UserMessage.getLocalizedMessage("place") + ": " + settings.getCompanyEmail());
+        html += ("</div>");
+        html += ("</div>");
+        html += ("</div>");
+        html += ("<div class='company-description'>" + settings.getWorkOrderCompanyDescription());
+        html += ("</div>");
+        html += ("<div class='body-content'>");
+        html += ("<div class='heading'>");
 
-        html.append("<table>");
-        html.append("<tr>");
-        html.append("<td>" + UserMessage.getLocalizedMessage("orderer") + ":</td>");
-        html.append("<td>" + wo.getBuyer().getName() + "</td>");
-        html.append("<td>" + UserMessage.getLocalizedMessage("place") + ":</td>");
-        html.append("<td>" + wo.getPlaceOfIssue() + "</td>");
-        html.append("</tr>");
-        html.append("<tr>");
-        html.append("<td>" + UserMessage.getLocalizedMessage("forNeedsOf") + ":</td>");
-        html.append("<td>" + wo.getForPerson() + "</td>");
-        html.append("<td>" + UserMessage.getLocalizedMessage("descriptionOfWork") + ":</td>");
-        html.append("<td>" + wo.getDescription() + "</td>");
-        html.append("</tr>");
-        html.append("<tr>");
-        html.append("<td>" + UserMessage.getLocalizedMessage("workOrderNr") + ":</td>");
-        html.append("<td>" + Helper.getDisplayValueForWorkOrderNumber(wo) + "</td>");
-        html.append("<td>" + UserMessage.getLocalizedMessage("date") + ":</td>");
-        html.append("<td>" + Helper.getDisplayValueForWorkOrderDate(wo) + "</td>");
-        html.append("</tr>");
-        html.append("</table>");
+        html += ("<table>");
+        html += ("<tr>");
+        html += ("<td class='column1'>" + UserMessage.getLocalizedMessage("orderer") + ":</td>");
+        html += ("<td class='column2'>" + wo.getBuyer().getName() + "</td>");
+        html += ("<td class='column3'>" + UserMessage.getLocalizedMessage("place") + ":</td>");
+        html += ("<td class='column4'>" + wo.getPlaceOfIssue() + "</td>");
+        html += ("</tr>");
+        html += ("<tr>");
+        html += ("<td class='column1'>" + UserMessage.getLocalizedMessage("forNeedsOf") + ":</td>");
+        html += ("<td class='column2'>" + wo.getForPerson() + "</td>");
+        html += ("<td class='column3'>" + UserMessage.getLocalizedMessage("descriptionOfWork") + ":</td>");
+        html += ("<td class='column4'>" + wo.getDescription() + "</td>");
+        html += ("</tr>");
+        html += ("<tr>");
+        html += ("<td class='column1'>" + UserMessage.getLocalizedMessage("workOrderNr") + ":</td>");
+        html += ("<td class='column2'>" + Helper.getDisplayValueForWorkOrderNumber(wo) + "</td>");
+        html += ("<td class='column3'>" + UserMessage.getLocalizedMessage("date") + ":</td>");
+        html += ("<td class='column4'>" + Helper.getDisplayValueForWorkOrderDate(wo) + "</td>");
+        html += ("</tr>");
+        html += ("</table>");
 
-        html.append("</div>");
-        html.append("<div class='table-wrapper'>");
+        html += ("</div>");
+        html += ("<div class='table-wrapper'>");
 
-        html.append("<table class='table' style='text-align: end;'>");
-        html.append("<tr>");
-        html.append("<th>" + UserMessage.getLocalizedMessage("num") + "</th>");
-        html.append("<th>" + UserMessage.getLocalizedMessage("typeOfGlassOrService") + "</th>");
-        html.append("<th>" + UserMessage.getLocalizedMessage("width") + "</th>");
-        html.append("<th>" + UserMessage.getLocalizedMessage("height") + "</th>");
-        html.append("<th>" + UserMessage.getLocalizedMessage("pcs") + "</th>");
-        html.append("<th>" + UserMessage.getLocalizedMessage("mm2") + "</th>");
-        html.append("<th>" + UserMessage.getLocalizedMessage("note") + "</th>");
-        html.append("</tr>");
+        html += ("<table class='table' style='text-align: right;'>");
+        html += ("<tr>");
+        html += ("<th>" + UserMessage.getLocalizedMessage("num") + "</th>");
+        html += ("<th>" + UserMessage.getLocalizedMessage("typeOfGlassOrService") + "</th>");
+        html += ("<th>" + UserMessage.getLocalizedMessage("width") + "</th>");
+        html += ("<th>" + UserMessage.getLocalizedMessage("height") + "</th>");
+        html += ("<th>" + UserMessage.getLocalizedMessage("pcs") + "</th>");
+        html += ("<th>" + UserMessage.getLocalizedMessage("mm2") + "</th>");
+        html += ("<th>" + UserMessage.getLocalizedMessage("note") + "</th>");
+        html += ("</tr>");
         List<CellRowspan> xxx = generateTableForWorkOrderItems(wo);
         for (int i = 1; i <= wo.getWorkOrderItems().size(); i++) {
-            html.append("<tr>");
-            html.append("<td style='text-align: end;'>" + i + "</td>");
+            html += ("<tr>");
+            html += ("<td>" + i + "</td>");
             if (xxx.get(i - 1).displayCell) {
-                html.append("<td style='text-align: end;' rowspan='" + xxx.get(i - 1).rowspan + "'>" + wo.getWorkOrderItems().get(i - 1).getDescription() + "</td>");
+                html += ("<td rowspan='" + xxx.get(i - 1).rowspan + "'>" + wo.getWorkOrderItems().get(i - 1).getDescription() + "</td>");
             }
-            html.append("<td style='text-align: end;'>" + DataChecker.roundNumberAndGetDisplayValue(wo.getWorkOrderItems().get(i - 1).getDimension1(), 2) + "</td>");
-            html.append("<td style='text-align: end;'>" + DataChecker.roundNumberAndGetDisplayValue(wo.getWorkOrderItems().get(i - 1).getDimension2(), 2) + "</td>");
-            html.append("<td style='text-align: end;'>" + DataChecker.roundNumberAndGetDisplayValue(wo.getWorkOrderItems().get(i - 1).getQuantity(), 2) + "</td>");
-            html.append("<td style='text-align: end;'>" + DataChecker.roundNumberAndGetDisplayValue(wo.getWorkOrderItems().get(i - 1).getSumQuantity(), 3) + "</td>");
-            html.append("<td style='text-align: end;'>" + wo.getWorkOrderItems().get(i - 1).getNote() + "</td>");
-            html.append("</tr>");
+            html += ("<td>" + DataChecker.roundNumberAndGetDisplayValue(wo.getWorkOrderItems().get(i - 1).getDimension1(), 2) + "</td>");
+            html += ("<td>" + DataChecker.roundNumberAndGetDisplayValue(wo.getWorkOrderItems().get(i - 1).getDimension2(), 2) + "</td>");
+            html += ("<td>" + DataChecker.roundNumberAndGetDisplayValue(wo.getWorkOrderItems().get(i - 1).getQuantity(), 2) + "</td>");
+            html += ("<td>" + DataChecker.roundNumberAndGetDisplayValue(wo.getWorkOrderItems().get(i - 1).getSumQuantity(), 3) + "</td>");
+            html += ("<td>" + wo.getWorkOrderItems().get(i - 1).getNote() + "</td>");
+            html += ("</tr>");
         }
-        html.append("</table>");
+        html += ("</table>");
 
-        html.append("</div>");
-        html.append("<div class='note'>");
-        html.append("<div class='title'>" + UserMessage.getLocalizedMessage("notes") + ":");
-        html.append("</div>");
-        html.append("<div class='description'>" + wo.getNote());
-        html.append("</div>");
-        html.append("</div>");
-        html.append("<div class='images'>");
+        html += ("</div>");
+        html += ("<div class='note'>");
+        html += ("<div class='title'>" + UserMessage.getLocalizedMessage("notes") + ":");
+        html += ("</div>");
+        html += ("<div class='description'>" + wo.getNote());
+        html += ("</div>");
+        html += ("</div>");
+        html += ("<div class='images'>");
         for (Image image : wo.getImages()) {
-            html.append("<div>");
-            html.append("<p>" + image.getDescription() + "</p>");
-            html.append("<img class='image' src='" + getWorkOrderImageUrl(image) + "' />");
-            html.append("</div>");
+            html += ("<div>");
+            html += ("<p>" + image.getDescription() + "</p>");
+            html += ("<img class='image' src='" + getWorkOrderImageUrl(image) + "' />");
+            html += ("</div>");
         }
-        html.append("</div>");
-        html.append("<div style='width:100%;'>");
-        html.append("<table style='width:100%;margin-top:20px;'>");
-        html.append("<tr>");
-        html.append("<td style='width:150px;'>" + UserMessage.getLocalizedMessage("goodsGiveBy") + ":</td>");
-        html.append("<td></td>");
-        html.append("<td style='width:150px;'>" + UserMessage.getLocalizedMessage("goodsTakenBy") + ":</td>");
-        html.append("</tr>");
-        html.append("<tr>");
-        html.append("<td style='width:150px;height:30px;border-bottom: 1px solid #000000;'></td>");
-        html.append("<td></td>");
-        html.append("<td style='width:150px;height:30px;border-bottom: 1px solid #000000;'></td>");
-        html.append("</tr>");
-        html.append("</table>");
+        html += ("</div>");
+        html += ("<div style='width:100%;'>");
+        html += ("<table style='width:100%;margin-top:20px;'>");
+        html += ("<tr>");
+        html += ("<td style='width:150px;'>" + UserMessage.getLocalizedMessage("goodsGiveBy") + ":</td>");
+        html += ("<td></td>");
+        html += ("<td style='width:150px;'>" + UserMessage.getLocalizedMessage("goodsTakenBy") + ":</td>");
+        html += ("</tr>");
+        html += ("<tr>");
+        html += ("<td style='width:150px;height:30px;border-bottom: 1px solid #000000;'></td>");
+        html += ("<td></td>");
+        html += ("<td style='width:150px;height:30px;border-bottom: 1px solid #000000;'></td>");
+        html += ("</tr>");
+        html += ("</table>");
 
-        html.append("</div>");
-        html.append("</div>");
-        html.append("</div>");
+        html += ("</div>");
+        html += ("</div>");
+        html += ("</div>");
 
-        html.append("</body>");
-        html.append("</html>");
-        return html.toString();
+        html += ("</body>");
+        html += ("</html>");
+        return html;
     }
 
     public static String getCompanyLogoUrl() {
-        return "";// "D:\\StakloRam\\stakloRam2022\\backend\\company_logo.PNG";
+        return "D:\\company_logo.PNG";
     }
 
     public static String getWorkOrderImageUrl(Image image) {
@@ -307,7 +316,7 @@ public class PdfBuilder extends BaseBuilder {
 
         @Override
         public String toString() {
-            return "Xxxx{" + "displayCell=" + displayCell + ", rowspan=" + rowspan + '}';
+            return "CellRowspan{" + "displayCell=" + displayCell + ", rowspan=" + rowspan + '}';
         }
     }
 }

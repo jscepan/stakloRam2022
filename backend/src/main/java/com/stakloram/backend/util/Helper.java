@@ -1,6 +1,6 @@
 package com.stakloram.backend.util;
 
-import com.ironsoftware.ironpdf.PdfDocument;
+import com.lowagie.text.pdf.BaseFont;
 import com.stakloram.backend.models.BaseModel;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -31,10 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.util.logging.Level;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.xhtmlrenderer.layout.SharedContext;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
@@ -142,13 +139,16 @@ public class Helper {
     }
 
     public static File mergePDFs(List<File> allPdfs) {
+        for(File f: allPdfs){
+            System.out.println("f: "+f.getAbsolutePath());
+        }
         try {
             PDFMergerUtility pdfmerger = new PDFMergerUtility();
             pdfmerger.setDestinationFileName("newMerged.pdf");
             for (File file : allPdfs) {
                 pdfmerger.addSource(file);
-                pdfmerger.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
             }
+            pdfmerger.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
             return new File("newMerged.pdf");
         } catch (IOException e) {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -160,21 +160,31 @@ public class Helper {
         return Base64.getEncoder().encodeToString(bytes);
     }
 
-    public static File createNewPdfForHtmlPage(String html) {
-        System.out.println("html");
-        System.out.println(html);
-        File pdfFile = new File("new_pdf.pdf");
+    public static File createNewPdfForHtmlPage(String html,String pdfName) {
+//        System.out.println("html");
+//        System.out.println(html);
+        File pdfFile = new File(pdfName);
         OutputStream outputStream = null;
         try {
             ITextRenderer renderer = new ITextRenderer();
             SharedContext sharedContext = renderer.getSharedContext();
             sharedContext.setPrint(true);
             sharedContext.setInteractive(false);
-            renderer.setDocumentFromString(html);
+            byte[] textBytes = html.getBytes(StandardCharsets.UTF_8);
+            String htmlWithUtf8Encoding = new String(textBytes, StandardCharsets.UTF_8);
+            renderer
+                    .getFontResolver()
+                    .addFont("VERDANA.TTF",
+                            BaseFont.IDENTITY_H,
+                            BaseFont.NOT_EMBEDDED);
+
+            renderer.setDocumentFromString(htmlWithUtf8Encoding);
             renderer.layout();
             outputStream = new FileOutputStream(pdfFile);
             renderer.createPDF(outputStream);
         } catch (FileNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Helper.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             java.util.logging.Logger.getLogger(Helper.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {

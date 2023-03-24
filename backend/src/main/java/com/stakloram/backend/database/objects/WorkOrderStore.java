@@ -29,7 +29,7 @@ public class WorkOrderStore extends ObjectStore {
     public WorkOrder createNewObjectToDatabase(BaseModel model) throws SQLException {
         WorkOrder object = (WorkOrder) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setLong(++i, this.getLastWorkOrderNumber(object.getDateOfCreate().getYear()) + 1);
         st.setDate(++i, Helper.convertLocalDateToSqlDate(object.getDateOfCreate()));
         st.setString(++i, object.getPlaceOfIssue());
@@ -37,6 +37,7 @@ public class WorkOrderStore extends ObjectStore {
         st.setString(++i, object.getDescription());
         st.setString(++i, object.getNote());
         st.setLong(++i, object.getBuyer().getId());
+        st.setObject(++i, null);
 
         if (st.executeUpdate() > 0) {
             ResultSet rs = st.getGeneratedKeys();

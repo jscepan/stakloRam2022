@@ -26,7 +26,7 @@ public class SettingsBuilder {
         } catch (JsonProcessingException ex) {
             Logger.getLogger(SettingsService.class.getName()).log(Level.SEVERE, null, ex);
             return this.modify(new Settings());
-        }
+    }
         return settings;
     }
 

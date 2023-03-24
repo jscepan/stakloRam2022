@@ -489,6 +489,8 @@ public class InvoiceBuilder extends BaseBuilder {
             String title = UserMessage.getLocalizedMessage("workOrder") + " ";
             List<File> allPdfs = new ArrayList<>();
             boolean start = false;
+            int counter = 1;
+            String pdfFileName = "filepdf";
             for (String woOIDS : workOrderOIDS) {
                 if (start == true) {
                     title += ", ";
@@ -509,18 +511,19 @@ public class InvoiceBuilder extends BaseBuilder {
                             allPdfs.add(f);
                         }
                     } catch (Exception e) {
-                        File f = Helper.createNewPdfForHtmlPage(PdfBuilder.generateHtmlForWorkOrder(wo));
+                        File f = Helper.createNewPdfForHtmlPage(PdfBuilder.generateHtmlForWorkOrder(wo), (pdfFileName + counter + ".pdf"));
                         if (f.exists()) {
                             allPdfs.add(f);
                         }
                     }
                 } else {
-                    File f = Helper.createNewPdfForHtmlPage(PdfBuilder.generateHtmlForWorkOrder(wo));
+                    File f = Helper.createNewPdfForHtmlPage(PdfBuilder.generateHtmlForWorkOrder(wo), (pdfFileName + counter + ".pdf"));
                     if (f.exists()) {
                         allPdfs.add(f);
                     }
                 }
                 start = true;
+                counter++;
             }
             File mergedPDF = null;
             if (!allPdfs.isEmpty()) {
@@ -540,7 +543,6 @@ public class InvoiceBuilder extends BaseBuilder {
                 AdditionalDocumentReferenceXML additionalDocumentReference = new AdditionalDocumentReferenceXML(title, new AttachmentXML(attachment));
                 additionalDocumentReferencesList.add(additionalDocumentReference);
                 invoiceXML.setAdditionalDocumentReferencesXML(additionalDocumentReferencesList);
-
             }
         }
 
