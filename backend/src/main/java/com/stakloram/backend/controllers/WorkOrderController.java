@@ -1,13 +1,25 @@
 package com.stakloram.backend.controllers;
 
+import com.amazonaws.util.IOUtils;
+import static com.stakloram.backend.constants.Constants.IMAGE_DIRECTORY;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.models.SearchRequest;
+import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.services.impl.WorkOrderService;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,5 +87,23 @@ public class WorkOrderController {
     @RequestMapping(method = RequestMethod.POST, value = "/workorders/{workOrderOid}/files")
     public WorkOrder uploadFile(@PathVariable String workOrderOid, @RequestParam("pdfFile") MultipartFile pdfFile) throws SException {
         return this.workOrderService.uploadFile(workOrderOid, pdfFile);
+    }
+
+    @RequestMapping("/workorders/pdf/{workOrderOID}")
+    public ResponseEntity<byte[]> getWorkOrderPDF(@PathVariable String workOrderOID) throws SException {
+        InputStream in = null;
+        File file = this.workOrderService.downloadFile(workOrderOID);
+        try {
+            in = new FileInputStream(file);
+            return new ResponseEntity<byte[]>(IOUtils.toByteArray(in), HttpStatus.CREATED);
+        } catch (IOException ex) {
+            throw new SException(UserMessage.getLocalizedMessage("fileNotFound"));
+        } finally {
+            try {
+                in.close();
+            } catch (IOException ex) {
+                throw new SException(UserMessage.getLocalizedMessage("fileNotFound"));
+            }
+        }
     }
 }

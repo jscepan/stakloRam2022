@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import static com.stakloram.backend.constants.Constants.IMAGE_DIRECTORY;
 import static com.stakloram.backend.constants.Constants.WORK_ORDER_PDF_DIRECTORY;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.BaseModel;
@@ -144,5 +145,17 @@ public class WorkOrderService extends ServiceModel {
         } catch (IOException ex) {
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
+    }
+
+    public File downloadFile(String workOrderOID) throws SException {
+        WorkOrder workOrder = (WorkOrder) this.getObjectByOID(workOrderOID);
+        if (workOrder.getPdf() == null || workOrder.getPdf().getUrl() == null) {
+            throw new SException(UserMessage.getLocalizedMessage("fileNotFound"));
+        }
+        File file = new File(WORK_ORDER_PDF_DIRECTORY + "/" + workOrder.getPdf().getUrl());
+        if (!file.exists()) {
+            throw new SException(UserMessage.getLocalizedMessage("fileNotFound"));
+        }
+        return file;
     }
 }

@@ -3,26 +3,26 @@
     <div class="logo">
       <img src="{{ 'assets/images/company_logo.PNG' }}" />
     </div>
-    <div class="heading">
-      <div class="title">
+    <div class="company-heading">
+      <div class="company-heading-title">
         {{
           settings?.workOrderHeadingLine1 ||
             "Proizvodnja termoizolacionog stakla"
         }}
       </div>
-      <div class="title">
+      <div class="company-heading-title">
         {{
           settings?.workOrderHeadingLine2 ||
             "Oblikovanje i obrada ravnog stakla"
         }}
       </div>
-      <div class="title">
+      <div class="company-heading-title">
         {{
           settings?.workOrderHeadingLine3 ||
             "Proizvodnja lajsni za ramove i uramljivanje slika"
         }}
       </div>
-      <div class="email">
+      <div class="company-heading-email">
         {{ "email" | translate }}:
         {{ settings?.companyEmail || "staklorambp@gmail.com" }}
       </div>
@@ -109,12 +109,12 @@
     </div>
     <div class="signature">
       <div class="signature-container">
-        <div class="title">{{ "goodsGiveBy" | translate }}:</div>
-        <div class="description"></div>
+        <div class="signature-title">{{ "goodsGiveBy" | translate }}:</div>
+        <div class="signature-description"></div>
       </div>
       <div class="signature-container">
-        <div class="title">{{ "goodsTakenBy" | translate }}:</div>
-        <div class="description"></div>
+        <div class="signature-title">{{ "goodsTakenBy" | translate }}:</div>
+        <div class="signature-description"></div>
       </div>
     </div>
   </div>

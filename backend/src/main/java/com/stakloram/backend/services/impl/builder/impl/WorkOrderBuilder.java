@@ -4,6 +4,7 @@ import com.stakloram.backend.database.ResponseWithCount;
 import com.stakloram.backend.database.objects.BuyerStore;
 import com.stakloram.backend.database.objects.CityStore;
 import com.stakloram.backend.database.objects.ImageStore;
+import com.stakloram.backend.database.objects.PdfStore;
 import com.stakloram.backend.database.objects.WorkOrderItemStore;
 import com.stakloram.backend.database.objects.WorkOrderStore;
 import com.stakloram.backend.exception.SException;
@@ -36,6 +37,7 @@ public class WorkOrderBuilder extends BaseBuilder {
     private final BuyerStore BUYER_STORE = new BuyerStore(this.getLocator());
     private final CityStore CITY_STORE = new CityStore(this.getLocator());
     private final ImageStore IMAGE_STORE = new ImageStore(this.getLocator());
+    private final PdfStore PDF_STORE = new PdfStore(this.getLocator());
 
     public WorkOrderBuilder(Locator locator) {
         super(locator);
@@ -141,6 +143,7 @@ public class WorkOrderBuilder extends BaseBuilder {
         }
         List<WorkOrderItem> workOrderItems = new ArrayList<>();
         List<Image> images = new ArrayList<>();
+        Pdf pdf = null;
         try {
             ResultSet rs = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_work_order_work_order_id=" + workOrder.getId());
             while (rs.next()) {
@@ -150,12 +153,18 @@ public class WorkOrderBuilder extends BaseBuilder {
             while (rs.next()) {
                 images.add(IMAGE_STORE.getObjectFromResultSet(rs));
             }
+            if (workOrder.getPdf() != null && workOrder.getPdf().getOid() != null) {
+                pdf = (Pdf) PDF_STORE.getObjectByOid(workOrder.getPdf().getOid());
+            }
         } catch (SQLException ex) {
             super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
         workOrder.setWorkOrderItems(workOrderItems);
         workOrder.setImages(images);
+        if (pdf != null) {
+            workOrder.setPdf(pdf);
+        }
         return workOrder;
     }
 

@@ -27,6 +27,15 @@ export class BaseWebService {
     );
   }
 
+  getRequestForArrayBuffer<T>(url: string, classType?: Type<T>): Observable<T> {
+    const options = this.addOptionsForRequestForArrayBuffer();
+    return this.http.get<T>(url, options).pipe(
+      map((res) => {
+        return classType ? plainToClass(classType, res as T) : (res as T);
+      })
+    );
+  }
+
   getRequestForArray<T>(
     url: string,
     classType: Type<T>
@@ -116,6 +125,34 @@ export class BaseWebService {
   private addOptionsForRequest(
     additionalHeaders?: object,
     responseType: string = 'json',
+    body?: unknown
+  ): object {
+    const authorization: string = this.jwt
+      ? ''
+      : this.localStorageService.get('jwt');
+    // Create headers
+    let headers: HttpHeaders = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: authorization,
+      ...additionalHeaders,
+    });
+    const options = {
+      headers,
+      responseType,
+      reportProgress: false,
+      observe: 'body',
+      withCredentials: false,
+      body,
+    };
+    // TODO remove this on the end - this is used now only for dev mode because of CORS policy...
+    // options.withCredentials = true;
+
+    return options;
+  }
+
+  private addOptionsForRequestForArrayBuffer(
+    additionalHeaders?: object,
+    responseType: string = 'arraybuffer',
     body?: unknown
   ): object {
     const authorization: string = this.jwt

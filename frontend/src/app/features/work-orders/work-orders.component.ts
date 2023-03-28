@@ -45,6 +45,7 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
 
   searchFilter: SearchModel = new SearchModel();
 
+  selectedWorkOrderOID: string = '';
   @ViewChild('fileInput') fileInput: any;
 
   constructor(
@@ -111,26 +112,33 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
   }
 
   viewWorkOrderPDF(workOrderOID: string): void {
-    window.open('#/print/work-order-view/' + workOrderOID);
+    this.webService.downloadFile(workOrderOID).subscribe((response: any) => {
+      const file = new Blob([response], { type: 'application/pdf' });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    });
   }
 
   openFileDialog(_workOrderOID: string): void {
+    this.selectedWorkOrderOID = _workOrderOID;
     this.fileInput.nativeElement.click();
   }
 
-  onFileSelected(workOrderOID: string) {
+  onFileSelected() {
     const file: File = this.fileInput.nativeElement.files[0];
     if (file && file.type === 'application/pdf') {
       const formData = new FormData();
       formData.append('pdfFile', file, file.name);
 
-      this.webService.uploadFile(workOrderOID, formData).subscribe(() => {
-        this.globalService.showBasicAlert(
-          MODE.success,
-          this.translateService.instant('success'),
-          this.translateService.instant('successfullyUploaded')
-        );
-      });
+      this.webService
+        .uploadFile(this.selectedWorkOrderOID, formData)
+        .subscribe(() => {
+          this.globalService.showBasicAlert(
+            MODE.success,
+            this.translateService.instant('success'),
+            this.translateService.instant('successfullyUploaded')
+          );
+        });
     } else {
       // Handle invalid file format error
       this.globalService.showBasicAlert(

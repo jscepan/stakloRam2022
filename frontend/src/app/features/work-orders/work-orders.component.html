@@ -137,7 +137,7 @@
           <app-button
             [iconName]="'file-text'"
             [isTransparentMode]="true"
-            (clickEvent)="viewWorkOrder(workOrder.oid)"
+            (clickEvent)="viewWorkOrderPDF(workOrder.oid)"
             [disabled]="!hasPrivilege('WORK_ORDER_VIEW')"
             [matTooltip]="'viewPDF' | translate"
           ></app-button>
@@ -153,7 +153,7 @@
           <input
             type="file"
             accept=".pdf"
-            (change)="onFileSelected(workOrder.oid)"
+            (change)="onFileSelected()"
             #fileInput
             style="display: none"
           />

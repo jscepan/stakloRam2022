@@ -63,4 +63,10 @@ export class WorkOrderWebService extends EntityBaseWebService<WorkOrderModel> {
       data
     );
   }
+
+  downloadFile<T>(workOrderOID: string): Observable<T> {
+    return this.baseWebService.getRequestForArrayBuffer(
+      `${BASE_API_URL + '/' + this.domainName}/pdf/workOrderOID=${workOrderOID}`
+    );
+  }
 }
