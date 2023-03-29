@@ -1,7 +1,6 @@
 package com.stakloram.backend.controllers;
 
 import com.amazonaws.util.IOUtils;
-import static com.stakloram.backend.constants.Constants.IMAGE_DIRECTORY;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.WorkOrder;
@@ -10,13 +9,10 @@ import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.services.impl.WorkOrderService;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

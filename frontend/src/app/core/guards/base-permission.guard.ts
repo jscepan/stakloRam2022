@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
@@ -11,7 +11,6 @@ export class BasePermissionGuard {
   constructor(
     private authStoreService: AuthStoreService,
     private globalService: GlobalService,
-    private router: Router,
     private translateService: TranslateService
   ) {}
 
