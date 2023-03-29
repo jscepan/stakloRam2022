@@ -1,0 +1,30 @@
+CREATE TABLE `stakloram2022`.`pdf` (
+  `pdf_id` INT NOT NULL AUTO_INCREMENT,
+  `pdf_url` VARCHAR(345) NULL DEFAULT NULL,
+  PRIMARY KEY (`pdf_id`));
+
+ALTER TABLE `stakloram2022`.`work_order`
+ADD COLUMN `work_order_pdf_pdf_id` INT NULL DEFAULT NULL AFTER `work_order_buyer_buyer_id`,
+ADD INDEX `fk_work_order_pdf_pdf_idx` (`work_order_pdf_pdf_id` ASC) INVISIBLE;
+ALTER TABLE `stakloram2022`.`work_order` ALTER INDEX `fk_work_order_buyer1_idx` INVISIBLE;
+ALTER TABLE `stakloram2022`.`work_order`
+ADD CONSTRAINT `fk_work_order_pdf_pdf`
+  FOREIGN KEY (`work_order_pdf_pdf_id`)
+  REFERENCES `stakloram2022`.`pdf` (`pdf_id`)
+  ON DELETE RESTRICT
+  ON UPDATE RESTRICT;
+
+CREATE TABLE `stakloram2022`.`registrated_invoice` (
+  `registrated_invoice_id` INT NOT NULL AUTO_INCREMENT,
+  `registrated_invoice_invoiceid` INT NULL DEFAULT NULL,
+  `registrated_invoice_purchaseinvoiceid` INT NULL DEFAULT NULL,
+  `registrated_invoice_salesinvoiceid` INT NULL DEFAULT NULL,
+  `registrated_invoice_date` DATETIME NULL DEFAULT NULL,
+  `registrated_invoice_invoice_invoice_id` INT NOT NULL,
+  PRIMARY KEY (`registrated_invoice_id`),
+  INDEX `fk_registrated_invoice_invoice1_idx` (`registrated_invoice_invoice_invoice_id` ASC) INVISIBLE,
+  CONSTRAINT `fk_registrated_invoice_invoice_id1`
+    FOREIGN KEY (`registrated_invoice_id`)
+    REFERENCES `stakloram2022`.`invoice` (`invoice_id`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT);
