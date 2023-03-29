@@ -192,26 +192,34 @@
           ></app-button>
         </div>
       </ng-container>
-      <div class="grid-item">{{ "sum" | translate }}</div>
-      <div class="grid-item">{{ "-" }}</div>
-      <div class="grid-item">{{ "-" }}</div>
-      <div class="grid-item">{{ "-" }}</div>
-      <div class="grid-item">{{ "-" }}</div>
-      <div class="grid-item align-right">
-        {{ getSumFor(entities | async, "netPrice") | number : "1.2-2" : "de" }}
-      </div>
-      <div class="grid-item align-right">
-        {{ getSumFor(entities | async, "vatAmount") | number : "1.2-2" : "de" }}
-      </div>
-      <div class="grid-item align-right">
-        {{
-          getSumFor(entities | async, "grossAmount") | number : "1.2-2" : "de"
-        }}
-      </div>
-      <div class="grid-item">{{ "-" }}</div>
-      <div class="grid-item">{{ "-" }}</div>
-      <div class="grid-item">{{ "-" }}</div>
-      <div class="grid-item">{{ "-" }}</div>
+      <ng-container
+        *ngIf="!((totalEntitiesLength | async) === 0 && !(isLoading | async))"
+      >
+        <div class="grid-item">{{ "sum" | translate }}</div>
+        <div class="grid-item">{{ "-" }}</div>
+        <div class="grid-item">{{ "-" }}</div>
+        <div class="grid-item">{{ "-" }}</div>
+        <div class="grid-item">{{ "-" }}</div>
+        <div class="grid-item align-right">
+          {{
+            getSumFor(entities | async, "netPrice") | number : "1.2-2" : "de"
+          }}
+        </div>
+        <div class="grid-item align-right">
+          {{
+            getSumFor(entities | async, "vatAmount") | number : "1.2-2" : "de"
+          }}
+        </div>
+        <div class="grid-item align-right">
+          {{
+            getSumFor(entities | async, "grossAmount") | number : "1.2-2" : "de"
+          }}
+        </div>
+        <div class="grid-item">{{ "-" }}</div>
+        <div class="grid-item">{{ "-" }}</div>
+        <div class="grid-item">{{ "-" }}</div>
+        <div class="grid-item">{{ "-" }}</div>
+      </ng-container>
     </div>
   </div>
 </div>

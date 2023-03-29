@@ -175,7 +175,7 @@ public class WorkOrderBuilder extends BaseBuilder {
 
     @Override
     public void setColumnsForSearch() {
-        this.databaseColumnsForQuickSearch = Arrays.asList("buyer_name");
+        this.databaseColumnsForQuickSearch = Arrays.asList("buyer_name","work_order_number");
         this.databaseColumnsForAdvanceFilter.put("buyer", "work_order_buyer_buyer_id");
         this.databaseColumnsForAttributes.put("from_date", "date_of_create");
         this.databaseColumnsForAttributes.put("to_date", "date_of_create");

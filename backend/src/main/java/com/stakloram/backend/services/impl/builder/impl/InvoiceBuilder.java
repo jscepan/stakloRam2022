@@ -86,8 +86,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -114,7 +112,7 @@ public class InvoiceBuilder extends BaseBuilder {
 
     @Override
     public void setColumnsForSearch() {
-        this.databaseColumnsForQuickSearch = Arrays.asList("buyer_name");
+        this.databaseColumnsForQuickSearch = Arrays.asList("buyer_name","invoice_number_sign");
         this.databaseColumnsForAttributes.put("type", "type");
         this.databaseColumnsForAdvanceFilter.put("buyer", "invoice_buyer_buyer_id");
         this.databaseColumnsForAttributes.put("from_date", "date_of_create");

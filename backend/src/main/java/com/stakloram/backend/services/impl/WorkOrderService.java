@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import static com.stakloram.backend.constants.Constants.IMAGE_DIRECTORY;
 import static com.stakloram.backend.constants.Constants.WORK_ORDER_PDF_DIRECTORY;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.BaseModel;
