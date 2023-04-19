@@ -1,6 +1,7 @@
 package com.stakloram.backend.util;
 
 import com.lowagie.text.pdf.BaseFont;
+import static com.stakloram.backend.constants.Constants.WORK_ORDER_FONT;
 import com.stakloram.backend.models.BaseModel;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -139,9 +140,9 @@ public class Helper {
     }
 
     public static File mergePDFs(List<File> allPdfs) {
-        for(File f: allPdfs){
-            System.out.println("f: "+f.getAbsolutePath());
-        }
+//        for (File f : allPdfs) {
+//            System.out.println("f: " + f.getAbsolutePath());
+//        }
         try {
             PDFMergerUtility pdfmerger = new PDFMergerUtility();
             pdfmerger.setDestinationFileName("newMerged.pdf");
@@ -160,7 +161,7 @@ public class Helper {
         return Base64.getEncoder().encodeToString(bytes);
     }
 
-    public static File createNewPdfForHtmlPage(String html,String pdfName) {
+    public static File createNewPdfForHtmlPage(String html, String pdfName) {
 //        System.out.println("html");
 //        System.out.println(html);
         File pdfFile = new File(pdfName);
@@ -174,7 +175,7 @@ public class Helper {
             String htmlWithUtf8Encoding = new String(textBytes, StandardCharsets.UTF_8);
             renderer
                     .getFontResolver()
-                    .addFont("VERDANA.TTF",
+                    .addFont(WORK_ORDER_FONT,
                             BaseFont.IDENTITY_H,
                             BaseFont.NOT_EMBEDDED);
 

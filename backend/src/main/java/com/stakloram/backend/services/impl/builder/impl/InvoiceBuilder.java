@@ -112,7 +112,7 @@ public class InvoiceBuilder extends BaseBuilder {
 
     @Override
     public void setColumnsForSearch() {
-        this.databaseColumnsForQuickSearch = Arrays.asList("buyer_name","invoice_number_sign");
+        this.databaseColumnsForQuickSearch = Arrays.asList("buyer_name", "invoice_number_sign");
         this.databaseColumnsForAttributes.put("type", "type");
         this.databaseColumnsForAdvanceFilter.put("buyer", "invoice_buyer_buyer_id");
         this.databaseColumnsForAttributes.put("from_date", "date_of_create");
@@ -855,8 +855,8 @@ public class InvoiceBuilder extends BaseBuilder {
             super.logger.error(e.toString());
             throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
         }
-        System.out.println("RESPONSE");
-        System.out.println(stb);
+//        System.out.println("RESPONSE");
+//        System.out.println(stb);
 
         if (stb.toString() != null && stb.toString().length() > 0) {
             try {
@@ -870,7 +870,7 @@ public class InvoiceBuilder extends BaseBuilder {
                 RegistratedInvoice regInvoice = new RegistratedInvoice(importSalesUblResponse.getInvoiceId(), importSalesUblResponse.getPurchaseInvoiceId(), importSalesUblResponse.getSalesInvoiceId(), LocalDateTime.now(), invoice);
                 registratedInvoiceStore.createNewObjectToDatabase(regInvoice);
             } catch (JsonProcessingException ex) {
-                logger.error(ex.toString());
+                throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
             } catch (SQLException ex) {
                 logger.error(ex.toString());
             }
