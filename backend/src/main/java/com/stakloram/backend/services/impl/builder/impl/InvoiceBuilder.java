@@ -837,7 +837,7 @@ public class InvoiceBuilder extends BaseBuilder {
             try ( DataOutputStream dos = new DataOutputStream(conn.getOutputStream())) {
                 dos.writeBytes(body);
             }
-
+            
             try ( BufferedReader br = new BufferedReader(new InputStreamReader(
                     conn.getInputStream()))) {
                 String line;
@@ -855,8 +855,6 @@ public class InvoiceBuilder extends BaseBuilder {
             super.logger.error(e.toString());
             throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
         }
-//        System.out.println("RESPONSE");
-//        System.out.println(stb);
 
         if (stb.toString() != null && stb.toString().length() > 0) {
             try {
@@ -870,7 +868,8 @@ public class InvoiceBuilder extends BaseBuilder {
                 RegistratedInvoice regInvoice = new RegistratedInvoice(importSalesUblResponse.getInvoiceId(), importSalesUblResponse.getPurchaseInvoiceId(), importSalesUblResponse.getSalesInvoiceId(), LocalDateTime.now(), invoice);
                 registratedInvoiceStore.createNewObjectToDatabase(regInvoice);
             } catch (JsonProcessingException ex) {
-                throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
+                logger.error(ex.toString());
+                logger.error("Get response from api: " + stb.toString());
             } catch (SQLException ex) {
                 logger.error(ex.toString());
             }
