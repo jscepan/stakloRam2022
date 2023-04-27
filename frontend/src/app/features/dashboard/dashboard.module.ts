@@ -5,6 +5,7 @@ import { DashboardComponent } from './dashboard.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { MatDialogModule } from '@angular/material/dialog';
+import { LogoModule } from 'src/app/shared/components/logo/logo.module';
 
 @NgModule({
   declarations: [DashboardComponent],
@@ -14,6 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     TranslateModule,
     ButtonModule,
     MatDialogModule,
+    LogoModule,
   ],
 })
 export class DashboardModule {}

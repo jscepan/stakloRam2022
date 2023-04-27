@@ -4,3 +4,19 @@
   --font-body-size: 14px;
   --font-body-line-height: 1.4;
 }
+
+@font-face {
+  font-family: "FrutigerLTArabic65Bold";
+  src: local("FrutigerLTArabic65Bold"),
+    url(./../../assets/fonts/FrutigerLTArabic65Bold.ttf) format("truetype");
+}
+@font-face {
+  font-family: "NevisonCasualW01Regular";
+  src: local("NevisonCasualW01Regular"),
+    url(./../../assets/fonts/NevisonCasualW01Regular.ttf) format("truetype");
+}
+@font-face {
+  font-family: "vipnagorgiallaBdIt";
+  src: local("vipnagorgiallaBdIt"),
+    url(./../../assets/fonts/vipnagorgiallaBdIt.otf) format("truetype");
+}

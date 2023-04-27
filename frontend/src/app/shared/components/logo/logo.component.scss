@@ -5,7 +5,7 @@
 
   .upper {
     display: flex;
-    font-size: 130px;
+    font-size: 100px;
     color: rgb(90, 187, 243);
     align-self: flex-end;
     align-items: flex-end;
@@ -18,15 +18,15 @@
     display: flex;
     font-weight: 600;
     align-items: flex-end;
-    // font-family: ;
+    font-family: vipnagorgiallaBdIt;
 
     .first {
-      font-size: 200px;
+      font-size: 135px;
       color: rgb(20, 20, 168);
     }
 
     .second {
-      font-size: 170px;
+      font-size: 135px;
       color: rgb(90, 187, 243);
     }
   }
@@ -37,7 +37,7 @@
     font-size: 40px;
     color: rgb(255, 255, 255);
     background-color: rgb(20, 20, 168);
-    // padding: 10px;
     font-family: FrutigerLTArabic65Bold;
+    text-align: center;
   }
 }
