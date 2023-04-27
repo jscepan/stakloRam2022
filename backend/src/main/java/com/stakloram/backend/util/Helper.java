@@ -141,9 +141,13 @@ public class Helper {
     }
 
     public static File mergePDFs(List<File> allPdfs) {
+        File folder = new File(WORK_ORDER_PDF_DIRECTORY);
+        if (!(folder.exists() && folder.isDirectory())) {
+            folder.mkdir();
+        }
         try {
             PDFMergerUtility pdfmerger = new PDFMergerUtility();
-            pdfmerger.setDestinationFileName("newMerged.pdf");
+            pdfmerger.setDestinationFileName(folder.getAbsolutePath()+"/"+"newMerged.pdf");
             for (File file : allPdfs) {
                 pdfmerger.addSource(file);
             }

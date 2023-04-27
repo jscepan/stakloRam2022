@@ -10,9 +10,12 @@ import com.stakloram.backend.services.impl.builder.BaseBuilder;
 import com.stakloram.backend.util.DataChecker;
 import com.stakloram.backend.util.Helper;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PdfBuilder extends BaseBuilder {
 
@@ -33,7 +36,13 @@ public class PdfBuilder extends BaseBuilder {
     public static String generateHtmlForWorkOrder(WorkOrder wo) {
         SettingsBuilder settingsBuilder = new SettingsBuilder();
         Settings settings = settingsBuilder.getSettings();
-
+        File fileLogo = new File("company_logo.PNG");
+        String url = "";
+        try {
+            url = fileLogo.toURI().toURL().toString();
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(PdfBuilder.class.getName()).log(Level.SEVERE, null, ex);
+        }
         String html = "";
         html += ("<!DOCTYPE html><html lang=\"sr\">");
         html += ("<head>");
@@ -55,12 +64,12 @@ public class PdfBuilder extends BaseBuilder {
                 + " .container .header .logo {\n"
                 + "	 display: flex;\n"
                 + "	 align-items: center;\n"
-                + "	 height: 100%;\n"
+                + "	 position: relative;\n"
                 + "}\n"
                 + " .container .header .logo img {\n"
                 + "	 height: 80px;\n"
                 + "	 width: 300px;\n"
-                + "	 background: red;\n"
+                + "	 position: absolute;\n"
                 + "}\n"
                 + " .container .header .company-heading {\n"
                 + "	 display: flex;\n"
@@ -68,6 +77,7 @@ public class PdfBuilder extends BaseBuilder {
                 + "	 font-weight: 600;\n"
                 + "	 padding: 20px;\n"
                 + "	 font-size: 1.14em;\n"
+                + "	 margin-left: 300px;\n"
                 + "}\n"
                 + " .container .header .company-heading .company-heading-title {\n"
                 + "	 text-transform: uppercase;\n"
@@ -170,9 +180,9 @@ public class PdfBuilder extends BaseBuilder {
         html += ("<body>");
         html += ("<div class='container'>");
         html += ("<div class='header'>");
-//        html += ("<div class='logo'>");
-//        html += ("<img src='D:\\StakloRam\\stakloRam2022\\backend\\company_logo.PNG' />");
-//        html += ("</div>");
+        html += ("<div class='logo'>");
+        html += ("<img src='" + url + "' />");
+        html += ("</div>");
         html += ("<div class='company-heading'>");
         html += ("<div class='company-heading-title'>" + settings.getWorkOrderHeadingLine1());
         html += ("</div>");
