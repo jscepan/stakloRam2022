@@ -77,6 +77,8 @@ import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.nio.file.Path;
+import static java.nio.file.Paths.get;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -753,11 +755,11 @@ public class InvoiceBuilder extends BaseBuilder {
             //////////////////// Invoiced quantity BT-129 ///////////////////
             InvoicedQuantityXML invoicedQuantityXML = new InvoicedQuantityXML(invoiceItem.getQuantity(), unitCode);
             //////////////////// Invoice line net amount BT-131 /////////////
-            CurrencyAmountXML lineExtensionAmountItem = new CurrencyAmountXML(DataChecker.roundOnDigits(invoiceItem.getPricePerUnit(), settings.getDigitsCountForInvoice()), settings.getInvoiceCurrencyEInvoice());
+            CurrencyAmountXML lineExtensionAmountItem = new CurrencyAmountXML(DataChecker.roundOnDigits(invoiceItem.getNetPrice(), settings.getDigitsCountForInvoice()), settings.getInvoiceCurrencyEInvoice());
             //////////////////// Item name BG-25 ///////////////////////////
             InvoiceItemDetailsXML invoiceItemDetailsXML = new InvoiceItemDetailsXML(invoiceItem.getDescription(), taxCategoryXML);
             //////////////////// Item net price BT-146 /////////////////////
-            PriceXML priceInvoiceItem = new PriceXML(new CurrencyAmountXML(invoiceItem.getNetPrice(), settings.getInvoiceCurrencyEInvoice()));
+            PriceXML priceInvoiceItem = new PriceXML(new CurrencyAmountXML(invoiceItem.getPricePerUnit(), settings.getInvoiceCurrencyEInvoice()));
             //////////////////// Invoice line net amount BT-131 /////////////
             InvoiceItemXML invoiceLineXML = new InvoiceItemXML(count, invoicedQuantityXML, lineExtensionAmountItem, invoiceItemDetailsXML, priceInvoiceItem);
             items.add(invoiceLineXML);
@@ -837,7 +839,7 @@ public class InvoiceBuilder extends BaseBuilder {
             try ( DataOutputStream dos = new DataOutputStream(conn.getOutputStream())) {
                 dos.writeBytes(body);
             }
-            
+
             try ( BufferedReader br = new BufferedReader(new InputStreamReader(
                     conn.getInputStream()))) {
                 String line;

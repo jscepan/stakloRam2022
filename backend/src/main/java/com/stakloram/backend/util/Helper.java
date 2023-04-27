@@ -2,6 +2,7 @@ package com.stakloram.backend.util;
 
 import com.lowagie.text.pdf.BaseFont;
 import static com.stakloram.backend.constants.Constants.WORK_ORDER_FONT;
+import static com.stakloram.backend.constants.Constants.WORK_ORDER_PDF_DIRECTORY;
 import com.stakloram.backend.models.BaseModel;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -140,9 +141,6 @@ public class Helper {
     }
 
     public static File mergePDFs(List<File> allPdfs) {
-//        for (File f : allPdfs) {
-//            System.out.println("f: " + f.getAbsolutePath());
-//        }
         try {
             PDFMergerUtility pdfmerger = new PDFMergerUtility();
             pdfmerger.setDestinationFileName("newMerged.pdf");
@@ -162,9 +160,12 @@ public class Helper {
     }
 
     public static File createNewPdfForHtmlPage(String html, String pdfName) {
-//        System.out.println("html");
-//        System.out.println(html);
-        File pdfFile = new File(pdfName);
+        File folder = new File(WORK_ORDER_PDF_DIRECTORY);
+        if (!(folder.exists() && folder.isDirectory())) {
+            folder.mkdir();
+        }
+
+        File pdfFile = new File(WORK_ORDER_PDF_DIRECTORY, pdfName);
         OutputStream outputStream = null;
         try {
             ITextRenderer renderer = new ITextRenderer();
