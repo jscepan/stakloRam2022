@@ -82,6 +82,7 @@ public class Settings {
     private String unitCodeForMeter = "MTR";
     private String unitCodeForHour = "HUR";
     private String unitCodeForPieces = "H87";
+    private String unitCodeForKilograme = "KGM";
 
     public Settings() {
     }
@@ -652,5 +653,13 @@ public class Settings {
 
     public void setSellerPostalCode(String sellerPostalCode) {
         this.sellerPostalCode = sellerPostalCode;
+    }
+
+    public String getUnitCodeForKilograme() {
+        return unitCodeForKilograme;
+    }
+
+    public void setUnitCodeForKilograme(String unitCodeForKilograme) {
+        this.unitCodeForKilograme = unitCodeForKilograme;
     }
 }

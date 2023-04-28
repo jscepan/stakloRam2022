@@ -404,7 +404,13 @@
         </div>
         <div
           class="sum-info"
-          *ngIf="sumMeter2 > 0 || sumMeter > 0 || sumPieces > 0 || sumHours > 0"
+          *ngIf="
+            sumMeter2 > 0 ||
+            sumMeter > 0 ||
+            sumPieces > 0 ||
+            sumHours > 0 ||
+            sumKilogrames > 0
+          "
         >
           <div class="key" *ngIf="sumMeter2 > 0">
             <div class="value1">{{ "sumMeter2" | translate }}</div>
@@ -437,6 +443,12 @@
           </div>
           <div class="value" *ngIf="sumHours > 0">
             {{ sumHours | number : "1.2-2" : "de" }}
+          </div>
+          <div class="key" *ngIf="sumKilogrames > 0">
+            {{ "sumKilogrames" | translate }}
+          </div>
+          <div class="value" *ngIf="sumKilogrames > 0">
+            {{ sumKilogrames | number : "1.2-2" : "de" }}
           </div>
         </div>
       </div>

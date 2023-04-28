@@ -127,6 +127,6 @@ public class WorkOrderItem extends BaseModel {
     }
 
     public enum UOM {
-        M2, M, PCS, HOUR;
+        M2, M, PCS, HOUR, KG;
     }
 }

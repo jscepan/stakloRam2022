@@ -340,6 +340,10 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
             this.settingsStoreService.getSettings()?.unitCodeForPieces || '',
             [Validators.required]
           ),
+          unitCodeForKilograme: new FormControl(
+            this.settingsStoreService.getSettings()?.unitCodeForKilograme || '',
+            [Validators.required]
+          ),
         });
         this.settingsStoreService
           .getSettings()

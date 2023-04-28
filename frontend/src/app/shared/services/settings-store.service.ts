@@ -79,6 +79,7 @@ export class AppSettings {
   unitCodeForMeter?: string;
   unitCodeForHour?: string;
   unitCodeForPieces?: string;
+  unitCodeForKilograme?: string;
 }
 
 @Injectable({

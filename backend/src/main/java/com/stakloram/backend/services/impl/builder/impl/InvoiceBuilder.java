@@ -748,6 +748,8 @@ public class InvoiceBuilder extends BaseBuilder {
                 unitCode = settings.getUnitCodeForHour();
             } else if (invoiceItem.getUom().equals(UOM.PCS.name())) {
                 unitCode = settings.getUnitCodeForPieces();
+            } else if (invoiceItem.getUom().equals(UOM.KG.name())) {
+                unitCode = settings.getUnitCodeForKilograme();
             }
             if (unitCode == null || unitCode.length() == 0) {
                 throw new SException(UserMessage.getLocalizedMessage("unitCodeError"));
@@ -859,6 +861,8 @@ public class InvoiceBuilder extends BaseBuilder {
         }
 
         if (stb.toString() != null && stb.toString().length() > 0) {
+            System.out.println("stb:");
+            System.out.println(stb.toString());
             try {
                 ObjectMapper objectMapper = JsonMapper.builder()
                         .addModule(new JavaTimeModule())

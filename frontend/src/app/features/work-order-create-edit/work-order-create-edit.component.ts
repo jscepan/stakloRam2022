@@ -109,6 +109,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   sumMeterQuantity: number = 0;
   sumPieces: number = 0;
   sumHours: number = 0;
+  sumKilogrames: number = 0;
 
   workOrderImages: {
     oid: string;
@@ -334,6 +335,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
         break;
       case 'PCS':
       case 'HOUR':
+      case 'KG':
         // don't calculate
         break;
     }
@@ -347,6 +349,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     this.sumMeterQuantity = 0;
     this.sumPieces = 0;
     this.sumHours = 0;
+    this.sumKilogrames = 0;
     this.workOrderItemsFormArr.controls.forEach((item, index) => {
       switch (this.getUOM(index)?.value) {
         case 'M2':
@@ -363,12 +366,15 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
         case 'HOUR':
           this.sumHours += this.getSumQuantity(index)?.value * 1;
           break;
+        case 'KG':
+          this.sumKilogrames += this.getSumQuantity(index)?.value * 1;
+          break;
       }
     });
   }
 
   uomChanged(uom: string, index: number): void {
-    if (uom === 'PCS' || uom === 'HOUR') {
+    if (uom === 'PCS' || uom === 'HOUR' || uom === 'KG') {
       this.getDimension1(index)?.setValue(0);
       this.getDimension1(index)?.disable();
       this.getDimension2(index)?.setValue(0);

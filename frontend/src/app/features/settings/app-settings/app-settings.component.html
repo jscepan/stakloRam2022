@@ -835,6 +835,15 @@
           </mat-label>
           <input type="text" matInput formControlName="unitCodeForPieces" />
         </mat-form-field>
+        <mat-form-field>
+          <mat-label
+            [class.mark-required]="true"
+            [class.mark-opt-required]="true"
+          >
+            {{ "unitCodeForKilograme" | translate }}
+          </mat-label>
+          <input type="text" matInput formControlName="unitCodeForKilograme" />
+        </mat-form-field>
       </mat-expansion-panel>
     </mat-accordion>
   </form>

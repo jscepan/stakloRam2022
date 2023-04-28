@@ -86,6 +86,7 @@ export const UOM_TYPES: EnumValueModel[] = [
   { value: 'M', displayName: 'm' },
   { value: 'PCS', displayName: 'pieces' },
   { value: 'HOUR', displayName: 'hour' },
+  { value: 'KG', displayName: 'kg' },
 ];
 
 export const OBJECT_TYPES: EnumValueModel[] = [
