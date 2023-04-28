@@ -462,11 +462,12 @@ public class InvoiceBuilder extends BaseBuilder {
                 == InvoiceType.ADVANCE_INVOICE) {
             invoiceTaxPeriod = settings.getInvoiceTaxPeriodByDateOfPaying();
         } else {
-            if (invoice.getDateOfTurnover().isBefore(invoice.getDateOfCreate())) {
+            // Ovo je ovako jer je knjigovodja rekao da uvek na mesto datuma obracuna PDV-a stavljamo datum prometa
+//            if (invoice.getDateOfTurnover().isBefore(invoice.getDateOfCreate())) {
                 invoiceTaxPeriod = settings.getInvoiceTaxPeriodByDateOfTurnover();
-            } else {
-                invoiceTaxPeriod = settings.getInvoiceTaxPeriodByDateOfCreate();
-            }
+//            } else {
+//                invoiceTaxPeriod = settings.getInvoiceTaxPeriodByDateOfCreate();
+//            }
         }
         InvoicePeriodXML invoicePeriod = new InvoicePeriodXML(invoiceTaxPeriod);
 
