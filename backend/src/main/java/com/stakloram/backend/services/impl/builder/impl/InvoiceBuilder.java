@@ -77,8 +77,6 @@ import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.nio.file.Path;
-import static java.nio.file.Paths.get;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -464,7 +462,7 @@ public class InvoiceBuilder extends BaseBuilder {
         } else {
             // Ovo je ovako jer je knjigovodja rekao da uvek na mesto datuma obracuna PDV-a stavljamo datum prometa
 //            if (invoice.getDateOfTurnover().isBefore(invoice.getDateOfCreate())) {
-                invoiceTaxPeriod = settings.getInvoiceTaxPeriodByDateOfTurnover();
+            invoiceTaxPeriod = settings.getInvoiceTaxPeriodByDateOfTurnover();
 //            } else {
 //                invoiceTaxPeriod = settings.getInvoiceTaxPeriodByDateOfCreate();
 //            }
@@ -479,7 +477,7 @@ public class InvoiceBuilder extends BaseBuilder {
         invoiceXML.setInvoicePeriod(invoicePeriod);
 
         //////////////////// BG-24 AdditionalDocumentReference //////////////
-        Set<String> workOrderOIDS = new HashSet<String>();
+        Set<String> workOrderOIDS = new HashSet<>();
         for (InvoiceItem ii : invoice.getInvoiceItems()) {
             for (WorkOrderItem woi : ii.getWorkOrderItems()) {
                 try {
@@ -762,7 +760,7 @@ public class InvoiceBuilder extends BaseBuilder {
             //////////////////// Item name BG-25 ///////////////////////////
             InvoiceItemDetailsXML invoiceItemDetailsXML = new InvoiceItemDetailsXML(invoiceItem.getDescription(), taxCategoryXML);
             //////////////////// Item net price BT-146 /////////////////////
-            PriceXML priceInvoiceItem = new PriceXML(new CurrencyAmountXML(invoiceItem.getPricePerUnit(), settings.getInvoiceCurrencyEInvoice()));
+            PriceXML priceInvoiceItem = new PriceXML(new CurrencyAmountXML(DataChecker.roundOnDigits(invoiceItem.getPricePerUnit(), settings.getDigitsCountForInvoice()), settings.getInvoiceCurrencyEInvoice()));
             //////////////////// Invoice line net amount BT-131 /////////////
             InvoiceItemXML invoiceLineXML = new InvoiceItemXML(count, invoicedQuantityXML, lineExtensionAmountItem, invoiceItemDetailsXML, priceInvoiceItem);
             items.add(invoiceLineXML);
@@ -877,8 +875,10 @@ public class InvoiceBuilder extends BaseBuilder {
             } catch (JsonProcessingException ex) {
                 logger.error(ex.toString());
                 logger.error("Get response from api: " + stb.toString());
+                return true;
             } catch (SQLException ex) {
                 logger.error(ex.toString());
+                return true;
             }
         }
         return true;
