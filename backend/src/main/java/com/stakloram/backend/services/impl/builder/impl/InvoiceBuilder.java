@@ -39,6 +39,7 @@ import com.stakloram.backend.models.WorkOrderItem.UOM;
 import com.stakloram.backend.models.XML.AdditionalDocumentReferenceXML;
 import com.stakloram.backend.models.XML.AttachmentXML;
 import com.stakloram.backend.models.XML.ContactXML;
+import com.stakloram.backend.models.XML.ContractDocumentReferenceXML;
 import com.stakloram.backend.models.XML.CountryXML;
 import com.stakloram.backend.models.XML.DeliveryXML;
 import com.stakloram.backend.models.XML.InvoiceBuyerWrapperXML;
@@ -451,7 +452,9 @@ public class InvoiceBuilder extends BaseBuilder {
         invoiceXML.setDocumentCurrencyCode(documentCurrencyCode);
 
         //////////////////// ContractDocumentReference BT-12/////////////////
-//        invoiceXML.setContractDocumentReferenceXML(new ContractDocumentReferenceXML(invoice.getNumber()));
+        if (invoice.getBuyer().getJbkjs() != null) {
+            invoiceXML.setContractDocumentReferenceXML(new ContractDocumentReferenceXML(invoice.getNumber()));
+        }
         //////////////////// InvoicePeriod BT-8//////////////////////////////
         // Za avansne racune to je datum placanja, a za ostale pogledaj tutorial...
         String invoiceTaxPeriod;
@@ -822,6 +825,80 @@ public class InvoiceBuilder extends BaseBuilder {
         if (body == null || body.length() == 0) {
             throw new SException(UserMessage.getLocalizedMessage("requestBodyError"));
         }
+
+        try {
+            // Postavljanje URL-a API-ja
+            String urlParams = "requestId=" + requestID + "&sendToCir=" + sendToCir;
+            URL url = new URL(apiUrl + "?" + urlParams);
+
+            // Otvaranje HTTP veze prema API-ju
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            // Podesavanje parametara za zahtev
+            conn.setConnectTimeout(5000); // Vreme cekanja na API je 5 sekundi
+            conn.setRequestMethod("POST"); // Metoda zahteva je POST
+            conn.setRequestProperty("ApiKey", settings.getKeyAPI()); // ApiKey se salje kroz HTTP zaglavlje
+            conn.setRequestProperty("Content-Type", "application/xml"); // Postavljamo Content-Type na application/xml
+            conn.setDoOutput(true); // Dozvoljavamo slanje podataka
+            conn.setUseCaches(false);
+
+            // Postavljanje Content-Length zaglavlja na osnovu duzine xmlString-a
+            conn.setRequestProperty("Content-Length", Integer.toString(body.getBytes().length));
+
+            // Slanje tela zahteva na API
+            try ( DataOutputStream dos = new DataOutputStream(conn.getOutputStream())) {
+                dos.writeBytes(body);
+            }
+
+            // Ispisivanje HTTP odgovora
+            int responseCode = conn.getResponseCode();
+            String responseMessage = conn.getResponseMessage();
+            System.out.println("Response Code: " + responseCode);
+            System.out.println("Response Message: " + responseMessage);
+
+            // Ispisivanje odgovora koji je stigao od API-ja
+            try ( BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                String responseLine;
+                StringBuilder response = new StringBuilder();
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+
+                if (responseCode == 200) {
+                    try {
+                        ObjectMapper objectMapper = JsonMapper.builder()
+                                .addModule(new JavaTimeModule())
+                                .build();
+                        ImportSalesUblResponse importSalesUblResponse = objectMapper.readValue(response.toString(), ImportSalesUblResponse.class);
+
+                        // TODO mark invoice as registrated
+                        RegistratedInvoiceStore registratedInvoiceStore = new RegistratedInvoiceStore(this.getLocator());
+                        RegistratedInvoice regInvoice = new RegistratedInvoice(importSalesUblResponse.getInvoiceId(), importSalesUblResponse.getPurchaseInvoiceId(), importSalesUblResponse.getSalesInvoiceId(), LocalDateTime.now(), invoice);
+                        registratedInvoiceStore.createNewObjectToDatabase(regInvoice);
+                    } catch (JsonProcessingException ex) {
+                        logger.error(ex.toString());
+                        logger.error("Get response from api: " + response.toString());
+                        return true;
+                    } catch (SQLException ex) {
+                        logger.error(ex.toString());
+                        return true;
+                    }
+
+                } else {
+                    logger.error("Get response from api: " + response.toString());
+                    System.out.println("Get response from api: " + response.toString());
+                    throw new SException(UserMessage.getLocalizedMessage("apiCallError") + ", " + response.toString());
+                }
+            }
+
+            // Zatvaranje HTTP veze
+            conn.disconnect();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        /*
         // TODO save requestID
         StringBuilder stb = new StringBuilder();
 
@@ -835,11 +912,18 @@ public class InvoiceBuilder extends BaseBuilder {
             conn.setDoOutput(true);
             conn.setRequestProperty("ApiKey", settings.getKeyAPI());
             conn.setRequestProperty("Content-Type", "application/xml");
+            conn.setRequestProperty("Content-Length", Integer.toString(body.getBytes().length));
             conn.setUseCaches(false);
 
             try ( DataOutputStream dos = new DataOutputStream(conn.getOutputStream())) {
                 dos.writeBytes(body);
             }
+
+            System.out.println("Integer.toString(body.getBytes().length: " + Integer.toString(body.getBytes().length));
+            System.out.println("Response message: ");
+            System.out.println(conn.getResponseMessage());
+            System.out.println("Response code: ");
+            System.out.println(conn.getResponseCode());
 
             try ( BufferedReader br = new BufferedReader(new InputStreamReader(
                     conn.getInputStream()))) {
@@ -858,7 +942,6 @@ public class InvoiceBuilder extends BaseBuilder {
             super.logger.error(e.toString());
             throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
         }
-
         if (stb.toString() != null && stb.toString().length() > 0) {
             System.out.println("stb:");
             System.out.println(stb.toString());
@@ -881,6 +964,7 @@ public class InvoiceBuilder extends BaseBuilder {
                 return true;
             }
         }
+         */
         return true;
     }
 
