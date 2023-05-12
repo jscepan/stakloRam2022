@@ -76,7 +76,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -838,6 +837,7 @@ public class InvoiceBuilder extends BaseBuilder {
             conn.setConnectTimeout(5000); // Vreme cekanja na API je 5 sekundi
             conn.setRequestMethod("POST"); // Metoda zahteva je POST
             conn.setRequestProperty("ApiKey", settings.getKeyAPI()); // ApiKey se salje kroz HTTP zaglavlje
+            conn.setRequestProperty("accept", "text/plain"); // ApiKey se salje kroz HTTP zaglavlje
             conn.setRequestProperty("Content-Type", "application/xml"); // Postavljamo Content-Type na application/xml
             conn.setDoOutput(true); // Dozvoljavamo slanje podataka
             conn.setUseCaches(false);
@@ -855,36 +855,48 @@ public class InvoiceBuilder extends BaseBuilder {
             String responseMessage = conn.getResponseMessage();
             System.out.println("Response Code: " + responseCode);
             System.out.println("Response Message: " + responseMessage);
-
+            System.out.println("01");
             // Ispisivanje odgovora koji je stigao od API-ja
             try ( BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                System.out.println("02");
                 String responseLine;
                 StringBuilder response = new StringBuilder();
                 while ((responseLine = br.readLine()) != null) {
                     response.append(responseLine.trim());
                 }
-
+                System.out.println("03");
                 if (responseCode == 200) {
+                    System.out.println("04");
+
                     try {
                         ObjectMapper objectMapper = JsonMapper.builder()
                                 .addModule(new JavaTimeModule())
                                 .build();
+
+                        System.out.println("05");
                         ImportSalesUblResponse importSalesUblResponse = objectMapper.readValue(response.toString(), ImportSalesUblResponse.class);
+                        System.out.println("06");
 
                         // TODO mark invoice as registrated
                         RegistratedInvoiceStore registratedInvoiceStore = new RegistratedInvoiceStore(this.getLocator());
                         RegistratedInvoice regInvoice = new RegistratedInvoice(importSalesUblResponse.getInvoiceId(), importSalesUblResponse.getPurchaseInvoiceId(), importSalesUblResponse.getSalesInvoiceId(), LocalDateTime.now(), invoice);
+                        System.out.println("07");
                         registratedInvoiceStore.createNewObjectToDatabase(regInvoice);
+                        System.out.println("08");
                     } catch (JsonProcessingException ex) {
+                        System.out.println("09");
                         logger.error(ex.toString());
                         logger.error("Get response from api: " + response.toString());
                         return true;
                     } catch (SQLException ex) {
+                        System.out.println("10");
                         logger.error(ex.toString());
                         return true;
                     }
+                    System.out.println("11");
 
                 } else {
+                    System.out.println("12");
                     logger.error("Get response from api: " + response.toString());
                     System.out.println("Get response from api: " + response.toString());
                     throw new SException(UserMessage.getLocalizedMessage("apiCallError") + ", " + response.toString());
@@ -893,9 +905,11 @@ public class InvoiceBuilder extends BaseBuilder {
 
             // Zatvaranje HTTP veze
             conn.disconnect();
+            System.out.println("13");
 
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("14");
         }
 
         /*
