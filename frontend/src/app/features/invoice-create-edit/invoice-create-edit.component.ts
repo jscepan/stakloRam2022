@@ -816,17 +816,17 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     switch (formControlName) {
       case 'quantity':
         netPrice = quantity * pricePerUnit;
-        netPriceControl?.setValue(netPrice);
+        netPriceControl?.setValue(roundOnDigits(netPrice));
         vatAmount = (netPrice * vatRate) / 100;
-        vatAmountControl?.setValue(vatAmount);
-        grossPriceControl?.setValue(netPrice + vatAmount);
+        vatAmountControl?.setValue(roundOnDigits(vatAmount));
+        grossPriceControl?.setValue(roundOnDigits(netPrice + vatAmount));
         break;
       case 'pricePerUnit':
         netPrice = quantity * pricePerUnit;
-        netPriceControl?.setValue(netPrice);
+        netPriceControl?.setValue(roundOnDigits(netPrice));
         vatAmount = (netPrice * vatRate) / 100;
-        vatAmountControl?.setValue(vatAmount);
-        grossPriceControl?.setValue(netPrice + vatAmount);
+        vatAmountControl?.setValue(roundOnDigits(vatAmount));
+        grossPriceControl?.setValue(roundOnDigits(netPrice + vatAmount));
         break;
       case 'netPrice':
         if (quantity <= 0) {
@@ -834,38 +834,38 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
           quantityControl?.setValue(quantity);
         }
         pricePerUnit = netPrice / quantity;
-        pricePerUnitControl?.setValue(pricePerUnit);
+        pricePerUnitControl?.setValue(roundOnDigits(pricePerUnit));
         vatAmount = (netPrice * vatRate) / 100;
-        vatAmountControl?.setValue(vatAmount);
-        grossPriceControl?.setValue(netPrice + vatAmount);
+        vatAmountControl?.setValue(roundOnDigits(vatAmount));
+        grossPriceControl?.setValue(roundOnDigits(netPrice + vatAmount));
         break;
       case 'vatRate':
         vatAmount = (netPrice * vatRate) / 100;
-        vatAmountControl?.setValue(vatAmount);
-        grossPriceControl?.setValue(netPrice + vatAmount);
+        vatAmountControl?.setValue(roundOnDigits(vatAmount));
+        grossPriceControl?.setValue(roundOnDigits(netPrice + vatAmount));
         break;
       case 'vatAmount':
         netPrice = (vatAmount * 100) / vatRate;
-        netPriceControl?.setValue(netPrice);
+        netPriceControl?.setValue(roundOnDigits(netPrice));
         if (quantity <= 0) {
           quantity = 1;
           quantityControl?.setValue(quantity);
         }
         pricePerUnit = netPrice / quantity;
-        pricePerUnitControl?.setValue(pricePerUnit);
-        grossPriceControl?.setValue(netPrice + vatAmount);
+        pricePerUnitControl?.setValue(roundOnDigits(pricePerUnit));
+        grossPriceControl?.setValue(roundOnDigits(netPrice + vatAmount));
         break;
       case 'grossPrice':
         vatAmount = (grossPrice * vatRate) / (100 + vatRate);
-        vatAmountControl?.setValue(vatAmount);
+        vatAmountControl?.setValue(roundOnDigits(vatAmount));
         netPrice = grossPrice - vatAmount;
-        netPriceControl?.setValue(netPrice);
+        netPriceControl?.setValue(roundOnDigits(netPrice));
         if (quantity <= 0) {
           quantity = 1;
           quantityControl?.setValue(quantity);
         }
         pricePerUnit = netPrice / quantity;
-        pricePerUnitControl?.setValue(pricePerUnit);
+        pricePerUnitControl?.setValue(roundOnDigits(pricePerUnit));
         break;
     }
     this.calculateInvoiceAmount();
@@ -875,14 +875,17 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       let netAmount = 0;
       let vatRate = 0;
+      let vatAmount = 0;
+      let grossAmount = 0;
       this.invoiceItemsFormArr.value.forEach((element: InvoiceItemModel) => {
         netAmount += element.netPrice;
+        vatAmount += element.vatAmount;
+        grossAmount += element.grossPrice;
+
         if (element.vatRate > vatRate) {
           vatRate = element.vatRate;
         }
       });
-      let vatAmount = (netAmount * vatRate) / 100;
-      let grossAmount = netAmount + vatAmount;
 
       this.formGroup.get('netAmount')?.setValue(roundOnDigits(netAmount));
       this.formGroup.get('vatRate')?.setValue(roundOnDigits(vatRate));

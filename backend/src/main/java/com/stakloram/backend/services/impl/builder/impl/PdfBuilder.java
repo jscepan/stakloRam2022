@@ -190,7 +190,7 @@ public class PdfBuilder extends BaseBuilder {
         html += ("</div>");
         html += ("<div class='company-heading-title'>" + settings.getWorkOrderHeadingLine3());
         html += ("</div>");
-        html += ("<div class='company-heading-email'>" + UserMessage.getLocalizedMessage("place") + ": " + settings.getCompanyEmail());
+        html += ("<div class='company-heading-email'>" + UserMessage.getLocalizedMessage("email") + ": " + settings.getCompanyEmail());
         html += ("</div>");
         html += ("</div>");
         html += ("</div>");
