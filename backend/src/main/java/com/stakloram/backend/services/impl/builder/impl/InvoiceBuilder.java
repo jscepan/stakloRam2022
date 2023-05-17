@@ -74,9 +74,13 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -86,6 +90,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -805,6 +811,12 @@ public class InvoiceBuilder extends BaseBuilder {
         String requestID = Helper.generateRandomString(settings.getRequestIDcharsNumber());
         String sendToCir;
         String body = this.getXMLForInvoice(invoiceOID);
+        String encodedText = null;
+        try {
+            encodedText = URLEncoder.encode(body, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(InvoiceBuilder.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         if (invoice.getBuyer().getJbkjs() == null || invoice.getBuyer().getJbkjs().length() == 0) {
             sendToCir = "No";
@@ -821,7 +833,7 @@ public class InvoiceBuilder extends BaseBuilder {
         if (requestID == null || requestID.length() == 0) {
             throw new SException(UserMessage.getLocalizedMessage("requestIDError"));
         }
-        if (body == null || body.length() == 0) {
+        if (encodedText == null || encodedText.length() == 0) {
             throw new SException(UserMessage.getLocalizedMessage("requestBodyError"));
         }
 
@@ -843,12 +855,12 @@ public class InvoiceBuilder extends BaseBuilder {
             conn.setUseCaches(false);
 
             // Postavljanje Content-Length zaglavlja na osnovu duzine xmlString-a
-            conn.setRequestProperty("Content-Length", Integer.toString(body.getBytes().length));
+            conn.setRequestProperty("Content-Length", Integer.toString(encodedText.getBytes().length));
 
             // Slanje tela zahteva na API
-            try ( DataOutputStream dos = new DataOutputStream(conn.getOutputStream())) {
-                dos.writeBytes(body);
-            }
+            OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8);
+            writer.write(encodedText);
+            writer.flush();
 
             // Ispisivanje HTTP odgovora
             int responseCode = conn.getResponseCode();
@@ -910,6 +922,7 @@ public class InvoiceBuilder extends BaseBuilder {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("14");
+            throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
         }
 
         /*
