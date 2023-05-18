@@ -4,13 +4,63 @@ import java.time.LocalDateTime;
 
 public class RegistratedInvoice extends BaseModel {
 
-    private int invoiceId;
-    private int purchaseInvoiceId;
-    private int salesInvoiceId;
+    private int InvoiceId;
+    private int PurchaseInvoiceId;
+    private int SalesInvoiceId;
     private LocalDateTime date;
     private Invoice invoice;
 
     public RegistratedInvoice() {
+    }
+
+    public RegistratedInvoice(int InvoiceId, int PurchaseInvoiceId, int SalesInvoiceId, LocalDateTime date, Invoice invoice) {
+        this.InvoiceId = InvoiceId;
+        this.PurchaseInvoiceId = PurchaseInvoiceId;
+        this.SalesInvoiceId = SalesInvoiceId;
+        this.date = date;
+        this.invoice = invoice;
+    }
+
+    public RegistratedInvoice(int InvoiceId, int PurchaseInvoiceId, int SalesInvoiceId, LocalDateTime date, Invoice invoice, String oid) {
+        super(oid);
+        this.InvoiceId = InvoiceId;
+        this.PurchaseInvoiceId = PurchaseInvoiceId;
+        this.SalesInvoiceId = SalesInvoiceId;
+        this.date = date;
+        this.invoice = invoice;
+    }
+
+    public RegistratedInvoice(int InvoiceId, int PurchaseInvoiceId, int SalesInvoiceId, LocalDateTime date, Invoice invoice, Long id) {
+        super(id);
+        this.InvoiceId = InvoiceId;
+        this.PurchaseInvoiceId = PurchaseInvoiceId;
+        this.SalesInvoiceId = SalesInvoiceId;
+        this.date = date;
+        this.invoice = invoice;
+    }
+
+    public int getInvoiceId() {
+        return InvoiceId;
+    }
+
+    public void setInvoiceId(int InvoiceId) {
+        this.InvoiceId = InvoiceId;
+    }
+
+    public int getPurchaseInvoiceId() {
+        return PurchaseInvoiceId;
+    }
+
+    public void setPurchaseInvoiceId(int PurchaseInvoiceId) {
+        this.PurchaseInvoiceId = PurchaseInvoiceId;
+    }
+
+    public int getSalesInvoiceId() {
+        return SalesInvoiceId;
+    }
+
+    public void setSalesInvoiceId(int SalesInvoiceId) {
+        this.SalesInvoiceId = SalesInvoiceId;
     }
 
     public RegistratedInvoice(String oid) {
@@ -19,56 +69,6 @@ public class RegistratedInvoice extends BaseModel {
 
     public RegistratedInvoice(Long id) {
         super(id);
-    }
-
-    public RegistratedInvoice(int invoiceId, int purchaseInvoiceId, int salesInvoiceId, LocalDateTime date, Invoice invoice) {
-        this.invoiceId = invoiceId;
-        this.purchaseInvoiceId = purchaseInvoiceId;
-        this.salesInvoiceId = salesInvoiceId;
-        this.date = date;
-        this.invoice = invoice;
-    }
-
-    public RegistratedInvoice(int invoiceId, int purchaseInvoiceId, int salesInvoiceId, LocalDateTime date, Invoice invoice, String oid) {
-        super(oid);
-        this.invoiceId = invoiceId;
-        this.purchaseInvoiceId = purchaseInvoiceId;
-        this.salesInvoiceId = salesInvoiceId;
-        this.date = date;
-        this.invoice = invoice;
-    }
-
-    public RegistratedInvoice(int invoiceId, int purchaseInvoiceId, int salesInvoiceId, LocalDateTime date, Invoice invoice, Long id) {
-        super(id);
-        this.invoiceId = invoiceId;
-        this.purchaseInvoiceId = purchaseInvoiceId;
-        this.salesInvoiceId = salesInvoiceId;
-        this.date = date;
-        this.invoice = invoice;
-    }
-
-    public int getInvoiceId() {
-        return invoiceId;
-    }
-
-    public void setInvoiceId(int invoiceId) {
-        this.invoiceId = invoiceId;
-    }
-
-    public int getPurchaseInvoiceId() {
-        return purchaseInvoiceId;
-    }
-
-    public void setPurchaseInvoiceId(int purchaseInvoiceId) {
-        this.purchaseInvoiceId = purchaseInvoiceId;
-    }
-
-    public int getSalesInvoiceId() {
-        return salesInvoiceId;
-    }
-
-    public void setSalesInvoiceId(int salesInvoiceId) {
-        this.salesInvoiceId = salesInvoiceId;
     }
 
     public LocalDateTime getDate() {
@@ -89,6 +89,6 @@ public class RegistratedInvoice extends BaseModel {
 
     @Override
     public String toString() {
-        return "RegistratedInvoice{" + "invoiceId=" + invoiceId + ", purchaseInvoiceId=" + purchaseInvoiceId + ", salesInvoiceId=" + salesInvoiceId + ", date=" + date + ", invoice=" + invoice + '}';
+        return "RegistratedInvoice{" + "InvoiceId=" + InvoiceId + ", PurchaseInvoiceId=" + PurchaseInvoiceId + ", SalesInvoiceId=" + SalesInvoiceId + ", date=" + date + ", invoice=" + invoice + '}';
     }
 }
