@@ -1,56 +1,64 @@
 <div class="container">
-  <div class="title grid-container standard-grid-table">
-    <div class="grid-item align-right">{{ "company" | translate }}:</div>
-    <div class="grid-item">{{ entity?.buyer?.name }}</div>
-    <div class="grid-item align-right">{{ "address" | translate }}:</div>
-    <div class="grid-item">{{ entity?.buyer?.address }}</div>
-    <div class="grid-item align-right">{{ "pib" | translate }}:</div>
-    <div class="grid-item">{{ entity?.buyer?.pib }}</div>
+  <div class="sticky-header">
+    <div class="title grid-container standard-grid-table">
+      <div class="grid-item align-right">{{ "company" | translate }}:</div>
+      <div class="grid-item">{{ entity?.buyer?.name }}</div>
+      <div class="grid-item align-right">{{ "address" | translate }}:</div>
+      <div class="grid-item">{{ entity?.buyer?.address }}</div>
+      <div class="grid-item align-right">{{ "pib" | translate }}:</div>
+      <div class="grid-item">{{ entity?.buyer?.pib }}</div>
+    </div>
+    <form [formGroup]="formGroup" *ngIf="formGroup" class="form">
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "fromDate" | translate }}
+        </mat-label>
+        <input
+          type="date"
+          matInput
+          formControlName="fromDate"
+          (change)="dateChange()"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label
+          [class.mark-required]="true"
+          [class.mark-opt-required]="true"
+        >
+          {{ "toDate" | translate }}
+        </mat-label>
+        <input type="date" matInput formControlName="toDate" />
+      </mat-form-field>
+
+      <app-button
+        class="view-button no-print"
+        [text]="'currentYear' | translate"
+        (clickEvent)="currentYear()"
+      ></app-button>
+
+      <app-button
+        class="view-button no-print"
+        [text]="'createIncome' | translate"
+        (clickEvent)="createIncome()"
+      ></app-button>
+
+      <app-button
+        class="view-button no-print"
+        [text]="'view' | translate"
+        (clickEvent)="viewDebtor()"
+        [disabled]="!(formGroup.dirty && formGroup.valid)"
+      ></app-button>
+    </form>
   </div>
-  <form [formGroup]="formGroup" *ngIf="formGroup" class="form">
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "fromDate" | translate }}
-      </mat-label>
-      <input
-        type="date"
-        matInput
-        formControlName="fromDate"
-        (change)="dateChange()"
-      />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label [class.mark-required]="true" [class.mark-opt-required]="true">
-        {{ "toDate" | translate }}
-      </mat-label>
-      <input type="date" matInput formControlName="toDate" />
-    </mat-form-field>
-
-    <app-button
-      class="view-button no-print"
-      [text]="'currentYear' | translate"
-      (clickEvent)="currentYear()"
-    ></app-button>
-
-    <app-button
-      class="view-button no-print"
-      [text]="'createIncome' | translate"
-      (clickEvent)="createIncome()"
-    ></app-button>
-
-    <app-button
-      class="view-button no-print"
-      [text]="'view' | translate"
-      (clickEvent)="viewDebtor()"
-      [disabled]="!(formGroup.dirty && formGroup.valid)"
-    ></app-button>
-  </form>
   <div class="grid-container standard-grid-table" *ngIf="debtView">
-    <div class="grid-item header">{{ "date" | translate }}</div>
-    <div class="grid-item header">{{ "description" | translate }}</div>
-    <div class="grid-item header">{{ "owed" | translate }}</div>
-    <div class="grid-item header">{{ "debt" | translate }}</div>
-    <div class="grid-item header">{{ "state" | translate }}</div>
+    <div class="grid-item header sticky">{{ "date" | translate }}</div>
+    <div class="grid-item header sticky">{{ "description" | translate }}</div>
+    <div class="grid-item header sticky">{{ "owed" | translate }}</div>
+    <div class="grid-item header sticky">{{ "debt" | translate }}</div>
+    <div class="grid-item header sticky">{{ "state" | translate }}</div>
     <div class="grid-item">-</div>
     <div class="grid-item">{{ "startAmount" | translate }}</div>
     <div class="grid-item align-right">
