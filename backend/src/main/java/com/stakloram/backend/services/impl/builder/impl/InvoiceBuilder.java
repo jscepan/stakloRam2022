@@ -857,17 +857,18 @@ public class InvoiceBuilder extends BaseBuilder {
             // Postavljanje Content-Length zaglavlja na osnovu duzine xmlString-a
             conn.setRequestProperty("Content-Length", Integer.toString(encodedText.getBytes().length));
 
+            System.out.println("01");
             // Slanje tela zahteva na API
             OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8);
             writer.write(encodedText);
             writer.flush();
+            System.out.println("01.1");
 
             // Ispisivanje HTTP odgovora
             int responseCode = conn.getResponseCode();
             String responseMessage = conn.getResponseMessage();
             System.out.println("Response Code: " + responseCode);
             System.out.println("Response Message: " + responseMessage);
-            System.out.println("01");
             // Ispisivanje odgovora koji je stigao od API-ja
             try ( BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
                 System.out.println("02");
