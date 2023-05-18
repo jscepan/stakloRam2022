@@ -81,6 +81,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
@@ -908,7 +910,6 @@ public class InvoiceBuilder extends BaseBuilder {
                     while ((responseLine = br.readLine()) != null) {
                         response.append(responseLine.trim());
                     }
-                    System.out.println("Response Body: " + response.toString());
                     logger.error("Get response from api: " + response.toString());
                     System.out.println("Get response from api: " + response.toString());
                     throw new SException(response.toString());
@@ -952,40 +953,63 @@ public class InvoiceBuilder extends BaseBuilder {
             throw new SException(UserMessage.getLocalizedMessage("requestIDError"));
         }
 
+        // Postavljanje URL-a API-ja
+        String urlParams = "requestId=" + requestID + "&sendToCir=" + sendToCir;
+        URL url;
         try {
-            // Postavljanje URL-a API-ja
-            String urlParams = "requestId=" + requestID + "&sendToCir=" + sendToCir;
-            URL url = new URL(apiUrl + "?" + urlParams);
+            url = new URL(apiUrl + "?" + urlParams);
+        } catch (MalformedURLException ex) {
+            logger.error(ex.getMessage());
+            throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
+        }
 
-            // Otvaranje HTTP veze prema API-ju
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        // Otvaranje HTTP veze prema API-ju
+        HttpURLConnection conn;
+        try {
+            conn = (HttpURLConnection) url.openConnection();
+        } catch (IOException ex) {
+            logger.error(ex.getMessage());
+            throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
+        }
 
-            // Podesavanje parametara za zahtev
-            conn.setConnectTimeout(10000); // Vreme cekanja na API je 5 sekundi
+        // Podesavanje parametara za zahtev
+        conn.setConnectTimeout(10000); // Vreme cekanja na API je 5 sekundi
+        try {
             conn.setRequestMethod("POST"); // Metoda zahteva je POST
-            conn.setRequestProperty("ApiKey", settings.getKeyAPI()); // ApiKey se salje kroz HTTP zaglavlje
-            conn.setRequestProperty("accept", "text/plain"); // ApiKey se salje kroz HTTP zaglavlje
+        } catch (ProtocolException ex) {
+            logger.error(ex.getMessage());
+            throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
+        }
+        conn.setRequestProperty("ApiKey", settings.getKeyAPI()); // ApiKey se salje kroz HTTP zaglavlje
+        conn.setRequestProperty("accept", "text/plain"); // ApiKey se salje kroz HTTP zaglavlje
 
 // Postavljanje boundary vrednosti
-            String boundary = "-----" + System.currentTimeMillis() + "-----";
-            conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+        String boundary = "-----" + System.currentTimeMillis() + "-----";
+        conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
-            conn.setDoOutput(true); // Dozvoljavamo slanje podataka
+        conn.setDoOutput(true); // Dozvoljavamo slanje podataka
 
-            File f = new File(INVOICE_XML_DIRECTORY);
-            if (!(f.exists() && f.isDirectory())) {
-                f.mkdir();
-            }
+        File f = new File(INVOICE_XML_DIRECTORY);
+        if (!(f.exists() && f.isDirectory())) {
+            f.mkdir();
+        }
 
-            String fileName = "invoice_" + invoice.getDateOfCreate().getYear() + "_" + invoice.getId() + ".xml";
+        String fileName = "invoice_" + invoice.getDateOfCreate().getYear() + "_" + invoice.getId() + ".xml";
+        try {
             FileUtils.writeStringToFile(new File(INVOICE_XML_DIRECTORY + "/" + fileName), this.getXMLForInvoice(invoiceOID), Charset.forName("UTF-8"));
-            File file = new File(INVOICE_XML_DIRECTORY + "/" + fileName);
-            if (!file.exists()) {
-                throw new SException(UserMessage.getLocalizedMessage("requestBodyError"));
-            }
+        } catch (IOException ex) {
+            logger.error(ex.getMessage());
+            throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
+        }
+        File file = new File(INVOICE_XML_DIRECTORY + "/" + fileName);
+        if (!file.exists()) {
+            throw new SException(UserMessage.getLocalizedMessage("requestBodyError"));
+        }
 
-            // Formiranje tela zahteva
-            OutputStream outputStream = conn.getOutputStream();
+        // Formiranje tela zahteva
+        OutputStream outputStream;
+        try {
+            outputStream = conn.getOutputStream();
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(outputStream, "UTF-8"), true);
             String lineSeparator = "\r\n";
 
@@ -1012,59 +1036,85 @@ public class InvoiceBuilder extends BaseBuilder {
             writer.close();
 
             // Ispisivanje HTTP odgovora
-            int responseCode = conn.getResponseCode();
-            // Ispisivanje odgovora koji je stigao od API-ja
+        } catch (IOException ex) {
+            logger.error(ex.getMessage());
+            throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
+        }
 
-            if (responseCode == 200) {
-                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        int responseCode = 0;
+        try {
+            responseCode = conn.getResponseCode();
+            // Ispisivanje odgovora koji je stigao od API-ja
+        } catch (IOException ex) {
+            logger.error(ex.getMessage());
+            throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
+        }
+
+        if (responseCode == 200) {
+            BufferedReader br;
+            try {
+                br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            } catch (IOException ex) {
+                logger.error(ex.getMessage());
+                throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
+            }
+            String responseLine;
+            StringBuilder response = new StringBuilder();
+            try {
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+            } catch (IOException ex) {
+                logger.error(ex.getMessage());
+                throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
+            }
+
+            try {
+                ObjectMapper objectMapper = JsonMapper.builder()
+                        .addModule(new JavaTimeModule())
+                        .build();
+
+                ImportSalesUblResponse importSalesUblResponse = objectMapper.readValue(response.toString(), ImportSalesUblResponse.class);
+
+                // TODO mark invoice as registrated
+                RegistratedInvoiceStore registratedInvoiceStore = new RegistratedInvoiceStore(this.getLocator());
+                RegistratedInvoice regInvoice = new RegistratedInvoice(importSalesUblResponse.getInvoiceId(), importSalesUblResponse.getPurchaseInvoiceId(), importSalesUblResponse.getSalesInvoiceId(), LocalDateTime.now(), invoice);
+                registratedInvoiceStore.createNewObjectToDatabase(regInvoice);
+            } catch (JsonProcessingException ex) {
+                logger.error("Get response from api: " + response.toString());
+                return true;
+            } catch (SQLException ex) {
+                logger.error(ex.toString());
+                return true;
+            }
+
+        } else {
+            String responseMessage;
+            try {
+                responseMessage = conn.getResponseMessage();
+            } catch (IOException ex) {
+                logger.error(ex.getMessage());
+                throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
+            }
+            System.out.println("Response Code: " + responseCode);
+            System.out.println("Response Message: " + responseMessage);
+            try ( BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream()))) {
                 String responseLine;
                 StringBuilder response = new StringBuilder();
                 while ((responseLine = br.readLine()) != null) {
                     response.append(responseLine.trim());
                 }
-
-                try {
-                    ObjectMapper objectMapper = JsonMapper.builder()
-                            .addModule(new JavaTimeModule())
-                            .build();
-
-                    ImportSalesUblResponse importSalesUblResponse = objectMapper.readValue(response.toString(), ImportSalesUblResponse.class);
-
-                    // TODO mark invoice as registrated
-                    RegistratedInvoiceStore registratedInvoiceStore = new RegistratedInvoiceStore(this.getLocator());
-                    RegistratedInvoice regInvoice = new RegistratedInvoice(importSalesUblResponse.getInvoiceId(), importSalesUblResponse.getPurchaseInvoiceId(), importSalesUblResponse.getSalesInvoiceId(), LocalDateTime.now(), invoice);
-                    registratedInvoiceStore.createNewObjectToDatabase(regInvoice);
-                } catch (JsonProcessingException ex) {
-                    logger.error("Get response from api: " + response.toString());
-                    return true;
-                } catch (SQLException ex) {
-                    logger.error(ex.toString());
-                    return true;
-                }
-
-            } else {
-                String responseMessage = conn.getResponseMessage();
-                System.out.println("Response Code: " + responseCode);
-                System.out.println("Response Message: " + responseMessage);
-                try ( BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream()))) {
-                    String responseLine;
-                    StringBuilder response = new StringBuilder();
-                    while ((responseLine = br.readLine()) != null) {
-                        response.append(responseLine.trim());
-                    }
-                    logger.error("Get response from api: " + response.toString());
-                    System.out.println("Get response from api: " + response.toString());
-                    throw new SException(response.toString());
-                }
+                logger.error("Get response from api: " + response.toString());
+                System.out.println("Get response from api: " + response.toString());
+                throw new SException(response.toString());
+            } catch (IOException ex) {
+                logger.error(ex.getMessage());
+                throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
             }
-
-            // Zatvaranje HTTP veze
-            conn.disconnect();
-
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
         }
+
+        // Zatvaranje HTTP veze
+        conn.disconnect();
         return true;
     }
 
