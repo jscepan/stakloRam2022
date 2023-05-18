@@ -1,9 +1,14 @@
 package com.stakloram.backend.models.XML;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ImportSalesUblResponse {
 
+    @JsonProperty("InvoiceId")
     private int InvoiceId;
+    @JsonProperty("PurchaseInvoiceId")
     private int PurchaseInvoiceId;
+    @JsonProperty("SalesInvoiceId")
     private int SalesInvoiceId;
 
     public ImportSalesUblResponse() {

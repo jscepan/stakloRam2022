@@ -170,6 +170,6 @@ public class InvoiceService extends ServiceModel {
     }
 
     public boolean registrationOfInvoice(String invoiceOID) throws SException {
-        return ((InvoiceBuilder) this.baseBuilder).registrationOfInvoice(invoiceOID);
+        return ((InvoiceBuilder) this.baseBuilder).registrationOfInvoiceUPLOAD(invoiceOID);
     }
 }
