@@ -147,12 +147,12 @@ public class Helper {
         }
         try {
             PDFMergerUtility pdfmerger = new PDFMergerUtility();
-            pdfmerger.setDestinationFileName(folder.getAbsolutePath()+"/"+"newMerged.pdf");
+            pdfmerger.setDestinationFileName(folder.getAbsolutePath() + "/" + "newMerged.pdf");
             for (File file : allPdfs) {
                 pdfmerger.addSource(file);
             }
             pdfmerger.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
-            return new File("newMerged.pdf");
+            return new File(WORK_ORDER_PDF_DIRECTORY, "newMerged.pdf");
         } catch (IOException e) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
