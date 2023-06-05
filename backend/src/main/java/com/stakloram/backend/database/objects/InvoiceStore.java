@@ -1,6 +1,6 @@
 package com.stakloram.backend.database.objects;
 
-import com.stakloram.backend.database.ConnectionToDatabase;
+import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.database.ObjectStore;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Buyer;
@@ -160,7 +160,7 @@ public class InvoiceStore extends ObjectStore {
     public int getLastInvoiceNumber(Invoice.InvoiceType invoiceType, int year) throws SQLException {
         int lastInvoiceNumber = 0;
         Statement st = this.getConn().createStatement();
-        ResultSet resultSet = st.executeQuery("SELECT * from " + ConnectionToDatabase.getDatabaseName() + "." + this.tableName + " WHERE invoice_number=(SELECT MAX(invoice_number) FROM " + ConnectionToDatabase.getDatabaseName() + "." + this.tableName + " WHERE invoice_type='" + invoiceType + "'  AND year(invoice_date_of_create)=" + year + ") AND invoice_type='" + invoiceType + "'  AND year(invoice_date_of_create)=" + year);
+        ResultSet resultSet = st.executeQuery("SELECT * from " + DATABASE_NAME + "." + this.tableName + " WHERE invoice_number=(SELECT MAX(invoice_number) FROM " + DATABASE_NAME + "." + this.tableName + " WHERE invoice_type='" + invoiceType + "'  AND year(invoice_date_of_create)=" + year + ") AND invoice_type='" + invoiceType + "'  AND year(invoice_date_of_create)=" + year);
         while (resultSet.next()) {
             lastInvoiceNumber = resultSet.getInt(this.getTableName() + "_number");
         }

@@ -2,7 +2,7 @@ package com.stakloram.backend.database.objects;
 
 import com.stakloram.backend.database.ConnectionToDatabase;
 import com.stakloram.backend.database.ObjectStore;
-import static com.stakloram.backend.database.ObjectStore.DATABASE_NAME;
+import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Buyer;
 import com.stakloram.backend.models.Locator;
@@ -110,7 +110,7 @@ public class WorkOrderStore extends ObjectStore {
     public long getLastWorkOrderNumber(int year) throws SQLException {
         long lastWorkOrderNumber = 0;
         Statement st = this.getConn().createStatement();
-        ResultSet resultSet = st.executeQuery("SELECT * from " + ConnectionToDatabase.getDatabaseName() + "." + this.tableName + " WHERE work_order_number=(SELECT MAX(work_order_number) FROM " + ConnectionToDatabase.getDatabaseName() + "." + this.tableName + " WHERE year(work_order_date_of_create)=" + year + ") and year(work_order_date_of_create)=" + year);
+        ResultSet resultSet = st.executeQuery("SELECT * from " + DATABASE_NAME + "." + this.tableName + " WHERE work_order_number=(SELECT MAX(work_order_number) FROM " + DATABASE_NAME + "." + this.tableName + " WHERE year(work_order_date_of_create)=" + year + ") and year(work_order_date_of_create)=" + year);
         while (resultSet.next()) {
             lastWorkOrderNumber = resultSet.getLong(this.getTableName() + "_number");
         }

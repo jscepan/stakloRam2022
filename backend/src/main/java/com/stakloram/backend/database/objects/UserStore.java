@@ -1,5 +1,6 @@
 package com.stakloram.backend.database.objects;
 
+import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.database.ObjectStore;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.User;

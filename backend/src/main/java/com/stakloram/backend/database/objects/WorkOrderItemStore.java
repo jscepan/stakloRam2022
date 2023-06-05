@@ -2,7 +2,7 @@ package com.stakloram.backend.database.objects;
 
 import com.stakloram.backend.database.ConnectionToDatabase;
 import com.stakloram.backend.database.ObjectStore;
-import static com.stakloram.backend.database.ObjectStore.DATABASE_NAME;
+import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.WorkOrder;
@@ -149,7 +149,7 @@ public class WorkOrderItemStore extends ObjectStore {
     public String getWorkOrderOidForWorkOrderItemOid(String workOrderItemOid) throws SQLException {
         String oid = "";
         Statement st = this.getConn().createStatement();
-        ResultSet resultSet = st.executeQuery("SELECT * from " + ConnectionToDatabase.getDatabaseName() + "." + this.tableName + " WHERE " + ConnectionToDatabase.getDatabaseName() + "." + this.tableName + "." + this.getPrimaryKey() + "=" + BaseModel.getIdFromOid(workOrderItemOid));
+        ResultSet resultSet = st.executeQuery("SELECT * from " + DATABASE_NAME + "." + this.tableName + " WHERE " + DATABASE_NAME + "." + this.tableName + "." + this.getPrimaryKey() + "=" + BaseModel.getIdFromOid(workOrderItemOid));
         while (resultSet.next()) {
             oid = new WorkOrder(resultSet.getLong(this.getTableName() + "_work_order_work_order_id")).getOid();
         }

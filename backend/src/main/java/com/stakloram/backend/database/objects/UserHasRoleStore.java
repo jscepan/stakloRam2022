@@ -1,5 +1,6 @@
 package com.stakloram.backend.database.objects;
 
+import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.database.ConnectionToDatabase;
 import com.stakloram.backend.database.ObjectStore;
 import com.stakloram.backend.models.BaseModel;
@@ -23,13 +24,13 @@ public class UserHasRoleStore extends ObjectStore {
     public ResultSet getAllUserRoles(String userOid, Long skip, Long top) throws SQLException {
         Statement st = null;
         st = this.getConn().createStatement();
-        return st.executeQuery("SELECT * from " + ConnectionToDatabase.getDatabaseName() + "." + this.tableName + " JOIN " + ConnectionToDatabase.getDatabaseName() + ".role on " + this.tableName + ".role_role_id=role.role_id WHERE " + this.tableName + ".user_user_id=" + BaseModel.getIdFromOid(userOid) + " limit " + skip + ", " + top);
+        return st.executeQuery("SELECT * from " + DATABASE_NAME + "." + this.tableName + " JOIN " + DATABASE_NAME + ".role on " + this.tableName + ".role_role_id=role.role_id WHERE " + this.tableName + ".user_user_id=" + BaseModel.getIdFromOid(userOid) + " limit " + skip + ", " + top);
     }
 
     public ResultSet getAllUserRoles(String userOid) throws SQLException {
         Statement st = null;
         st = this.getConn().createStatement();
-        return st.executeQuery("SELECT * from " + ConnectionToDatabase.getDatabaseName() + "." + this.tableName + " JOIN " + ConnectionToDatabase.getDatabaseName() + ".role on " + this.tableName + ".role_role_id=role.role_id WHERE " + this.tableName + ".user_user_id=" + BaseModel.getIdFromOid(userOid));
+        return st.executeQuery("SELECT * from " + DATABASE_NAME + "." + this.tableName + " JOIN " + DATABASE_NAME + ".role on " + this.tableName + ".role_role_id=role.role_id WHERE " + this.tableName + ".user_user_id=" + BaseModel.getIdFromOid(userOid));
     }
 
     @Override
@@ -66,7 +67,7 @@ public class UserHasRoleStore extends ObjectStore {
     }
 
     public boolean deleteRoleByOidForUserOid(String userOid, String roleOid) throws SQLException {
-        PreparedStatement st = this.getConn().prepareStatement("DELETE FROM " + ConnectionToDatabase.getDatabaseName() + "." + this.tableName + " WHERE " + "user_user_id=" + BaseModel.getIdFromOid(userOid) + " AND role_role_id=" + BaseModel.getIdFromOid(roleOid));
+        PreparedStatement st = this.getConn().prepareStatement("DELETE FROM " + DATABASE_NAME + "." + this.tableName + " WHERE " + "user_user_id=" + BaseModel.getIdFromOid(userOid) + " AND role_role_id=" + BaseModel.getIdFromOid(roleOid));
         return st.executeUpdate() > 0;
     }
 }

@@ -1,5 +1,6 @@
 package com.stakloram.backend.database;
 
+import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.SearchRequest.Ordering;
@@ -17,7 +18,6 @@ public abstract class ObjectStore implements IObjectStore {
 
     protected String tableName;
     protected final String primaryKey;
-    public static final String DATABASE_NAME = ConnectionToDatabase.getDatabaseName();
     private final Connection conn;
 
     public ObjectStore(Locator locator) {
@@ -39,7 +39,7 @@ public abstract class ObjectStore implements IObjectStore {
     }
 
     public String getDefaultFromClausule() {
-        return ConnectionToDatabase.getDatabaseName() + "." + this.tableName;
+        return DATABASE_NAME + "." + this.tableName;
     }
 
     @Override

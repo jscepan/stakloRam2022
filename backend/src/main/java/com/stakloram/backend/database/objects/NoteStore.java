@@ -1,7 +1,7 @@
 package com.stakloram.backend.database.objects;
 
 import com.stakloram.backend.database.ObjectStore;
-import static com.stakloram.backend.database.ObjectStore.DATABASE_NAME;
+import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Note;
 import com.stakloram.backend.models.Locator;

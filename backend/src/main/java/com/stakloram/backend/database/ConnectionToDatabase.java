@@ -6,11 +6,13 @@ import com.stakloram.backend.constants.Constants;
 import com.stakloram.backend.models.DatabaseSettings;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.util.Helper;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,45 +22,48 @@ public class ConnectionToDatabase {
 
     static Logger logger = LoggerFactory.getLogger(ConnectionToDatabase.class);
 
-    private static String DATABASE_NAME;
+    private static HikariConfig config = new HikariConfig();
+    private static HikariDataSource ds;
+
+    public static String DATABASE_NAME;
     private static String DATABASE_DRIVER;
+    private static String DATABASE_URL;
     private static String USERNAME;
     private static String PASSWORD;
-    private static String URL;
 
     // init connection object
     private static Connection connection = null;
 
     public ConnectionToDatabase() {
-    }
-
-    public static String getDatabaseName() {
-        if (DATABASE_NAME == null || DATABASE_NAME.isEmpty()) {
+        if (DATABASE_URL == null || DATABASE_NAME == null || USERNAME == null || PASSWORD == null || DATABASE_DRIVER == null) {
             setParameters();
         }
-        return DATABASE_NAME;
     }
 
     // connect database
     public static Connection connect() {
-        if (connection != null) {
-            return connection;
-        }
-        if (DATABASE_DRIVER == null || DATABASE_DRIVER.isEmpty()
-                || USERNAME == null || USERNAME.isEmpty()
-                || PASSWORD == null || PASSWORD.isEmpty()
-                || URL == null || URL.isEmpty()) {
+        if (DATABASE_URL == null || DATABASE_NAME == null || USERNAME == null || PASSWORD == null || DATABASE_DRIVER == null) {
             setParameters();
         }
-
         try {
-            Class.forName(DATABASE_DRIVER);
-            String url = URL + DATABASE_NAME + "?user=" + USERNAME + "&password=" + PASSWORD + "&autoReconnect=true&useSSL=false&characterEncoding=UTF-8";
-            connection = (Connection) DriverManager.getConnection(url);
-        } catch (ClassNotFoundException | SQLException e) {
-            logger.error(e.toString());
+            return ds.getConnection();
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(ConnectionToDatabase.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return connection;
+        return null;
+    }
+
+    static {
+        if (DATABASE_URL == null || DATABASE_NAME == null || USERNAME == null || PASSWORD == null || DATABASE_DRIVER == null) {
+            setParameters();
+        }
+        config.setJdbcUrl(DATABASE_URL + DATABASE_NAME);
+        config.setUsername(USERNAME);
+        config.setPassword(PASSWORD);
+        config.setMinimumIdle(5); // Minimalni broj aktivnih veza
+        config.setMaximumPoolSize(20); // Maksimalni broj veza u bazenu
+        config.setIdleTimeout(30000); // Vrijeme neaktivnosti nakon kojeg se veza zatvara (u milisekundama)
+        ds = new HikariDataSource(config);
     }
 
     private static void setParameters() {
@@ -78,7 +83,7 @@ public class ConnectionToDatabase {
         DATABASE_DRIVER = databaseSettings.getDatabaseDriver();
         USERNAME = databaseSettings.getUsername();
         PASSWORD = databaseSettings.getPassword();
-        URL = databaseSettings.getDatabaseUrl();
+        DATABASE_URL = databaseSettings.getDatabaseUrl();
     }
 
     // disconnect database
