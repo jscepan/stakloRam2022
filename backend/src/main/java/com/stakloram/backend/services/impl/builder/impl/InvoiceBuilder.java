@@ -1074,12 +1074,15 @@ public class InvoiceBuilder extends BaseBuilder {
                         .addModule(new JavaTimeModule())
                         .build();
 
+                System.out.println("-------------registracija fakture--------------");
                 ImportSalesUblResponse importSalesUblResponse = objectMapper.readValue(response.toString(), ImportSalesUblResponse.class);
-
+                System.out.println("importSalesUblResponse: " + importSalesUblResponse);
                 // TODO mark invoice as registrated
                 RegistratedInvoiceStore registratedInvoiceStore = new RegistratedInvoiceStore(this.getLocator());
                 RegistratedInvoice regInvoice = new RegistratedInvoice(importSalesUblResponse.getInvoiceId(), importSalesUblResponse.getPurchaseInvoiceId(), importSalesUblResponse.getSalesInvoiceId(), LocalDateTime.now(), invoice);
+                System.out.println("regInvoice: " + regInvoice);
                 registratedInvoiceStore.createNewObjectToDatabase(regInvoice);
+                System.out.println("REGISTROVANO USPESNO");
             } catch (JsonProcessingException ex) {
                 logger.error("Get response from api: " + response.toString());
                 return true;
