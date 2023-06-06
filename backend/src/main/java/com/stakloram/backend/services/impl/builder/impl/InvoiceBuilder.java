@@ -1185,7 +1185,7 @@ public class InvoiceBuilder extends BaseBuilder {
                 if (!(f.exists() && f.isDirectory())) {
                     f.mkdir();
                 }
-                String filename = "invoice_" + invoice.getDateOfCreate().getYear() + "_" + invoice.getDateOfCreate().getMonthValue() + "_" + invoice.getDateOfCreate().getDayOfMonth() + "__" + invoice.getNumberSign() + "_" + invoice.getDateOfCreate().getYear() + ".pdf";
+                String filename = "invoice_" + invoice.getDateOfCreate().getYear() + "_" + invoice.getDateOfCreate().getMonthValue() + "_" + invoice.getDateOfCreate().getDayOfMonth() + "__" + invoice.getNumber().replace("/", "_") + ".pdf";
 
                 String outputPath = INVOICE_PDF_DIRECTORY + "/" + filename;
                 try ( FileOutputStream fos = new FileOutputStream(outputPath)) {
