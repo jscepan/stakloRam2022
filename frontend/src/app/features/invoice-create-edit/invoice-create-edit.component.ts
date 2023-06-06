@@ -1134,6 +1134,18 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
     }
   }
 
+  getInvoiceFromSEF(): void {
+    if (this.invoiceOID) {
+      this.webService
+        .downloadFile(this.invoiceOID)
+        .subscribe((response: any) => {
+          const file = new Blob([response], { type: 'application/pdf' });
+          const fileURL = URL.createObjectURL(file);
+          window.open(fileURL);
+        });
+    }
+  }
+
   saveTextAsFile(data: string, filename: string) {
     if (!data) {
       console.error('Console.save: No data');

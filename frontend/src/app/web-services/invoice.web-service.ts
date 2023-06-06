@@ -49,4 +49,12 @@ export class InvoiceWebService extends EntityBaseWebService<InvoiceModel> {
       `${BASE_API_URL + '/' + this.domainName}/registration/` + invoiceOID
     );
   }
+
+  downloadFile<T>(invoiceOid: string): Observable<T> {
+    return this.baseWebService.getRequestForArrayBuffer(
+      `${
+        BASE_API_URL + '/' + this.domainName
+      }/registration/pdf/invoiceOid=${invoiceOid}`
+    );
+  }
 }

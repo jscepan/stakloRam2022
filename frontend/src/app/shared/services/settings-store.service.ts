@@ -46,6 +46,7 @@ export class AppSettings {
   keyAPI?: string;
   requestIDcharsNumber?: number;
   urlImportSalesUbl?: string;
+  urlDownloadSalesUbl?: string;
   customizationID?: string;
   invoiceTypeCodeCommercialInvoice?: string;
   invoiceTypeCodeAdvanceInvoice?: string;

@@ -47,7 +47,8 @@ public class Settings {
 
     private String keyAPI = "";
     private int requestIDcharsNumber = 10;
-    private String urlImportSalesUbl = "https://demoefaktura.mfin.gov.rs/api/publicApi/sales-invoice/ubl";
+    private String urlImportSalesUbl = "https://efaktura.mfin.gov.rs/api/publicApi/sales-invoice/ubl";
+    private String urlDownloadSalesUbl = "https://efaktura.mfin.gov.rs/api/publicApi/sales-invoice/xml";
 
     private String customizationID = "urn:cen.eu:en16931:2017#compliant#urn:mfin.gov.rs:srbdt:2021";
     private String invoiceTypeCodeCommercialInvoice = "380";
@@ -389,6 +390,14 @@ public class Settings {
 
     public void setUrlImportSalesUbl(String urlImportSalesUbl) {
         this.urlImportSalesUbl = urlImportSalesUbl;
+    }
+
+    public String getUrlDownloadSalesUbl() {
+        return urlDownloadSalesUbl;
+    }
+
+    public void setUrlDownloadSalesUbl(String urlDownloadSalesUbl) {
+        this.urlDownloadSalesUbl = urlDownloadSalesUbl;
     }
 
     public String getCustomizationID() {

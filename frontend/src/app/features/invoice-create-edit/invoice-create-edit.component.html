@@ -639,6 +639,12 @@
       (clickEvent)="registrate()"
     ></app-button>
     <app-button
+      [text]="'getInvoiceFromSEF' | translate"
+      [disabled]="formGroup.invalid || !isEdit"
+      class="update"
+      (clickEvent)="getInvoiceFromSEF()"
+    ></app-button>
+    <app-button
       [text]="'save' | translate"
       [disabled]="!formGroup.dirty || formGroup.invalid"
       class="update"

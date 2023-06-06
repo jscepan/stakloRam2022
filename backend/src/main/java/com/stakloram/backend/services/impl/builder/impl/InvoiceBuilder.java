@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import static com.stakloram.backend.constants.Constants.INVOICE_PDF_DIRECTORY;
 import static com.stakloram.backend.constants.Constants.INVOICE_XML_DIRECTORY;
 import static com.stakloram.backend.constants.Constants.WORK_ORDER_PDF_DIRECTORY;
 import com.stakloram.backend.database.ResponseWithCount;
@@ -73,6 +74,7 @@ import com.stakloram.backend.util.Helper;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -92,6 +94,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -1074,13 +1077,11 @@ public class InvoiceBuilder extends BaseBuilder {
                         .addModule(new JavaTimeModule())
                         .build();
 
-                System.out.println("-------------registracija fakture--------------");
                 ImportSalesUblResponse importSalesUblResponse = objectMapper.readValue(response.toString(), ImportSalesUblResponse.class);
-                System.out.println("importSalesUblResponse: " + importSalesUblResponse);
                 // TODO mark invoice as registrated
                 RegistratedInvoiceStore registratedInvoiceStore = new RegistratedInvoiceStore(this.getLocator());
                 RegistratedInvoice regInvoice = new RegistratedInvoice(importSalesUblResponse.getInvoiceId(), importSalesUblResponse.getPurchaseInvoiceId(), importSalesUblResponse.getSalesInvoiceId(), LocalDateTime.now(), invoice);
-                System.out.println("regInvoice: " + regInvoice);
+                System.out.println("regInvoice OID: " + regInvoice.getOid() + ", regInvoice ID: " + regInvoice.getId());
                 registratedInvoiceStore.createNewObjectToDatabase(regInvoice);
                 System.out.println("REGISTROVANO USPESNO");
             } catch (JsonProcessingException ex) {
@@ -1123,5 +1124,105 @@ public class InvoiceBuilder extends BaseBuilder {
 
     private File getExistingPdfForWorkOrder(WorkOrder wo) {
         return new File(WORK_ORDER_PDF_DIRECTORY + "/" + wo.getPdf().getUrl());
+    }
+
+    public File getPDFForRegistratedInvoice(Invoice invoice) throws SException {
+        try {
+            // Uzmi registrovanu fakturu
+            RegistratedInvoice regInvoice = new RegistratedInvoiceStore(this.getLocator()).getRegistratedInvoiceByInvoiceId(invoice.getId());
+            if (regInvoice == null) {
+                throw new SException(UserMessage.getLocalizedMessage("invoiceNotFound"));
+            }
+
+            // Idi na api i uzmi tu fakturu
+            SettingsBuilder settingsBuilder = new SettingsBuilder();
+            Settings settings = settingsBuilder.getSettings();
+            String apiUrl = settings.getUrlDownloadSalesUbl();
+            HttpURLConnection conn;
+            String urlParams = "invoiceId=" + regInvoice.getSalesInvoiceId();
+            URL url = new URL(apiUrl + "?" + urlParams);
+            try {
+                conn = (HttpURLConnection) url.openConnection();
+            } catch (IOException ex) {
+                logger.error(ex.getMessage());
+                throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
+            }
+
+            // Podesavanje parametara za zahtev
+            conn.setConnectTimeout(10000); // Vreme cekanja na API je 5 sekundi
+            try {
+                conn.setRequestMethod("GET"); // Metoda zahteva je POST
+            } catch (ProtocolException ex) {
+                logger.error(ex.getMessage());
+                throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
+            }
+            conn.setRequestProperty("ApiKey", settings.getKeyAPI()); // ApiKey se salje kroz HTTP zaglavlje
+            conn.setRequestProperty("accept", "*/*"); // ApiKey se salje kroz HTTP zaglavlje
+            int responseCode = conn.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+
+                reader.close();
+
+// Pronalaženje početne i krajnje pozicije Base64 stringa
+                int startIndex = response.indexOf("<env:DocumentPdf mimeCode=\"application/pdf\">") + "<env:DocumentPdf mimeCode=\"application/pdf\">".length();
+                int endIndex = response.indexOf("</env:DocumentPdf>");
+
+// Izdvajanje Base64 stringa
+                String base64String = response.substring(startIndex, endIndex);
+
+                // Dekodiranje Base64 stringa
+                byte[] decodedBytes = Base64.getDecoder().decode(base64String);
+
+// Kreiranje izlaznog fajla
+                File f = new File(INVOICE_PDF_DIRECTORY);
+                if (!(f.exists() && f.isDirectory())) {
+                    f.mkdir();
+                }
+                String filename = "invoice_" + invoice.getDateOfCreate().getYear() + "_" + invoice.getDateOfCreate().getMonthValue() + "_" + invoice.getDateOfCreate().getDayOfMonth() + "__" + invoice.getNumberSign() + "_" + invoice.getDateOfCreate().getYear() + ".pdf";
+
+                String outputPath = INVOICE_PDF_DIRECTORY + "/" + filename;
+                try ( FileOutputStream fos = new FileOutputStream(outputPath)) {
+                    // Upisivanje dekodiranog sadržaja u fajl
+                    fos.write(decodedBytes);
+                }
+
+                return new File(outputPath);
+            } else {
+                String responseMessage;
+                try {
+                    responseMessage = conn.getResponseMessage();
+                } catch (IOException ex) {
+                    logger.error(ex.getMessage());
+                    throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
+                }
+                System.out.println("Response Code: " + responseCode);
+                System.out.println("Response Message: " + responseMessage);
+                try ( BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream()))) {
+                    String responseLine;
+                    StringBuilder response = new StringBuilder();
+                    while ((responseLine = br.readLine()) != null) {
+                        response.append(responseLine.trim());
+                    }
+                    logger.error("Get response from api: " + response.toString());
+                    System.out.println("Get response from api: " + response.toString());
+                    throw new SException(response.toString());
+                } catch (IOException ex) {
+                    logger.error(ex.getMessage());
+                    throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
+                }
+            }
+        } catch (IOException ex) {
+            logger.error(ex.getMessage());
+        } catch (SQLException ex) {
+            logger.error(ex.getMessage());
+        }
+        throw new SException(UserMessage.getLocalizedMessage("invoiceNotFound"));
     }
 }

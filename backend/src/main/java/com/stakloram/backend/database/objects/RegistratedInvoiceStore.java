@@ -24,7 +24,13 @@ public class RegistratedInvoiceStore extends ObjectStore {
 
     @Override
     public RegistratedInvoice createNewObjectToDatabase(BaseModel model) throws SQLException {
+        System.out.println("++++++++++++ createNewObjectToDatabase  +++++++++++++++++++++++");
         RegistratedInvoice object = (RegistratedInvoice) model;
+        System.out.println("object.getInvoiceId(): " + object.getInvoiceId());
+        System.out.println("object.getPurchaseInvoiceId(): " + object.getPurchaseInvoiceId());
+        System.out.println("object.getSalesInvoiceId(): " + object.getSalesInvoiceId());
+        System.out.println("object.getDate(): " + object.getDate());
+        System.out.println("object.getInvoice().getId(): " + object.getInvoice().getId());
         int i = 0;
         PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setInt(++i, object.getInvoiceId());
@@ -64,7 +70,7 @@ public class RegistratedInvoiceStore extends ObjectStore {
     }
 
     @Override
-    public BaseModel getObjectFromResultSet(ResultSet resultSet) throws SQLException {
+    public RegistratedInvoice getObjectFromResultSet(ResultSet resultSet) throws SQLException {
         RegistratedInvoice object = new RegistratedInvoice(resultSet.getLong(this.getPrimaryKey()));
         object.setInvoiceId(resultSet.getInt(this.getTableName() + "_invoiceid"));
         object.setPurchaseInvoiceId(resultSet.getInt(this.getTableName() + "_purchaseinvoiceid"));
@@ -72,5 +78,13 @@ public class RegistratedInvoiceStore extends ObjectStore {
         object.setDate(Helper.convertStringToLocalDateTime(resultSet.getString(this.getTableName() + "_date")));
         object.setInvoice(new Invoice(resultSet.getLong(this.getTableName() + "_invoice_invoice_id")));
         return object;
+    }
+
+    public RegistratedInvoice getRegistratedInvoiceByInvoiceId(Long id) throws SQLException {
+        ResultSet rs = this.getAllObjectsFromDatabase(this.getTableName() + "_invoice_invoice_id=" + id);
+        if (rs.next()) {
+            return this.getObjectFromResultSet(rs);
+        }
+        return null;
     }
 }

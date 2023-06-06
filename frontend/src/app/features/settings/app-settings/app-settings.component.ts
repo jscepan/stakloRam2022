@@ -199,6 +199,10 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
             this.settingsStoreService.getSettings()?.urlImportSalesUbl || '',
             [Validators.required]
           ),
+          urlDownloadSalesUbl: new FormControl(
+            this.settingsStoreService.getSettings()?.urlDownloadSalesUbl || '',
+            [Validators.required]
+          ),
           customizationID: new FormControl(
             this.settingsStoreService.getSettings()?.customizationID || '',
             [Validators.required]

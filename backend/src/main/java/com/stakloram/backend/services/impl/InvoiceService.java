@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import static com.stakloram.backend.constants.Constants.INVOICE_PDF_DIRECTORY;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Invoice;
 import com.stakloram.backend.exception.SException;
@@ -17,6 +18,7 @@ import com.stakloram.backend.services.impl.builder.impl.IncomeBuilder;
 import com.stakloram.backend.services.impl.builder.impl.InvoiceBuilder;
 import com.stakloram.backend.services.impl.builder.impl.WorkOrderBuilder;
 import com.stakloram.backend.util.DataChecker;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Set;
 import org.springframework.stereotype.Service;
@@ -171,5 +173,10 @@ public class InvoiceService extends ServiceModel {
 
     public boolean registrationOfInvoice(String invoiceOID) throws SException {
         return ((InvoiceBuilder) this.baseBuilder).registrationOfInvoiceUPLOAD(invoiceOID);
+    }
+
+    public File downloadFile(String invoiceOID) throws SException {
+        Invoice invoice = (Invoice) this.getObjectByOID(invoiceOID);
+        return ((InvoiceBuilder) this.baseBuilder).getPDFForRegistratedInvoice(invoice);
     }
 }
