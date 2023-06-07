@@ -24,13 +24,7 @@ public class RegistratedInvoiceStore extends ObjectStore {
 
     @Override
     public RegistratedInvoice createNewObjectToDatabase(BaseModel model) throws SQLException {
-        System.out.println("++++++++++++ createNewObjectToDatabase  +++++++++++++++++++++++");
         RegistratedInvoice object = (RegistratedInvoice) model;
-        System.out.println("object.getInvoiceId(): " + object.getInvoiceId());
-        System.out.println("object.getPurchaseInvoiceId(): " + object.getPurchaseInvoiceId());
-        System.out.println("object.getSalesInvoiceId(): " + object.getSalesInvoiceId());
-        System.out.println("object.getDate(): " + object.getDate());
-        System.out.println("object.getInvoice().getId(): " + object.getInvoice().getId());
         int i = 0;
         PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setInt(++i, object.getInvoiceId());
