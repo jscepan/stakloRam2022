@@ -57,7 +57,7 @@ public class ConnectionToDatabase {
         if (DATABASE_URL == null || DATABASE_NAME == null || USERNAME == null || PASSWORD == null || DATABASE_DRIVER == null) {
             setParameters();
         }
-        config.setJdbcUrl(DATABASE_URL + DATABASE_NAME);
+        config.setJdbcUrl(DATABASE_URL + DATABASE_NAME + "?autoReconnect=true");
         config.setUsername(USERNAME);
         config.setPassword(PASSWORD);
         config.setMinimumIdle(5); // Minimalni broj aktivnih veza
