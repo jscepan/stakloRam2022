@@ -1,8 +1,8 @@
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -43,7 +43,7 @@ export interface DialogData {
 export class BuyerCreateEditComponent implements OnInit, OnDestroy {
   private subs: SubscriptionManager = new SubscriptionManager();
 
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   buyerOID!: string;
   isEdit: boolean = false;
 
@@ -53,7 +53,7 @@ export class BuyerCreateEditComponent implements OnInit, OnDestroy {
   selectedCity?: CityModel;
   cities?: Observable<CityModel[]> = this.listEntities.entities;
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
-  searchControlCity: FormControl = new FormControl();
+  searchControlCity: UntypedFormControl = new UntypedFormControl();
   compareFn: (f1: BaseModel, f2: BaseModel) => boolean = compareByValue;
 
   private inputSearchControlCitySubscription!: Subscription;
@@ -106,20 +106,20 @@ export class BuyerCreateEditComponent implements OnInit, OnDestroy {
   }
 
   initializeCreate(): void {
-    this.formGroup = new FormGroup({
-      type: new FormControl(this.buyerTypesOptions[0].value, [
+    this.formGroup = new UntypedFormGroup({
+      type: new UntypedFormControl(this.buyerTypesOptions[0].value, [
         Validators.required,
       ]),
-      name: new FormControl('', [Validators.required]),
-      address: new FormControl('', [Validators.required]),
-      addressContact: new FormControl('', []),
-      contactPerson: new FormControl('', []),
-      phoneNumberFix: new FormControl('', []),
-      phoneNumberMobile: new FormControl('', []),
-      email: new FormControl('', [Validators.email]),
-      city: new FormControl('', [Validators.required]),
-      jbkjs: new FormControl('', []),
-      account: new FormControl('', []),
+      name: new UntypedFormControl('', [Validators.required]),
+      address: new UntypedFormControl('', [Validators.required]),
+      addressContact: new UntypedFormControl('', []),
+      contactPerson: new UntypedFormControl('', []),
+      phoneNumberFix: new UntypedFormControl('', []),
+      phoneNumberMobile: new UntypedFormControl('', []),
+      email: new UntypedFormControl('', [Validators.email]),
+      city: new UntypedFormControl('', [Validators.required]),
+      jbkjs: new UntypedFormControl('', []),
+      account: new UntypedFormControl('', []),
     });
     this.typeChangeHandler(this.formGroup.get('type')?.value);
   }
@@ -129,17 +129,17 @@ export class BuyerCreateEditComponent implements OnInit, OnDestroy {
       .getEntityByOid(this.buyerOID)
       .subscribe((buyer) => {
         if (buyer) {
-          this.formGroup = new FormGroup({
-            type: new FormControl(buyer.type, [Validators.required]),
-            name: new FormControl(buyer.name, [Validators.required]),
-            address: new FormControl(buyer.address, [Validators.required]),
-            contactPerson: new FormControl(buyer.contactPerson, []),
-            phoneNumberFix: new FormControl(buyer.phoneNumberFix, []),
-            phoneNumberMobile: new FormControl(buyer.phoneNumberMobile, []),
-            email: new FormControl(buyer.email, [Validators.email]),
-            city: new FormControl(buyer.city, [Validators.required]),
-            jbkjs: new FormControl(buyer.jbkjs, []),
-            account: new FormControl(buyer.account, []),
+          this.formGroup = new UntypedFormGroup({
+            type: new UntypedFormControl(buyer.type, [Validators.required]),
+            name: new UntypedFormControl(buyer.name, [Validators.required]),
+            address: new UntypedFormControl(buyer.address, [Validators.required]),
+            contactPerson: new UntypedFormControl(buyer.contactPerson, []),
+            phoneNumberFix: new UntypedFormControl(buyer.phoneNumberFix, []),
+            phoneNumberMobile: new UntypedFormControl(buyer.phoneNumberMobile, []),
+            email: new UntypedFormControl(buyer.email, [Validators.email]),
+            city: new UntypedFormControl(buyer.city, [Validators.required]),
+            jbkjs: new UntypedFormControl(buyer.jbkjs, []),
+            account: new UntypedFormControl(buyer.account, []),
           });
           this.selectedCity = buyer.city;
           this.typeChangeHandler(
@@ -207,17 +207,17 @@ export class BuyerCreateEditComponent implements OnInit, OnDestroy {
       case 'COMPANY':
         this.formGroup.addControl(
           'maticalNumber',
-          new FormControl(maticalNumber, [Validators.required])
+          new UntypedFormControl(maticalNumber, [Validators.required])
         );
         this.formGroup.addControl(
           'pib',
-          new FormControl(pib, [Validators.required])
+          new UntypedFormControl(pib, [Validators.required])
         );
 
         this.formGroup.removeControl('gender');
         break;
       case 'PERSON':
-        this.formGroup.addControl('gender', new FormControl(gender, []));
+        this.formGroup.addControl('gender', new UntypedFormControl(gender, []));
         this.formGroup.removeControl('maticalNumber');
         this.formGroup.removeControl('pib');
         break;

@@ -10,7 +10,7 @@ import {
   SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -28,7 +28,7 @@ export class SearchInputComponent implements OnInit, OnDestroy, OnChanges {
   @Input() minCharacters: number = 1;
   @Output() changeEvent: EventEmitter<string> = new EventEmitter();
 
-  searchInput: FormControl = new FormControl();
+  searchInput: UntypedFormControl = new UntypedFormControl();
 
   private inputChangeSubscription!: Subscription;
 

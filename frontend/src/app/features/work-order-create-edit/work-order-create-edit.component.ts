@@ -9,9 +9,9 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
@@ -70,7 +70,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
 
   workOrderOID: string | null = null;
   workOrder!: WorkOrderModel;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   isEdit: boolean = false;
   settings?: AppSettings;
   isBuyerSelected?: boolean;
@@ -80,7 +80,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
 
   buyersEntities: Observable<BuyerModel[]> = this.listEntities.entities;
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
-  searchControl: FormControl = new FormControl();
+  searchControl: UntypedFormControl = new UntypedFormControl();
   selectedBuyer?: BuyerModel;
   compareFn: (f1: BaseModel, f2: BaseModel) => boolean = compareByValue;
 
@@ -127,7 +127,7 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   selectedBuyerOnChange?: BuyerModel;
   buyersEntitiesOnChange: Observable<BuyerModel[]> = this.listEntities.entities;
   isLoadingOnChange?: Observable<boolean> = this.listEntities.isLoading;
-  searchControlOnChange: FormControl = new FormControl();
+  searchControlOnChange: UntypedFormControl = new UntypedFormControl();
 
   private inputSearchControlSubscription!: Subscription;
   private inputSearchControlOnChangeSubscription!: Subscription;
@@ -201,39 +201,39 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
   }
 
   initializeCreate(): void {
-    this.formGroup = new FormGroup({
-      number: new FormControl(0, [Validators.required]),
-      buyer: new FormControl('', [Validators.required]),
-      dateOfCreate: new FormControl(new Date().toISOString().substring(0, 10), [
+    this.formGroup = new UntypedFormGroup({
+      number: new UntypedFormControl(0, [Validators.required]),
+      buyer: new UntypedFormControl('', [Validators.required]),
+      dateOfCreate: new UntypedFormControl(new Date().toISOString().substring(0, 10), [
         Validators.required,
       ]),
-      placeOfIssue: new FormControl(
+      placeOfIssue: new UntypedFormControl(
         this.settings?.workOrderPlaceOfIssue || '',
         [Validators.required]
       ),
-      forPerson: new FormControl(''),
-      description: new FormControl(''),
-      note: new FormControl(''),
-      workOrderItems: new FormArray([]),
+      forPerson: new UntypedFormControl(''),
+      description: new UntypedFormControl(''),
+      note: new UntypedFormControl(''),
+      workOrderItems: new UntypedFormArray([]),
     });
     this.setWorkOrderNumber();
   }
 
   initializeEdit(): void {
     this.selectedBuyer = this.workOrder.buyer;
-    this.formGroup = new FormGroup({
-      number: new FormControl(this.workOrder.number, [Validators.required]),
-      buyer: new FormControl(this.selectedBuyer, [Validators.required]),
-      dateOfCreate: new FormControl(this.workOrder.dateOfCreate, [
+    this.formGroup = new UntypedFormGroup({
+      number: new UntypedFormControl(this.workOrder.number, [Validators.required]),
+      buyer: new UntypedFormControl(this.selectedBuyer, [Validators.required]),
+      dateOfCreate: new UntypedFormControl(this.workOrder.dateOfCreate, [
         Validators.required,
       ]),
-      placeOfIssue: new FormControl(this.workOrder.placeOfIssue, [
+      placeOfIssue: new UntypedFormControl(this.workOrder.placeOfIssue, [
         Validators.required,
       ]),
-      forPerson: new FormControl(this.workOrder.forPerson, []),
-      description: new FormControl(this.workOrder.description, []),
-      note: new FormControl(this.workOrder.note, []),
-      workOrderItems: new FormArray([]),
+      forPerson: new UntypedFormControl(this.workOrder.forPerson, []),
+      description: new UntypedFormControl(this.workOrder.description, []),
+      note: new UntypedFormControl(this.workOrder.note, []),
+      workOrderItems: new UntypedFormArray([]),
     });
     this.workOrder.workOrderItems.forEach((item, index) =>
       this.addNewItem(item)
@@ -241,27 +241,27 @@ export class WorkOrderCreateEditComponent implements OnInit, OnDestroy {
     this.workOrder.images.forEach((item, index) => this.addNewImage(item));
   }
 
-  get workOrderItemsFormArr(): FormArray {
-    return this.formGroup.get('workOrderItems') as FormArray;
+  get workOrderItemsFormArr(): UntypedFormArray {
+    return this.formGroup.get('workOrderItems') as UntypedFormArray;
   }
 
   addNewItem(workOrderItem?: WorkOrderItemModel): void {
     this.workOrderItemsFormArr.push(
-      new FormGroup({
-        oid: new FormControl(workOrderItem?.oid || ''),
-        description: new FormControl(workOrderItem?.description || '', [
+      new UntypedFormGroup({
+        oid: new UntypedFormControl(workOrderItem?.oid || ''),
+        description: new UntypedFormControl(workOrderItem?.description || '', [
           Validators.required,
         ]),
-        uom: new FormControl(workOrderItem?.uom || this.uomOptions[0].value, [
+        uom: new UntypedFormControl(workOrderItem?.uom || this.uomOptions[0].value, [
           Validators.required,
         ]),
-        dimension1: new FormControl(workOrderItem?.dimension1 || 0),
-        dimension2: new FormControl(workOrderItem?.dimension2 || 0),
-        quantity: new FormControl(workOrderItem?.quantity || 0),
-        sumQuantity: new FormControl(workOrderItem?.sumQuantity || 0, [
+        dimension1: new UntypedFormControl(workOrderItem?.dimension1 || 0),
+        dimension2: new UntypedFormControl(workOrderItem?.dimension2 || 0),
+        quantity: new UntypedFormControl(workOrderItem?.quantity || 0),
+        sumQuantity: new UntypedFormControl(workOrderItem?.sumQuantity || 0, [
           Validators.required,
         ]),
-        note: new FormControl(workOrderItem?.note || ''),
+        note: new UntypedFormControl(workOrderItem?.note || ''),
       })
     );
     setTimeout(() => {

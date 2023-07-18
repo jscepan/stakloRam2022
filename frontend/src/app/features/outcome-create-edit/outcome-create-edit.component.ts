@@ -1,5 +1,5 @@
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
 import { GlobalService } from 'src/app/shared/services/global.service';
@@ -30,12 +30,12 @@ export class OutcomeCreateEditComponent implements OnInit, OnDestroy {
   public subs: SubscriptionManager = new SubscriptionManager();
 
   outcomeOID!: string;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   isEdit: boolean = false;
 
   buyersEntities: Observable<BuyerModel[]> = this.listEntities.entities;
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
-  searchControl: FormControl = new FormControl();
+  searchControl: UntypedFormControl = new UntypedFormControl();
   selectedBuyer?: BuyerModel;
   compareFn: (f1: BaseModel, f2: BaseModel) => boolean = compareByValue;
 
@@ -70,13 +70,13 @@ export class OutcomeCreateEditComponent implements OnInit, OnDestroy {
   }
 
   initializeCreate(): void {
-    this.formGroup = new FormGroup({
-      date: new FormControl(new Date().toISOString().substring(0, 10), [
+    this.formGroup = new UntypedFormGroup({
+      date: new UntypedFormControl(new Date().toISOString().substring(0, 10), [
         Validators.required,
       ]),
-      amount: new FormControl(0, [Validators.required, Validators.min(0)]),
-      comment: new FormControl('', []),
-      buyer: new FormControl('', Validators.required),
+      amount: new UntypedFormControl(0, [Validators.required, Validators.min(0)]),
+      comment: new UntypedFormControl('', []),
+      buyer: new UntypedFormControl('', Validators.required),
     });
   }
 
@@ -86,14 +86,14 @@ export class OutcomeCreateEditComponent implements OnInit, OnDestroy {
       .subscribe((outcome) => {
         if (outcome) {
           this.selectedBuyer = outcome.buyer;
-          this.formGroup = new FormGroup({
-            date: new FormControl(outcome.date, [Validators.required]),
-            amount: new FormControl(outcome.amount, [
+          this.formGroup = new UntypedFormGroup({
+            date: new UntypedFormControl(outcome.date, [Validators.required]),
+            amount: new UntypedFormControl(outcome.amount, [
               Validators.required,
               Validators.min(0),
             ]),
-            comment: new FormControl(outcome.comment, []),
-            buyer: new FormControl(this.selectedBuyer, Validators.required),
+            comment: new UntypedFormControl(outcome.comment, []),
+            buyer: new UntypedFormControl(this.selectedBuyer, Validators.required),
           });
         }
       });

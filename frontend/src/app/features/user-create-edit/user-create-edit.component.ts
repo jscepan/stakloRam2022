@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
@@ -30,7 +30,7 @@ export interface DialogData {
 export class UserCreateEditComponent implements OnInit, OnDestroy {
   private subs: SubscriptionManager = new SubscriptionManager();
 
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   user!: UserModel;
   userOID!: string;
   isEdit: boolean = false;
@@ -77,27 +77,27 @@ export class UserCreateEditComponent implements OnInit, OnDestroy {
   }
 
   initializeCreate(): void {
-    this.formGroup = new FormGroup({
-      displayName: new FormControl('', [
+    this.formGroup = new UntypedFormGroup({
+      displayName: new UntypedFormControl('', [
         Validators.required,
         Validators.minLength(3),
       ]),
-      username: new FormControl('', [
+      username: new UntypedFormControl('', [
         Validators.required,
         Validators.minLength(3),
       ]),
-      password: new FormControl('', [
+      password: new UntypedFormControl('', [
         Validators.required,
         Validators.minLength(3),
       ]),
-      fullName: new FormControl('', [
+      fullName: new UntypedFormControl('', [
         Validators.required,
         Validators.minLength(3),
       ]),
-      email: new FormControl('', []),
-      enabled: new FormControl(true, [Validators.required]),
-      roles: new FormControl('', [Validators.required]),
-      language: new FormControl(this.languages[0], [Validators.required]),
+      email: new UntypedFormControl('', []),
+      enabled: new UntypedFormControl(true, [Validators.required]),
+      roles: new UntypedFormControl('', [Validators.required]),
+      language: new UntypedFormControl(this.languages[0], [Validators.required]),
     });
   }
 
@@ -105,23 +105,23 @@ export class UserCreateEditComponent implements OnInit, OnDestroy {
     this.webService.getEntityByOid(this.userOID).subscribe((user) => {
       if (user) {
         this.selected = user.roles;
-        this.formGroup = new FormGroup({
-          displayName: new FormControl(user.displayName, [
+        this.formGroup = new UntypedFormGroup({
+          displayName: new UntypedFormControl(user.displayName, [
             Validators.required,
             Validators.minLength(3),
           ]),
-          username: new FormControl(user.username, [
+          username: new UntypedFormControl(user.username, [
             Validators.required,
             Validators.minLength(3),
           ]),
-          fullName: new FormControl(user.fullName, [
+          fullName: new UntypedFormControl(user.fullName, [
             Validators.required,
             Validators.minLength(3),
           ]),
-          email: new FormControl(user.email, []),
-          enabled: new FormControl(user.enabled, [Validators.required]),
-          roles: new FormControl(user.roles, [Validators.required]),
-          language: new FormControl(user.language, [Validators.required]),
+          email: new UntypedFormControl(user.email, []),
+          enabled: new UntypedFormControl(user.enabled, [Validators.required]),
+          roles: new UntypedFormControl(user.roles, [Validators.required]),
+          language: new UntypedFormControl(user.language, [Validators.required]),
         });
       }
     });

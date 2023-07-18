@@ -1,9 +1,9 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -71,7 +71,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   invoice!: InvoiceModel;
   preInvoice!: InvoiceModel;
   advanceInvoice!: InvoiceModel;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   isEdit: boolean = false;
   typesOptions: EnumValueModel[] = INVOICE_TYPES;
   uomOptions: EnumValueModel[] = UOM_TYPES;
@@ -81,7 +81,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
 
   buyersEntities: Observable<BuyerModel[]> = this.listEntities.entities;
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
-  searchControl: FormControl = new FormControl();
+  searchControl: UntypedFormControl = new UntypedFormControl();
   selectedBuyer?: BuyerModel;
   compareFn: (f1: BaseModel, f2: BaseModel) => boolean = compareByValue;
   isInvoiceTaxFree: boolean = false;
@@ -90,7 +90,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   selectedBuyerOnChange?: BuyerModel;
   buyersEntitiesOnChange: Observable<BuyerModel[]> = this.listEntities.entities;
   isLoadingOnChange?: Observable<boolean> = this.listEntities.isLoading;
-  searchControlOnChange: FormControl = new FormControl();
+  searchControlOnChange: UntypedFormControl = new UntypedFormControl();
 
   private inputSearchControlSubscription!: Subscription;
   private inputSearchControlOnChangeSubscription!: Subscription;
@@ -126,18 +126,18 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   getGrossPrice(index: number): AbstractControl | null {
     return this.invoiceItemsFormArr.controls[index].get('grossPrice');
   }
-  getWorkOrderItemsFormArr(invoiceItemIndex: number): FormArray {
+  getWorkOrderItemsFormArr(invoiceItemIndex: number): UntypedFormArray {
     return this.invoiceItemsFormArr.controls[invoiceItemIndex].get(
       'workOrderItems'
-    ) as FormArray;
+    ) as UntypedFormArray;
   }
 
-  get invoiceItemsFormArr(): FormArray {
-    return this.formGroup.get('invoiceItems') as FormArray;
+  get invoiceItemsFormArr(): UntypedFormArray {
+    return this.formGroup.get('invoiceItems') as UntypedFormArray;
   }
 
-  get notesFormArr(): FormArray {
-    return this.formGroup.get('notes') as FormArray;
+  get notesFormArr(): UntypedFormArray {
+    return this.formGroup.get('notes') as UntypedFormArray;
   }
 
   constructor(
@@ -251,72 +251,72 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   initializeCreate(isFinalInvoice: boolean = false): void {
     if (this.isEdit) this.selectedBuyer = this.invoice.buyer;
 
-    this.formGroup = new FormGroup({
-      type: new FormControl(
+    this.formGroup = new UntypedFormGroup({
+      type: new UntypedFormControl(
         isFinalInvoice
           ? this.typesOptions[5].value
           : this.invoice?.type || this.typesOptions[0].value,
         [Validators.required]
       ),
-      number: new FormControl(this.invoice?.number || 0, [Validators.required]),
-      dateOfCreate: new FormControl(
+      number: new UntypedFormControl(this.invoice?.number || 0, [Validators.required]),
+      dateOfCreate: new UntypedFormControl(
         this.invoice?.dateOfCreate || new Date().toISOString().substring(0, 10),
         [Validators.required]
       ),
-      dateOfTurnover: new FormControl(
+      dateOfTurnover: new UntypedFormControl(
         this.invoice?.dateOfTurnover ||
           new Date().toISOString().substring(0, 10),
         [Validators.required]
       ),
-      dateOfMaturity: new FormControl(
+      dateOfMaturity: new UntypedFormControl(
         this.invoice?.dateOfMaturity ||
           new Date().toISOString().substring(0, 10),
         [Validators.required]
       ),
-      placeOfIssue: new FormControl(
+      placeOfIssue: new UntypedFormControl(
         this.invoice?.placeOfIssue || this.settings?.invoicePlaceOfIssue || '',
         [Validators.required]
       ),
-      methodOfPayment: new FormControl(
+      methodOfPayment: new UntypedFormControl(
         this.invoice?.methodOfPayment || this.settings?.invoiceMethodOfPayment,
         [Validators.required]
       ),
-      comment: new FormControl(this.invoice?.comment || '', []),
-      netAmount: new FormControl(this.invoice?.netAmount || 0, [
+      comment: new UntypedFormControl(this.invoice?.comment || '', []),
+      netAmount: new UntypedFormControl(this.invoice?.netAmount || 0, [
         Validators.required,
         Validators.min(0.01),
       ]),
-      vatRate: new FormControl(this.invoice?.vatRate || 0, [
+      vatRate: new UntypedFormControl(this.invoice?.vatRate || 0, [
         Validators.required,
       ]),
-      vatAmount: new FormControl(this.invoice?.vatAmount || 0, [
+      vatAmount: new UntypedFormControl(this.invoice?.vatAmount || 0, [
         Validators.required,
       ]),
-      grossAmount: new FormControl(this.invoice?.grossAmount || 0, [
+      grossAmount: new UntypedFormControl(this.invoice?.grossAmount || 0, [
         Validators.required,
         Validators.min(0.01),
       ]),
-      currency: new FormControl(
+      currency: new UntypedFormControl(
         this.invoice?.currency || this.settings?.invoiceCurrency || '',
         [Validators.required]
       ),
-      country: new FormControl(
+      country: new UntypedFormControl(
         this.invoice?.country || this.settings?.invoiceCountry || '',
         [Validators.required]
       ),
-      buyer: new FormControl(this.selectedBuyer || '', [Validators.required]),
-      invoiceItems: new FormArray([]),
-      notes: new FormArray([]),
-      preInvoiceOid: new FormControl(this.preInvoice?.oid),
-      advanceInvoiceOid: new FormControl(this.advanceInvoice?.oid),
-      advancePayAmount: new FormControl(
+      buyer: new UntypedFormControl(this.selectedBuyer || '', [Validators.required]),
+      invoiceItems: new UntypedFormArray([]),
+      notes: new UntypedFormArray([]),
+      preInvoiceOid: new UntypedFormControl(this.preInvoice?.oid),
+      advanceInvoiceOid: new UntypedFormControl(this.advanceInvoice?.oid),
+      advancePayAmount: new UntypedFormControl(
         this.invoice?.advancePayAmount || this.advanceInvoice?.grossAmount || 0
       ),
     });
     if (this.formGroup.get('type')?.value === 'CASH') {
       this.formGroup.addControl(
         'numberOfCashBill',
-        new FormControl(this.invoice.numberOfCashBill || '', [
+        new UntypedFormControl(this.invoice.numberOfCashBill || '', [
           Validators.required,
         ])
       );
@@ -388,41 +388,41 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
 
   addNewItem(invoiceItem?: InvoiceItemModel): void {
     this.invoiceItemsFormArr.push(
-      new FormGroup({
-        oid: new FormControl(invoiceItem?.oid || ''),
-        description: new FormControl(invoiceItem?.description || '', [
+      new UntypedFormGroup({
+        oid: new UntypedFormControl(invoiceItem?.oid || ''),
+        description: new UntypedFormControl(invoiceItem?.description || '', [
           Validators.required,
         ]),
-        uom: new FormControl(invoiceItem?.uom || this.uomOptions[0].value, [
+        uom: new UntypedFormControl(invoiceItem?.uom || this.uomOptions[0].value, [
           Validators.required,
         ]),
-        quantity: new FormControl(invoiceItem?.quantity || 0, [
-          Validators.required,
-          Validators.min(0),
-        ]),
-        pricePerUnit: new FormControl(invoiceItem?.pricePerUnit || 0, [
+        quantity: new UntypedFormControl(invoiceItem?.quantity || 0, [
           Validators.required,
           Validators.min(0),
         ]),
-        netPrice: new FormControl(invoiceItem?.netPrice || 0, [
+        pricePerUnit: new UntypedFormControl(invoiceItem?.pricePerUnit || 0, [
           Validators.required,
           Validators.min(0),
         ]),
-        vatRate: new FormControl(
+        netPrice: new UntypedFormControl(invoiceItem?.netPrice || 0, [
+          Validators.required,
+          Validators.min(0),
+        ]),
+        vatRate: new UntypedFormControl(
           invoiceItem
             ? invoiceItem.vatRate
             : (this.isInvoiceTaxFree ? 0 : this.settings?.invoiceVatRate) || 0,
           [Validators.required, Validators.min(0)]
         ),
-        vatAmount: new FormControl(invoiceItem?.vatAmount || 0, [
+        vatAmount: new UntypedFormControl(invoiceItem?.vatAmount || 0, [
           Validators.required,
           Validators.min(0),
         ]),
-        grossPrice: new FormControl(invoiceItem?.grossPrice || 0, [
+        grossPrice: new UntypedFormControl(invoiceItem?.grossPrice || 0, [
           Validators.required,
           Validators.min(0),
         ]),
-        workOrderItems: new FormArray([]),
+        workOrderItems: new UntypedFormArray([]),
       })
     );
     setTimeout(() => {
@@ -514,16 +514,16 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
   ): void {
     workOrderItems.forEach((workOrderItem) => {
       this.getWorkOrderItemsFormArr(invoiceItemIndex).push(
-        new FormGroup({
-          oid: new FormControl(workOrderItem.oid),
-          description: new FormControl(workOrderItem.description),
-          uom: new FormControl(workOrderItem.uom),
-          dimension1: new FormControl(workOrderItem.dimension1),
-          dimension2: new FormControl(workOrderItem.dimension2),
-          dimension3: new FormControl(workOrderItem.dimension3),
-          quantity: new FormControl(workOrderItem.quantity),
-          sumQuantity: new FormControl(workOrderItem.sumQuantity),
-          note: new FormControl(workOrderItem.note),
+        new UntypedFormGroup({
+          oid: new UntypedFormControl(workOrderItem.oid),
+          description: new UntypedFormControl(workOrderItem.description),
+          uom: new UntypedFormControl(workOrderItem.uom),
+          dimension1: new UntypedFormControl(workOrderItem.dimension1),
+          dimension2: new UntypedFormControl(workOrderItem.dimension2),
+          dimension3: new UntypedFormControl(workOrderItem.dimension3),
+          quantity: new UntypedFormControl(workOrderItem.quantity),
+          sumQuantity: new UntypedFormControl(workOrderItem.sumQuantity),
+          note: new UntypedFormControl(workOrderItem.note),
         })
       );
     });
@@ -680,7 +680,7 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
         case 'CASH':
           this.formGroup.addControl(
             'numberOfCashBill',
-            new FormControl('', [Validators.required])
+            new UntypedFormControl('', [Validators.required])
           );
           this.formGroup
             .get('currency')
@@ -1088,10 +1088,10 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
 
   addNote(note?: NoteModel): void {
     this.notesFormArr.push(
-      new FormGroup({
-        oid: new FormControl(note?.oid || ''),
-        name: new FormControl(note?.name || '', [Validators.required]),
-        description: new FormControl(note?.description || '', [
+      new UntypedFormGroup({
+        oid: new UntypedFormControl(note?.oid || ''),
+        name: new UntypedFormControl(note?.name || '', [Validators.required]),
+        description: new UntypedFormControl(note?.description || '', [
           Validators.required,
         ]),
       })

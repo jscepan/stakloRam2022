@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'src/app/language.service';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
@@ -20,7 +20,7 @@ import { UserWebService } from 'src/app/web-services/user.web-service';
 export class UserProfileComponent implements OnInit, OnDestroy {
   private subs: SubscriptionManager = new SubscriptionManager();
 
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   user?: UserModel | null;
   languages = this.languageService.supportedLanguages;
 
@@ -34,18 +34,18 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.user = this.authStoreService.user;
-    this.formGroup = new FormGroup({
-      username: new FormControl(this.user?.username || '', [
+    this.formGroup = new UntypedFormGroup({
+      username: new UntypedFormControl(this.user?.username || '', [
         Validators.required,
       ]),
-      fullName: new FormControl(this.user?.fullName || '', [
+      fullName: new UntypedFormControl(this.user?.fullName || '', [
         Validators.required,
       ]),
-      email: new FormControl(this.user?.email || '', [
+      email: new UntypedFormControl(this.user?.email || '', [
         Validators.required,
         Validators.email,
       ]),
-      language: new FormControl(this.user?.language || this.languages[0], [
+      language: new UntypedFormControl(this.user?.language || this.languages[0], [
         Validators.required,
       ]),
     });

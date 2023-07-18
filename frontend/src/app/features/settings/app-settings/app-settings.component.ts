@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
@@ -20,10 +20,10 @@ import { SubscriptionManager } from 'src/app/shared/services/subscription.manage
 export class AppSettingsComponent implements OnInit, OnDestroy {
   public subs: SubscriptionManager = new SubscriptionManager();
 
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
 
-  get invoiceForeignNotesFormArr(): FormArray {
-    return this.formGroup.get('invoiceForeignNotes') as FormArray;
+  get invoiceForeignNotesFormArr(): UntypedFormArray {
+    return this.formGroup.get('invoiceForeignNotes') as UntypedFormArray;
   }
 
   constructor(
@@ -37,314 +37,314 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.settingsStoreService.dataLoaded$.subscribe((isLoaded) => {
       if (isLoaded) {
-        this.formGroup = new FormGroup({
-          companyEmail: new FormControl(
+        this.formGroup = new UntypedFormGroup({
+          companyEmail: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.companyEmail || '',
             [Validators.required]
           ),
-          companyWebsite: new FormControl(
+          companyWebsite: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.companyWebsite || '',
             []
           ),
-          invoiceMethodOfPayment: new FormControl(
+          invoiceMethodOfPayment: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.invoiceMethodOfPayment ||
               '',
             [Validators.required]
           ),
-          invoiceMethodOfPaymentForCashBill: new FormControl(
+          invoiceMethodOfPaymentForCashBill: new UntypedFormControl(
             this.settingsStoreService.getSettings()
               ?.invoiceMethodOfPaymentForCashBill || '',
             [Validators.required]
           ),
-          invoiceTaxFreeText: new FormControl(
+          invoiceTaxFreeText: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.invoiceTaxFreeText || '',
             [Validators.required]
           ),
-          invoicePlaceOfIssue: new FormControl(
+          invoicePlaceOfIssue: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.invoicePlaceOfIssue || '',
             [Validators.required]
           ),
-          invoiceCurrency: new FormControl(
+          invoiceCurrency: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.invoiceCurrency || '',
             [Validators.required]
           ),
-          invoiceCountry: new FormControl(
+          invoiceCountry: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.invoiceCountry || '',
             [Validators.required]
           ),
-          invoiceVatRate: new FormControl(
+          invoiceVatRate: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.invoiceVatRate || 0,
             [Validators.required]
           ),
-          invoiceCompanyName: new FormControl(
+          invoiceCompanyName: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.invoiceCompanyName || '',
             [Validators.required]
           ),
-          invoiceCompanyStreet: new FormControl(
+          invoiceCompanyStreet: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.invoiceCompanyStreet || '',
             [Validators.required]
           ),
-          invoiceZipCodeCity: new FormControl(
+          invoiceZipCodeCity: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.invoiceZipCodeCity || '',
             [Validators.required]
           ),
-          invoiceContactsPhoneFax: new FormControl(
+          invoiceContactsPhoneFax: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.invoiceContactsPhoneFax ||
               '',
             [Validators.required]
           ),
-          invoiceCompanyDescription: new FormControl(
+          invoiceCompanyDescription: new UntypedFormControl(
             this.settingsStoreService.getSettings()
               ?.invoiceCompanyDescription || '',
             [Validators.required]
           ),
-          invoiceBankAccounts: new FormControl(
+          invoiceBankAccounts: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.invoiceBankAccounts || '',
             [Validators.required]
           ),
-          invoiceComplaints: new FormControl(
+          invoiceComplaints: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.invoiceComplaints || '',
             [Validators.required]
           ),
-          invoiceForeignNote: new FormControl(
+          invoiceForeignNote: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.invoiceForeignNote || '',
             [Validators.required]
           ),
-          invoiceForeignNotes: new FormArray([]),
-          qrCodeShowOnInvoice: new FormControl(
+          invoiceForeignNotes: new UntypedFormArray([]),
+          qrCodeShowOnInvoice: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.qrCodeShowOnInvoice,
             [Validators.required]
           ),
-          qrCodeIdentCode: new FormControl(
+          qrCodeIdentCode: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.qrCodeIdentCode || '',
             [Validators.required]
           ),
-          qrCodeVersion: new FormControl(
+          qrCodeVersion: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.qrCodeVersion || '',
             [Validators.required]
           ),
-          qrCodeSignSet: new FormControl(
+          qrCodeSignSet: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.qrCodeSignSet || '',
             [Validators.required]
           ),
-          qrCodeAccountNumber: new FormControl(
+          qrCodeAccountNumber: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.qrCodeAccountNumber || '',
             [Validators.required]
           ),
-          qrCodeCompanyName: new FormControl(
+          qrCodeCompanyName: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.qrCodeCompanyName || '',
             [Validators.required]
           ),
-          qrCodeCurrency: new FormControl(
+          qrCodeCurrency: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.qrCodeCurrency || '',
             [Validators.required]
           ),
-          qrCodePayingCodePerson: new FormControl(
+          qrCodePayingCodePerson: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.qrCodePayingCodePerson ||
               '',
             [Validators.required]
           ),
-          qrCodePayingCodeCompany: new FormControl(
+          qrCodePayingCodeCompany: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.qrCodePayingCodeCompany ||
               '',
             [Validators.required]
           ),
-          qrCodePayingPurpose: new FormControl(
+          qrCodePayingPurpose: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.qrCodePayingPurpose || '',
             [Validators.required]
           ),
-          termoizolacGlassMinArea: new FormControl(
+          termoizolacGlassMinArea: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.termoizolacGlassMinArea ||
               0,
             [Validators.required]
           ),
-          constructionMeasureCM: new FormControl(
+          constructionMeasureCM: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.constructionMeasureCM || 0,
             [Validators.required]
           ),
-          workOrderPlaceOfIssue: new FormControl(
+          workOrderPlaceOfIssue: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.workOrderPlaceOfIssue ||
               '',
             [Validators.required]
           ),
-          workOrderCompanyDescription: new FormControl(
+          workOrderCompanyDescription: new UntypedFormControl(
             this.settingsStoreService.getSettings()
               ?.workOrderCompanyDescription || '',
             [Validators.required]
           ),
-          workOrderHeadingLine1: new FormControl(
+          workOrderHeadingLine1: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.workOrderHeadingLine1 ||
               '',
             [Validators.required]
           ),
-          workOrderHeadingLine2: new FormControl(
+          workOrderHeadingLine2: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.workOrderHeadingLine2 ||
               '',
             [Validators.required]
           ),
-          workOrderHeadingLine3: new FormControl(
+          workOrderHeadingLine3: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.workOrderHeadingLine3 ||
               '',
             [Validators.required]
           ),
-          keyAPI: new FormControl(
+          keyAPI: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.keyAPI || '',
             [Validators.required]
           ),
-          requestIDcharsNumber: new FormControl(
+          requestIDcharsNumber: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.requestIDcharsNumber || 0,
             [Validators.required]
           ),
-          urlImportSalesUbl: new FormControl(
+          urlImportSalesUbl: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.urlImportSalesUbl || '',
             [Validators.required]
           ),
-          urlDownloadSalesUbl: new FormControl(
+          urlDownloadSalesUbl: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.urlDownloadSalesUbl || '',
             [Validators.required]
           ),
-          customizationID: new FormControl(
+          customizationID: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.customizationID || '',
             [Validators.required]
           ),
-          invoiceTypeCodeCommercialInvoice: new FormControl(
+          invoiceTypeCodeCommercialInvoice: new UntypedFormControl(
             this.settingsStoreService.getSettings()
               ?.invoiceTypeCodeCommercialInvoice || '',
             [Validators.required]
           ),
-          invoiceTypeCodeAdvanceInvoice: new FormControl(
+          invoiceTypeCodeAdvanceInvoice: new UntypedFormControl(
             this.settingsStoreService.getSettings()
               ?.invoiceTypeCodeAdvanceInvoice || '',
             [Validators.required]
           ),
-          documentCurrencyCode: new FormControl(
+          documentCurrencyCode: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.documentCurrencyCode || '',
             [Validators.required]
           ),
-          schemeID: new FormControl(
+          schemeID: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.schemeID || '',
             [Validators.required]
           ),
-          jbkjsPrefix: new FormControl(
+          jbkjsPrefix: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.jbkjsPrefix || '',
             [Validators.required]
           ),
-          invoiceTaxPeriodByDateOfTurnover: new FormControl(
+          invoiceTaxPeriodByDateOfTurnover: new UntypedFormControl(
             this.settingsStoreService.getSettings()
               ?.invoiceTaxPeriodByDateOfTurnover || '',
             [Validators.required]
           ),
-          invoiceTaxPeriodByDateOfCreate: new FormControl(
+          invoiceTaxPeriodByDateOfCreate: new UntypedFormControl(
             this.settingsStoreService.getSettings()
               ?.invoiceTaxPeriodByDateOfCreate || '',
             [Validators.required]
           ),
-          invoiceTaxPeriodByDateOfPaying: new FormControl(
+          invoiceTaxPeriodByDateOfPaying: new UntypedFormControl(
             this.settingsStoreService.getSettings()
               ?.invoiceTaxPeriodByDateOfPaying || '',
             [Validators.required]
           ),
-          sellerPIB: new FormControl(
+          sellerPIB: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.sellerPIB || '',
             [Validators.required]
           ),
-          sellerName: new FormControl(
+          sellerName: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.sellerName || '',
             [Validators.required]
           ),
-          sellerStreetName: new FormControl(
+          sellerStreetName: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.sellerStreetName || '',
             [Validators.required]
           ),
-          sellerCity: new FormControl(
+          sellerCity: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.sellerCity || '',
             [Validators.required]
           ),
-          sellerPostalCode: new FormControl(
+          sellerPostalCode: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.sellerPostalCode || '',
             [Validators.required]
           ),
-          sellerCountry: new FormControl(
+          sellerCountry: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.sellerCountry || '',
             [Validators.required]
           ),
-          sellerAccount: new FormControl(
+          sellerAccount: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.sellerAccount || '',
             [Validators.required]
           ),
-          taxScheme: new FormControl(
+          taxScheme: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.taxScheme || '',
             [Validators.required]
           ),
-          taxCountrySign: new FormControl(
+          taxCountrySign: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.taxCountrySign || '',
             [Validators.required]
           ),
-          sellerMaticalNumber: new FormControl(
+          sellerMaticalNumber: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.sellerMaticalNumber || '',
             [Validators.required]
           ),
-          sellerElectronicMail: new FormControl(
+          sellerElectronicMail: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.sellerElectronicMail || '',
             [Validators.required]
           ),
-          paymentMeansCode: new FormControl(
+          paymentMeansCode: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.paymentMeansCode || '',
             [Validators.required]
           ),
-          modelPaymentCode: new FormControl(
+          modelPaymentCode: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.modelPaymentCode || '',
             [Validators.required]
           ),
-          invoiceCurrencyEInvoice: new FormControl(
+          invoiceCurrencyEInvoice: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.invoiceCurrencyEInvoice ||
               '',
             [Validators.required]
           ),
-          digitsCountForInvoice: new FormControl(
+          digitsCountForInvoice: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.digitsCountForInvoice || 0,
             [Validators.required]
           ),
-          digitsCountForTaxInvoice: new FormControl(
+          digitsCountForTaxInvoice: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.digitsCountForTaxInvoice ||
               0,
             [Validators.required]
           ),
-          standardVATRate: new FormControl(
+          standardVATRate: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.standardVATRate || 0,
             [Validators.required]
           ),
-          categoryForStandardVAT: new FormControl(
+          categoryForStandardVAT: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.categoryForStandardVAT ||
               '',
             [Validators.required]
           ),
-          privillegedVATRate: new FormControl(
+          privillegedVATRate: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.privillegedVATRate || 20,
             [Validators.required]
           ),
-          categoryForPrivillegedVAT: new FormControl(
+          categoryForPrivillegedVAT: new UntypedFormControl(
             this.settingsStoreService.getSettings()
               ?.categoryForPrivillegedVAT || '',
             [Validators.required]
           ),
-          unitCodeForMeter2: new FormControl(
+          unitCodeForMeter2: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.unitCodeForMeter2 || '',
             [Validators.required]
           ),
-          unitCodeForMeter: new FormControl(
+          unitCodeForMeter: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.unitCodeForMeter || '',
             [Validators.required]
           ),
-          unitCodeForHour: new FormControl(
+          unitCodeForHour: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.unitCodeForHour || '',
             [Validators.required]
           ),
-          unitCodeForPieces: new FormControl(
+          unitCodeForPieces: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.unitCodeForPieces || '',
             [Validators.required]
           ),
-          unitCodeForKilograme: new FormControl(
+          unitCodeForKilograme: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.unitCodeForKilograme || '',
             [Validators.required]
           ),
@@ -360,9 +360,9 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
 
   addNote(note: { key: string; value: string }): void {
     this.invoiceForeignNotesFormArr.push(
-      new FormGroup({
-        key: new FormControl(note?.key || '', [Validators.required]),
-        value: new FormControl(note?.value || '', [Validators.required]),
+      new UntypedFormGroup({
+        key: new UntypedFormControl(note?.key || '', [Validators.required]),
+        value: new UntypedFormControl(note?.value || '', [Validators.required]),
       })
     );
   }

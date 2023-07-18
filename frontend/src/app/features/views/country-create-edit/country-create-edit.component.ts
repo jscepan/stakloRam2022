@@ -1,8 +1,8 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -25,7 +25,7 @@ export interface DialogData {
 export class CountryCreateEditComponent implements OnInit, OnDestroy {
   private subs: SubscriptionManager = new SubscriptionManager();
 
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   countryOID!: string;
   isEdit: boolean = false;
 
@@ -51,20 +51,20 @@ export class CountryCreateEditComponent implements OnInit, OnDestroy {
   }
 
   initializeCreate(): void {
-    this.formGroup = new FormGroup({
-      description: new FormControl('', [Validators.required]),
-      identificationCode: new FormControl('', [Validators.required]),
+    this.formGroup = new UntypedFormGroup({
+      description: new UntypedFormControl('', [Validators.required]),
+      identificationCode: new UntypedFormControl('', [Validators.required]),
     });
   }
 
   initializeEdit(): void {
     this.webService.getEntityByOid(this.countryOID).subscribe((country) => {
       if (country) {
-        this.formGroup = new FormGroup({
-          description: new FormControl(country.description, [
+        this.formGroup = new UntypedFormGroup({
+          description: new UntypedFormControl(country.description, [
             Validators.required,
           ]),
-          identificationCode: new FormControl(country.identificationCode, [
+          identificationCode: new UntypedFormControl(country.identificationCode, [
             Validators.required,
           ]),
         });

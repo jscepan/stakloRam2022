@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 import { UserWebService } from 'src/app/web-services/user.web-service';
@@ -17,7 +17,7 @@ export interface DialogData {
 export class PasswordResetComponent implements OnInit, OnDestroy {
   private subs: SubscriptionManager = new SubscriptionManager();
 
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   userOID!: string;
 
   constructor(
@@ -28,8 +28,8 @@ export class PasswordResetComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.userOID = this.data.oid;
-    this.formGroup = new FormGroup({
-      newPassword: new FormControl('', [Validators.required]),
+    this.formGroup = new UntypedFormGroup({
+      newPassword: new UntypedFormControl('', [Validators.required]),
     });
   }
 

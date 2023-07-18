@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthWebService } from '@layouts/auth-layout/auth.web-service';
 import { TranslateService } from '@ngx-translate/core';
@@ -22,7 +22,7 @@ import { RoleWebService } from 'src/app/web-services/role.web-service';
 export class PasswordChangeComponent implements OnInit, OnDestroy {
   private subs: SubscriptionManager = new SubscriptionManager();
 
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   username: string = '';
 
   constructor(
@@ -35,13 +35,13 @@ export class PasswordChangeComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.formGroup = new FormGroup({
-      username: new FormControl(this.authStoreService.user?.username, [
+    this.formGroup = new UntypedFormGroup({
+      username: new UntypedFormControl(this.authStoreService.user?.username, [
         Validators.required,
       ]),
-      oldPassword: new FormControl('', [Validators.required]),
-      newPassword: new FormControl('', [Validators.required]),
-      newPasswordRepeat: new FormControl('', [Validators.required]),
+      oldPassword: new UntypedFormControl('', [Validators.required]),
+      newPassword: new UntypedFormControl('', [Validators.required]),
+      newPasswordRepeat: new UntypedFormControl('', [Validators.required]),
     });
     // this.formGroup.get('username')?.disable();
   }

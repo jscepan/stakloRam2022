@@ -1,8 +1,8 @@
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -41,7 +41,7 @@ export interface DialogData {
 export class CityCreateEditComponent implements OnInit, OnDestroy {
   private subs: SubscriptionManager = new SubscriptionManager();
 
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   cityOID!: string;
   isEdit: boolean = false;
 
@@ -49,7 +49,7 @@ export class CityCreateEditComponent implements OnInit, OnDestroy {
   isLoading?: Observable<boolean> = this.listEntities.isLoading;
   compareFn: (f1: BaseModel, f2: BaseModel) => boolean = compareByValue;
   selectedCountry?: CountryModel;
-  searchControl: FormControl = new FormControl();
+  searchControl: UntypedFormControl = new UntypedFormControl();
   private inputSearchControlSubscription!: Subscription;
   debounceTime: number = 500;
 
@@ -91,10 +91,10 @@ export class CityCreateEditComponent implements OnInit, OnDestroy {
   }
 
   initializeCreate(): void {
-    this.formGroup = new FormGroup({
-      zipCode: new FormControl('', [Validators.required]),
-      name: new FormControl('', [Validators.required]),
-      country: new FormControl('', [Validators.required]),
+    this.formGroup = new UntypedFormGroup({
+      zipCode: new UntypedFormControl('', [Validators.required]),
+      name: new UntypedFormControl('', [Validators.required]),
+      country: new UntypedFormControl('', [Validators.required]),
     });
   }
 
@@ -102,10 +102,10 @@ export class CityCreateEditComponent implements OnInit, OnDestroy {
     this.webService.getEntityByOid(this.cityOID).subscribe((city) => {
       if (city) {
         this.selectedCountry = city.country;
-        this.formGroup = new FormGroup({
-          zipCode: new FormControl(city.zipCode, [Validators.required]),
-          name: new FormControl(city.name, [Validators.required]),
-          country: new FormControl(this.selectedCountry, [Validators.required]),
+        this.formGroup = new UntypedFormGroup({
+          zipCode: new UntypedFormControl(city.zipCode, [Validators.required]),
+          name: new UntypedFormControl(city.name, [Validators.required]),
+          country: new UntypedFormControl(this.selectedCountry, [Validators.required]),
         });
       }
     });

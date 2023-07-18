@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IncomeCreateEditPopupService } from '@features/income-create-edit/income-create-edit-popup.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -23,9 +23,9 @@ export class DebtViewComponent implements OnInit, OnDestroy {
   entity?: DebtorModel;
   isLoading?: boolean = true;
   debtView!: DebtView;
-  formGroup: FormGroup = new FormGroup({
-    fromDate: new FormControl('', [Validators.required]),
-    toDate: new FormControl('', [Validators.required]),
+  formGroup: UntypedFormGroup = new UntypedFormGroup({
+    fromDate: new UntypedFormControl('', [Validators.required]),
+    toDate: new UntypedFormControl('', [Validators.required]),
   });
 
   constructor(
