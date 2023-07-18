@@ -22,7 +22,7 @@
     "@angular/router": "^14.3.0",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
-    "angular-feather": "6.2.0",
+    "angular-feather": "6.5.0",
     "angularx-qrcode": "^14.0.0",
     "class-transformer": "^0.5.1",
     "ng-mat-select-infinite-scroll": "^4.0.0",
