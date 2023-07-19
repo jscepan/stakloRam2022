@@ -13,7 +13,6 @@ import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Buyer;
 import com.stakloram.backend.models.City;
 import com.stakloram.backend.models.Image;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.Pdf;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.UserMessage;
@@ -21,6 +20,7 @@ import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.models.WorkOrderItem;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
 import com.stakloram.backend.util.Helper;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -33,23 +33,32 @@ import java.util.stream.Collectors;
 
 public class WorkOrderBuilder extends BaseBuilder {
 
-    private final WorkOrderItemStore WORK_ORDER_ITEM_STORE = new WorkOrderItemStore(this.getLocator());
-    private final BuyerStore BUYER_STORE = new BuyerStore(this.getLocator());
-    private final CityStore CITY_STORE = new CityStore(this.getLocator());
-    private final ImageStore IMAGE_STORE = new ImageStore(this.getLocator());
-    private final PdfStore PDF_STORE = new PdfStore(this.getLocator());
+    private final WorkOrderItemStore WORK_ORDER_ITEM_STORE = new WorkOrderItemStore();
+    private final BuyerStore BUYER_STORE = new BuyerStore();
+    private final CityStore CITY_STORE = new CityStore();
+    private final ImageStore IMAGE_STORE = new ImageStore();
+    private final PdfStore PDF_STORE = new PdfStore();
 
-    public WorkOrderBuilder(Locator locator) {
-        super(locator);
+    @Override
+    public void setObjectStore() {
+        this.objectStore = new WorkOrderStore();
     }
 
     @Override
-    public BaseModel createNewObject(BaseModel object) throws SException {
+    public void setColumnsForSearch() {
+        this.databaseColumnsForQuickSearch = Arrays.asList("buyer_name", "work_order_number");
+        this.databaseColumnsForAdvanceFilter.put("buyer", "work_order_buyer_buyer_id");
+        this.databaseColumnsForAttributes.put("from_date", "date_of_create");
+        this.databaseColumnsForAttributes.put("to_date", "date_of_create");
+    }
+
+    @Override
+    public BaseModel createNewObject(BaseModel object, Connection conn) throws SException {
         WorkOrder workOrder = (WorkOrder) object;
-        super.createNewObject(object);
+        super.createNewObject(object, conn);
         for (WorkOrderItem woi : workOrder.getWorkOrderItems()) {
             try {
-                WORK_ORDER_ITEM_STORE.createNewObjectToDatabase(woi, workOrder.getId());
+                WORK_ORDER_ITEM_STORE.createNewObjectToDatabase(woi, workOrder.getId(), conn);
             } catch (SQLException ex) {
                 super.logger.error(ex.toString());
                 throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
@@ -57,7 +66,7 @@ public class WorkOrderBuilder extends BaseBuilder {
         }
         for (Image image : workOrder.getImages()) {
             try {
-                IMAGE_STORE.createNewObjectToDatabase(image, workOrder.getOid());
+                IMAGE_STORE.createNewObjectToDatabase(image, workOrder.getOid(), conn);
             } catch (SQLException ex) {
                 super.logger.error(ex.toString());
                 throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
@@ -67,9 +76,9 @@ public class WorkOrderBuilder extends BaseBuilder {
     }
 
     @Override
-    public BaseModel modifyObject(String oid, BaseModel object) throws SException {
+    public BaseModel modifyObject(String oid, BaseModel object, Connection conn) throws SException {
         try {
-            WorkOrder workOrder = (WorkOrder) super.modifyObject(oid, object);
+            WorkOrder workOrder = (WorkOrder) super.modifyObject(oid, object, conn);
             List<WorkOrderItem> oldWorkOrderItems = new ArrayList<>();
             ResultSet resultSet = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_work_order_work_order_id=" + workOrder.getId());
             while (resultSet.next()) {
@@ -77,13 +86,13 @@ public class WorkOrderBuilder extends BaseBuilder {
             }
             Map<Helper.Action, List<? extends BaseModel>> mapOfDifferences = Helper.findDifferenceBetweenLists(workOrder.getWorkOrderItems(), oldWorkOrderItems);
             for (BaseModel workOrderItem : mapOfDifferences.get(Helper.Action.FOR_CREATE)) {
-                WORK_ORDER_ITEM_STORE.createNewObjectToDatabase(workOrderItem, workOrder.getId());
+                WORK_ORDER_ITEM_STORE.createNewObjectToDatabase(workOrderItem, workOrder.getId(), conn);
             }
             for (BaseModel workOrderItem : mapOfDifferences.get(Helper.Action.FOR_UPDATE)) {
-                WORK_ORDER_ITEM_STORE.modifyObject(workOrderItem.getOid(), workOrderItem);
+                WORK_ORDER_ITEM_STORE.modifyObject(workOrderItem.getOid(), workOrderItem, conn);
             }
             for (BaseModel workOrderItem : mapOfDifferences.get(Helper.Action.FOR_DELETE)) {
-                WORK_ORDER_ITEM_STORE.deleteObjectByOid(workOrderItem.getOid());
+                WORK_ORDER_ITEM_STORE.deleteObjectByOid(workOrderItem.getOid(), conn);
             }
 
             List<Image> oldWorkOrderImages = new ArrayList<>();
@@ -94,13 +103,13 @@ public class WorkOrderBuilder extends BaseBuilder {
 
             Map<Helper.Action, List<? extends BaseModel>> mapOfDifferencesImages = Helper.findDifferenceBetweenLists(workOrder.getImages(), oldWorkOrderImages);
             for (BaseModel image : mapOfDifferencesImages.get(Helper.Action.FOR_CREATE)) {
-                IMAGE_STORE.createNewObjectToDatabase(image, workOrder.getOid());
+                IMAGE_STORE.createNewObjectToDatabase(image, workOrder.getOid(), conn);
             }
             for (BaseModel image : mapOfDifferencesImages.get(Helper.Action.FOR_UPDATE)) {
-                IMAGE_STORE.modifyObject(image.getOid(), image);
+                IMAGE_STORE.modifyObject(image.getOid(), image, conn);
             }
             for (BaseModel image : mapOfDifferencesImages.get(Helper.Action.FOR_DELETE)) {
-                IMAGE_STORE.deleteObjectByOid(image.getOid());
+                IMAGE_STORE.deleteObjectByOid(image.getOid(), conn);
             }
             return workOrder;
         } catch (SQLException ex) {
@@ -110,19 +119,19 @@ public class WorkOrderBuilder extends BaseBuilder {
     }
 
     @Override
-    public boolean deleteObjectByOid(String oid) throws SException {
+    public boolean deleteObjectByOid(String oid, Connection conn) throws SException {
         try {
             ResultSet rs = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_work_order_work_order_id=" + BaseModel.getIdFromOid(oid));
             while (rs.next()) {
                 WorkOrderItem woi = WORK_ORDER_ITEM_STORE.getObjectFromResultSet(rs);
-                WORK_ORDER_ITEM_STORE.deleteObjectByOid(woi.getOid());
+                WORK_ORDER_ITEM_STORE.deleteObjectByOid(woi.getOid(), conn);
             }
             ResultSet rsImages = IMAGE_STORE.getAllObjectsFromDatabase(IMAGE_STORE.getTableName() + "_work_order_work_order_id=" + BaseModel.getIdFromOid(oid));
             while (rsImages.next()) {
                 Image image = IMAGE_STORE.getObjectFromResultSet(rsImages);
-                IMAGE_STORE.deleteObjectByOid(image.getOid());
+                IMAGE_STORE.deleteObjectByOid(image.getOid(), conn);
             }
-            return this.objectStore.deleteObjectByOid(oid);
+            return this.objectStore.deleteObjectByOid(oid, conn);
         } catch (SQLException ex) {
             super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("referrencialError") + " - " + UserMessage.getLocalizedMessage("removeThisObjectFromOtherPlacesFirst"));
@@ -169,19 +178,6 @@ public class WorkOrderBuilder extends BaseBuilder {
     }
 
     @Override
-    public void setObjectStore() {
-        this.objectStore = new WorkOrderStore(this.getLocator());
-    }
-
-    @Override
-    public void setColumnsForSearch() {
-        this.databaseColumnsForQuickSearch = Arrays.asList("buyer_name","work_order_number");
-        this.databaseColumnsForAdvanceFilter.put("buyer", "work_order_buyer_buyer_id");
-        this.databaseColumnsForAttributes.put("from_date", "date_of_create");
-        this.databaseColumnsForAttributes.put("to_date", "date_of_create");
-    }
-
-    @Override
     public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
         try {
             List<BaseModel> objects = new ArrayList<>();
@@ -225,11 +221,11 @@ public class WorkOrderBuilder extends BaseBuilder {
         }
     }
 
-    public boolean toggleSettledForWorkOrder(String workOrderOID, boolean settled) throws SException {
+    public boolean toggleSettledForWorkOrder(String workOrderOID, boolean settled, Connection conn) throws SException {
         WorkOrder workOrder = (WorkOrder) this.getObjectByOid(workOrderOID);
         for (WorkOrderItem woi : workOrder.getWorkOrderItems()) {
             try {
-                WORK_ORDER_ITEM_STORE.setSettledForWorkOrderItem(woi.getOid(), settled);
+                WORK_ORDER_ITEM_STORE.setSettledForWorkOrderItem(woi.getOid(), settled, conn);
             } catch (SQLException ex) {
                 super.logger.error(ex.toString());
                 throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
@@ -261,18 +257,18 @@ public class WorkOrderBuilder extends BaseBuilder {
         return items;
     }
 
-    public boolean changeBuyer(String workOrderOID, String buyerOID) throws SException {
+    public boolean changeBuyer(String workOrderOID, String buyerOID, Connection conn) throws SException {
         try {
-            return ((WorkOrderStore) this.objectStore).changeBuyer(workOrderOID, buyerOID);
+            return ((WorkOrderStore) this.objectStore).changeBuyer(workOrderOID, buyerOID, conn);
         } catch (SQLException ex) {
             super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
-    public boolean assignPdf(WorkOrder workOrder, Pdf pdf) throws SException {
+    public boolean assignPdf(WorkOrder workOrder, Pdf pdf, Connection conn) throws SException {
         try {
-            boolean assigned = ((WorkOrderStore) this.objectStore).assignPdf(workOrder.getOid(), pdf.getOid());
+            boolean assigned = ((WorkOrderStore) this.objectStore).assignPdf(workOrder.getOid(), pdf.getOid(), conn);
             workOrder.setPdf(pdf);
             return assigned;
         } catch (SQLException ex) {

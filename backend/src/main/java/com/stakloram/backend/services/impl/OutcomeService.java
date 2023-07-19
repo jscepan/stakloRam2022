@@ -13,7 +13,7 @@ public class OutcomeService extends ServiceModel {
 
     @Override
     public void setBaseBuilder() {
-        super.baseBuilder = new OutcomeBuilder(this.locator);
+        super.baseBuilder = new OutcomeBuilder();
     }
 
     @Override

@@ -5,12 +5,12 @@ import com.stakloram.backend.database.objects.BuyerStore;
 import com.stakloram.backend.database.objects.OutcomeStore;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Outcome;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,15 +19,11 @@ import java.util.List;
 
 public class OutcomeBuilder extends BaseBuilder {
 
-    private final BuyerStore BUYER_STORE = new BuyerStore(this.getLocator());
-
-    public OutcomeBuilder(Locator locator) {
-        super(locator);
-    }
+    private final BuyerStore BUYER_STORE = new BuyerStore();
 
     @Override
     public void setObjectStore() {
-        this.objectStore = new OutcomeStore(this.getLocator());
+        this.objectStore = new OutcomeStore();
     }
 
     @Override
@@ -55,8 +51,8 @@ public class OutcomeBuilder extends BaseBuilder {
     }
 
     @Override
-    public Outcome createNewObject(BaseModel object) throws SException {
-        return (Outcome) super.createNewObject(object);
+    public Outcome createNewObject(BaseModel object, Connection conn) throws SException {
+        return (Outcome) super.createNewObject(object, conn);
     }
 
     @Override

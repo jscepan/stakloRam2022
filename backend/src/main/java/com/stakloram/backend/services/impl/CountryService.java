@@ -14,7 +14,7 @@ public class CountryService extends ServiceModel {
 
     @Override
     public void setBaseBuilder() {
-        super.baseBuilder = new CountryBuilder(this.locator);
+        super.baseBuilder = new CountryBuilder();
     }
 
     @Override

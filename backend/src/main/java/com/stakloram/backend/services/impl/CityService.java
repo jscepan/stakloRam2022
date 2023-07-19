@@ -14,7 +14,7 @@ public class CityService extends ServiceModel {
 
     @Override
     public void setBaseBuilder() {
-        super.baseBuilder = new CityBuilder(this.locator);
+        super.baseBuilder = new CityBuilder();
     }
 
     @Override

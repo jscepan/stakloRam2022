@@ -1,19 +1,14 @@
 package com.stakloram.backend.services.impl.builder.impl;
 
 import com.stakloram.backend.database.objects.RoleStore;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
 import java.util.Arrays;
 
 public class RoleBuilder extends BaseBuilder {
 
-    public RoleBuilder(Locator locator) {
-        super(locator);
-    }
-
     @Override
     public void setObjectStore() {
-        this.objectStore = new RoleStore(this.getLocator());
+        this.objectStore = new RoleStore();
     }
 
     @Override

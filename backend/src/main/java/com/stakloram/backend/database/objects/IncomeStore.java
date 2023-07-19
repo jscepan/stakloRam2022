@@ -5,17 +5,13 @@ import com.stakloram.backend.database.ObjectStore;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Buyer;
 import com.stakloram.backend.models.Income;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.util.Helper;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class IncomeStore extends ObjectStore {
-
-    public IncomeStore(Locator locator) {
-        super(locator);
-    }
 
     @Override
     public void setTableName() {
@@ -23,10 +19,10 @@ public class IncomeStore extends ObjectStore {
     }
 
     @Override
-    public Income createNewObjectToDatabase(BaseModel model) throws SQLException {
+    public Income createNewObjectToDatabase(BaseModel model, Connection conn) throws SQLException {
         Income object = (Income) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = conn.prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setDate(++i, Helper.convertLocalDateToSqlDate(object.getDate()));
         st.setDouble(++i, object.getAmount());
         st.setString(++i, object.getComment());
@@ -43,10 +39,10 @@ public class IncomeStore extends ObjectStore {
     }
 
     @Override
-    public Income modifyObject(String oid, BaseModel model) throws SQLException {
+    public Income modifyObject(String oid, BaseModel model, Connection conn) throws SQLException {
         Income object = (Income) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_date=?,"
                 + this.getTableName() + "_amount=?,"
                 + this.getTableName() + "_comment=?,"

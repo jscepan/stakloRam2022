@@ -4,7 +4,6 @@ import com.stakloram.backend.database.objects.BuyerStore;
 import com.stakloram.backend.database.objects.CityStore;
 import com.stakloram.backend.models.Buyer;
 import com.stakloram.backend.models.City;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
@@ -13,15 +12,11 @@ import java.util.Arrays;
 
 public class BuyerBuilder extends BaseBuilder {
 
-    private final CityStore CITY_STORE = new CityStore(this.getLocator());
-
-    public BuyerBuilder(Locator locator) {
-        super(locator);
-    }
+    private final CityStore CITY_STORE = new CityStore();
 
     @Override
     public void setObjectStore() {
-        this.objectStore = new BuyerStore(this.getLocator());
+        this.objectStore = new BuyerStore();
     }
 
     @Override

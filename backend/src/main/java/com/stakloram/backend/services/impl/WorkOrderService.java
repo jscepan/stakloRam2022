@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import static com.stakloram.backend.constants.Constants.WORK_ORDER_PDF_DIRECTORY;
+import com.stakloram.backend.database.ConnectionToDatabase;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.History;
@@ -25,6 +26,7 @@ import static java.nio.file.Files.copy;
 import java.nio.file.Path;
 import static java.nio.file.Paths.get;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -34,11 +36,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class WorkOrderService extends ServiceModel {
 
-    private final PdfBuilder pdfBuilder = new PdfBuilder(this.locator);
+    private final PdfBuilder pdfBuilder = new PdfBuilder();
 
     @Override
     public void setBaseBuilder() {
-        super.baseBuilder = new WorkOrderBuilder(this.locator);
+        super.baseBuilder = new WorkOrderBuilder();
     }
 
     public Set<String> getAllWorkOrderItemDescriptions() throws SException {
@@ -50,12 +52,13 @@ public class WorkOrderService extends ServiceModel {
     }
 
     public boolean toggleSettledForWorkOrder(String workOrderOID, boolean settled) throws SException {
-        this.startTransaction();
-        boolean isSettled = ((WorkOrderBuilder) this.baseBuilder).toggleSettledForWorkOrder(workOrderOID, settled);
+        Connection conn = ConnectionToDatabase.connect();
+        this.startTransaction(conn);
+        boolean isSettled = ((WorkOrderBuilder) this.baseBuilder).toggleSettledForWorkOrder(workOrderOID, settled, conn);
         if (isSettled) {
-            this.endTransaction();
+            this.endTransaction(conn);
         } else {
-            this.rollback();
+            this.rollback(conn);
         }
         return isSettled;
     }
@@ -90,11 +93,12 @@ public class WorkOrderService extends ServiceModel {
         if (DataChecker.isNull(workOrderOID) || workOrderOID.trim().isEmpty()) {
             throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("workOrder"));
         }
-        this.startTransaction();
+        Connection conn = ConnectionToDatabase.connect();
+        this.startTransaction(conn);
         boolean isChanged = true;
         // TODO
         BaseModel previousObjectWorkOrder = this.baseBuilder.getObjectByOid(workOrderOID);
-        if (!((WorkOrderBuilder) this.baseBuilder).changeBuyer(workOrderOID, buyerOID)) {
+        if (!((WorkOrderBuilder) this.baseBuilder).changeBuyer(workOrderOID, buyerOID, conn)) {
             isChanged = false;
         }
         BaseModel objectWorkOrder = this.baseBuilder.getObjectByOid(workOrderOID);
@@ -103,22 +107,23 @@ public class WorkOrderService extends ServiceModel {
             ObjectMapper objectMapper = JsonMapper.builder()
                     .addModule(new JavaTimeModule())
                     .build();
-            this.history.createNewObject(new History(History.Action.UPDATE, objectWorkOrder.getClass().getSimpleName().toLowerCase(), objectMapper.writeValueAsString(previousObjectWorkOrder), objectMapper.writeValueAsString(objectWorkOrder), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), objectWorkOrder.getOid()));
+            this.history.createNewObject(new History(History.Action.UPDATE, objectWorkOrder.getClass().getSimpleName().toLowerCase(), objectMapper.writeValueAsString(previousObjectWorkOrder), objectMapper.writeValueAsString(objectWorkOrder), LocalDateTime.now(), new User(this.getCurrentUserOID()), objectWorkOrder.getOid()), conn);
         } catch (JsonProcessingException ex) {
             logger.error(ex.toString());
         }
 
         if (isChanged) {
-            this.endTransaction();
+            this.endTransaction(conn);
         } else {
-            this.rollback();
+            this.rollback(conn);
         }
         return isChanged;
     }
 
     public WorkOrder uploadFile(String workOrderOid, MultipartFile file) throws SException {
         try {
-            this.startTransaction();
+            Connection conn = ConnectionToDatabase.connect();
+            this.startTransaction(conn);
             WorkOrder workOrder = (WorkOrder) this.getObjectByOID(workOrderOid);
 
             // save file
@@ -133,12 +138,12 @@ public class WorkOrderService extends ServiceModel {
             // if file is saved then add it to work order
             Pdf pdf = new Pdf();
             pdf.setUrl(filename);
-            this.pdfBuilder.createNewObject(pdf);
-            boolean isChanged = ((WorkOrderBuilder) this.baseBuilder).assignPdf(workOrder, pdf);
+            this.pdfBuilder.createNewObject(pdf, conn);
+            boolean isChanged = ((WorkOrderBuilder) this.baseBuilder).assignPdf(workOrder, pdf, conn);
             if (isChanged) {
-                this.endTransaction();
+                this.endTransaction(conn);
             } else {
-                this.rollback();
+                this.rollback(conn);
             }
             return workOrder;
         } catch (IOException ex) {

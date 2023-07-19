@@ -6,6 +6,7 @@ import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.SearchRequest;
+import java.sql.Connection;
 import java.util.List;
 
 public interface IObjectBuilder {
@@ -14,11 +15,11 @@ public interface IObjectBuilder {
 
     public void setColumnsForSearch();
 
-    public BaseModel createNewObject(BaseModel object) throws SException;
+    public BaseModel createNewObject(BaseModel object, Connection conn) throws SException;
 
-    public BaseModel modifyObject(String oid, BaseModel object) throws SException;
+    public BaseModel modifyObject(String oid, BaseModel object, Connection conn) throws SException;
 
-    public boolean deleteObjectByOid(String oid) throws SException;
+    public boolean deleteObjectByOid(String oid, Connection conn) throws SException;
 
     public BaseModel getObjectByOid(String oid) throws SException;
 
@@ -33,8 +34,4 @@ public interface IObjectBuilder {
     public List<String> getQuickSearchWords(SearchRequest searchObject);
 
     public String getQuickSearchClausule(List<String> words);
-//    public ArrayResponse<? extends BaseModel> searchObjects(String searchObject, String equalsClausule, String containsClausule) throws SException;
-//    public AdvanceFilter getAdvanceFilterFromSearchRequest(SearchRequest searchObject);
-//    public List<? extends BaseModel> getAllObjects();
-//    boolean saveHistoryObject(History history);
 }

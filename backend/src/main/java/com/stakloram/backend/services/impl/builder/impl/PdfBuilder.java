@@ -2,7 +2,6 @@ package com.stakloram.backend.services.impl.builder.impl;
 
 import com.stakloram.backend.database.objects.PdfStore;
 import com.stakloram.backend.models.Image;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.Settings;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.models.WorkOrder;
@@ -19,13 +18,9 @@ import java.util.logging.Logger;
 
 public class PdfBuilder extends BaseBuilder {
 
-    public PdfBuilder(Locator locator) {
-        super(locator);
-    }
-
     @Override
     public void setObjectStore() {
-        this.objectStore = new PdfStore(this.getLocator());
+        this.objectStore = new PdfStore();
     }
 
     @Override

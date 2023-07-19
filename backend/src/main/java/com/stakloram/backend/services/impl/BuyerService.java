@@ -14,7 +14,7 @@ public class BuyerService extends ServiceModel {
 
     @Override
     public void setBaseBuilder() {
-        super.baseBuilder = new BuyerBuilder(this.locator);
+        super.baseBuilder = new BuyerBuilder();
     }
 
     @Override

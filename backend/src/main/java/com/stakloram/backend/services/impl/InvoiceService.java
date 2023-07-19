@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import static com.stakloram.backend.constants.Constants.INVOICE_PDF_DIRECTORY;
+import com.stakloram.backend.database.ConnectionToDatabase;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Invoice;
 import com.stakloram.backend.exception.SException;
@@ -19,6 +19,7 @@ import com.stakloram.backend.services.impl.builder.impl.InvoiceBuilder;
 import com.stakloram.backend.services.impl.builder.impl.WorkOrderBuilder;
 import com.stakloram.backend.util.DataChecker;
 import java.io.File;
+import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.Set;
 import org.springframework.stereotype.Service;
@@ -26,12 +27,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class InvoiceService extends ServiceModel {
 
-    private final IncomeBuilder incomeBuilder = new IncomeBuilder(this.locator);
-    private final WorkOrderBuilder workOrderBuilder = new WorkOrderBuilder(this.locator);
+    private final IncomeBuilder incomeBuilder = new IncomeBuilder();
+    private final WorkOrderBuilder workOrderBuilder = new WorkOrderBuilder();
 
     @Override
     public void setBaseBuilder() {
-        super.baseBuilder = new InvoiceBuilder(this.locator);
+        super.baseBuilder = new InvoiceBuilder();
     }
 
     public int getNextInvoiceNumber(Invoice.InvoiceType invoiceType, int year) throws SException {
@@ -49,10 +50,11 @@ public class InvoiceService extends ServiceModel {
         if (DataChecker.isNull(invoiceOID) || invoiceOID.trim().isEmpty()) {
             throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("invoice"));
         }
-        this.startTransaction();
+        Connection conn = ConnectionToDatabase.connect();
+        this.startTransaction(conn);
         boolean isChanged = true;
         BaseModel previousObjectInvoice = this.baseBuilder.getObjectByOid(invoiceOID);
-        if (!((InvoiceBuilder) this.baseBuilder).changeBuyer(invoiceOID, buyerOID)) {
+        if (!((InvoiceBuilder) this.baseBuilder).changeBuyer(invoiceOID, buyerOID, conn)) {
             isChanged = false;
         }
         BaseModel objectInvoice = this.baseBuilder.getObjectByOid(invoiceOID);
@@ -61,7 +63,7 @@ public class InvoiceService extends ServiceModel {
             ObjectMapper objectMapper = JsonMapper.builder()
                     .addModule(new JavaTimeModule())
                     .build();
-            this.history.createNewObject(new History(History.Action.UPDATE, objectInvoice.getClass().getSimpleName().toLowerCase(), objectMapper.writeValueAsString(previousObjectInvoice), objectMapper.writeValueAsString(objectInvoice), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), objectInvoice.getOid()));
+            this.history.createNewObject(new History(History.Action.UPDATE, objectInvoice.getClass().getSimpleName().toLowerCase(), objectMapper.writeValueAsString(previousObjectInvoice), objectMapper.writeValueAsString(objectInvoice), LocalDateTime.now(), new User(this.getCurrentUserOID()), objectInvoice.getOid()), conn);
         } catch (JsonProcessingException ex) {
             logger.error(ex.toString());
         }
@@ -70,7 +72,7 @@ public class InvoiceService extends ServiceModel {
         Set<String> workOrderOIDSForChange = ((InvoiceBuilder) this.baseBuilder).getAllWorkOrdersForInvoice((Invoice) objectInvoice);
         for (String oid : workOrderOIDSForChange) {
             BaseModel previousObjectWorkOrder = this.workOrderBuilder.getObjectByOid(oid);
-            if (!this.workOrderBuilder.changeBuyer(oid, buyerOID)) {
+            if (!this.workOrderBuilder.changeBuyer(oid, buyerOID, conn)) {
                 isChanged = false;
             }
             BaseModel objectWorkOrder = this.workOrderBuilder.getObjectByOid(oid);
@@ -79,15 +81,15 @@ public class InvoiceService extends ServiceModel {
                 ObjectMapper objectMapper = JsonMapper.builder()
                         .addModule(new JavaTimeModule())
                         .build();
-                this.history.createNewObject(new History(History.Action.UPDATE, objectWorkOrder.getClass().getSimpleName().toLowerCase(), previousObjectWorkOrder != null ? objectMapper.writeValueAsString(previousObjectWorkOrder) : "", objectMapper.writeValueAsString(objectWorkOrder), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), objectWorkOrder.getOid()));
+                this.history.createNewObject(new History(History.Action.UPDATE, objectWorkOrder.getClass().getSimpleName().toLowerCase(), previousObjectWorkOrder != null ? objectMapper.writeValueAsString(previousObjectWorkOrder) : "", objectMapper.writeValueAsString(objectWorkOrder), LocalDateTime.now(), new User(this.getCurrentUserOID()), objectWorkOrder.getOid()), conn);
             } catch (JsonProcessingException ex) {
                 logger.error(ex.toString());
             }
         }
         if (isChanged) {
-            this.endTransaction();
+            this.endTransaction(conn);
         } else {
-            this.rollback();
+            this.rollback(conn);
         }
         return isChanged;
     }
@@ -95,25 +97,26 @@ public class InvoiceService extends ServiceModel {
     @Override
     public BaseModel createNewObject(BaseModel object) throws SException {
         if (((Invoice) object).getType() == InvoiceType.CASH) {
+            Connection conn = ConnectionToDatabase.connect();
             this.checkRequestDataForCreate(object);
-            this.startTransaction();
-            Invoice invoice = (Invoice) this.baseBuilder.createNewObject(object);
+            this.startTransaction(conn);
+            Invoice invoice = (Invoice) this.baseBuilder.createNewObject(object, conn);
             if (invoice != null) {
-                Income income = this.incomeBuilder.createNewObject(new Income(invoice.getDateOfCreate(), invoice.getGrossAmount(), "Gotovinski račun " + invoice.getNumber(), "", invoice.getBuyer(), ""));
+                Income income = this.incomeBuilder.createNewObject(new Income(invoice.getDateOfCreate(), invoice.getGrossAmount(), "Gotovinski račun " + invoice.getNumber(), "", invoice.getBuyer(), ""), conn);
                 if (income != null) {
                     try {
                         ObjectMapper objectMapper = JsonMapper.builder()
                                 .addModule(new JavaTimeModule())
                                 .build();
-                        super.history.createNewObject(new History(History.Action.CREATE, object.getClass().getSimpleName().toLowerCase(), null, objectMapper.writeValueAsString(object), LocalDateTime.now(), new User(this.locator.getCurrentUserOID()), null));
+                        super.history.createNewObject(new History(History.Action.CREATE, object.getClass().getSimpleName().toLowerCase(), null, objectMapper.writeValueAsString(object), LocalDateTime.now(), new User(this.getCurrentUserOID()), null), conn);
                     } catch (JsonProcessingException ex) {
                         super.logger.error(ex.toString());
                     }
-                    this.endTransaction();
+                    this.endTransaction(conn);
                     return invoice;
                 }
             }
-            this.rollback();
+            this.rollback(conn);
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         } else {
             return super.createNewObject(object);
@@ -172,7 +175,7 @@ public class InvoiceService extends ServiceModel {
     }
 
     public boolean registrationOfInvoice(String invoiceOID) throws SException {
-        return ((InvoiceBuilder) this.baseBuilder).registrationOfInvoiceUPLOAD(invoiceOID);
+        return ((InvoiceBuilder) this.baseBuilder).registrationOfInvoiceUPLOAD(invoiceOID, ConnectionToDatabase.connect());
     }
 
     public File downloadFile(String invoiceOID) throws SException {

@@ -4,10 +4,10 @@ import com.stakloram.backend.database.ConnectionToDatabase;
 import com.stakloram.backend.database.ObjectStore;
 import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.models.BaseModel;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.models.WorkOrderItem;
 import com.stakloram.backend.models.WorkOrderItem.UOM;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,19 +15,15 @@ import java.sql.Statement;
 
 public class WorkOrderItemStore extends ObjectStore {
 
-    public WorkOrderItemStore(Locator locator) {
-        super(locator);
-    }
-
     @Override
     public void setTableName() {
         this.tableName = "work_order_item";
     }
 
-    public WorkOrderItem createNewObjectToDatabase(BaseModel model, Long workOrderId) throws SQLException {
+    public WorkOrderItem createNewObjectToDatabase(BaseModel model, Long workOrderId, Connection conn) throws SQLException {
         WorkOrderItem object = (WorkOrderItem) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = conn.prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getDescription());
         st.setString(++i, object.getUom().name());
         st.setDouble(++i, object.getDimension1());
@@ -50,15 +46,15 @@ public class WorkOrderItemStore extends ObjectStore {
     }
 
     @Override
-    public WorkOrderItem createNewObjectToDatabase(BaseModel model) throws SQLException {
+    public WorkOrderItem createNewObjectToDatabase(BaseModel model, Connection conn) throws SQLException {
         return null;
     }
 
     @Override
-    public WorkOrderItem modifyObject(String oid, BaseModel model) throws SQLException {
+    public WorkOrderItem modifyObject(String oid, BaseModel model, Connection conn) throws SQLException {
         WorkOrderItem object = (WorkOrderItem) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_description=?,"
                 + this.getTableName() + "_uom=?,"
                 + this.getTableName() + "_dimension1=?,"
@@ -85,9 +81,9 @@ public class WorkOrderItemStore extends ObjectStore {
         return null;
     }
 
-    public void setInvoiceItemForWorkOrderItem(String workOrderItemOid, String invoiceItemOid) throws SQLException {
+    public void setInvoiceItemForWorkOrderItem(String workOrderItemOid, String invoiceItemOid, Connection conn) throws SQLException {
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_invoice_item_invoice_item_id=?, "
                 + this.getTableName() + "_settled=?"
                 + " WHERE " + this.getPrimaryKey() + "=?");
@@ -97,9 +93,9 @@ public class WorkOrderItemStore extends ObjectStore {
         st.executeUpdate();
     }
 
-    public void setSettledForWorkOrderItem(String workOrderItemOid, boolean settled) throws SQLException {
+    public void setSettledForWorkOrderItem(String workOrderItemOid, boolean settled, Connection conn) throws SQLException {
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_settled=?"
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setBoolean(++i, settled);
@@ -107,9 +103,9 @@ public class WorkOrderItemStore extends ObjectStore {
         st.executeUpdate();
     }
 
-    public boolean removeInvoiceItemForWorkOrderItem(String workOrderItemOid) throws SQLException {
+    public boolean removeInvoiceItemForWorkOrderItem(String workOrderItemOid, Connection conn) throws SQLException {
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_invoice_item_invoice_item_id=null, "
                 + this.getTableName() + "_settled=false"
                 + " WHERE " + this.getPrimaryKey() + "=?");
@@ -117,9 +113,9 @@ public class WorkOrderItemStore extends ObjectStore {
         return st.executeUpdate() > 0;
     }
 
-    public boolean removeWorkOrdersItemForInvoiceItemOid(String invoiceItemOid) throws SQLException {
+    public boolean removeWorkOrdersItemForInvoiceItemOid(String invoiceItemOid, Connection conn) throws SQLException {
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_invoice_item_invoice_item_id=null, "
                 + this.getTableName() + "_settled=false"
                 + " WHERE " + this.getTableName() + "_invoice_item_invoice_item_id" + "=?");
@@ -143,12 +139,12 @@ public class WorkOrderItemStore extends ObjectStore {
     }
 
     public ResultSet getAllObjectsForSpecificColumn(String columnName) throws SQLException {
-        return this.getConn().createStatement().executeQuery("SELECT " + columnName + " from " + this.getDefaultFromClausule());
+        return ConnectionToDatabase.connect().createStatement().executeQuery("SELECT " + columnName + " from " + this.getDefaultFromClausule());
     }
 
     public String getWorkOrderOidForWorkOrderItemOid(String workOrderItemOid) throws SQLException {
         String oid = "";
-        Statement st = this.getConn().createStatement();
+        Statement st = ConnectionToDatabase.connect().createStatement();
         ResultSet resultSet = st.executeQuery("SELECT * from " + DATABASE_NAME + "." + this.tableName + " WHERE " + DATABASE_NAME + "." + this.tableName + "." + this.getPrimaryKey() + "=" + BaseModel.getIdFromOid(workOrderItemOid));
         while (resultSet.next()) {
             oid = new WorkOrder(resultSet.getLong(this.getTableName() + "_work_order_work_order_id")).getOid();

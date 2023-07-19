@@ -6,16 +6,12 @@ import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Buyer;
 import com.stakloram.backend.models.Buyer.BuyerType;
 import com.stakloram.backend.models.City;
-import com.stakloram.backend.models.Locator;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class BuyerStore extends ObjectStore {
-
-    public BuyerStore(Locator locator) {
-        super(locator);
-    }
 
     @Override
     public void setTableName() {
@@ -23,10 +19,10 @@ public class BuyerStore extends ObjectStore {
     }
 
     @Override
-    public Buyer createNewObjectToDatabase(BaseModel model) throws SQLException {
+    public Buyer createNewObjectToDatabase(BaseModel model, Connection conn) throws SQLException {
         Buyer object = (Buyer) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = conn.prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getType().name());
         st.setString(++i, object.getName());
         st.setString(++i, object.getAddress());
@@ -51,10 +47,10 @@ public class BuyerStore extends ObjectStore {
     }
 
     @Override
-    public Buyer modifyObject(String oid, BaseModel model) throws SQLException {
+    public Buyer modifyObject(String oid, BaseModel model, Connection conn) throws SQLException {
         Buyer object = (Buyer) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_type=?,"
                 + this.getTableName() + "_name=?,"
                 + this.getTableName() + "_address=?,"

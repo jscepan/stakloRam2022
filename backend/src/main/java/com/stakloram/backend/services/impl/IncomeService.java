@@ -13,7 +13,7 @@ public class IncomeService extends ServiceModel {
 
     @Override
     public void setBaseBuilder() {
-        super.baseBuilder = new IncomeBuilder(this.locator);
+        super.baseBuilder = new IncomeBuilder();
     }
 
     @Override

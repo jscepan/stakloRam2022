@@ -5,16 +5,12 @@ import com.stakloram.backend.database.ObjectStore;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.City;
 import com.stakloram.backend.models.Country;
-import com.stakloram.backend.models.Locator;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CityStore extends ObjectStore {
-
-    public CityStore(Locator locator) {
-        super(locator);
-    }
 
     @Override
     public void setTableName() {
@@ -22,10 +18,10 @@ public class CityStore extends ObjectStore {
     }
 
     @Override
-    public City createNewObjectToDatabase(BaseModel model) throws SQLException {
+    public City createNewObjectToDatabase(BaseModel model, Connection conn) throws SQLException {
         City object = (City) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = conn.prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getZipCode());
         st.setString(++i, object.getName());
         st.setLong(++i, object.getCountry().getId());
@@ -40,10 +36,10 @@ public class CityStore extends ObjectStore {
     }
 
     @Override
-    public City modifyObject(String oid, BaseModel model) throws SQLException {
+    public City modifyObject(String oid, BaseModel model, Connection conn) throws SQLException {
         City object = (City) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_zip_code=?,"
                 + this.getTableName() + "_name=?,"
                 + this.getTableName() + "_country_country_id=?"

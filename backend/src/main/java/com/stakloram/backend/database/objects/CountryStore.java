@@ -4,16 +4,12 @@ import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.database.ObjectStore;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Country;
-import com.stakloram.backend.models.Locator;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CountryStore extends ObjectStore {
-
-    public CountryStore(Locator locator) {
-        super(locator);
-    }
 
     @Override
     public void setTableName() {
@@ -21,10 +17,10 @@ public class CountryStore extends ObjectStore {
     }
 
     @Override
-    public Country createNewObjectToDatabase(BaseModel model) throws SQLException {
+    public Country createNewObjectToDatabase(BaseModel model, Connection conn) throws SQLException {
         Country object = (Country) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = conn.prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getDescription());
         st.setString(++i, object.getIdentificationCode());
 
@@ -38,10 +34,10 @@ public class CountryStore extends ObjectStore {
     }
 
     @Override
-    public Country modifyObject(String oid, BaseModel model) throws SQLException {
+    public Country modifyObject(String oid, BaseModel model, Connection conn) throws SQLException {
         Country object = (Country) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_description=?, "
                 + this.getTableName() + "_identification_code=?"
                 + " WHERE " + this.getPrimaryKey() + "=?");

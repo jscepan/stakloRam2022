@@ -1,7 +1,6 @@
 package com.stakloram.backend.database;
 
 import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.SearchRequest.Ordering;
 import java.sql.Connection;
@@ -17,17 +16,9 @@ public abstract class ObjectStore implements IObjectStore {
     Logger logger = LoggerFactory.getLogger(ObjectStore.class);
 
     protected String tableName;
-    protected final String primaryKey;
-    private final Connection conn;
 
-    public ObjectStore(Locator locator) {
-        this.conn = locator.getCONN();
+    public ObjectStore() {
         this.setTableName();
-        this.primaryKey = this.getTableName() + "_id";
-    }
-
-    public Connection getConn() {
-        return conn;
     }
 
     public String getTableName() {
@@ -35,7 +26,7 @@ public abstract class ObjectStore implements IObjectStore {
     }
 
     public String getPrimaryKey() {
-        return primaryKey;
+        return this.getTableName() + "_id";
     }
 
     public String getDefaultFromClausule() {
@@ -44,7 +35,7 @@ public abstract class ObjectStore implements IObjectStore {
 
     @Override
     public BaseModel getObjectByOid(String oid) throws SQLException {
-        Statement st = this.conn.createStatement();
+        Statement st = ConnectionToDatabase.connect().createStatement();
         ResultSet resultSet = st.executeQuery("SELECT * from " + this.getDefaultFromClausule() + " where " + this.tableName + "_id=" + BaseModel.getIdFromOid(oid));
         if (resultSet.next()) {
             return this.getObjectFromResultSet(resultSet);
@@ -53,8 +44,8 @@ public abstract class ObjectStore implements IObjectStore {
     }
 
     @Override
-    public boolean deleteObjectByOid(String oid) throws SQLException {
-        PreparedStatement st = this.conn.prepareStatement("DELETE FROM " + this.getDefaultFromClausule() + " WHERE " + tableName + "_id=?");
+    public boolean deleteObjectByOid(String oid, Connection conn) throws SQLException {
+        PreparedStatement st = conn.prepareStatement("DELETE FROM " + this.getDefaultFromClausule() + " WHERE " + tableName + "_id=?");
         st.setLong(1, BaseModel.getIdFromOid(oid));
         return st.executeUpdate() > 0;
     }
@@ -67,7 +58,7 @@ public abstract class ObjectStore implements IObjectStore {
         if (whereClausule == null) {
             whereClausule = "";
         }
-        Statement st = this.conn.createStatement();
+        Statement st = ConnectionToDatabase.connect().createStatement();
         return st.executeQuery("SELECT * from " + this.getDefaultFromClausule() + " " + whereClausule);
     }
 
@@ -79,7 +70,7 @@ public abstract class ObjectStore implements IObjectStore {
         if (fromClausule == null || fromClausule.trim().length() == 0) {
             fromClausule = this.getDefaultFromClausule();
         }
-        Statement st = this.conn.createStatement();
+        Statement st = ConnectionToDatabase.connect().createStatement();
         return st.executeQuery("SELECT * from " + fromClausule + " " + whereClausule);
     }
 
@@ -89,9 +80,9 @@ public abstract class ObjectStore implements IObjectStore {
             whereClausule = " WHERE " + whereClausule;
         }
         long count = 0;
-        Statement st = this.conn.createStatement();
+        Statement st = ConnectionToDatabase.connect().createStatement();
         ResultSet resultSet = st.executeQuery("SELECT * from " + this.getDefaultFromClausule() + " " + whereClausule + " ORDER BY " + this.getTableName() + "." + this.getPrimaryKey() + " " + ordering + " limit " + skip + ", " + top);
-        Statement stCount = this.conn.createStatement();
+        Statement stCount = ConnectionToDatabase.connect().createStatement();
         ResultSet resultSetCount = stCount.executeQuery("SELECT COUNT(*) AS rowcount from " + this.getDefaultFromClausule() + " " + whereClausule);
         resultSetCount.next();
         count = resultSetCount.getLong("rowcount");
@@ -107,9 +98,9 @@ public abstract class ObjectStore implements IObjectStore {
             fromClausule = this.getDefaultFromClausule();
         }
         long count = 0;
-        Statement st = this.conn.createStatement();
+        Statement st = ConnectionToDatabase.connect().createStatement();
         ResultSet resultSet = st.executeQuery("SELECT * from " + fromClausule + " " + whereClausule + " ORDER BY " + this.getTableName() + "." + this.getPrimaryKey() + " " + ordering);
-        Statement stCount = this.conn.createStatement();
+        Statement stCount = ConnectionToDatabase.connect().createStatement();
         ResultSet resultSetCount = stCount.executeQuery("SELECT COUNT(*) AS rowcount from " + fromClausule + " " + whereClausule);
         resultSetCount.next();
         count = resultSetCount.getLong("rowcount");
@@ -125,9 +116,9 @@ public abstract class ObjectStore implements IObjectStore {
             fromClausule = this.getDefaultFromClausule();
         }
         long count = 0;
-        Statement st = this.conn.createStatement();
+        Statement st = ConnectionToDatabase.connect().createStatement();
         ResultSet resultSet = st.executeQuery("SELECT * from " + fromClausule + " " + whereClausule + " ORDER BY " + this.getTableName() + "." + this.getPrimaryKey() + " " + ordering + " " + " limit " + skip + ", " + top);
-        Statement stCount = this.conn.createStatement();
+        Statement stCount = ConnectionToDatabase.connect().createStatement();
         ResultSet resultSetCount = stCount.executeQuery("SELECT COUNT(*) AS rowcount from " + fromClausule + " " + whereClausule);
         resultSetCount.next();
         count = resultSetCount.getLong("rowcount");

@@ -1,19 +1,16 @@
 package com.stakloram.backend.database.objects;
 
+import com.stakloram.backend.database.ConnectionToDatabase;
 import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.database.ObjectStore;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.User;
-import com.stakloram.backend.models.Locator;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserStore extends ObjectStore {
-
-    public UserStore(Locator locator) {
-        super(locator);
-    }
 
     @Override
     public void setTableName() {
@@ -21,10 +18,10 @@ public class UserStore extends ObjectStore {
     }
 
     @Override
-    public User createNewObjectToDatabase(BaseModel model) throws SQLException {
+    public User createNewObjectToDatabase(BaseModel model, Connection conn) throws SQLException {
         User object = (User) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = conn.prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getDisplayName());
         st.setString(++i, object.getUsername());
         st.setString(++i, object.getPassword());
@@ -43,10 +40,10 @@ public class UserStore extends ObjectStore {
     }
 
     @Override
-    public User modifyObject(String oid, BaseModel model) throws SQLException {
+    public User modifyObject(String oid, BaseModel model, Connection conn) throws SQLException {
         User object = (User) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_display_name=?,"
                 + this.getTableName() + "_username=?,"
                 + this.getTableName() + "_enabled=?,"
@@ -93,7 +90,7 @@ public class UserStore extends ObjectStore {
 
     public boolean changeUserPassword(String oid, String newPassword) throws SQLException {
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = ConnectionToDatabase.connect().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_password=?"
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setString(++i, newPassword);

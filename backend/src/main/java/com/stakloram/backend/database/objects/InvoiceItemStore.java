@@ -1,29 +1,26 @@
 package com.stakloram.backend.database.objects;
 
+import com.stakloram.backend.database.ConnectionToDatabase;
 import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.database.ObjectStore;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.InvoiceItem;
-import com.stakloram.backend.models.Locator;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class InvoiceItemStore extends ObjectStore {
 
-    public InvoiceItemStore(Locator locator) {
-        super(locator);
-    }
-
     @Override
     public void setTableName() {
         this.tableName = "invoice_item";
     }
 
-    public InvoiceItem createNewObjectToDatabase(BaseModel model, Long invoiceId) throws SQLException {
+    public InvoiceItem createNewObjectToDatabase(BaseModel model, Long invoiceId, Connection conn) throws SQLException {
         InvoiceItem object = (InvoiceItem) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = conn.prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getDescription());
         st.setString(++i, object.getUom());
         st.setDouble(++i, object.getQuantity());
@@ -44,15 +41,15 @@ public class InvoiceItemStore extends ObjectStore {
     }
 
     @Override
-    public InvoiceItem createNewObjectToDatabase(BaseModel model) throws SQLException {
+    public InvoiceItem createNewObjectToDatabase(BaseModel model, Connection conn) throws SQLException {
         return null;
     }
 
     @Override
-    public InvoiceItem modifyObject(String oid, BaseModel model) throws SQLException {
+    public InvoiceItem modifyObject(String oid, BaseModel model, Connection conn) throws SQLException {
         InvoiceItem object = (InvoiceItem) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_description=?,"
                 + this.getTableName() + "_uom=?,"
                 + this.getTableName() + "_quantity=?,"
@@ -92,6 +89,6 @@ public class InvoiceItemStore extends ObjectStore {
     }
 
     public ResultSet getAllObjectsForSpecificColumn(String columnName) throws SQLException {
-        return this.getConn().createStatement().executeQuery("SELECT " + columnName + " from " + this.getDefaultFromClausule());
+        return ConnectionToDatabase.connect().createStatement().executeQuery("SELECT " + columnName + " from " + this.getDefaultFromClausule());
     }
 }

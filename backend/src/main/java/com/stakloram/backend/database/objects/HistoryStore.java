@@ -4,18 +4,14 @@ import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.database.ObjectStore;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.History;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.User;
 import com.stakloram.backend.util.Helper;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class HistoryStore extends ObjectStore {
-
-    public HistoryStore(Locator locator) {
-        super(locator);
-    }
 
     @Override
     public void setTableName() {
@@ -23,10 +19,10 @@ public class HistoryStore extends ObjectStore {
     }
 
     @Override
-    public History createNewObjectToDatabase(BaseModel model) throws SQLException {
+    public History createNewObjectToDatabase(BaseModel model, Connection conn) throws SQLException {
         History object = (History) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = conn.prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getAction().name());
         st.setString(++i, object.getObjectType());
         st.setString(++i, object.getPreviousValue());
@@ -44,10 +40,10 @@ public class HistoryStore extends ObjectStore {
     }
 
     @Override
-    public History modifyObject(String oid, BaseModel model) throws SQLException {
+    public History modifyObject(String oid, BaseModel model, Connection conn) throws SQLException {
         History object = (History) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_action=?,"
                 + this.getTableName() + "_object_type=?,"
                 + this.getTableName() + "_previous_value=?,"

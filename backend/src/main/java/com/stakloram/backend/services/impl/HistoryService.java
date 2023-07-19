@@ -11,7 +11,7 @@ public class HistoryService extends ServiceModel {
 
     @Override
     public void setBaseBuilder() {
-        super.baseBuilder = new HistoryBuilder(this.locator);
+        super.baseBuilder = new HistoryBuilder();
     }
 
     @Override

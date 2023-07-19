@@ -4,6 +4,7 @@ import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.SearchRequest;
+import java.sql.Connection;
 import java.util.List;
 
 public interface IService {
@@ -20,11 +21,11 @@ public interface IService {
 
     public boolean deleteObjects(List<? extends BaseModel> objects) throws SException;
 
-    void startTransaction();
+    void startTransaction(Connection conn);
 
-    void rollback();
+    void rollback(Connection conn);
 
-    void endTransaction();
+    void endTransaction(Connection conn);
 
     public void checkRequestDataForCreate(BaseModel baseModel) throws SException;
 

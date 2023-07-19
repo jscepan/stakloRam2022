@@ -1,7 +1,5 @@
 package com.stakloram.backend.services.impl;
 
-import com.stakloram.backend.database.ConnectionToDatabase;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.MyUserDetails;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.User;
@@ -22,12 +20,10 @@ public class MyUserDetailsService implements UserDetailsService {
 
     Logger logger = LoggerFactory.getLogger(MyUserDetailsService.class);
 
-    protected final Locator locator = new Locator(new ConnectionToDatabase().connect());
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            User user = (new UserBuilder(this.locator)).getUserDetailsByUsername(username);
+            User user = (new UserBuilder()).getUserDetailsByUsername(username);
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
             user.getRoles().forEach(role -> {
                 authorities.add(new SimpleGrantedAuthority((role.getName())));
@@ -40,7 +36,7 @@ public class MyUserDetailsService implements UserDetailsService {
     }
 
     public boolean changeUserPassword(String username, String oldPassword, String newPassword) throws SException {
-        UserBuilder userBuilder = new UserBuilder(this.locator);
+        UserBuilder userBuilder = new UserBuilder();
         User user = userBuilder.getUserDetailsByUsername(username);
         if (user != null) {
             return userBuilder.changeUserPassword(user, newPassword);

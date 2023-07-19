@@ -4,17 +4,12 @@ import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.database.ObjectStore;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Image;
-import com.stakloram.backend.models.Locator;
-import com.stakloram.backend.models.WorkOrder;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ImageStore extends ObjectStore {
-
-    public ImageStore(Locator locator) {
-        super(locator);
-    }
 
     @Override
     public void setTableName() {
@@ -22,14 +17,14 @@ public class ImageStore extends ObjectStore {
     }
 
     @Override
-    public Image createNewObjectToDatabase(BaseModel model) {
+    public Image createNewObjectToDatabase(BaseModel model, Connection conn) {
         return null;
     }
 
-    public Image createNewObjectToDatabase(BaseModel model, String workOrderOID) throws SQLException {
+    public Image createNewObjectToDatabase(BaseModel model, String workOrderOID, Connection conn) throws SQLException {
         Image object = (Image) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = conn.prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getUrl());
         st.setString(++i, object.getDescription());
         st.setLong(++i, BaseModel.getIdFromOid(workOrderOID));
@@ -44,10 +39,10 @@ public class ImageStore extends ObjectStore {
     }
 
     @Override
-    public Image modifyObject(String oid, BaseModel model) throws SQLException {
+    public Image modifyObject(String oid, BaseModel model, Connection conn) throws SQLException {
         Image object = (Image) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_url=?,"
                 + this.getTableName() + "_description=?"
                 + " WHERE " + this.getPrimaryKey() + "=?");

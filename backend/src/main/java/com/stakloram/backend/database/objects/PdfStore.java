@@ -3,17 +3,13 @@ package com.stakloram.backend.database.objects;
 import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.database.ObjectStore;
 import com.stakloram.backend.models.BaseModel;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.Pdf;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PdfStore extends ObjectStore {
-
-    public PdfStore(Locator locator) {
-        super(locator);
-    }
 
     @Override
     public void setTableName() {
@@ -21,10 +17,10 @@ public class PdfStore extends ObjectStore {
     }
 
     @Override
-    public Pdf createNewObjectToDatabase(BaseModel model) throws SQLException {
+    public Pdf createNewObjectToDatabase(BaseModel model, Connection conn) throws SQLException {
         Pdf object = (Pdf) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = conn.prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getUrl());
 
         if (st.executeUpdate() > 0) {
@@ -37,10 +33,10 @@ public class PdfStore extends ObjectStore {
     }
 
     @Override
-    public Pdf modifyObject(String oid, BaseModel model) throws SQLException {
+    public Pdf modifyObject(String oid, BaseModel model, Connection conn) throws SQLException {
         Pdf object = (Pdf) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_url=?"
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setString(++i, object.getUrl());

@@ -1,12 +1,13 @@
 package com.stakloram.backend.database.objects;
 
+import com.stakloram.backend.database.ConnectionToDatabase;
 import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.database.ObjectStore;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Buyer;
 import com.stakloram.backend.models.Invoice;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.util.Helper;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,20 +16,16 @@ import java.sql.Types;
 
 public class InvoiceStore extends ObjectStore {
 
-    public InvoiceStore(Locator locator) {
-        super(locator);
-    }
-
     @Override
     public void setTableName() {
         this.tableName = "invoice";
     }
 
     @Override
-    public Invoice createNewObjectToDatabase(BaseModel model) throws SQLException {
+    public Invoice createNewObjectToDatabase(BaseModel model, Connection conn) throws SQLException {
         Invoice object = (Invoice) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = conn.prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(++i, object.getType().name());
         st.setInt(++i, this.getInvoiceNumberForInvoice(object));
         st.setString(++i, object.getNumber());
@@ -67,11 +64,11 @@ public class InvoiceStore extends ObjectStore {
     }
 
     @Override
-    public Invoice modifyObject(String oid, BaseModel model) throws SQLException {
+    public Invoice modifyObject(String oid, BaseModel model, Connection conn) throws SQLException {
         Invoice object = (Invoice) model;
         object.setOid(oid);
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_type=?,"
                 + this.getTableName() + "_number=?,"
                 + this.getTableName() + "_number_sign=?,"
@@ -114,9 +111,9 @@ public class InvoiceStore extends ObjectStore {
         return null;
     }
 
-    public boolean changeBuyer(String oid, String buyerOID) throws SQLException {
+    public boolean changeBuyer(String oid, String buyerOID, Connection conn) throws SQLException {
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_buyer_buyer_id=? "
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setLong(++i, BaseModel.getIdFromOid(buyerOID));
@@ -159,7 +156,7 @@ public class InvoiceStore extends ObjectStore {
 
     public int getLastInvoiceNumber(Invoice.InvoiceType invoiceType, int year) throws SQLException {
         int lastInvoiceNumber = 0;
-        Statement st = this.getConn().createStatement();
+        Statement st = ConnectionToDatabase.connect().createStatement();
         ResultSet resultSet = st.executeQuery("SELECT * from " + DATABASE_NAME + "." + this.tableName + " WHERE invoice_number=(SELECT MAX(invoice_number) FROM " + DATABASE_NAME + "." + this.tableName + " WHERE invoice_type='" + invoiceType + "'  AND year(invoice_date_of_create)=" + year + ") AND invoice_type='" + invoiceType + "'  AND year(invoice_date_of_create)=" + year);
         while (resultSet.next()) {
             lastInvoiceNumber = resultSet.getInt(this.getTableName() + "_number");

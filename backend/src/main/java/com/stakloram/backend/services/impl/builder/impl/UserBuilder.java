@@ -4,13 +4,13 @@ import com.stakloram.backend.database.objects.RoleStore;
 import com.stakloram.backend.database.objects.UserHasRoleStore;
 import com.stakloram.backend.database.objects.UserStore;
 import com.stakloram.backend.models.BaseModel;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.Role;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.User;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
 import com.stakloram.backend.util.Helper;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,12 +21,8 @@ import java.util.Map;
 public class UserBuilder extends BaseBuilder {
 
     private final UserStore USER_STORE = (UserStore) this.getObjectStore();
-    private final RoleStore ROLE_STORE = new RoleStore(this.getLocator());
-    private final UserHasRoleStore USER_HAS_ROLE_STORE = new UserHasRoleStore(this.getLocator());
-
-    public UserBuilder(Locator locator) {
-        super(locator);
-    }
+    private final RoleStore ROLE_STORE = new RoleStore();
+    private final UserHasRoleStore USER_HAS_ROLE_STORE = new UserHasRoleStore();
 
     @Override
     public void setColumnsForSearch() {
@@ -36,7 +32,7 @@ public class UserBuilder extends BaseBuilder {
 
     @Override
     public void setObjectStore() {
-        this.objectStore = new UserStore(this.getLocator());
+        this.objectStore = new UserStore();
     }
 
     @Override
@@ -47,11 +43,11 @@ public class UserBuilder extends BaseBuilder {
     }
 
     @Override
-    public User createNewObject(BaseModel object) throws SException {
-        User user = (User) super.createNewObject(object);
+    public User createNewObject(BaseModel object, Connection conn) throws SException {
+        User user = (User) super.createNewObject(object, conn);
         for (Role role : user.getRoles()) {
             try {
-                USER_HAS_ROLE_STORE.createNewObjectToDatabase(user.getId(), role.getId());
+                USER_HAS_ROLE_STORE.createNewObjectToDatabase(user.getId(), role.getId(), conn);
             } catch (SQLException ex) {
                 super.logger.error(ex.toString());
                 throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
@@ -61,9 +57,9 @@ public class UserBuilder extends BaseBuilder {
     }
 
     @Override
-    public User modifyObject(String oid, BaseModel object) throws SException {
+    public User modifyObject(String oid, BaseModel object, Connection conn) throws SException {
         try {
-            User user = (User) super.modifyObject(oid, object);
+            User user = (User) super.modifyObject(oid, object, conn);
             ResultSet rs = USER_HAS_ROLE_STORE.getAllUserRoles(user.getOid());
             List<Role> previousUserRoles = new ArrayList<>();
             try {
@@ -75,7 +71,7 @@ public class UserBuilder extends BaseBuilder {
             }
             Map<Helper.Action, List<? extends BaseModel>> mapOfDifferences = Helper.findDifferenceBetweenLists(user.getRoles(), previousUserRoles);
             for (BaseModel role : mapOfDifferences.get(Helper.Action.FOR_CREATE)) {
-                USER_HAS_ROLE_STORE.createNewObjectToDatabase(user.getId(), role.getId());
+                USER_HAS_ROLE_STORE.createNewObjectToDatabase(user.getId(), role.getId(), conn);
             }
             for (BaseModel role : mapOfDifferences.get(Helper.Action.FOR_DELETE)) {
                 USER_HAS_ROLE_STORE.deleteRoleByOidForUserOid(user.getOid(), role.getOid());

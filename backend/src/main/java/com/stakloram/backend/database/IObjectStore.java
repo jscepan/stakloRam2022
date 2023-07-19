@@ -2,6 +2,7 @@ package com.stakloram.backend.database;
 
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.SearchRequest.Ordering;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -11,11 +12,11 @@ public interface IObjectStore {
 
     public BaseModel getObjectByOid(String oid) throws SQLException;
 
-    public BaseModel createNewObjectToDatabase(BaseModel model) throws SQLException;
+    public BaseModel createNewObjectToDatabase(BaseModel model, Connection conn) throws SQLException;
 
-    public BaseModel modifyObject(String oid, BaseModel model) throws SQLException;
+    public BaseModel modifyObject(String oid, BaseModel model, Connection conn) throws SQLException;
 
-    public boolean deleteObjectByOid(String oid) throws SQLException;
+    public boolean deleteObjectByOid(String oid, Connection conn) throws SQLException;
 
     public BaseModel getObjectFromResultSet(ResultSet resultSet) throws SQLException;
 

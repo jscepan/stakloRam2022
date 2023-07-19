@@ -5,10 +5,10 @@ import com.stakloram.backend.database.ObjectStore;
 import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Buyer;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.Pdf;
 import com.stakloram.backend.models.WorkOrder;
 import com.stakloram.backend.util.Helper;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,20 +16,16 @@ import java.sql.Statement;
 
 public class WorkOrderStore extends ObjectStore {
 
-    public WorkOrderStore(Locator locator) {
-        super(locator);
-    }
-
     @Override
     public void setTableName() {
         this.tableName = "work_order";
     }
 
     @Override
-    public WorkOrder createNewObjectToDatabase(BaseModel model) throws SQLException {
+    public WorkOrder createNewObjectToDatabase(BaseModel model, Connection conn) throws SQLException {
         WorkOrder object = (WorkOrder) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = conn.prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setLong(++i, this.getLastWorkOrderNumber(object.getDateOfCreate().getYear()) + 1);
         st.setDate(++i, Helper.convertLocalDateToSqlDate(object.getDateOfCreate()));
         st.setString(++i, object.getPlaceOfIssue());
@@ -49,10 +45,10 @@ public class WorkOrderStore extends ObjectStore {
     }
 
     @Override
-    public WorkOrder modifyObject(String oid, BaseModel model) throws SQLException {
+    public WorkOrder modifyObject(String oid, BaseModel model, Connection conn) throws SQLException {
         WorkOrder object = (WorkOrder) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_number=?,"
                 + this.getTableName() + "_date_of_create=?,"
                 + this.getTableName() + "_place_of_issue=?,"
@@ -73,9 +69,9 @@ public class WorkOrderStore extends ObjectStore {
         return null;
     }
 
-    public boolean changeBuyer(String oid, String buyerOID) throws SQLException {
+    public boolean changeBuyer(String oid, String buyerOID, Connection conn) throws SQLException {
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_buyer_buyer_id=? "
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setLong(++i, BaseModel.getIdFromOid(buyerOID));
@@ -83,9 +79,9 @@ public class WorkOrderStore extends ObjectStore {
         return st.executeUpdate() > 0;
     }
 
-    public boolean assignPdf(String workOrderOID, String pdfOID) throws SQLException {
+    public boolean assignPdf(String workOrderOID, String pdfOID, Connection conn) throws SQLException {
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_pdf_pdf_id=? "
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setLong(++i, BaseModel.getIdFromOid(pdfOID));
@@ -109,7 +105,7 @@ public class WorkOrderStore extends ObjectStore {
 
     public long getLastWorkOrderNumber(int year) throws SQLException {
         long lastWorkOrderNumber = 0;
-        Statement st = this.getConn().createStatement();
+        Statement st = ConnectionToDatabase.connect().createStatement();
         ResultSet resultSet = st.executeQuery("SELECT * from " + DATABASE_NAME + "." + this.tableName + " WHERE work_order_number=(SELECT MAX(work_order_number) FROM " + DATABASE_NAME + "." + this.tableName + " WHERE year(work_order_date_of_create)=" + year + ") and year(work_order_date_of_create)=" + year);
         while (resultSet.next()) {
             lastWorkOrderNumber = resultSet.getLong(this.getTableName() + "_number");

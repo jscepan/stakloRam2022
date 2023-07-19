@@ -7,10 +7,10 @@ import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.History;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,30 +19,25 @@ import java.util.List;
 
 public class HistoryBuilder extends BaseBuilder {
 
-    private final UserStore USER_STORE = new UserStore(this.getLocator());
-
-    public HistoryBuilder(Locator locator) {
-        super(locator);
-        this.objectStore = new HistoryStore(locator);
-    }
+    private final UserStore USER_STORE = new UserStore();
 
     @Override
     public void setObjectStore() {
-        this.objectStore = new HistoryStore(this.getLocator());
+        this.objectStore = new HistoryStore();
     }
 
     @Override
     public void setColumnsForSearch() {
-        this.databaseColumnsForQuickSearch = Arrays.asList("history_previous_value","history_new_value");
+        this.databaseColumnsForQuickSearch = Arrays.asList("history_previous_value", "history_new_value");
         this.databaseColumnsForAttributes.put("object_type", "object_type");
         this.databaseColumnsForAttributes.put("action", "action");
         this.databaseColumnsForAttributes.put("from_date", "time");
         this.databaseColumnsForAttributes.put("to_date", "time");
     }
 
-    public void createNewObject(History object) throws SException {
+    public void createNewObject(History object, Connection conn) {
         try {
-            this.objectStore.createNewObjectToDatabase(object);
+            this.objectStore.createNewObjectToDatabase(object, conn);
         } catch (SQLException ex) {
             logger.error(ex.toString());
         }
@@ -87,12 +82,12 @@ public class HistoryBuilder extends BaseBuilder {
     }
 
     @Override
-    public boolean deleteObjectByOid(String oid) throws SException {
+    public boolean deleteObjectByOid(String oid, Connection conn) throws SException {
         throw new SException(UserMessage.getLocalizedMessage("historyObjectCantBeDeleted"));
     }
 
     @Override
-    public BaseModel modifyObject(String oid, BaseModel object) throws SException {
+    public BaseModel modifyObject(String oid, BaseModel object, Connection conn) throws SException {
         throw new SException(UserMessage.getLocalizedMessage("historyObjectCantBeModified"));
     }
 }

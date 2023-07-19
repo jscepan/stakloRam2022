@@ -11,7 +11,7 @@ public class RoleService extends ServiceModel {
 
     @Override
     public void setBaseBuilder() {
-        super.baseBuilder = new RoleBuilder(this.locator);
+        super.baseBuilder = new RoleBuilder();
     }
 
     @Override

@@ -4,18 +4,14 @@ import com.stakloram.backend.database.ObjectStore;
 import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Invoice;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.RegistratedInvoice;
 import com.stakloram.backend.util.Helper;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class RegistratedInvoiceStore extends ObjectStore {
-
-    public RegistratedInvoiceStore(Locator locator) {
-        super(locator);
-    }
 
     @Override
     public void setTableName() {
@@ -23,10 +19,10 @@ public class RegistratedInvoiceStore extends ObjectStore {
     }
 
     @Override
-    public RegistratedInvoice createNewObjectToDatabase(BaseModel model) throws SQLException {
+    public RegistratedInvoice createNewObjectToDatabase(BaseModel model, Connection conn) throws SQLException {
         RegistratedInvoice object = (RegistratedInvoice) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement st = conn.prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
         st.setInt(++i, object.getInvoiceId());
         st.setInt(++i, object.getPurchaseInvoiceId());
         st.setInt(++i, object.getSalesInvoiceId());
@@ -43,10 +39,10 @@ public class RegistratedInvoiceStore extends ObjectStore {
     }
 
     @Override
-    public BaseModel modifyObject(String oid, BaseModel model) throws SQLException {
+    public BaseModel modifyObject(String oid, BaseModel model, Connection conn) throws SQLException {
         RegistratedInvoice object = (RegistratedInvoice) model;
         int i = 0;
-        PreparedStatement st = this.getConn().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_invoiceid=?,"
                 + this.getTableName() + "_purchaseinvoiceid=?,"
                 + this.getTableName() + "_salesinvoiceid=?,"

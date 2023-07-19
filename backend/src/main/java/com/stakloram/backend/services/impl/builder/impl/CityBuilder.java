@@ -7,11 +7,11 @@ import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.City;
 import com.stakloram.backend.models.Country;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,15 +20,11 @@ import java.util.List;
 
 public class CityBuilder extends BaseBuilder {
 
-    private final CountryStore COUNTRY_STORE = new CountryStore(this.getLocator());
-
-    public CityBuilder(Locator locator) {
-        super(locator);
-    }
+    private final CountryStore COUNTRY_STORE = new CountryStore();
 
     @Override
     public void setObjectStore() {
-        this.objectStore = new CityStore(this.getLocator());
+        this.objectStore = new CityStore();
     }
 
     @Override
@@ -37,10 +33,10 @@ public class CityBuilder extends BaseBuilder {
     }
 
     @Override
-    public BaseModel createNewObject(BaseModel object) throws SException {
+    public BaseModel createNewObject(BaseModel object, Connection conn) throws SException {
         City city;
         try {
-            city = (City) super.createNewObject(object);
+            city = (City) super.createNewObject(object, conn);
             city.setCountry((Country) COUNTRY_STORE.getObjectByOid(city.getCountry().getOid()));
             return city;
         } catch (SException ex) {
@@ -53,9 +49,9 @@ public class CityBuilder extends BaseBuilder {
     }
 
     @Override
-    public BaseModel modifyObject(String oid, BaseModel object) throws SException {
+    public BaseModel modifyObject(String oid, BaseModel object, Connection conn) throws SException {
         try {
-            City city = (City) super.modifyObject(oid, object);
+            City city = (City) super.modifyObject(oid, object, conn);
             city.setCountry((Country) COUNTRY_STORE.getObjectByOid(city.getCountry().getOid()));
             return city;
         } catch (SQLException ex) {

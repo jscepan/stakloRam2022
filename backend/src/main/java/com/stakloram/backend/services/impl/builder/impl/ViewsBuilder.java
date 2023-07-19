@@ -10,7 +10,6 @@ import com.stakloram.backend.models.Debtor;
 import com.stakloram.backend.models.Income;
 import com.stakloram.backend.models.Invoice;
 import com.stakloram.backend.models.Invoice.InvoiceType;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.models.Outcome;
 import com.stakloram.backend.models.UserMessage;
 import java.sql.ResultSet;
@@ -25,16 +24,12 @@ public class ViewsBuilder {
 
     Logger logger = LoggerFactory.getLogger(ViewsBuilder.class);
 
-    private final BuyerStore BUYER_STORE;
-    private final InvoiceStore INVOICE_STORE;
-    private final IncomeStore INCOME_STORE;
-    private final OutcomeStore OUTCOME_STORE;
+    private final BuyerStore BUYER_STORE = new BuyerStore();
+    private final InvoiceStore INVOICE_STORE = new InvoiceStore();
+    private final IncomeStore INCOME_STORE = new IncomeStore();
+    private final OutcomeStore OUTCOME_STORE = new OutcomeStore();
 
-    public ViewsBuilder(Locator locator) {
-        BUYER_STORE = new BuyerStore(locator);
-        INVOICE_STORE = new InvoiceStore(locator);
-        INCOME_STORE = new IncomeStore(locator);
-        OUTCOME_STORE = new OutcomeStore(locator);
+    public ViewsBuilder() {
     }
 
     public List<Debtor> getAllDebtors() throws SException {

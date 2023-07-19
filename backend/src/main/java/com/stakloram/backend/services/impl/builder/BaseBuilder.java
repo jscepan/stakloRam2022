@@ -5,12 +5,12 @@ import com.stakloram.backend.database.ObjectStore;
 import com.stakloram.backend.database.ResponseWithCount;
 import com.stakloram.backend.models.ArrayResponse;
 import com.stakloram.backend.models.BaseModel;
-import com.stakloram.backend.models.Locator;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.AttributeObject;
 import com.stakloram.backend.models.AttributeObject.AttributeType;
 import com.stakloram.backend.models.SearchRequest;
 import com.stakloram.backend.models.UserMessage;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,14 +25,12 @@ public abstract class BaseBuilder implements IObjectBuilder {
 
     public Logger logger = LoggerFactory.getLogger(BaseBuilder.class);
 
-    private final Locator locator;
     protected ObjectStore objectStore;
     protected List<String> databaseColumnsForQuickSearch = new ArrayList<>();
     protected Map<String, String> databaseColumnsForAdvanceFilter = new HashMap<>();
     protected Map<String, String> databaseColumnsForAttributes = new HashMap<>();
 
-    public BaseBuilder(Locator locator) {
-        this.locator = locator;
+    public BaseBuilder() {
         this.setObjectStore();
         this.setColumnsForSearch();
     }
@@ -41,14 +39,10 @@ public abstract class BaseBuilder implements IObjectBuilder {
         return objectStore;
     }
 
-    public Locator getLocator() {
-        return locator;
-    }
-
     @Override
-    public BaseModel createNewObject(BaseModel object) throws SException {
+    public BaseModel createNewObject(BaseModel object, Connection conn) throws SException {
         try {
-            return this.objectStore.createNewObjectToDatabase(object);
+            return this.objectStore.createNewObjectToDatabase(object, conn);
         } catch (SQLException ex) {
             logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
@@ -56,9 +50,9 @@ public abstract class BaseBuilder implements IObjectBuilder {
     }
 
     @Override
-    public BaseModel modifyObject(String oid, BaseModel object) throws SException {
+    public BaseModel modifyObject(String oid, BaseModel object, Connection conn) throws SException {
         try {
-            BaseModel baseModel = this.objectStore.modifyObject(oid, object);
+            BaseModel baseModel = this.objectStore.modifyObject(oid, object, conn);
             baseModel.setOid(oid);
             return baseModel;
         } catch (SQLException ex) {
@@ -68,9 +62,9 @@ public abstract class BaseBuilder implements IObjectBuilder {
     }
 
     @Override
-    public boolean deleteObjectByOid(String oid) throws SException {
+    public boolean deleteObjectByOid(String oid, Connection conn) throws SException {
         try {
-            return this.objectStore.deleteObjectByOid(oid);
+            return this.objectStore.deleteObjectByOid(oid, conn);
         } catch (SQLException ex) {
             logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
@@ -90,7 +84,6 @@ public abstract class BaseBuilder implements IObjectBuilder {
     public ResponseWithCount searchObjects(String fromClausule, SearchRequest searchObject, Long skip, Long top) throws SException {
         try {
             String searchClausule = this.getQuickSearchClausule(this.getQuickSearchWords(searchObject));
-//            String containsClausule = this.getContainsClausule(searchObject);
             String betweenClausule = this.getBetweenClausule(searchObject);
             return this.objectStore.searchObjectsFromDatabase(fromClausule, this.generateWhereClausule("", searchClausule, betweenClausule), skip, top, searchObject.getOrdering());
         } catch (SQLException ex) {
@@ -103,7 +96,6 @@ public abstract class BaseBuilder implements IObjectBuilder {
     public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
         try {
             String searchClausule = this.getQuickSearchClausule(this.getQuickSearchWords(searchObject));
-//            String containsClausule = this.getContainsClausule(searchObject);
             String betweenClausule = this.getBetweenClausule(searchObject);
             ResponseWithCount rwc = this.objectStore.searchObjectsFromDatabase(this.generateWhereClausule("", searchClausule, betweenClausule), skip, top, searchObject.getOrdering());
             return this.getArrayResponseFromResponseWithCount(rwc);
@@ -230,16 +222,6 @@ public abstract class BaseBuilder implements IObjectBuilder {
         } else {
             where = searchClausule;
         }
-//        if (where.trim().length() > 0 && equalsClausule.trim().length() > 0) {
-//            where = where + " AND " + equalsClausule;
-//        } else {
-//            where += equalsClausule;
-//        }
-//        if (where.trim().length() > 0 && containsClausule.length() > 0) {
-//            where = where + " AND " + containsClausule;
-//        } else {
-//            where += containsClausule;
-//        }
         if (where.trim().length() > 0 && betweenClausule.length() > 0) {
             where = where + " AND " + betweenClausule;
         } else {
@@ -247,77 +229,6 @@ public abstract class BaseBuilder implements IObjectBuilder {
         }
         return where;
     }
-//
-//    public String getEqualsClausule(SearchRequest searchObject) {
-//        if (this.databaseColumnsForAdvanceFilter.isEmpty()) {
-//            return "";
-//        }
-//        String equalsClausule = "";
-//        int i = 0;
-//        for (Map<String, List<String>> entity : searchObject.getObjectsOIDS()) {
-//            Map.Entry<String, List<String>> entry = entity.entrySet().iterator().next();
-//            String tableName = this.databaseColumnsForAdvanceFilter.get(entry.getKey());
-//            if (tableName == null || tableName.trim().length() == 0) {
-//                continue;
-//            }
-//            if (entry.getValue().isEmpty()) {
-//                break;
-//            }
-//            if (i > 0) {
-//                equalsClausule += " AND ";
-//            }
-//            equalsClausule += "(";
-//            for (int j = 0; j < entry.getValue().size(); j++) {
-//                if (j > 0) {
-//                    equalsClausule += " OR ";
-//                }
-//                if ("null".equals(entry.getValue().get(j))) {
-//                    equalsClausule += tableName;
-//                    equalsClausule += " IS NULL";
-//                } else {
-//                    equalsClausule += tableName + "=";
-//                    equalsClausule += BaseModel.getIdFromOid(entry.getValue().get(j));
-//                }
-//            }
-//            equalsClausule += ")";
-//            i++;
-//        }
-//        return equalsClausule;
-//    }
-//
-//    public String getContainsClausule(SearchRequest searchObject) {
-//        if (this.databaseColumnsForAttributes.isEmpty()) {
-//            return "";
-//        }
-//        String containsClausule = "";
-//        int i = 0;
-//        for (Map<String, List<String>> entity : searchObject.getAttributes()) {
-//            Map.Entry<String, List<String>> entry = entity.entrySet().iterator().next();
-//            String tableName = this.databaseColumnsForAttributes.get(entry.getKey());
-//            if (entry.getValue().isEmpty()) {
-//                break;
-//            }
-//            if (i > 0) {
-//                containsClausule += " AND ";
-//            }
-//
-//            containsClausule += "(";
-//            for (int j = 0; j < entry.getValue().size(); j++) {
-//                if (j > 0) {
-//                    containsClausule += " OR ";
-//                }
-//                containsClausule += this.getObjectStore().getTableName() + "." + this.getObjectStore().getTableName() + "_" + tableName + "=";
-//                if ("true".equals(entry.getValue().get(j)) || "false".equals(entry.getValue().get(j))) {
-//                    containsClausule += entry.getValue().get(j);
-//                } else {
-//                    containsClausule += "'" + entry.getValue().get(j) + "'";
-//                }
-//            }
-//            containsClausule += ")";
-//            i++;
-//        }
-//        return containsClausule;
-//    }
 
     private String getBetweenClausule(SearchRequest searchObject) {
         if (this.databaseColumnsForAttributes.isEmpty()) {
