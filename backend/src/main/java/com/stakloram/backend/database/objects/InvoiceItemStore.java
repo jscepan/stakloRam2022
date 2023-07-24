@@ -3,6 +3,7 @@ package com.stakloram.backend.database.objects;
 import com.stakloram.backend.database.ConnectionToDatabase;
 import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.database.ObjectStore;
+import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.InvoiceItem;
 import java.sql.Connection;
@@ -88,7 +89,7 @@ public class InvoiceItemStore extends ObjectStore {
         return object;
     }
 
-    public ResultSet getAllObjectsForSpecificColumn(String columnName) throws SQLException {
+    public ResultSet getAllObjectsForSpecificColumn(String columnName) throws SQLException, SException {
         return ConnectionToDatabase.connect().createStatement().executeQuery("SELECT " + columnName + " from " + this.getDefaultFromClausule());
     }
 }

@@ -3,6 +3,7 @@ package com.stakloram.backend.database.objects;
 import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.database.ConnectionToDatabase;
 import com.stakloram.backend.database.ObjectStore;
+import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.BaseModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,13 +18,13 @@ public class UserHasRoleStore extends ObjectStore {
         super.tableName = "user_has_role";
     }
 
-    public ResultSet getAllUserRoles(String userOid, Long skip, Long top) throws SQLException {
+    public ResultSet getAllUserRoles(String userOid, Long skip, Long top) throws SQLException, SException {
         Statement st = null;
         st = ConnectionToDatabase.connect().createStatement();
         return st.executeQuery("SELECT * from " + DATABASE_NAME + "." + this.tableName + " JOIN " + DATABASE_NAME + ".role on " + this.tableName + ".role_role_id=role.role_id WHERE " + this.tableName + ".user_user_id=" + BaseModel.getIdFromOid(userOid) + " limit " + skip + ", " + top);
     }
 
-    public ResultSet getAllUserRoles(String userOid) throws SQLException {
+    public ResultSet getAllUserRoles(String userOid) throws SQLException, SException {
         Statement st = null;
         st = ConnectionToDatabase.connect().createStatement();
         return st.executeQuery("SELECT * from " + DATABASE_NAME + "." + this.tableName + " JOIN " + DATABASE_NAME + ".role on " + this.tableName + ".role_role_id=role.role_id WHERE " + this.tableName + ".user_user_id=" + BaseModel.getIdFromOid(userOid));
@@ -62,7 +63,7 @@ public class UserHasRoleStore extends ObjectStore {
         return false;
     }
 
-    public boolean deleteRoleByOidForUserOid(String userOid, String roleOid) throws SQLException {
+    public boolean deleteRoleByOidForUserOid(String userOid, String roleOid) throws SQLException, SException {
         PreparedStatement st = ConnectionToDatabase.connect().prepareStatement("DELETE FROM " + DATABASE_NAME + "." + this.tableName + " WHERE " + "user_user_id=" + BaseModel.getIdFromOid(userOid) + " AND role_role_id=" + BaseModel.getIdFromOid(roleOid));
         return st.executeUpdate() > 0;
     }

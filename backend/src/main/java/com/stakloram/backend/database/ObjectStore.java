@@ -1,6 +1,7 @@
 package com.stakloram.backend.database;
 
 import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
+import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.SearchRequest.Ordering;
 import java.sql.Connection;
@@ -34,7 +35,7 @@ public abstract class ObjectStore implements IObjectStore {
     }
 
     @Override
-    public BaseModel getObjectByOid(String oid) throws SQLException {
+    public BaseModel getObjectByOid(String oid) throws SQLException, SException {
         Statement st = ConnectionToDatabase.connect().createStatement();
         ResultSet resultSet = st.executeQuery("SELECT * from " + this.getDefaultFromClausule() + " where " + this.tableName + "_id=" + BaseModel.getIdFromOid(oid));
         if (resultSet.next()) {
@@ -51,7 +52,7 @@ public abstract class ObjectStore implements IObjectStore {
     }
 
     @Override
-    public ResultSet getAllObjectsFromDatabase(String whereClausule) throws SQLException {
+    public ResultSet getAllObjectsFromDatabase(String whereClausule) throws SQLException, SException {
         if (whereClausule != null && whereClausule.trim().length() > 0) {
             whereClausule = " WHERE " + whereClausule;
         }
@@ -63,7 +64,7 @@ public abstract class ObjectStore implements IObjectStore {
     }
 
     @Override
-    public ResultSet getAllObjectsFromDatabase(String fromClausule, String whereClausule) throws SQLException {
+    public ResultSet getAllObjectsFromDatabase(String fromClausule, String whereClausule) throws SQLException, SException {
         if (whereClausule != null && whereClausule.trim().length() > 0) {
             whereClausule = " WHERE " + whereClausule;
         }
@@ -75,7 +76,7 @@ public abstract class ObjectStore implements IObjectStore {
     }
 
     @Override
-    public ResponseWithCount searchObjectsFromDatabase(String whereClausule, Long skip, Long top, Ordering ordering) throws SQLException {
+    public ResponseWithCount searchObjectsFromDatabase(String whereClausule, Long skip, Long top, Ordering ordering) throws SQLException, SException {
         if (whereClausule != null && whereClausule.trim().length() > 0) {
             whereClausule = " WHERE " + whereClausule;
         }
@@ -90,7 +91,7 @@ public abstract class ObjectStore implements IObjectStore {
     }
 
     @Override
-    public ResponseWithCount searchObjectsFromDatabase(String fromClausule, String whereClausule, Ordering ordering) throws SQLException {
+    public ResponseWithCount searchObjectsFromDatabase(String fromClausule, String whereClausule, Ordering ordering) throws SQLException, SException {
         if (whereClausule != null && whereClausule.trim().length() > 0) {
             whereClausule = " WHERE " + whereClausule;
         }
@@ -108,7 +109,7 @@ public abstract class ObjectStore implements IObjectStore {
     }
 
     @Override
-    public ResponseWithCount searchObjectsFromDatabase(String fromClausule, String whereClausule, Long skip, Long top, Ordering ordering) throws SQLException {
+    public ResponseWithCount searchObjectsFromDatabase(String fromClausule, String whereClausule, Long skip, Long top, Ordering ordering) throws SQLException, SException {
         if (whereClausule != null && whereClausule.trim().length() > 0) {
             whereClausule = " WHERE " + whereClausule;
         }

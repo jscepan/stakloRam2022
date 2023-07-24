@@ -2,6 +2,7 @@ package com.stakloram.backend.database.objects;
 
 import com.stakloram.backend.database.ObjectStore;
 import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
+import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Invoice;
 import com.stakloram.backend.models.RegistratedInvoice;
@@ -70,7 +71,7 @@ public class RegistratedInvoiceStore extends ObjectStore {
         return object;
     }
 
-    public RegistratedInvoice getRegistratedInvoiceByInvoiceId(Long id) throws SQLException {
+    public RegistratedInvoice getRegistratedInvoiceByInvoiceId(Long id) throws SQLException, SException {
         ResultSet rs = this.getAllObjectsFromDatabase(this.getTableName() + "_invoice_invoice_id=" + id);
         if (rs.next()) {
             return this.getObjectFromResultSet(rs);

@@ -3,6 +3,7 @@ package com.stakloram.backend.database.objects;
 import com.stakloram.backend.database.ConnectionToDatabase;
 import com.stakloram.backend.database.ObjectStore;
 import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
+import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.Buyer;
 import com.stakloram.backend.models.Pdf;
@@ -13,6 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class WorkOrderStore extends ObjectStore {
 
@@ -23,25 +26,29 @@ public class WorkOrderStore extends ObjectStore {
 
     @Override
     public WorkOrder createNewObjectToDatabase(BaseModel model, Connection conn) throws SQLException {
-        WorkOrder object = (WorkOrder) model;
-        int i = 0;
-        PreparedStatement st = conn.prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
-        st.setLong(++i, this.getLastWorkOrderNumber(object.getDateOfCreate().getYear()) + 1);
-        st.setDate(++i, Helper.convertLocalDateToSqlDate(object.getDateOfCreate()));
-        st.setString(++i, object.getPlaceOfIssue());
-        st.setString(++i, object.getForPerson());
-        st.setString(++i, object.getDescription());
-        st.setString(++i, object.getNote());
-        st.setLong(++i, object.getBuyer().getId());
-        st.setObject(++i, null);
+        try {
+            WorkOrder object = (WorkOrder) model;
+            int i = 0;
+            PreparedStatement st = conn.prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st.setLong(++i, this.getLastWorkOrderNumber(object.getDateOfCreate().getYear()) + 1);
+            st.setDate(++i, Helper.convertLocalDateToSqlDate(object.getDateOfCreate()));
+            st.setString(++i, object.getPlaceOfIssue());
+            st.setString(++i, object.getForPerson());
+            st.setString(++i, object.getDescription());
+            st.setString(++i, object.getNote());
+            st.setLong(++i, object.getBuyer().getId());
+            st.setObject(++i, null);
 
-        if (st.executeUpdate() > 0) {
-            ResultSet rs = st.getGeneratedKeys();
-            rs.next();
-            object.setOid(BaseModel.getOidFromId(object, rs.getLong(1)));
-            return object;
+            if (st.executeUpdate() > 0) {
+                ResultSet rs = st.getGeneratedKeys();
+                rs.next();
+                object.setOid(BaseModel.getOidFromId(object, rs.getLong(1)));
+                return object;
+            }
+            return null;
+        } catch (SException ex) {
+            throw new SQLException();
         }
-        return null;
     }
 
     @Override
@@ -103,7 +110,7 @@ public class WorkOrderStore extends ObjectStore {
         return object;
     }
 
-    public long getLastWorkOrderNumber(int year) throws SQLException {
+    public long getLastWorkOrderNumber(int year) throws SQLException, SException {
         long lastWorkOrderNumber = 0;
         Statement st = ConnectionToDatabase.connect().createStatement();
         ResultSet resultSet = st.executeQuery("SELECT * from " + DATABASE_NAME + "." + this.tableName + " WHERE work_order_number=(SELECT MAX(work_order_number) FROM " + DATABASE_NAME + "." + this.tableName + " WHERE year(work_order_date_of_create)=" + year + ") and year(work_order_date_of_create)=" + year);

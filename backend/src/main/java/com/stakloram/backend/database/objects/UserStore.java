@@ -3,6 +3,7 @@ package com.stakloram.backend.database.objects;
 import com.stakloram.backend.database.ConnectionToDatabase;
 import static com.stakloram.backend.database.ConnectionToDatabase.DATABASE_NAME;
 import com.stakloram.backend.database.ObjectStore;
+import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.BaseModel;
 import com.stakloram.backend.models.User;
 import java.sql.Connection;
@@ -88,7 +89,7 @@ public class UserStore extends ObjectStore {
         return object;
     }
 
-    public boolean changeUserPassword(String oid, String newPassword) throws SQLException {
+    public boolean changeUserPassword(String oid, String newPassword) throws SQLException, SException {
         int i = 0;
         PreparedStatement st = ConnectionToDatabase.connect().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_password=?"

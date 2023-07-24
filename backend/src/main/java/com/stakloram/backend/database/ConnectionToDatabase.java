@@ -3,6 +3,7 @@ package com.stakloram.backend.database;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stakloram.backend.constants.Constants;
+import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.DatabaseSettings;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.util.Helper;
@@ -12,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -41,16 +41,21 @@ public class ConnectionToDatabase {
     }
 
     // connect database
-    public static Connection connect() {
+    public static Connection connect() throws SException {
         if (DATABASE_URL == null || DATABASE_NAME == null || USERNAME == null || PASSWORD == null || DATABASE_DRIVER == null) {
             setParameters();
         }
         try {
-            return ds.getConnection();
+            Connection conn = ds.getConnection();
+            if (conn == null || conn.isClosed()) {
+                conn.close();
+                throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
+            } else {
+                return conn;
+            }
         } catch (SQLException ex) {
-            java.util.logging.Logger.getLogger(ConnectionToDatabase.class.getName()).log(Level.SEVERE, null, ex);
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
         }
-        return null;
     }
 
     static {
@@ -62,6 +67,7 @@ public class ConnectionToDatabase {
         config.setPassword(PASSWORD);
         config.setMinimumIdle(5); // Minimalni broj aktivnih veza
         config.setMaximumPoolSize(20); // Maksimalni broj veza u bazenu
+        config.setConnectionTimeout(60000);
         config.setIdleTimeout(30000); // Vrijeme neaktivnosti nakon kojeg se veza zatvara (u milisekundama)
         ds = new HikariDataSource(config);
     }
