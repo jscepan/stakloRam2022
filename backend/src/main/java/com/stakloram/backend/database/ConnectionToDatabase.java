@@ -3,9 +3,7 @@ package com.stakloram.backend.database;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stakloram.backend.constants.Constants;
-import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.DatabaseSettings;
-import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.util.Helper;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -31,30 +29,16 @@ public class ConnectionToDatabase {
     private static String USERNAME;
     private static String PASSWORD;
 
-    // init connection object
-    private static Connection connection = null;
-
-    public ConnectionToDatabase() {
-        if (DATABASE_URL == null || DATABASE_NAME == null || USERNAME == null || PASSWORD == null || DATABASE_DRIVER == null) {
-            setParameters();
-        }
-    }
-
     // connect database
-    public static Connection connect() throws SException {
+    public static Connection connect() {
         if (DATABASE_URL == null || DATABASE_NAME == null || USERNAME == null || PASSWORD == null || DATABASE_DRIVER == null) {
             setParameters();
         }
         try {
             Connection conn = ds.getConnection();
-            if (conn == null || conn.isClosed()) {
-                conn.close();
-                throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
-            } else {
-                return conn;
-            }
+            return conn;
         } catch (SQLException ex) {
-            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
+            return null;
         }
     }
 
@@ -90,18 +74,5 @@ public class ConnectionToDatabase {
         USERNAME = databaseSettings.getUsername();
         PASSWORD = databaseSettings.getPassword();
         DATABASE_URL = databaseSettings.getDatabaseUrl();
-    }
-
-    // disconnect database
-    public void disconnect() throws Exception {
-        if (connection != null) {
-            try {
-                connection.close();
-                connection = null;
-            } catch (SQLException e) {
-                logger.error(e.toString());
-                throw new Exception(UserMessage.getLocalizedMessage("databaseConnectionIssue"), e);
-            }
-        }
     }
 }

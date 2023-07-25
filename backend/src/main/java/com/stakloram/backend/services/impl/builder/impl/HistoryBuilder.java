@@ -44,12 +44,12 @@ public class HistoryBuilder extends BaseBuilder {
     }
 
     @Override
-    public BaseModel getObjectByOid(String oid) throws SException {
+    public BaseModel getObjectByOid(String oid, Connection conn) throws SException {
         History history;
         try {
             String fromSt = this.getSqlFromAppendObjectStores(Arrays.asList(USER_STORE));
             String whereSt = this.getObjectStore().getTableName() + "." + this.getObjectStore().getPrimaryKey() + "=" + BaseModel.getIdFromOid(oid);
-            ResultSet resultSet = this.getObjectStore().getAllObjectsFromDatabase(fromSt, whereSt);
+            ResultSet resultSet = this.getObjectStore().getAllObjectsFromDatabase(fromSt, whereSt, conn);
             if (resultSet.next()) {
                 history = (History) this.getObjectStore().getObjectFromResultSet(resultSet);
                 history.setUser(USER_STORE.getObjectFromResultSet(resultSet));
@@ -64,10 +64,10 @@ public class HistoryBuilder extends BaseBuilder {
     }
 
     @Override
-    public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
+    public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top, Connection conn) throws SException {
         try {
             List<BaseModel> objects = new ArrayList<>();
-            ResponseWithCount rwc = super.searchObjects(this.getSqlFromAppendObjectStores(Arrays.asList(USER_STORE)), searchObject, skip, top);
+            ResponseWithCount rwc = super.searchObjects(this.getSqlFromAppendObjectStores(Arrays.asList(USER_STORE)), searchObject, skip, top, conn);
             ResultSet rs = rwc.getResultSet();
             while (rs.next()) {
                 History history = (History) this.getObjectStore().getObjectFromResultSet(rs);

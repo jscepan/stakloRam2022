@@ -20,6 +20,7 @@ import com.stakloram.backend.services.impl.builder.impl.WorkOrderBuilder;
 import com.stakloram.backend.util.DataChecker;
 import java.io.File;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Set;
 import org.springframework.stereotype.Service;
@@ -36,11 +37,22 @@ public class InvoiceService extends ServiceModel {
     }
 
     public int getNextInvoiceNumber(Invoice.InvoiceType invoiceType, int year) throws SException {
-        return ((InvoiceBuilder) this.baseBuilder).getNextInvoiceNumber(invoiceType, year);
+        try ( Connection conn = ConnectionToDatabase.connect()) {
+            return ((InvoiceBuilder) this.baseBuilder).getNextInvoiceNumber(invoiceType, year, conn);
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
+        }
+
     }
 
     public Set<String> getAllInvoiceItemDescriptions() throws SException {
-        return ((InvoiceBuilder) this.baseBuilder).getAllInvoiceItemDescriptions();
+        try ( Connection conn = ConnectionToDatabase.connect()) {
+            return ((InvoiceBuilder) this.baseBuilder).getAllInvoiceItemDescriptions(conn);
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
+        }
     }
 
     public boolean changeBuyer(String invoiceOID, String buyerOID) throws SException {
@@ -50,74 +62,82 @@ public class InvoiceService extends ServiceModel {
         if (DataChecker.isNull(invoiceOID) || invoiceOID.trim().isEmpty()) {
             throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("invoice"));
         }
-        Connection conn = ConnectionToDatabase.connect();
-        this.startTransaction(conn);
-        boolean isChanged = true;
-        BaseModel previousObjectInvoice = this.baseBuilder.getObjectByOid(invoiceOID);
-        if (!((InvoiceBuilder) this.baseBuilder).changeBuyer(invoiceOID, buyerOID, conn)) {
-            isChanged = false;
-        }
-        BaseModel objectInvoice = this.baseBuilder.getObjectByOid(invoiceOID);
-        // write change to history
-        try {
-            ObjectMapper objectMapper = JsonMapper.builder()
-                    .addModule(new JavaTimeModule())
-                    .build();
-            this.history.createNewObject(new History(History.Action.UPDATE, objectInvoice.getClass().getSimpleName().toLowerCase(), objectMapper.writeValueAsString(previousObjectInvoice), objectMapper.writeValueAsString(objectInvoice), LocalDateTime.now(), new User(this.getCurrentUserOID()), objectInvoice.getOid()), conn);
-        } catch (JsonProcessingException ex) {
-            logger.error(ex.toString());
-        }
-
-        // do changes to work order
-        Set<String> workOrderOIDSForChange = ((InvoiceBuilder) this.baseBuilder).getAllWorkOrdersForInvoice((Invoice) objectInvoice);
-        for (String oid : workOrderOIDSForChange) {
-            BaseModel previousObjectWorkOrder = this.workOrderBuilder.getObjectByOid(oid);
-            if (!this.workOrderBuilder.changeBuyer(oid, buyerOID, conn)) {
+        try ( Connection conn = ConnectionToDatabase.connect()) {
+            this.startTransaction(conn);
+            boolean isChanged = true;
+            BaseModel previousObjectInvoice = this.baseBuilder.getObjectByOid(invoiceOID, conn);
+            if (!((InvoiceBuilder) this.baseBuilder).changeBuyer(invoiceOID, buyerOID, conn)) {
                 isChanged = false;
             }
-            BaseModel objectWorkOrder = this.workOrderBuilder.getObjectByOid(oid);
-            // write changes of work order to history
+            BaseModel objectInvoice = this.baseBuilder.getObjectByOid(invoiceOID, conn);
+            // write change to history
             try {
                 ObjectMapper objectMapper = JsonMapper.builder()
                         .addModule(new JavaTimeModule())
                         .build();
-                this.history.createNewObject(new History(History.Action.UPDATE, objectWorkOrder.getClass().getSimpleName().toLowerCase(), previousObjectWorkOrder != null ? objectMapper.writeValueAsString(previousObjectWorkOrder) : "", objectMapper.writeValueAsString(objectWorkOrder), LocalDateTime.now(), new User(this.getCurrentUserOID()), objectWorkOrder.getOid()), conn);
+                this.history.createNewObject(new History(History.Action.UPDATE, objectInvoice.getClass().getSimpleName().toLowerCase(), objectMapper.writeValueAsString(previousObjectInvoice), objectMapper.writeValueAsString(objectInvoice), LocalDateTime.now(), new User(this.getCurrentUserOID()), objectInvoice.getOid()), conn);
             } catch (JsonProcessingException ex) {
                 logger.error(ex.toString());
             }
+
+            // do changes to work order
+            Set<String> workOrderOIDSForChange = ((InvoiceBuilder) this.baseBuilder).getAllWorkOrdersForInvoice((Invoice) objectInvoice, conn);
+            for (String oid : workOrderOIDSForChange) {
+                BaseModel previousObjectWorkOrder = this.workOrderBuilder.getObjectByOid(oid, conn);
+                if (!this.workOrderBuilder.changeBuyer(oid, buyerOID, conn)) {
+                    isChanged = false;
+                }
+                BaseModel objectWorkOrder = this.workOrderBuilder.getObjectByOid(oid, conn);
+                // write changes of work order to history
+                try {
+                    ObjectMapper objectMapper = JsonMapper.builder()
+                            .addModule(new JavaTimeModule())
+                            .build();
+                    this.history.createNewObject(new History(History.Action.UPDATE, objectWorkOrder.getClass().getSimpleName().toLowerCase(), previousObjectWorkOrder != null ? objectMapper.writeValueAsString(previousObjectWorkOrder) : "", objectMapper.writeValueAsString(objectWorkOrder), LocalDateTime.now(), new User(this.getCurrentUserOID()), objectWorkOrder.getOid()), conn);
+                } catch (JsonProcessingException ex) {
+                    logger.error(ex.toString());
+                }
+            }
+            if (isChanged) {
+                this.endTransaction(conn);
+            } else {
+                this.rollback(conn);
+            }
+            return isChanged;
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
         }
-        if (isChanged) {
-            this.endTransaction(conn);
-        } else {
-            this.rollback(conn);
-        }
-        return isChanged;
     }
 
     @Override
     public BaseModel createNewObject(BaseModel object) throws SException {
         if (((Invoice) object).getType() == InvoiceType.CASH) {
-            Connection conn = ConnectionToDatabase.connect();
-            this.checkRequestDataForCreate(object);
-            this.startTransaction(conn);
-            Invoice invoice = (Invoice) this.baseBuilder.createNewObject(object, conn);
-            if (invoice != null) {
-                Income income = this.incomeBuilder.createNewObject(new Income(invoice.getDateOfCreate(), invoice.getGrossAmount(), "Gotovinski račun " + invoice.getNumber(), "", invoice.getBuyer(), ""), conn);
-                if (income != null) {
-                    try {
-                        ObjectMapper objectMapper = JsonMapper.builder()
-                                .addModule(new JavaTimeModule())
-                                .build();
-                        super.history.createNewObject(new History(History.Action.CREATE, object.getClass().getSimpleName().toLowerCase(), null, objectMapper.writeValueAsString(object), LocalDateTime.now(), new User(this.getCurrentUserOID()), null), conn);
-                    } catch (JsonProcessingException ex) {
-                        super.logger.error(ex.toString());
+            try ( Connection conn = ConnectionToDatabase.connect()) {
+                this.checkRequestDataForCreate(object);
+                this.startTransaction(conn);
+                Invoice invoice = (Invoice) this.baseBuilder.createNewObject(object, conn);
+                if (invoice != null) {
+                    Income income = this.incomeBuilder.createNewObject(new Income(invoice.getDateOfCreate(), invoice.getGrossAmount(), "Gotovinski račun " + invoice.getNumber(), "", invoice.getBuyer(), ""), conn);
+                    if (income != null) {
+                        try {
+                            ObjectMapper objectMapper = JsonMapper.builder()
+                                    .addModule(new JavaTimeModule())
+                                    .build();
+                            super.history.createNewObject(new History(History.Action.CREATE, object.getClass().getSimpleName().toLowerCase(), null, objectMapper.writeValueAsString(object), LocalDateTime.now(), new User(this.getCurrentUserOID()), null), conn);
+                        } catch (JsonProcessingException ex) {
+                            super.logger.error(ex.toString());
+                        }
+                        this.endTransaction(conn);
+                        return invoice;
                     }
-                    this.endTransaction(conn);
-                    return invoice;
                 }
+                this.rollback(conn);
+                throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+            } catch (SQLException ex) {
+                logger.error(ex.toString());
+                throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
             }
-            this.rollback(conn);
-            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         } else {
             return super.createNewObject(object);
         }
@@ -171,15 +191,30 @@ public class InvoiceService extends ServiceModel {
     }
 
     public String getXMLForInvoice(String invoiceOID) throws SException {
-        return ((InvoiceBuilder) this.baseBuilder).getXMLForInvoice(invoiceOID);
+        try ( Connection conn = ConnectionToDatabase.connect()) {
+            return ((InvoiceBuilder) this.baseBuilder).getXMLForInvoice(invoiceOID, conn);
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
+        }
     }
 
     public boolean registrationOfInvoice(String invoiceOID) throws SException {
-        return ((InvoiceBuilder) this.baseBuilder).registrationOfInvoiceUPLOAD(invoiceOID, ConnectionToDatabase.connect());
+        try ( Connection conn = ConnectionToDatabase.connect()) {
+            return ((InvoiceBuilder) this.baseBuilder).registrationOfInvoiceUPLOAD(invoiceOID, conn);
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
+        }
     }
 
     public File downloadFile(String invoiceOID) throws SException {
-        Invoice invoice = (Invoice) this.getObjectByOID(invoiceOID);
-        return ((InvoiceBuilder) this.baseBuilder).getPDFForRegistratedInvoice(invoice);
+        try ( Connection conn = ConnectionToDatabase.connect()) {
+            Invoice invoice = ((InvoiceBuilder) this.baseBuilder).getObjectByOid(invoiceOID, conn);
+            return ((InvoiceBuilder) this.baseBuilder).getPDFForRegistratedInvoice(invoice, conn);
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
+        }
     }
 }

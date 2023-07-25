@@ -21,9 +21,9 @@ public interface IObjectBuilder {
 
     public boolean deleteObjectByOid(String oid, Connection conn) throws SException;
 
-    public BaseModel getObjectByOid(String oid) throws SException;
+    public BaseModel getObjectByOid(String oid, Connection conn) throws SException;
 
-    public ArrayResponse<? extends BaseModel> searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException;
+    public ArrayResponse<? extends BaseModel> searchObjects(SearchRequest searchObject, Long skip, Long top, Connection conn) throws SException;
 
     public String getSqlFromAppendObjectStores(List<ObjectStore> stores);
     

@@ -37,12 +37,9 @@ public class CityBuilder extends BaseBuilder {
         City city;
         try {
             city = (City) super.createNewObject(object, conn);
-            city.setCountry((Country) COUNTRY_STORE.getObjectByOid(city.getCountry().getOid()));
+            city.setCountry((Country) COUNTRY_STORE.getObjectByOid(city.getCountry().getOid(), conn));
             return city;
-        } catch (SException ex) {
-            super.logger.error(ex.toString());
-            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
-        } catch (SQLException ex) {
+        } catch (SException | SQLException ex) {
             super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
@@ -52,7 +49,7 @@ public class CityBuilder extends BaseBuilder {
     public BaseModel modifyObject(String oid, BaseModel object, Connection conn) throws SException {
         try {
             City city = (City) super.modifyObject(oid, object, conn);
-            city.setCountry((Country) COUNTRY_STORE.getObjectByOid(city.getCountry().getOid()));
+            city.setCountry((Country) COUNTRY_STORE.getObjectByOid(city.getCountry().getOid(), conn));
             return city;
         } catch (SQLException ex) {
             super.logger.error(ex.toString());
@@ -61,10 +58,10 @@ public class CityBuilder extends BaseBuilder {
     }
 
     @Override
-    public BaseModel getObjectByOid(String oid) throws SException {
+    public BaseModel getObjectByOid(String oid, Connection conn) throws SException {
         try {
-            City city = (City) super.getObjectByOid(oid);
-            city.setCountry((Country) COUNTRY_STORE.getObjectByOid(city.getCountry().getOid()));
+            City city = (City) super.getObjectByOid(oid, conn);
+            city.setCountry((Country) COUNTRY_STORE.getObjectByOid(city.getCountry().getOid(), conn));
             return city;
         } catch (SQLException ex) {
             super.logger.error(ex.toString());
@@ -73,10 +70,10 @@ public class CityBuilder extends BaseBuilder {
     }
 
     @Override
-    public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
+    public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top, Connection conn) throws SException {
         try {
             List<BaseModel> objects = new ArrayList<>();
-            ResponseWithCount rwc = super.searchObjects(this.getSqlFromAppendObjectStores(Arrays.asList(COUNTRY_STORE)), searchObject, skip, top);
+            ResponseWithCount rwc = super.searchObjects(this.getSqlFromAppendObjectStores(Arrays.asList(COUNTRY_STORE)), searchObject, skip, top, conn);
             ResultSet rs = rwc.getResultSet();
             while (rs.next()) {
                 City city = (City) this.getObjectStore().getObjectFromResultSet(rs);

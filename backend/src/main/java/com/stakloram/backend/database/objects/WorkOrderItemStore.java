@@ -139,13 +139,13 @@ public class WorkOrderItemStore extends ObjectStore {
         return object;
     }
 
-    public ResultSet getAllObjectsForSpecificColumn(String columnName) throws SQLException, SException {
-        return ConnectionToDatabase.connect().createStatement().executeQuery("SELECT " + columnName + " from " + this.getDefaultFromClausule());
+    public ResultSet getAllObjectsForSpecificColumn(String columnName, Connection conn) throws SQLException, SException {
+        return conn.createStatement().executeQuery("SELECT " + columnName + " from " + this.getDefaultFromClausule());
     }
 
-    public String getWorkOrderOidForWorkOrderItemOid(String workOrderItemOid) throws SQLException, SException {
+    public String getWorkOrderOidForWorkOrderItemOid(String workOrderItemOid, Connection conn) throws SQLException, SException {
         String oid = "";
-        Statement st = ConnectionToDatabase.connect().createStatement();
+        Statement st = conn.createStatement();
         ResultSet resultSet = st.executeQuery("SELECT * from " + DATABASE_NAME + "." + this.tableName + " WHERE " + DATABASE_NAME + "." + this.tableName + "." + this.getPrimaryKey() + "=" + BaseModel.getIdFromOid(workOrderItemOid));
         while (resultSet.next()) {
             oid = new WorkOrder(resultSet.getLong(this.getTableName() + "_work_order_work_order_id")).getOid();

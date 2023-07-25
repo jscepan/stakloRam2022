@@ -89,9 +89,9 @@ public class UserStore extends ObjectStore {
         return object;
     }
 
-    public boolean changeUserPassword(String oid, String newPassword) throws SQLException, SException {
+    public boolean changeUserPassword(String oid, String newPassword, Connection conn) throws SQLException, SException {
         int i = 0;
-        PreparedStatement st = ConnectionToDatabase.connect().prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
+        PreparedStatement st = conn.prepareStatement("UPDATE " + DATABASE_NAME + "." + this.getTableName() + " SET "
                 + this.getTableName() + "_password=?"
                 + " WHERE " + this.getPrimaryKey() + "=?");
         st.setString(++i, newPassword);

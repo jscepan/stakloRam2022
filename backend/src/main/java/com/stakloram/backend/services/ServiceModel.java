@@ -50,43 +50,56 @@ public abstract class ServiceModel implements IService {
 
     @Override
     public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
-        return this.baseBuilder.searchObjects(searchObject, skip, top);
+        try ( Connection conn = ConnectionToDatabase.connect()) {
+            return this.baseBuilder.searchObjects(searchObject, skip, top, conn);
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
+        }
     }
 
     @Override
     public BaseModel getObjectByOID(String oid) throws SException {
-        return this.baseBuilder.getObjectByOid(oid);
+        try ( Connection conn = ConnectionToDatabase.connect()) {
+            return this.baseBuilder.getObjectByOid(oid, conn);
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
+        }
     }
 
     @Override
     public BaseModel createNewObject(BaseModel object) throws SException {
-        Connection conn = ConnectionToDatabase.connect();
-        this.checkRequestDataForCreate(object);
-        this.startTransaction(conn);
-        BaseModel baseModel = this.baseBuilder.createNewObject(object, conn);
-        if (baseModel != null) {
-            try {
-                ObjectMapper objectMapper = JsonMapper.builder()
-                        .addModule(new JavaTimeModule())
-                        .build();
-                this.history.createNewObject(new History(History.Action.CREATE, object.getClass().getSimpleName().toLowerCase(), null, objectMapper.writeValueAsString(object), LocalDateTime.now(), new User(this.getCurrentUserOID()), null), conn);
-            } catch (JsonProcessingException ex) {
-                logger.error(ex.toString());
+        try ( Connection conn = ConnectionToDatabase.connect()) {
+            this.checkRequestDataForCreate(object);
+            this.startTransaction(conn);
+            BaseModel baseModel = this.baseBuilder.createNewObject(object, conn);
+            if (baseModel != null) {
+                try {
+                    ObjectMapper objectMapper = JsonMapper.builder()
+                            .addModule(new JavaTimeModule())
+                            .build();
+                    this.history.createNewObject(new History(History.Action.CREATE, object.getClass().getSimpleName().toLowerCase(), null, objectMapper.writeValueAsString(object), LocalDateTime.now(), new User(this.getCurrentUserOID()), null), conn);
+                } catch (JsonProcessingException ex) {
+                    logger.error(ex.toString());
+                }
+                this.endTransaction(conn);
+                return baseModel;
             }
-            this.endTransaction(conn);
-            return baseModel;
+            this.rollback(conn);
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
         }
-        this.rollback(conn);
-        throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
     }
 
     @Override
     public BaseModel modifyObject(String oid, BaseModel object) throws SException {
-        Connection conn = ConnectionToDatabase.connect();
         this.checkRequestDataForModify(oid, object);
-        try {
+        try ( Connection conn = ConnectionToDatabase.connect()) {
             this.startTransaction(conn);
-            BaseModel previousObject = this.baseBuilder.getObjectByOid(oid);
+            BaseModel previousObject = this.baseBuilder.getObjectByOid(oid, conn);
             BaseModel baseModel = this.baseBuilder.modifyObject(oid, object, conn);
             if (baseModel != null) {
                 try {
@@ -104,34 +117,41 @@ public abstract class ServiceModel implements IService {
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         } catch (SException ex) {
             logger.error(ex.toString());
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
         }
         throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
     }
 
     @Override
     public boolean deleteObjects(List<? extends BaseModel> objects) throws SException {
-        Connection conn = ConnectionToDatabase.connect();
-        if (isNull(objects) || objects.isEmpty()) {
-            throw new SException(UserMessage.getLocalizedMessage("noDataForDelete"));
-        }
-        this.startTransaction(conn);
-        for (BaseModel object : objects) {
-            boolean deleted = this.baseBuilder.deleteObjectByOid(object.getOid(), conn);
-            if (!deleted) {
-                this.rollback(conn);
-                return false;
+        try ( Connection conn = ConnectionToDatabase.connect()) {
+            if (isNull(objects) || objects.isEmpty()) {
+                throw new SException(UserMessage.getLocalizedMessage("noDataForDelete"));
             }
-            try {
-                ObjectMapper objectMapper = JsonMapper.builder()
-                        .addModule(new JavaTimeModule())
-                        .build();
-                this.history.createNewObject(new History(History.Action.DELETE, object.getClass().getSimpleName().toLowerCase(), objectMapper.writeValueAsString(object), null, LocalDateTime.now(), new User(this.getCurrentUserOID()), object.getOid()), conn);
-            } catch (JsonProcessingException ex) {
-                logger.error(ex.toString());
+            this.startTransaction(conn);
+            for (BaseModel object : objects) {
+                boolean deleted = this.baseBuilder.deleteObjectByOid(object.getOid(), conn);
+                if (!deleted) {
+                    this.rollback(conn);
+                    return false;
+                }
+                try {
+                    ObjectMapper objectMapper = JsonMapper.builder()
+                            .addModule(new JavaTimeModule())
+                            .build();
+                    this.history.createNewObject(new History(History.Action.DELETE, object.getClass().getSimpleName().toLowerCase(), objectMapper.writeValueAsString(object), null, LocalDateTime.now(), new User(this.getCurrentUserOID()), object.getOid()), conn);
+                } catch (JsonProcessingException ex) {
+                    logger.error(ex.toString());
+                }
             }
+            this.endTransaction(conn);
+            return true;
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
         }
-        this.endTransaction(conn);
-        return true;
     }
 
     @Override

@@ -14,8 +14,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class WorkOrderStore extends ObjectStore {
 
@@ -30,7 +28,7 @@ public class WorkOrderStore extends ObjectStore {
             WorkOrder object = (WorkOrder) model;
             int i = 0;
             PreparedStatement st = conn.prepareStatement("INSERT into " + DATABASE_NAME + "." + this.getTableName() + " value(null,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
-            st.setLong(++i, this.getLastWorkOrderNumber(object.getDateOfCreate().getYear()) + 1);
+            st.setLong(++i, this.getLastWorkOrderNumber(object.getDateOfCreate().getYear(), conn) + 1);
             st.setDate(++i, Helper.convertLocalDateToSqlDate(object.getDateOfCreate()));
             st.setString(++i, object.getPlaceOfIssue());
             st.setString(++i, object.getForPerson());
@@ -110,9 +108,9 @@ public class WorkOrderStore extends ObjectStore {
         return object;
     }
 
-    public long getLastWorkOrderNumber(int year) throws SQLException, SException {
+    public long getLastWorkOrderNumber(int year, Connection conn) throws SQLException, SException {
         long lastWorkOrderNumber = 0;
-        Statement st = ConnectionToDatabase.connect().createStatement();
+        Statement st = conn.createStatement();
         ResultSet resultSet = st.executeQuery("SELECT * from " + DATABASE_NAME + "." + this.tableName + " WHERE work_order_number=(SELECT MAX(work_order_number) FROM " + DATABASE_NAME + "." + this.tableName + " WHERE year(work_order_date_of_create)=" + year + ") and year(work_order_date_of_create)=" + year);
         while (resultSet.next()) {
             lastWorkOrderNumber = resultSet.getLong(this.getTableName() + "_number");

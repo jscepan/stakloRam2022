@@ -32,11 +32,11 @@ public class OutcomeBuilder extends BaseBuilder {
     }
 
     @Override
-    public Outcome getObjectByOid(String oid) throws SException {
+    public Outcome getObjectByOid(String oid, Connection conn) throws SException {
         try {
             String fromSt = this.getSqlFromAppendObjectStores(Arrays.asList(BUYER_STORE));
             String whereSt = this.getObjectStore().getTableName() + "." + this.getObjectStore().getPrimaryKey() + "=" + BaseModel.getIdFromOid(oid);
-            ResultSet rs = this.getObjectStore().getAllObjectsFromDatabase(fromSt, whereSt);
+            ResultSet rs = this.getObjectStore().getAllObjectsFromDatabase(fromSt, whereSt, conn);
             Outcome outcome;
             if (rs.next()) {
                 outcome = (Outcome) this.objectStore.getObjectFromResultSet(rs);
@@ -56,10 +56,10 @@ public class OutcomeBuilder extends BaseBuilder {
     }
 
     @Override
-    public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
+    public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top, Connection conn) throws SException {
         try {
             List<BaseModel> objects = new ArrayList<>();
-            ResponseWithCount rwc = super.searchObjects(this.getSqlFromAppendObjectStores(Arrays.asList(BUYER_STORE)), searchObject, skip, top);
+            ResponseWithCount rwc = super.searchObjects(this.getSqlFromAppendObjectStores(Arrays.asList(BUYER_STORE)), searchObject, skip, top, conn);
             ResultSet rs = rwc.getResultSet();
             while (rs.next()) {
                 Outcome outcome = (Outcome) this.getObjectStore().getObjectFromResultSet(rs);

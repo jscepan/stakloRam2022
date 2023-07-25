@@ -14,6 +14,7 @@ import com.stakloram.backend.services.ServiceModel;
 import com.stakloram.backend.services.impl.builder.impl.UserBuilder;
 import com.stakloram.backend.util.DataChecker;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,34 +31,37 @@ public class UserService extends ServiceModel {
 
     public BaseModel changeUserProfile(String oid, User object) throws SException {
         this.checkRequestDataForModify(oid, object);
-        User previousUser = ((UserBuilder) this.getBaseBuilder()).getObjectByOid(oid);
-        Connection conn = ConnectionToDatabase.connect();
-        if (previousUser == null) {
-            this.rollback(conn);
-            throw new SException(UserMessage.getLocalizedMessage("cantFindUserWithThisUsername"));
+        try ( Connection conn = ConnectionToDatabase.connect()) {
+            User previousUser = ((UserBuilder) this.getBaseBuilder()).getObjectByOid(oid, conn);
+            if (previousUser == null) {
+                this.rollback(conn);
+                throw new SException(UserMessage.getLocalizedMessage("cantFindUserWithThisUsername"));
+            }
+            this.startTransaction(conn);
+            previousUser.setEmail(object.getEmail());
+            previousUser.setFullName(object.getFullName());
+            previousUser.setLanguage(object.getLanguage());
+            previousUser.setUsername(object.getUsername());
+            previousUser = ((UserBuilder) this.getBaseBuilder()).modifyObject(oid, previousUser, conn);
+            ObjectMapper objectMapper = JsonMapper.builder()
+                    .addModule(new JavaTimeModule())
+                    .build();
+            try {
+                this.history.createNewObject(new History(History.Action.UPDATE, object.getClass().getSimpleName().toLowerCase(), previousUser != null ? objectMapper.writeValueAsString(previousUser) : "", objectMapper.writeValueAsString(object), LocalDateTime.now(), new User(this.getCurrentUserOID()), object.getOid()), conn);
+            } catch (JsonProcessingException ex) {
+                super.logger.error(ex.toString());
+            }
+            this.endTransaction(conn);
+            return previousUser;
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
         }
-        this.startTransaction(conn);
-        previousUser.setEmail(object.getEmail());
-        previousUser.setFullName(object.getFullName());
-        previousUser.setLanguage(object.getLanguage());
-        previousUser.setUsername(object.getUsername());
-        previousUser = ((UserBuilder) this.getBaseBuilder()).modifyObject(oid, previousUser, conn);
-        ObjectMapper objectMapper = JsonMapper.builder()
-                .addModule(new JavaTimeModule())
-                .build();
-        try {
-            this.history.createNewObject(new History(History.Action.UPDATE, object.getClass().getSimpleName().toLowerCase(), previousUser != null ? objectMapper.writeValueAsString(previousUser) : "", objectMapper.writeValueAsString(object), LocalDateTime.now(), new User(this.getCurrentUserOID()), object.getOid()), conn);
-        } catch (JsonProcessingException ex) {
-            super.logger.error(ex.toString());
-        }
-        this.endTransaction(conn);
-        return previousUser;
     }
 
     @Override
     public void checkRequestDataForCreate(BaseModel baseModel) throws SException {
         User object = (User) baseModel;
-        String oid = object.getOid();
         if (DataChecker.isNull(object.getFullName()) || object.getFullName().trim().isEmpty()) {
             throw new SException(UserMessage.getLocalizedMessage("fullNameIsRequiredField"));
         }
@@ -78,20 +82,29 @@ public class UserService extends ServiceModel {
             if (authentication.getName() == null) {
                 throw new SException(UserMessage.getLocalizedMessage("wrongUsername"));
             }
-            return (new UserBuilder()).getUserByUsername(authentication.getName());
+            try ( Connection conn = ConnectionToDatabase.connect()) {
+                return (new UserBuilder()).getUserByUsername(authentication.getName(), conn);
+            } catch (SQLException ex) {
+                logger.error(ex.toString());
+                throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
+            }
         }
         throw new SException(UserMessage.getLocalizedMessage("wrongUsername"));
     }
 
     public boolean setNewUserPassword(String oid, String password) throws SException {
-        Connection conn = ConnectionToDatabase.connect();
-        this.startTransaction(conn);
-        if (((UserBuilder) this.getBaseBuilder()).changeUserPassword(oid, password)) {
-            this.endTransaction(conn);
-            return true;
-        } else {
-            this.rollback(conn);
-            return false;
+        try ( Connection conn = ConnectionToDatabase.connect()) {
+            this.startTransaction(conn);
+            if (((UserBuilder) this.getBaseBuilder()).changeUserPassword(oid, password, conn)) {
+                this.endTransaction(conn);
+                return true;
+            } else {
+                this.rollback(conn);
+                return false;
+            }
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
         }
     }
 }

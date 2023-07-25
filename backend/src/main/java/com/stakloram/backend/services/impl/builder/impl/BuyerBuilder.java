@@ -7,6 +7,7 @@ import com.stakloram.backend.models.City;
 import com.stakloram.backend.exception.SException;
 import com.stakloram.backend.models.UserMessage;
 import com.stakloram.backend.services.impl.builder.BaseBuilder;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
 
@@ -25,19 +26,14 @@ public class BuyerBuilder extends BaseBuilder {
     }
 
     @Override
-    public Buyer getObjectByOid(String oid) throws SException {
+    public Buyer getObjectByOid(String oid, Connection conn) throws SException {
         try {
-            Buyer buyer = (Buyer) super.getObjectByOid(oid);
-            buyer.setCity((City) CITY_STORE.getObjectByOid(buyer.getCity().getOid()));
+            Buyer buyer = (Buyer) super.getObjectByOid(oid, conn);
+            buyer.setCity((City) CITY_STORE.getObjectByOid(buyer.getCity().getOid(), conn));
             return buyer;
         } catch (SQLException ex) {
             super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
-    }
-
-    public Buyer getObjectByOidWithCityAndCountry(String oid) throws SException {
-        // TODO
-        return this.getObjectByOid(oid);
     }
 }

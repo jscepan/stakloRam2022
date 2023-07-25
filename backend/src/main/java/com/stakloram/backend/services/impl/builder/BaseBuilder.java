@@ -72,20 +72,20 @@ public abstract class BaseBuilder implements IObjectBuilder {
     }
 
     @Override
-    public BaseModel getObjectByOid(String oid) throws SException {
+    public BaseModel getObjectByOid(String oid, Connection conn) throws SException {
         try {
-            return this.objectStore.getObjectByOid(oid);
+            return this.objectStore.getObjectByOid(oid, conn);
         } catch (SQLException ex) {
             logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
-    public ResponseWithCount searchObjects(String fromClausule, SearchRequest searchObject, Long skip, Long top) throws SException {
+    public ResponseWithCount searchObjects(String fromClausule, SearchRequest searchObject, Long skip, Long top, Connection conn) throws SException {
         try {
             String searchClausule = this.getQuickSearchClausule(this.getQuickSearchWords(searchObject));
             String betweenClausule = this.getBetweenClausule(searchObject);
-            return this.objectStore.searchObjectsFromDatabase(fromClausule, this.generateWhereClausule("", searchClausule, betweenClausule), skip, top, searchObject.getOrdering());
+            return this.objectStore.searchObjectsFromDatabase(fromClausule, this.generateWhereClausule("", searchClausule, betweenClausule), skip, top, searchObject.getOrdering(), conn);
         } catch (SQLException ex) {
             logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
@@ -93,11 +93,11 @@ public abstract class BaseBuilder implements IObjectBuilder {
     }
 
     @Override
-    public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
+    public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top, Connection conn) throws SException {
         try {
             String searchClausule = this.getQuickSearchClausule(this.getQuickSearchWords(searchObject));
             String betweenClausule = this.getBetweenClausule(searchObject);
-            ResponseWithCount rwc = this.objectStore.searchObjectsFromDatabase(this.generateWhereClausule("", searchClausule, betweenClausule), skip, top, searchObject.getOrdering());
+            ResponseWithCount rwc = this.objectStore.searchObjectsFromDatabase(this.generateWhereClausule("", searchClausule, betweenClausule), skip, top, searchObject.getOrdering(), conn);
             return this.getArrayResponseFromResponseWithCount(rwc);
         } catch (SQLException ex) {
             logger.error(ex.toString());

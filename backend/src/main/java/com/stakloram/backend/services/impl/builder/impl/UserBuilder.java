@@ -36,9 +36,9 @@ public class UserBuilder extends BaseBuilder {
     }
 
     @Override
-    public User getObjectByOid(String oid) throws SException {
-        User user = (User) super.getObjectByOid(oid);
-        user.setRoles(this.getAllUserRoles(user));
+    public User getObjectByOid(String oid, Connection conn) throws SException {
+        User user = (User) super.getObjectByOid(oid, conn);
+        user.setRoles(this.getAllUserRoles(user, conn));
         return user;
     }
 
@@ -60,7 +60,7 @@ public class UserBuilder extends BaseBuilder {
     public User modifyObject(String oid, BaseModel object, Connection conn) throws SException {
         try {
             User user = (User) super.modifyObject(oid, object, conn);
-            ResultSet rs = USER_HAS_ROLE_STORE.getAllUserRoles(user.getOid());
+            ResultSet rs = USER_HAS_ROLE_STORE.getAllUserRoles(user.getOid(), conn);
             List<Role> previousUserRoles = new ArrayList<>();
             try {
                 while (rs.next()) {
@@ -74,7 +74,7 @@ public class UserBuilder extends BaseBuilder {
                 USER_HAS_ROLE_STORE.createNewObjectToDatabase(user.getId(), role.getId(), conn);
             }
             for (BaseModel role : mapOfDifferences.get(Helper.Action.FOR_DELETE)) {
-                USER_HAS_ROLE_STORE.deleteRoleByOidForUserOid(user.getOid(), role.getOid());
+                USER_HAS_ROLE_STORE.deleteRoleByOidForUserOid(user.getOid(), role.getOid(), conn);
             }
             return user;
         } catch (SQLException ex) {
@@ -83,30 +83,30 @@ public class UserBuilder extends BaseBuilder {
         }
     }
 
-    public boolean changeUserPassword(User user, String newPassword) throws SException {
+    public boolean changeUserPassword(User user, String newPassword, Connection conn) throws SException {
         try {
-            return USER_STORE.changeUserPassword(user.getOid(), newPassword);
+            return USER_STORE.changeUserPassword(user.getOid(), newPassword, conn);
         } catch (SQLException ex) {
             super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
-    public boolean changeUserPassword(String userOid, String newPassword) throws SException {
+    public boolean changeUserPassword(String userOid, String newPassword, Connection conn) throws SException {
         try {
-            return USER_STORE.changeUserPassword(userOid, newPassword);
+            return USER_STORE.changeUserPassword(userOid, newPassword, conn);
         } catch (SQLException ex) {
             super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
-    public User getUserByUsername(String username) throws SException {
+    public User getUserByUsername(String username, Connection conn) throws SException {
         try {
-            ResultSet resultSet = USER_STORE.getAllObjectsFromDatabase(USER_STORE.getTableName() + "_username='" + username + "'");
+            ResultSet resultSet = USER_STORE.getAllObjectsFromDatabase(USER_STORE.getTableName() + "_username='" + username + "'", conn);
             if (resultSet.next()) {
                 User user = USER_STORE.getObjectFromResultSet(resultSet);
-                ResultSet rs = USER_HAS_ROLE_STORE.getAllUserRoles(user.getOid());
+                ResultSet rs = USER_HAS_ROLE_STORE.getAllUserRoles(user.getOid(), conn);
                 List<Role> roles = new ArrayList<>();
                 while (rs.next()) {
                     roles.add(ROLE_STORE.getObjectFromResultSet(rs));
@@ -122,12 +122,12 @@ public class UserBuilder extends BaseBuilder {
         }
     }
 
-    public User getUserDetailsByUsername(String username) throws SException {
+    public User getUserDetailsByUsername(String username, Connection conn) throws SException {
         try {
-            ResultSet resultSet = USER_STORE.getAllObjectsFromDatabase(USER_STORE.getTableName() + "_username='" + username + "'");
+            ResultSet resultSet = USER_STORE.getAllObjectsFromDatabase(USER_STORE.getTableName() + "_username='" + username + "'", conn);
             if (resultSet.next()) {
                 User user = USER_STORE.getUserWithPasswordFromResultSet(resultSet);
-                ResultSet rs = USER_HAS_ROLE_STORE.getAllUserRoles(user.getOid());
+                ResultSet rs = USER_HAS_ROLE_STORE.getAllUserRoles(user.getOid(), conn);
                 List<Role> roles = new ArrayList<>();
                 while (rs.next()) {
                     roles.add(ROLE_STORE.getObjectFromResultSet(rs));
@@ -143,10 +143,10 @@ public class UserBuilder extends BaseBuilder {
         }
     }
 
-    private List<Role> getAllUserRoles(User user) throws SException {
+    private List<Role> getAllUserRoles(User user, Connection conn) throws SException {
         List<Role> roles = new ArrayList<>();
         try {
-            ResultSet rs = USER_HAS_ROLE_STORE.getAllUserRoles(user.getOid());
+            ResultSet rs = USER_HAS_ROLE_STORE.getAllUserRoles(user.getOid(), conn);
             while (rs.next()) {
                 roles.add(ROLE_STORE.getObjectFromResultSet(rs));
             }

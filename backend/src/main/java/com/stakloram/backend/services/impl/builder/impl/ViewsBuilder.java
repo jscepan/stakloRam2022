@@ -12,6 +12,7 @@ import com.stakloram.backend.models.Invoice;
 import com.stakloram.backend.models.Invoice.InvoiceType;
 import com.stakloram.backend.models.Outcome;
 import com.stakloram.backend.models.UserMessage;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -32,10 +33,10 @@ public class ViewsBuilder {
     public ViewsBuilder() {
     }
 
-    public List<Debtor> getAllDebtors() throws SException {
+    public List<Debtor> getAllDebtors(Connection conn) throws SException {
         List<Debtor> debtors = new ArrayList<>();
         try {
-            ResultSet rs = BUYER_STORE.getAllObjectsFromDatabase(null);
+            ResultSet rs = BUYER_STORE.getAllObjectsFromDatabase(null, conn);
             while (rs.next()) {
                 debtors.add(new Debtor(BUYER_STORE.getObjectFromResultSet(rs)));
             }
@@ -45,7 +46,7 @@ public class ViewsBuilder {
                         + " AND (invoice_type='" + InvoiceType.DOMESTIC + "'"
                         + " OR invoice_type='" + InvoiceType.CASH + "'"
                         + " OR invoice_type='" + InvoiceType.FOREIGN + "'"
-                        + ")"
+                        + ")", conn
                 );
                 while (inv_rs.next()) {
                     Invoice invoice = INVOICE_STORE.getObjectFromResultSet(inv_rs);
@@ -55,7 +56,7 @@ public class ViewsBuilder {
                 d.setInvoices(invoices);
 
                 List<Income> incomes = new ArrayList<>();
-                ResultSet inc_rs = INCOME_STORE.getAllObjectsFromDatabase(" income_buyer_buyer_id=" + d.getBuyer().getId());
+                ResultSet inc_rs = INCOME_STORE.getAllObjectsFromDatabase(" income_buyer_buyer_id=" + d.getBuyer().getId(), conn);
                 while (inc_rs.next()) {
                     Income income = INCOME_STORE.getObjectFromResultSet(inc_rs);
                     incomes.add(income);
@@ -64,7 +65,7 @@ public class ViewsBuilder {
                 d.setIncomes(incomes);
 
                 List<Outcome> outcomes = new ArrayList<>();
-                ResultSet out_rs = OUTCOME_STORE.getAllObjectsFromDatabase(" outcome_buyer_buyer_id=" + d.getBuyer().getId());
+                ResultSet out_rs = OUTCOME_STORE.getAllObjectsFromDatabase(" outcome_buyer_buyer_id=" + d.getBuyer().getId(), conn);
                 while (out_rs.next()) {
                     Outcome outcome = OUTCOME_STORE.getObjectFromResultSet(out_rs);
                     outcomes.add(outcome);
@@ -82,10 +83,10 @@ public class ViewsBuilder {
         return debtors;
     }
 
-    public Debtor getDebtor(String buyerOID) throws SException {
+    public Debtor getDebtor(String buyerOID, Connection conn) throws SException {
         Debtor debtor = null;
         try {
-            ResultSet rs = BUYER_STORE.getAllObjectsFromDatabase(null, "buyer_id=" + BaseModel.getIdFromOid(buyerOID));
+            ResultSet rs = BUYER_STORE.getAllObjectsFromDatabase(null, "buyer_id=" + BaseModel.getIdFromOid(buyerOID), conn);
             while (rs.next()) {
                 debtor = new Debtor(BUYER_STORE.getObjectFromResultSet(rs));
             }
@@ -94,7 +95,7 @@ public class ViewsBuilder {
                     + " AND (invoice_type='" + InvoiceType.DOMESTIC + "'"
                     + " OR invoice_type='" + InvoiceType.CASH + "'"
                     + " OR invoice_type='" + InvoiceType.FOREIGN + "'"
-                    + ")"
+                    + ")", conn
             );
             while (inv_rs.next()) {
                 Invoice invoice = INVOICE_STORE.getObjectFromResultSet(inv_rs);
@@ -104,7 +105,7 @@ public class ViewsBuilder {
             debtor.setInvoices(invoices);
 
             List<Income> incomes = new ArrayList<>();
-            ResultSet inc_rs = INCOME_STORE.getAllObjectsFromDatabase(" income_buyer_buyer_id=" + debtor.getBuyer().getId());
+            ResultSet inc_rs = INCOME_STORE.getAllObjectsFromDatabase(" income_buyer_buyer_id=" + debtor.getBuyer().getId(), conn);
             while (inc_rs.next()) {
                 Income income = INCOME_STORE.getObjectFromResultSet(inc_rs);
                 incomes.add(income);
@@ -113,7 +114,7 @@ public class ViewsBuilder {
             debtor.setIncomes(incomes);
 
             List<Outcome> outcomes = new ArrayList<>();
-            ResultSet out_rs = OUTCOME_STORE.getAllObjectsFromDatabase(" outcome_buyer_buyer_id=" + debtor.getBuyer().getId());
+            ResultSet out_rs = OUTCOME_STORE.getAllObjectsFromDatabase(" outcome_buyer_buyer_id=" + debtor.getBuyer().getId(), conn);
             while (out_rs.next()) {
                 Outcome outcome = OUTCOME_STORE.getObjectFromResultSet(out_rs);
                 outcomes.add(outcome);

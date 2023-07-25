@@ -27,6 +27,7 @@ import java.nio.file.Path;
 import static java.nio.file.Paths.get;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -44,23 +45,37 @@ public class WorkOrderService extends ServiceModel {
     }
 
     public Set<String> getAllWorkOrderItemDescriptions() throws SException {
-        return ((WorkOrderBuilder) this.baseBuilder).getAllWorkOrderItemDescriptions();
+        try ( Connection conn = ConnectionToDatabase.connect()) {
+            return ((WorkOrderBuilder) this.baseBuilder).getAllWorkOrderItemDescriptions(conn);
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
+        }
     }
 
     public List<WorkOrder> getAllUnsettledWorkOrder(String buyerOID) throws SException {
-        return ((WorkOrderBuilder) this.baseBuilder).getAllUnsettledWorkOrder(buyerOID);
+        try ( Connection conn = ConnectionToDatabase.connect()) {
+            return ((WorkOrderBuilder) this.baseBuilder).getAllUnsettledWorkOrder(buyerOID, conn);
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
+        }
     }
 
     public boolean toggleSettledForWorkOrder(String workOrderOID, boolean settled) throws SException {
-        Connection conn = ConnectionToDatabase.connect();
-        this.startTransaction(conn);
-        boolean isSettled = ((WorkOrderBuilder) this.baseBuilder).toggleSettledForWorkOrder(workOrderOID, settled, conn);
-        if (isSettled) {
-            this.endTransaction(conn);
-        } else {
-            this.rollback(conn);
+        try ( Connection conn = ConnectionToDatabase.connect()) {
+            this.startTransaction(conn);
+            boolean isSettled = ((WorkOrderBuilder) this.baseBuilder).toggleSettledForWorkOrder(workOrderOID, settled, conn);
+            if (isSettled) {
+                this.endTransaction(conn);
+            } else {
+                this.rollback(conn);
+            }
+            return isSettled;
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
         }
-        return isSettled;
     }
 
     @Override
@@ -83,7 +98,12 @@ public class WorkOrderService extends ServiceModel {
     }
 
     public long getNextWorkOrderNumber(int year) throws SException {
-        return ((WorkOrderBuilder) this.baseBuilder).getNextWorkOrderNumber(year);
+        try ( Connection conn = ConnectionToDatabase.connect()) {
+            return ((WorkOrderBuilder) this.baseBuilder).getNextWorkOrderNumber(year, conn);
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
+        }
     }
 
     public boolean changeBuyer(String workOrderOID, String buyerOID) throws SException {
@@ -93,36 +113,39 @@ public class WorkOrderService extends ServiceModel {
         if (DataChecker.isNull(workOrderOID) || workOrderOID.trim().isEmpty()) {
             throw new SException(UserMessage.getLocalizedMessage("fulfillAllRequiredData") + " - " + UserMessage.getLocalizedMessage("workOrder"));
         }
-        Connection conn = ConnectionToDatabase.connect();
-        this.startTransaction(conn);
-        boolean isChanged = true;
-        // TODO
-        BaseModel previousObjectWorkOrder = this.baseBuilder.getObjectByOid(workOrderOID);
-        if (!((WorkOrderBuilder) this.baseBuilder).changeBuyer(workOrderOID, buyerOID, conn)) {
-            isChanged = false;
-        }
-        BaseModel objectWorkOrder = this.baseBuilder.getObjectByOid(workOrderOID);
-        // write change to history
-        try {
-            ObjectMapper objectMapper = JsonMapper.builder()
-                    .addModule(new JavaTimeModule())
-                    .build();
-            this.history.createNewObject(new History(History.Action.UPDATE, objectWorkOrder.getClass().getSimpleName().toLowerCase(), objectMapper.writeValueAsString(previousObjectWorkOrder), objectMapper.writeValueAsString(objectWorkOrder), LocalDateTime.now(), new User(this.getCurrentUserOID()), objectWorkOrder.getOid()), conn);
-        } catch (JsonProcessingException ex) {
-            logger.error(ex.toString());
-        }
+        try ( Connection conn = ConnectionToDatabase.connect()) {
+            this.startTransaction(conn);
+            boolean isChanged = true;
+            // TODO
+            BaseModel previousObjectWorkOrder = this.baseBuilder.getObjectByOid(workOrderOID, conn);
+            if (!((WorkOrderBuilder) this.baseBuilder).changeBuyer(workOrderOID, buyerOID, conn)) {
+                isChanged = false;
+            }
+            BaseModel objectWorkOrder = this.baseBuilder.getObjectByOid(workOrderOID, conn);
+            // write change to history
+            try {
+                ObjectMapper objectMapper = JsonMapper.builder()
+                        .addModule(new JavaTimeModule())
+                        .build();
+                this.history.createNewObject(new History(History.Action.UPDATE, objectWorkOrder.getClass().getSimpleName().toLowerCase(), objectMapper.writeValueAsString(previousObjectWorkOrder), objectMapper.writeValueAsString(objectWorkOrder), LocalDateTime.now(), new User(this.getCurrentUserOID()), objectWorkOrder.getOid()), conn);
+            } catch (JsonProcessingException ex) {
+                logger.error(ex.toString());
+            }
 
-        if (isChanged) {
-            this.endTransaction(conn);
-        } else {
-            this.rollback(conn);
+            if (isChanged) {
+                this.endTransaction(conn);
+            } else {
+                this.rollback(conn);
+            }
+            return isChanged;
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
         }
-        return isChanged;
     }
 
     public WorkOrder uploadFile(String workOrderOid, MultipartFile file) throws SException {
-        try {
-            Connection conn = ConnectionToDatabase.connect();
+        try ( Connection conn = ConnectionToDatabase.connect()) {
             this.startTransaction(conn);
             WorkOrder workOrder = (WorkOrder) this.getObjectByOID(workOrderOid);
 
@@ -148,6 +171,9 @@ public class WorkOrderService extends ServiceModel {
             return workOrder;
         } catch (IOException ex) {
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("connectionToDatabaseIssue"));
         }
     }
 

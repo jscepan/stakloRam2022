@@ -18,15 +18,15 @@ public class UserHasRoleStore extends ObjectStore {
         super.tableName = "user_has_role";
     }
 
-    public ResultSet getAllUserRoles(String userOid, Long skip, Long top) throws SQLException, SException {
+    public ResultSet getAllUserRoles(String userOid, Long skip, Long top, Connection conn) throws SQLException, SException {
         Statement st = null;
-        st = ConnectionToDatabase.connect().createStatement();
+        st = conn.createStatement();
         return st.executeQuery("SELECT * from " + DATABASE_NAME + "." + this.tableName + " JOIN " + DATABASE_NAME + ".role on " + this.tableName + ".role_role_id=role.role_id WHERE " + this.tableName + ".user_user_id=" + BaseModel.getIdFromOid(userOid) + " limit " + skip + ", " + top);
     }
 
-    public ResultSet getAllUserRoles(String userOid) throws SQLException, SException {
+    public ResultSet getAllUserRoles(String userOid, Connection conn) throws SQLException, SException {
         Statement st = null;
-        st = ConnectionToDatabase.connect().createStatement();
+        st = conn.createStatement();
         return st.executeQuery("SELECT * from " + DATABASE_NAME + "." + this.tableName + " JOIN " + DATABASE_NAME + ".role on " + this.tableName + ".role_role_id=role.role_id WHERE " + this.tableName + ".user_user_id=" + BaseModel.getIdFromOid(userOid));
     }
 
@@ -63,8 +63,8 @@ public class UserHasRoleStore extends ObjectStore {
         return false;
     }
 
-    public boolean deleteRoleByOidForUserOid(String userOid, String roleOid) throws SQLException, SException {
-        PreparedStatement st = ConnectionToDatabase.connect().prepareStatement("DELETE FROM " + DATABASE_NAME + "." + this.tableName + " WHERE " + "user_user_id=" + BaseModel.getIdFromOid(userOid) + " AND role_role_id=" + BaseModel.getIdFromOid(roleOid));
+    public boolean deleteRoleByOidForUserOid(String userOid, String roleOid, Connection conn) throws SQLException, SException {
+        PreparedStatement st = conn.prepareStatement("DELETE FROM " + DATABASE_NAME + "." + this.tableName + " WHERE " + "user_user_id=" + BaseModel.getIdFromOid(userOid) + " AND role_role_id=" + BaseModel.getIdFromOid(roleOid));
         return st.executeUpdate() > 0;
     }
 }

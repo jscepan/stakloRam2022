@@ -134,25 +134,25 @@ public class InvoiceBuilder extends BaseBuilder {
     }
 
     @Override
-    public Invoice getObjectByOid(String oid) throws SException {
+    public Invoice getObjectByOid(String oid, Connection conn) throws SException {
         Invoice invoice;
         try {
             String fromSt = this.getSqlFromAppendObjectStores(Arrays.asList(BUYER_STORE));
             String whereSt = this.getObjectStore().getTableName() + "." + this.getObjectStore().getPrimaryKey() + "=" + BaseModel.getIdFromOid(oid);
-            ResultSet resultSet = this.getObjectStore().getAllObjectsFromDatabase(fromSt, whereSt);
+            ResultSet resultSet = this.getObjectStore().getAllObjectsFromDatabase(fromSt, whereSt, conn);
             if (resultSet.next()) {
                 invoice = (Invoice) this.getObjectStore().getObjectFromResultSet(resultSet);
                 Buyer buyer = BUYER_STORE.getObjectFromResultSet(resultSet);
-                buyer.setCity((City) CITY_STORE.getObjectByOid(buyer.getCity().getOid()));
-                buyer.getCity().setCountry((Country) COUNTRY_STORE.getObjectByOid(buyer.getCity().getCountry().getOid()));
+                buyer.setCity((City) CITY_STORE.getObjectByOid(buyer.getCity().getOid(), conn));
+                buyer.getCity().setCountry((Country) COUNTRY_STORE.getObjectByOid(buyer.getCity().getCountry().getOid(), conn));
                 invoice.setBuyer(buyer);
 
                 List<InvoiceItem> invoiceItems = new ArrayList<>();
-                ResultSet rs = INVOICE_ITEM_STORE.getAllObjectsFromDatabase(INVOICE_ITEM_STORE.getTableName() + "_invoice_invoice_id=" + invoice.getId());
+                ResultSet rs = INVOICE_ITEM_STORE.getAllObjectsFromDatabase(INVOICE_ITEM_STORE.getTableName() + "_invoice_invoice_id=" + invoice.getId(), conn);
                 while (rs.next()) {
                     InvoiceItem invoiceItem = INVOICE_ITEM_STORE.getObjectFromResultSet(rs);
                     List<WorkOrderItem> workOrderItems = new ArrayList<>();
-                    ResultSet r = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_invoice_item_invoice_item_id=" + invoiceItem.getId());
+                    ResultSet r = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_invoice_item_invoice_item_id=" + invoiceItem.getId(), conn);
                     while (r.next()) {
                         workOrderItems.add(WORK_ORDER_ITEM_STORE.getObjectFromResultSet(r));
                     }
@@ -162,7 +162,7 @@ public class InvoiceBuilder extends BaseBuilder {
                 invoice.setInvoiceItems(invoiceItems);
 
                 List<Note> notes = new ArrayList<>();
-                ResultSet rsNotes = NOTE_STORE.getAllObjectsFromDatabase(NOTE_STORE.getTableName() + "_invoice_invoice_id=" + invoice.getId());
+                ResultSet rsNotes = NOTE_STORE.getAllObjectsFromDatabase(NOTE_STORE.getTableName() + "_invoice_invoice_id=" + invoice.getId(), conn);
                 while (rsNotes.next()) {
                     Note note = NOTE_STORE.getObjectFromResultSet(rsNotes);
                     notes.add(note);
@@ -203,7 +203,7 @@ public class InvoiceBuilder extends BaseBuilder {
         try {
             Invoice invoice = (Invoice) super.modifyObject(oid, object, conn);
             List<InvoiceItem> oldInvoiceItems = new ArrayList<>();
-            ResultSet resultSet = INVOICE_ITEM_STORE.getAllObjectsFromDatabase(INVOICE_ITEM_STORE.getTableName() + "_invoice_invoice_id=" + invoice.getId());
+            ResultSet resultSet = INVOICE_ITEM_STORE.getAllObjectsFromDatabase(INVOICE_ITEM_STORE.getTableName() + "_invoice_invoice_id=" + invoice.getId(), conn);
             while (resultSet.next()) {
                 oldInvoiceItems.add(INVOICE_ITEM_STORE.getObjectFromResultSet(resultSet));
             }
@@ -216,7 +216,7 @@ public class InvoiceBuilder extends BaseBuilder {
 
                 // Get list of previously work order items for this specific invoice item
                 List<WorkOrderItem> previousWorkOrderItems = new ArrayList<>();
-                ResultSet r = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_invoice_item_invoice_item_id=" + inv.getId());
+                ResultSet r = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_invoice_item_invoice_item_id=" + inv.getId(), conn);
                 while (r.next()) {
                     previousWorkOrderItems.add(WORK_ORDER_ITEM_STORE.getObjectFromResultSet(r));
                 }
@@ -235,7 +235,7 @@ public class InvoiceBuilder extends BaseBuilder {
             }
 
             List<Note> oldNotes = new ArrayList<>();
-            ResultSet resultSetNotes = NOTE_STORE.getAllObjectsFromDatabase(NOTE_STORE.getTableName() + "_invoice_invoice_id=" + invoice.getId());
+            ResultSet resultSetNotes = NOTE_STORE.getAllObjectsFromDatabase(NOTE_STORE.getTableName() + "_invoice_invoice_id=" + invoice.getId(), conn);
             while (resultSetNotes.next()) {
                 oldNotes.add(NOTE_STORE.getObjectFromResultSet(resultSetNotes));
             }
@@ -257,10 +257,10 @@ public class InvoiceBuilder extends BaseBuilder {
     }
 
     @Override
-    public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
+    public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top, Connection conn) throws SException {
         try {
             List<BaseModel> objects = new ArrayList<>();
-            ResponseWithCount rwc = super.searchObjects(this.getSqlFromAppendObjectStores(Arrays.asList(BUYER_STORE)), searchObject, skip, top);
+            ResponseWithCount rwc = super.searchObjects(this.getSqlFromAppendObjectStores(Arrays.asList(BUYER_STORE)), searchObject, skip, top, conn);
             ResultSet rs = rwc.getResultSet();
             while (rs.next()) {
                 Invoice invoice = (Invoice) this.getObjectStore().getObjectFromResultSet(rs);
@@ -276,7 +276,7 @@ public class InvoiceBuilder extends BaseBuilder {
 
     @Override
     public boolean deleteObjectByOid(String oid, Connection conn) throws SException {
-        Invoice invoice = this.getObjectByOid(oid);
+        Invoice invoice = this.getObjectByOid(oid, conn);
         for (InvoiceItem item : invoice.getInvoiceItems()) {
             try {
                 for (WorkOrderItem woi : item.getWorkOrderItems()) {
@@ -300,19 +300,19 @@ public class InvoiceBuilder extends BaseBuilder {
         return super.deleteObjectByOid(oid, conn);
     }
 
-    public int getNextInvoiceNumber(Invoice.InvoiceType invoiceType, int year) throws SException {
+    public int getNextInvoiceNumber(Invoice.InvoiceType invoiceType, int year, Connection conn) throws SException {
         try {
-            return ((InvoiceStore) this.getObjectStore()).getLastInvoiceNumber(invoiceType, year) + 1;
+            return ((InvoiceStore) this.getObjectStore()).getLastInvoiceNumber(invoiceType, year, conn) + 1;
         } catch (SQLException ex) {
             super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
-    public Set<String> getAllInvoiceItemDescriptions() throws SException {
+    public Set<String> getAllInvoiceItemDescriptions(Connection conn) throws SException {
         Set<String> items = new HashSet<>();
         try {
-            ResultSet rs = INVOICE_ITEM_STORE.getAllObjectsForSpecificColumn("invoice_item_description");
+            ResultSet rs = INVOICE_ITEM_STORE.getAllObjectsForSpecificColumn("invoice_item_description", conn);
             while (rs.next()) {
                 items.add(rs.getString("invoice_item_description"));
             }
@@ -333,14 +333,14 @@ public class InvoiceBuilder extends BaseBuilder {
         // find all associate workOrders - get decision about work orders of that invoice...
     }
 
-    public Set<String> getAllWorkOrdersForInvoice(Invoice invoice) throws SException {
+    public Set<String> getAllWorkOrdersForInvoice(Invoice invoice, Connection conn) throws SException {
         // find all associate workOrders
         Set<String> workOrderOIDSForChange = new HashSet<>();
         try {
             String from = this.getSqlFromObjectStores(Arrays.asList(WORK_ORDER_ITEM_STORE, WORK_ORDER_STORE));
             for (InvoiceItem ii : invoice.getInvoiceItems()) {
                 String where = WORK_ORDER_ITEM_STORE.getTableName() + "_invoice_item_invoice_item_id=" + BaseModel.getIdFromOid(ii.getOid());
-                ResultSet rs = this.getObjectStore().getAllObjectsFromDatabase(from, where);
+                ResultSet rs = this.getObjectStore().getAllObjectsFromDatabase(from, where, conn);
                 while (rs.next()) {
                     WorkOrder workOrder = WORK_ORDER_STORE.getObjectFromResultSet(rs);
                     workOrderOIDSForChange.add(workOrder.getOid());
@@ -353,8 +353,8 @@ public class InvoiceBuilder extends BaseBuilder {
         return workOrderOIDSForChange;
     }
 
-    public String getXMLForInvoice(String invoiceOID) throws SException {
-        Invoice invoice = this.getObjectByOid(invoiceOID);
+    public String getXMLForInvoice(String invoiceOID, Connection connToDatabase) throws SException {
+        Invoice invoice = this.getObjectByOid(invoiceOID, connToDatabase);
         if (invoice == null) {
             throw new SException(UserMessage.getLocalizedMessage("invoiceNotFound"));
         }
@@ -495,7 +495,7 @@ public class InvoiceBuilder extends BaseBuilder {
         for (InvoiceItem ii : invoice.getInvoiceItems()) {
             for (WorkOrderItem woi : ii.getWorkOrderItems()) {
                 try {
-                    workOrderOIDS.add(this.WORK_ORDER_ITEM_STORE.getWorkOrderOidForWorkOrderItemOid(woi.getOid()));
+                    workOrderOIDS.add(this.WORK_ORDER_ITEM_STORE.getWorkOrderOidForWorkOrderItemOid(woi.getOid(), connToDatabase));
                 } catch (SQLException ex) {
                     throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
                 }
@@ -513,13 +513,13 @@ public class InvoiceBuilder extends BaseBuilder {
                 if (start == true) {
                     title += ", ";
                 }
-                WorkOrder wo = (WorkOrder) new WorkOrderBuilder().getObjectByOid(woOIDS);
+                WorkOrder wo = (WorkOrder) new WorkOrderBuilder().getObjectByOid(woOIDS, connToDatabase);
                 title += wo.getNumber();
 
                 // Get All pdf-s and add it to list
                 if (wo.getPdf() != null && wo.getPdf().getOid() != null) {
                     try {
-                        wo.setPdf((Pdf) this.PDF_STORE.getObjectByOid(wo.getPdf().getOid()));
+                        wo.setPdf((Pdf) this.PDF_STORE.getObjectByOid(wo.getPdf().getOid(), connToDatabase));
                     } catch (SQLException ex) {
                         throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
                     }
@@ -808,7 +808,7 @@ public class InvoiceBuilder extends BaseBuilder {
     }
 
     public boolean registrationOfInvoice(String invoiceOID, Connection connToDatabase) throws SException {
-        Invoice invoice = this.getObjectByOid(invoiceOID);
+        Invoice invoice = this.getObjectByOid(invoiceOID, connToDatabase);
         SettingsBuilder settingsBuilder = new SettingsBuilder();
         Settings settings = settingsBuilder.getSettings();
 
@@ -816,7 +816,7 @@ public class InvoiceBuilder extends BaseBuilder {
         String apiUrl = settings.getUrlImportSalesUbl();
         String requestID = Helper.generateRandomString(settings.getRequestIDcharsNumber());
         String sendToCir;
-        String body = this.getXMLForInvoice(invoiceOID);
+        String body = this.getXMLForInvoice(invoiceOID, connToDatabase);
         String encodedText = null;
         try {
             encodedText = URLEncoder.encode(body, StandardCharsets.UTF_8.toString());
@@ -926,7 +926,7 @@ public class InvoiceBuilder extends BaseBuilder {
     }
 
     public boolean registrationOfInvoiceUPLOAD(String invoiceOID, Connection connToDatabase) throws SException {
-        Invoice invoice = this.getObjectByOid(invoiceOID);
+        Invoice invoice = this.getObjectByOid(invoiceOID, connToDatabase);
         SettingsBuilder settingsBuilder = new SettingsBuilder();
         Settings settings = settingsBuilder.getSettings();
 
@@ -994,7 +994,7 @@ public class InvoiceBuilder extends BaseBuilder {
 
         String fileName = "invoice_" + invoice.getDateOfCreate().getYear() + "_" + invoice.getId() + ".xml";
         try {
-            FileUtils.writeStringToFile(new File(INVOICE_XML_DIRECTORY + "/" + fileName), this.getXMLForInvoice(invoiceOID), Charset.forName("UTF-8"));
+            FileUtils.writeStringToFile(new File(INVOICE_XML_DIRECTORY + "/" + fileName), this.getXMLForInvoice(invoiceOID, connToDatabase), Charset.forName("UTF-8"));
         } catch (IOException ex) {
             logger.error(ex.getMessage());
             throw new SException(UserMessage.getLocalizedMessage("apiCallError"));
@@ -1119,10 +1119,10 @@ public class InvoiceBuilder extends BaseBuilder {
         return new File(WORK_ORDER_PDF_DIRECTORY + "/" + wo.getPdf().getUrl());
     }
 
-    public File getPDFForRegistratedInvoice(Invoice invoice) throws SException {
+    public File getPDFForRegistratedInvoice(Invoice invoice, Connection connToDatabase) throws SException {
         try {
             // Uzmi registrovanu fakturu
-            RegistratedInvoice regInvoice = new RegistratedInvoiceStore().getRegistratedInvoiceByInvoiceId(invoice.getId());
+            RegistratedInvoice regInvoice = new RegistratedInvoiceStore().getRegistratedInvoiceByInvoiceId(invoice.getId(), connToDatabase);
             if (regInvoice == null) {
                 throw new SException(UserMessage.getLocalizedMessage("invoiceNotFound"));
             }

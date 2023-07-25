@@ -89,7 +89,7 @@ public class InvoiceItemStore extends ObjectStore {
         return object;
     }
 
-    public ResultSet getAllObjectsForSpecificColumn(String columnName) throws SQLException, SException {
-        return ConnectionToDatabase.connect().createStatement().executeQuery("SELECT " + columnName + " from " + this.getDefaultFromClausule());
+    public ResultSet getAllObjectsForSpecificColumn(String columnName, Connection conn) throws SQLException, SException {
+        return conn.createStatement().executeQuery("SELECT " + columnName + " from " + this.getDefaultFromClausule());
     }
 }

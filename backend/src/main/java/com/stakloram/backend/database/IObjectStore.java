@@ -11,7 +11,7 @@ public interface IObjectStore {
 
     public void setTableName();
 
-    public BaseModel getObjectByOid(String oid) throws SQLException, SException;
+    public BaseModel getObjectByOid(String oid, Connection conn) throws SQLException, SException;
 
     public BaseModel createNewObjectToDatabase(BaseModel model, Connection conn) throws SQLException;
 
@@ -21,24 +21,13 @@ public interface IObjectStore {
 
     public BaseModel getObjectFromResultSet(ResultSet resultSet) throws SQLException, SException;
 
-    public ResultSet getAllObjectsFromDatabase(String whereClausule) throws SQLException, SException;
+    public ResultSet getAllObjectsFromDatabase(String whereClausule, Connection conn) throws SQLException, SException;
 
-    public ResultSet getAllObjectsFromDatabase(String fromClausule, String whereClausule) throws SQLException, SException;
+    public ResultSet getAllObjectsFromDatabase(String fromClausule, String whereClausule, Connection conn) throws SQLException, SException;
 
-    public ResponseWithCount searchObjectsFromDatabase(String whereClausule, Long skip, Long top, Ordering ordering) throws SQLException, SException;
+    public ResponseWithCount searchObjectsFromDatabase(String whereClausule, Long skip, Long top, Ordering ordering, Connection conn) throws SQLException, SException;
 
-    public ResponseWithCount searchObjectsFromDatabase(String fromClausule, String whereClausule, Ordering ordering) throws SQLException, SException;
+    public ResponseWithCount searchObjectsFromDatabase(String fromClausule, String whereClausule, Ordering ordering, Connection conn) throws SQLException, SException;
 
-    public ResponseWithCount searchObjectsFromDatabase(String fromClausule, String whereClausule, Long skip, Long top, Ordering ordering) throws SQLException, SException;
-
-//
-//    public ArrayResponse searchObjectsFromDatabase(QuickSearch quickSearch, AdvanceFilter advanceFilter, Long skip, Long top);
-//
-//    public ArrayResponse getAllObjectsFromDatabase(Long skip, Long top);
-//
-//    public List<? extends BaseModel> getAllObjectsFromDatabase();
-//
-//    public ResultSet getAllObjectsFromDatabase(String fromClausule, String whereClausule);
-//
-//    public List<? extends BaseModel> getAllObjectsFromDatabaseForCondition(String sqlWhereConditions);
+    public ResponseWithCount searchObjectsFromDatabase(String fromClausule, String whereClausule, Long skip, Long top, Ordering ordering, Connection conn) throws SQLException, SException;
 }

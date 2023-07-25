@@ -80,7 +80,7 @@ public class WorkOrderBuilder extends BaseBuilder {
         try {
             WorkOrder workOrder = (WorkOrder) super.modifyObject(oid, object, conn);
             List<WorkOrderItem> oldWorkOrderItems = new ArrayList<>();
-            ResultSet resultSet = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_work_order_work_order_id=" + workOrder.getId());
+            ResultSet resultSet = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_work_order_work_order_id=" + workOrder.getId(), conn);
             while (resultSet.next()) {
                 oldWorkOrderItems.add(WORK_ORDER_ITEM_STORE.getObjectFromResultSet(resultSet));
             }
@@ -96,7 +96,7 @@ public class WorkOrderBuilder extends BaseBuilder {
             }
 
             List<Image> oldWorkOrderImages = new ArrayList<>();
-            ResultSet resultSetImages = IMAGE_STORE.getAllObjectsFromDatabase(IMAGE_STORE.getTableName() + "_work_order_work_order_id=" + workOrder.getId());
+            ResultSet resultSetImages = IMAGE_STORE.getAllObjectsFromDatabase(IMAGE_STORE.getTableName() + "_work_order_work_order_id=" + workOrder.getId(), conn);
             while (resultSetImages.next()) {
                 oldWorkOrderImages.add(IMAGE_STORE.getObjectFromResultSet(resultSetImages));
             }
@@ -121,12 +121,12 @@ public class WorkOrderBuilder extends BaseBuilder {
     @Override
     public boolean deleteObjectByOid(String oid, Connection conn) throws SException {
         try {
-            ResultSet rs = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_work_order_work_order_id=" + BaseModel.getIdFromOid(oid));
+            ResultSet rs = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_work_order_work_order_id=" + BaseModel.getIdFromOid(oid), conn);
             while (rs.next()) {
                 WorkOrderItem woi = WORK_ORDER_ITEM_STORE.getObjectFromResultSet(rs);
                 WORK_ORDER_ITEM_STORE.deleteObjectByOid(woi.getOid(), conn);
             }
-            ResultSet rsImages = IMAGE_STORE.getAllObjectsFromDatabase(IMAGE_STORE.getTableName() + "_work_order_work_order_id=" + BaseModel.getIdFromOid(oid));
+            ResultSet rsImages = IMAGE_STORE.getAllObjectsFromDatabase(IMAGE_STORE.getTableName() + "_work_order_work_order_id=" + BaseModel.getIdFromOid(oid), conn);
             while (rsImages.next()) {
                 Image image = IMAGE_STORE.getObjectFromResultSet(rsImages);
                 IMAGE_STORE.deleteObjectByOid(image.getOid(), conn);
@@ -139,12 +139,12 @@ public class WorkOrderBuilder extends BaseBuilder {
     }
 
     @Override
-    public BaseModel getObjectByOid(String oid) throws SException {
-        WorkOrder workOrder = (WorkOrder) super.getObjectByOid(oid);
+    public BaseModel getObjectByOid(String oid, Connection conn) throws SException {
+        WorkOrder workOrder = (WorkOrder) super.getObjectByOid(oid, conn);
         Buyer buyer;
         try {
-            buyer = (Buyer) BUYER_STORE.getObjectByOid(workOrder.getBuyer().getOid());
-            buyer.setCity((City) CITY_STORE.getObjectByOid(buyer.getCity().getOid()));
+            buyer = (Buyer) BUYER_STORE.getObjectByOid(workOrder.getBuyer().getOid(), conn);
+            buyer.setCity((City) CITY_STORE.getObjectByOid(buyer.getCity().getOid(), conn));
             workOrder.setBuyer(buyer);
         } catch (SQLException ex) {
             super.logger.error(ex.toString());
@@ -154,16 +154,16 @@ public class WorkOrderBuilder extends BaseBuilder {
         List<Image> images = new ArrayList<>();
         Pdf pdf = null;
         try {
-            ResultSet rs = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_work_order_work_order_id=" + workOrder.getId());
+            ResultSet rs = WORK_ORDER_ITEM_STORE.getAllObjectsFromDatabase(WORK_ORDER_ITEM_STORE.getTableName() + "_work_order_work_order_id=" + workOrder.getId(), conn);
             while (rs.next()) {
                 workOrderItems.add(WORK_ORDER_ITEM_STORE.getObjectFromResultSet(rs));
             }
-            rs = IMAGE_STORE.getAllObjectsFromDatabase(IMAGE_STORE.getTableName() + "_work_order_work_order_id=" + workOrder.getId());
+            rs = IMAGE_STORE.getAllObjectsFromDatabase(IMAGE_STORE.getTableName() + "_work_order_work_order_id=" + workOrder.getId(), conn);
             while (rs.next()) {
                 images.add(IMAGE_STORE.getObjectFromResultSet(rs));
             }
             if (workOrder.getPdf() != null && workOrder.getPdf().getOid() != null) {
-                pdf = (Pdf) PDF_STORE.getObjectByOid(workOrder.getPdf().getOid());
+                pdf = (Pdf) PDF_STORE.getObjectByOid(workOrder.getPdf().getOid(), conn);
             }
         } catch (SQLException ex) {
             super.logger.error(ex.toString());
@@ -178,10 +178,10 @@ public class WorkOrderBuilder extends BaseBuilder {
     }
 
     @Override
-    public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top) throws SException {
+    public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top, Connection conn) throws SException {
         try {
             List<BaseModel> objects = new ArrayList<>();
-            ResponseWithCount rwc = super.searchObjects(this.getSqlFromAppendObjectStores(Arrays.asList(BUYER_STORE)), searchObject, skip, top);
+            ResponseWithCount rwc = super.searchObjects(this.getSqlFromAppendObjectStores(Arrays.asList(BUYER_STORE)), searchObject, skip, top, conn);
             ResultSet rs = rwc.getResultSet();
             while (rs.next()) {
                 WorkOrder workOrder = (WorkOrder) this.getObjectStore().getObjectFromResultSet(rs);
@@ -195,15 +195,15 @@ public class WorkOrderBuilder extends BaseBuilder {
         }
     }
 
-    public List<WorkOrder> getAllUnsettledWorkOrder(String buyerOID) throws SException {
+    public List<WorkOrder> getAllUnsettledWorkOrder(String buyerOID, Connection conn) throws SException {
         try {
             List<WorkOrder> objects = new ArrayList<>();
             String from = this.getSqlFromObjectStores(Arrays.asList(WORK_ORDER_ITEM_STORE, this.getObjectStore()));
             String where = (buyerOID.isEmpty() ? ("") : ((this.getObjectStore().getTableName() + "_buyer_buyer_id=" + BaseModel.getIdFromOid(buyerOID) + " AND "))) + WORK_ORDER_ITEM_STORE.getTableName() + "_settled=" + false;
-            ResultSet rs = this.getObjectStore().getAllObjectsFromDatabase(from, where);
+            ResultSet rs = this.getObjectStore().getAllObjectsFromDatabase(from, where, conn);
             while (rs.next()) {
                 WorkOrder workOrder = (WorkOrder) this.getObjectStore().getObjectFromResultSet(rs);
-                workOrder.setBuyer((Buyer) BUYER_STORE.getObjectByOid(workOrder.getBuyer().getOid()));
+                workOrder.setBuyer((Buyer) BUYER_STORE.getObjectByOid(workOrder.getBuyer().getOid(), conn));
                 WorkOrderItem workOrderItem = (WorkOrderItem) WORK_ORDER_ITEM_STORE.getObjectFromResultSet(rs);
 
                 List<WorkOrder> alreadyExists = objects.stream().filter(o -> o.getOid().equals(workOrder.getOid())).collect(Collectors.toList());
@@ -222,7 +222,7 @@ public class WorkOrderBuilder extends BaseBuilder {
     }
 
     public boolean toggleSettledForWorkOrder(String workOrderOID, boolean settled, Connection conn) throws SException {
-        WorkOrder workOrder = (WorkOrder) this.getObjectByOid(workOrderOID);
+        WorkOrder workOrder = (WorkOrder) this.getObjectByOid(workOrderOID, conn);
         for (WorkOrderItem woi : workOrder.getWorkOrderItems()) {
             try {
                 WORK_ORDER_ITEM_STORE.setSettledForWorkOrderItem(woi.getOid(), settled, conn);
@@ -234,19 +234,19 @@ public class WorkOrderBuilder extends BaseBuilder {
         return true;
     }
 
-    public long getNextWorkOrderNumber(int year) throws SException {
+    public long getNextWorkOrderNumber(int year, Connection conn) throws SException {
         try {
-            return ((WorkOrderStore) this.getObjectStore()).getLastWorkOrderNumber(year) + 1;
+            return ((WorkOrderStore) this.getObjectStore()).getLastWorkOrderNumber(year, conn) + 1;
         } catch (SQLException ex) {
             super.logger.error(ex.toString());
             throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
         }
     }
 
-    public Set<String> getAllWorkOrderItemDescriptions() throws SException {
+    public Set<String> getAllWorkOrderItemDescriptions(Connection conn) throws SException {
         Set<String> items = new HashSet<>();
         try {
-            ResultSet rs = WORK_ORDER_ITEM_STORE.getAllObjectsForSpecificColumn("work_order_item_description");
+            ResultSet rs = WORK_ORDER_ITEM_STORE.getAllObjectsForSpecificColumn("work_order_item_description", conn);
             while (rs.next()) {
                 items.add(rs.getString("work_order_item_description"));
             }

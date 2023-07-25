@@ -155,9 +155,9 @@ public class InvoiceStore extends ObjectStore {
         return object;
     }
 
-    public int getLastInvoiceNumber(Invoice.InvoiceType invoiceType, int year) throws SQLException, SException {
+    public int getLastInvoiceNumber(Invoice.InvoiceType invoiceType, int year, Connection conn) throws SQLException, SException {
         int lastInvoiceNumber = 0;
-        Statement st = ConnectionToDatabase.connect().createStatement();
+        Statement st = conn.createStatement();
         ResultSet resultSet = st.executeQuery("SELECT * from " + DATABASE_NAME + "." + this.tableName + " WHERE invoice_number=(SELECT MAX(invoice_number) FROM " + DATABASE_NAME + "." + this.tableName + " WHERE invoice_type='" + invoiceType + "'  AND year(invoice_date_of_create)=" + year + ") AND invoice_type='" + invoiceType + "'  AND year(invoice_date_of_create)=" + year);
         while (resultSet.next()) {
             lastInvoiceNumber = resultSet.getInt(this.getTableName() + "_number");
