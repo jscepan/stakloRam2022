@@ -76,6 +76,10 @@ export class AppSettings {
   categoryForStandardVAT?: string;
   privillegedVATRate?: number;
   categoryForPrivillegedVAT?: string;
+  zeroVATRate?: number;
+  categoryForZeroVAT?: string;
+  categoryReasonCodeForZeroVAT?: string;
+  categoryReasonExplanationForZeroVAT?: string;
   unitCodeForMeter2?: string;
   unitCodeForMeter?: string;
   unitCodeForHour?: string;

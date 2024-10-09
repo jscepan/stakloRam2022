@@ -105,6 +105,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.SerializationUtils;
 
 public class InvoiceBuilder extends BaseBuilder {
 
@@ -710,6 +711,7 @@ public class InvoiceBuilder extends BaseBuilder {
         //////////////////// TAX AMOUNT BT-117 //////////////////////////
         CurrencyAmountXML taxAmount = new CurrencyAmountXML(invoice.getVatAmount(), settings.getInvoiceCurrencyEInvoice());
 
+        // taxItems has been used to generate SUM amount of invoice
         List<TaxItemXML> taxItems = new ArrayList<>();
         List<InvoiceItemXML> items = new ArrayList<>();
         int count = 1;
@@ -724,10 +726,10 @@ public class InvoiceBuilder extends BaseBuilder {
             } else if (invoiceItem.getVatRate() == settings.getPrivillegedVATRate()) {
                 category = settings.getCategoryForPrivillegedVAT();
                 rate = settings.getPrivillegedVATRate();
+            } else if (invoiceItem.getVatRate() == settings.getZeroVATRate()) {
+                category = settings.getCategoryForZeroVAT();
+                rate = settings.getZeroVATRate();
             } else {
-                throw new SException(UserMessage.getLocalizedMessage("categoryVATError"));
-            }
-            if (category == null || rate == 0) {
                 throw new SException(UserMessage.getLocalizedMessage("categoryVATError"));
             }
             TaxCategoryXML taxCategoryXML = new TaxCategoryXML(category, rate, new TaxSchemeXML(settings.getTaxScheme()));
@@ -772,7 +774,7 @@ public class InvoiceBuilder extends BaseBuilder {
             //////////////////// Invoice line net amount BT-131 /////////////
             CurrencyAmountXML lineExtensionAmountItem = new CurrencyAmountXML(DataChecker.roundOnDigits(invoiceItem.getNetPrice(), settings.getDigitsCountForInvoice()), settings.getInvoiceCurrencyEInvoice());
             //////////////////// Item name BG-25 ///////////////////////////
-            InvoiceItemDetailsXML invoiceItemDetailsXML = new InvoiceItemDetailsXML(invoiceItem.getDescription(), taxCategoryXML);
+            InvoiceItemDetailsXML invoiceItemDetailsXML = new InvoiceItemDetailsXML(invoiceItem.getDescription(), SerializationUtils.clone(taxCategoryXML));
             //////////////////// Item net price BT-146 /////////////////////
             PriceXML priceInvoiceItem = new PriceXML(new CurrencyAmountXML(DataChecker.roundOnDigits(invoiceItem.getPricePerUnit(), settings.getDigitsCountForInvoice()), settings.getInvoiceCurrencyEInvoice()));
             //////////////////// Invoice line net amount BT-131 /////////////
@@ -781,6 +783,23 @@ public class InvoiceBuilder extends BaseBuilder {
             count++;
         }
         //////////////////// TAX TOTAL BT-110 ///////////////////////////////
+//        if (invoice.getVatRate() == settings.getZeroVATRate()) {
+//            // Paravina wanted to always set AE20 as vat but we will take it from settings
+//            taxItems.get(0).getTaxCategoryXML().setTaxExemptionReasonCode(settings.getCategoryReasonCodeForZeroVAT());
+//            if (settings.getCategoryReasonExplanationForZeroVAT() != null && !settings.getCategoryReasonExplanationForZeroVAT().isEmpty()) {
+//                taxItems.get(0).getTaxCategoryXML().setTaxExemptionReasonReason(settings.getCategoryReasonExplanationForZeroVAT());
+//            }
+//        }
+        for (TaxItemXML t : taxItems) {
+            if (t.getTaxAmount().getValue() == 0 || t.getTaxAmount().getValue() == 0.0) {
+                t.getTaxCategoryXML().setTaxExemptionReasonCode(settings.getCategoryReasonCodeForZeroVAT());
+                if (settings.getCategoryReasonExplanationForZeroVAT() != null && !settings.getCategoryReasonExplanationForZeroVAT().isEmpty()) {
+                    t.getTaxCategoryXML().setTaxExemptionReasonReason(settings.getCategoryReasonExplanationForZeroVAT());
+                }
+            }
+
+        }
+
         TaxTotalXML taxTotalXML = new TaxTotalXML(new CurrencyAmountXML(invoice.getVatAmount(), settings.getInvoiceCurrencyEInvoice()), taxItems);
 
         invoiceXML.setTaxTotalXML(taxTotalXML);

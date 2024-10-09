@@ -195,7 +195,12 @@
           "
           class="bold right"
         >
-          {{ "invoiceGrossPrice" | translate }}:
+          {{
+            (invoice.vatRate !== 0
+              ? "invoiceGrossPrice"
+              : "invoiceGrossPriceWithoutVAT"
+            ) | translate
+          }}:
         </td>
         <td
           colspan="2"

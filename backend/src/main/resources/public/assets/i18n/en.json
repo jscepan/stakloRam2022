@@ -51,6 +51,9 @@
   "cashInvoice": "Cash invoice",
   "categoryForPrivillegedVAT": "Category for privilleged VAT - BT-118",
   "categoryForStandardVAT": "Category for standard VAT - BT-118",
+  "categoryForZeroVAT": "Category for zero VAT - BT-118",
+  "categoryReasonCodeForZeroVAT": "Category reason code for zero VAT - BT-118",
+  "categoryReasonExplanationForZeroVAT": "Category reason explanation for zero VAT - BT-118",
   "change": "Change",
   "changeBuyer": "Change buyer",
   "chooseWhichInvoiceShouldBeClosedWithThisIncome": "Choose which invoice should be closed with this income",
@@ -197,6 +200,7 @@
   "invoiceForeignNote": "Foreign invoice note",
   "invoiceForeignNoteDescription": "Foreign invoice additional description",
   "invoiceGrossPrice": "INVOICE GROSS PRICE WITH VAT",
+  "invoiceGrossPriceWithoutVAT": "INVOICE GROSS PRICE",
   "invoiceHaveBeenSuccessfullyDeleted": "Invoice have been successfully deleted",
   "invoiceIsSuccessfullyUpdated": "Invoice is successfully updated",
   "invoiceIsSuccessfullyRegistrated": "Invoice is successfully registrated",
@@ -442,6 +446,7 @@
   "yes": "Yes",
   "youDidntSelectAnyBuyer": "You didn't select any buyer!",
   "youDontHaveAccess": "You don't have access",
+  "zeroVATRate": "Zero VAT rate",
   "zipCode": "Zip code",
   "zipCodeCity": "Zip code and city"
 }

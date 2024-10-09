@@ -258,7 +258,9 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
           : this.invoice?.type || this.typesOptions[0].value,
         [Validators.required]
       ),
-      number: new UntypedFormControl(this.invoice?.number || 0, [Validators.required]),
+      number: new UntypedFormControl(this.invoice?.number || 0, [
+        Validators.required,
+      ]),
       dateOfCreate: new UntypedFormControl(
         this.invoice?.dateOfCreate || new Date().toISOString().substring(0, 10),
         [Validators.required]
@@ -304,7 +306,9 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
         this.invoice?.country || this.settings?.invoiceCountry || '',
         [Validators.required]
       ),
-      buyer: new UntypedFormControl(this.selectedBuyer || '', [Validators.required]),
+      buyer: new UntypedFormControl(this.selectedBuyer || '', [
+        Validators.required,
+      ]),
       invoiceItems: new UntypedFormArray([]),
       notes: new UntypedFormArray([]),
       preInvoiceOid: new UntypedFormControl(this.preInvoice?.oid),
@@ -393,9 +397,10 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
         description: new UntypedFormControl(invoiceItem?.description || '', [
           Validators.required,
         ]),
-        uom: new UntypedFormControl(invoiceItem?.uom || this.uomOptions[0].value, [
-          Validators.required,
-        ]),
+        uom: new UntypedFormControl(
+          invoiceItem?.uom || this.uomOptions[0].value,
+          [Validators.required]
+        ),
         quantity: new UntypedFormControl(invoiceItem?.quantity || 0, [
           Validators.required,
           Validators.min(0),
@@ -951,23 +956,36 @@ export class InvoiceCreateEditComponent implements OnInit, OnDestroy {
         : (this.preInvoice = previousInvoice);
       this.selectedBuyer = previousInvoice.buyer;
       this.initializeCreate(type === 'advanceInvoice');
-      this.formGroup.get('comment')?.setValue(
-        this.formGroup.get('comment')?.value +
-          this.translateService.instant(
-            type === 'advanceInvoice'
-              ? 'invoiceCreatedOnAdvanceInvoice'
-              : 'invoiceCreatedOnPreInvoice',
-            {
-              invoiceNumber: previousInvoice.number,
-              invoiceDate:
-                new Date(previousInvoice.dateOfCreate).getDay() +
-                '/' +
-                new Date(previousInvoice.dateOfCreate).getMonth() +
-                '/' +
-                new Date(previousInvoice.dateOfCreate).getFullYear(),
-            }
-          )
-      );
+      console.log({ ...this.formGroup.get('comment')?.value });
+
+      let message = '';
+      const messageData = {
+        invoiceNumber: previousInvoice.number,
+        invoiceDate:
+          new Date(previousInvoice.dateOfCreate).getDate() +
+          '/' +
+          (new Date(previousInvoice.dateOfCreate).getMonth() + 1) +
+          '/' +
+          new Date(previousInvoice.dateOfCreate).getFullYear(),
+      };
+      if (type === 'advanceInvoice') {
+        message = this.translateService.instant(
+          'invoiceCreatedOnAdvanceInvoice',
+          messageData
+        );
+      } else {
+        message = this.translateService.instant(
+          'invoiceCreatedOnPreInvoice',
+          messageData
+        );
+      }
+      if (previousInvoice.comment) {
+        message += '. ' + previousInvoice.comment + '.';
+      }
+
+      this.formGroup
+        .get('comment')
+        ?.setValue(this.formGroup.get('comment')?.value + message);
       previousInvoice.invoiceItems.forEach((item, index) => {
         item.oid = '';
         item.workOrderItems = [];

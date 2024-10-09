@@ -79,6 +79,10 @@ public class Settings {
     private String categoryForStandardVAT = "S";
     private double privillegedVATRate = 20;
     private String categoryForPrivillegedVAT = "S";
+    private int zeroVATRate = 0;
+    private String categoryForZeroVAT = "AE";
+    private String categoryReasonCodeForZeroVAT = "PDV-RS-10-2-3";
+    private String categoryReasonExplanationForZeroVAT = "";
     private String unitCodeForMeter2 = "MTK";
     private String unitCodeForMeter = "MTR";
     private String unitCodeForHour = "HUR";
@@ -618,6 +622,38 @@ public class Settings {
 
     public String getCategoryForPrivillegedVAT() {
         return categoryForPrivillegedVAT;
+    }
+
+    public double getZeroVATRate() {
+        return zeroVATRate;
+    }
+
+    public void setZeroVATRate(int zeroVATRate) {
+        this.zeroVATRate = zeroVATRate;
+    }
+
+    public String getCategoryForZeroVAT() {
+        return categoryForZeroVAT;
+    }
+
+    public void setCategoryForZeroVAT(String categoryForZeroVAT) {
+        this.categoryForZeroVAT = categoryForZeroVAT;
+    }
+
+    public String getCategoryReasonCodeForZeroVAT() {
+        return categoryReasonCodeForZeroVAT;
+    }
+
+    public void setCategoryReasonCodeForZeroVAT(String categoryReasonCodeForZeroVAT) {
+        this.categoryReasonCodeForZeroVAT = categoryReasonCodeForZeroVAT;
+    }
+
+    public String getCategoryReasonExplanationForZeroVAT() {
+        return categoryReasonExplanationForZeroVAT;
+    }
+
+    public void setCategoryReasonExplanationForZeroVAT(String categoryReasonExplanationForZeroVAT) {
+        this.categoryReasonExplanationForZeroVAT = categoryReasonExplanationForZeroVAT;
     }
 
     public void setCategoryForPrivillegedVAT(String categoryForPrivillegedVAT) {

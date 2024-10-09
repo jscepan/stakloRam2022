@@ -1,14 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MODE } from 'src/app/shared/components/basic-alert/basic-alert.interface';
 import { AuthStoreService } from 'src/app/shared/services/auth-store.service';
 import { GlobalService } from 'src/app/shared/services/global.service';
-import {
-  AppSettings,
-  SettingsStoreService,
-} from 'src/app/shared/services/settings-store.service';
+import { SettingsStoreService } from 'src/app/shared/services/settings-store.service';
 import { SubscriptionManager } from 'src/app/shared/services/subscription.manager';
 
 @Component({
@@ -327,6 +329,24 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
             this.settingsStoreService.getSettings()
               ?.categoryForPrivillegedVAT || '',
             [Validators.required]
+          ),
+          zeroVATRate: new UntypedFormControl(
+            this.settingsStoreService.getSettings()?.zeroVATRate || 0,
+            [Validators.required]
+          ),
+          categoryForZeroVAT: new UntypedFormControl(
+            this.settingsStoreService.getSettings()?.categoryForZeroVAT || '',
+            [Validators.required]
+          ),
+          categoryReasonCodeForZeroVAT: new UntypedFormControl(
+            this.settingsStoreService.getSettings()
+              ?.categoryReasonCodeForZeroVAT || '',
+            [Validators.required]
+          ),
+          categoryReasonExplanationForZeroVAT: new UntypedFormControl(
+            this.settingsStoreService.getSettings()
+              ?.categoryReasonExplanationForZeroVAT || '',
+            []
           ),
           unitCodeForMeter2: new UntypedFormControl(
             this.settingsStoreService.getSettings()?.unitCodeForMeter2 || '',
