@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -123,6 +124,44 @@ public abstract class ObjectStore implements IObjectStore {
         ResultSet resultSetCount = stCount.executeQuery("SELECT COUNT(*) AS rowcount from " + fromClausule + " " + whereClausule);
         resultSetCount.next();
         count = resultSetCount.getLong("rowcount");
+        return new ResponseWithCount(resultSet, count);
+    }
+
+    @Override
+    public ResponseWithCount searchObjectsFromDatabase(String fromClausule, String whereClausule, Long skip, Long top, Ordering ordering, List<String> orderByColumns, Connection conn) throws SQLException, SException {
+        if (whereClausule != null && whereClausule.trim().length() > 0) {
+            whereClausule = " WHERE " + whereClausule;
+        }
+        if (fromClausule == null || fromClausule.trim().length() == 0) {
+            fromClausule = this.getDefaultFromClausule();
+        }
+
+        long count = 0;
+        Statement st = conn.createStatement();
+        String orderingClausule = this.getTableName();
+
+        String orderByClause = "";
+        if (orderByColumns != null && !orderByColumns.isEmpty()) {
+            orderByClause = " ORDER BY ";
+            for (int i = 0; i < orderByColumns.size(); i++) {
+                orderByClause += orderingClausule + "." + orderByColumns.get(i);
+                orderByClause += " " + ordering;
+                if (i < orderByColumns.size() - 1) {
+                    orderByClause += ", ";
+                }
+            }
+        } else {
+            orderByClause = " ORDER BY " + orderingClausule + "." + this.getPrimaryKey() + " " + ordering;
+        }
+
+        String query = "SELECT * from " + fromClausule + " " + whereClausule + orderByClause + " limit " + skip + ", " + top;
+        ResultSet resultSet = st.executeQuery(query);
+
+        Statement stCount = conn.createStatement();
+        ResultSet resultSetCount = stCount.executeQuery("SELECT COUNT(*) AS rowcount from " + fromClausule + " " + whereClausule);
+        resultSetCount.next();
+        count = resultSetCount.getLong("rowcount");
+
         return new ResponseWithCount(resultSet, count);
     }
 }

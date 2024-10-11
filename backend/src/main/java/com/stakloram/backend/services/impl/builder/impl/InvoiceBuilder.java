@@ -261,7 +261,8 @@ public class InvoiceBuilder extends BaseBuilder {
     public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top, Connection conn) throws SException {
         try {
             List<BaseModel> objects = new ArrayList<>();
-            ResponseWithCount rwc = super.searchObjects(this.getSqlFromAppendObjectStores(Arrays.asList(BUYER_STORE)), searchObject, skip, top, conn);
+            List<String> columns = Arrays.asList("invoice_date_of_create", "invoice_number");
+            ResponseWithCount rwc = super.searchObjects(this.getSqlFromAppendObjectStores(Arrays.asList(BUYER_STORE)), searchObject, skip, top, columns, conn);
             ResultSet rs = rwc.getResultSet();
             while (rs.next()) {
                 Invoice invoice = (Invoice) this.getObjectStore().getObjectFromResultSet(rs);

@@ -6,6 +6,7 @@ import com.stakloram.backend.models.SearchRequest.Ordering;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public interface IObjectStore {
 
@@ -30,4 +31,6 @@ public interface IObjectStore {
     public ResponseWithCount searchObjectsFromDatabase(String fromClausule, String whereClausule, Ordering ordering, Connection conn) throws SQLException, SException;
 
     public ResponseWithCount searchObjectsFromDatabase(String fromClausule, String whereClausule, Long skip, Long top, Ordering ordering, Connection conn) throws SQLException, SException;
+
+    public ResponseWithCount searchObjectsFromDatabase(String fromClausule, String whereClausule, Long skip, Long top, Ordering ordering, List<String> orderByColumns, Connection conn) throws SQLException, SException;
 }

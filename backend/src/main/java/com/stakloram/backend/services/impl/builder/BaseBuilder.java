@@ -92,6 +92,17 @@ public abstract class BaseBuilder implements IObjectBuilder {
         }
     }
 
+    public ResponseWithCount searchObjects(String fromClausule, SearchRequest searchObject, Long skip, Long top, List<String> orderByColumns, Connection conn) throws SException {
+        try {
+            String searchClausule = this.getQuickSearchClausule(this.getQuickSearchWords(searchObject));
+            String betweenClausule = this.getBetweenClausule(searchObject);
+            return this.objectStore.searchObjectsFromDatabase(fromClausule, this.generateWhereClausule("", searchClausule, betweenClausule), skip, top, searchObject.getOrdering(), orderByColumns, conn);
+        } catch (SQLException ex) {
+            logger.error(ex.toString());
+            throw new SException(UserMessage.getLocalizedMessage("unexpectedError"));
+        }
+    }
+
     @Override
     public ArrayResponse searchObjects(SearchRequest searchObject, Long skip, Long top, Connection conn) throws SException {
         try {
