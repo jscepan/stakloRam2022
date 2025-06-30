@@ -249,7 +249,7 @@
     <div class="cash-number" *ngIf="invoice.numberOfCashBill">
       {{ "numberOfVatBill" | translate }}: {{ invoice.numberOfCashBill }}
     </div>
-    <div class="note" *ngIf="invoice.comment">
+    <div class="note" style="white-space: pre-line" *ngIf="invoice.comment">
       <div class="title">{{ "note" | translate }}: {{ invoice.comment }}</div>
       <div class="description"></div>
     </div>

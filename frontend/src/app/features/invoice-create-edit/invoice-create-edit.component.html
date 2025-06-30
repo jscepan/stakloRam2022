@@ -503,12 +503,7 @@
         >
           {{ "comment" | translate }}
         </mat-label>
-        <textarea
-          matInput
-          formControlName="comment"
-          (keypress)="onKeypress($event, 'comment')"
-          rows="3"
-        ></textarea>
+        <textarea matInput formControlName="comment" rows="3"></textarea>
       </mat-form-field>
 
       <div class="row">
